@@ -45,6 +45,7 @@ class MyApp extends StatelessWidget {
         systemNavigationBarIconBrightness: Brightness.dark,
       ),
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'Flutter App',
         // darkTheme: ThemeData.dark(),
         theme: ThemeData(
