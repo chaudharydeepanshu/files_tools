@@ -4,6 +4,10 @@ import 'package:files_tools/ui/pdfFunctionsMainBodies/pdfFunctionPagesScaffoldBo
 import 'package:files_tools/ui/pdfFunctionsMainBodies/pdfFunctionPagesScaffoldBodyForSelectingMultipleFiles.dart';
 import 'package:files_tools/ui/pdfFunctionsMainBodies/pdfFunctionPagesScaffoldBodyForSelectingSingle&MultipleImages.dart';
 import 'package:files_tools/widgets/pdfFunctionsMainWidgets/pdfFunctionsAppBar.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:provider/provider.dart';
+
+import '../../ad_state.dart';
 
 class PDFFunctionsPageScaffold extends StatefulWidget {
   static const String routeName = '/pdfFunctionsPageScaffold';
@@ -62,6 +66,9 @@ class _PDFFunctionsPageScaffoldState extends State<PDFFunctionsPageScaffold> {
         },
         mapOfFunctionDetails: mapOfFunctionDetails,
       );
+    } else {
+      print('empty body provided');
+      body = Container();
     }
     super.initState();
   }
@@ -71,22 +78,53 @@ class _PDFFunctionsPageScaffoldState extends State<PDFFunctionsPageScaffold> {
     super.dispose();
   }
 
+  BannerAd? banner;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final adState = Provider.of<AdState>(context);
+    adState.initialization.then((value) {
+      setState(() {
+        banner = BannerAd(
+          listener: adState.adListener,
+          adUnitId: adState.bannerAdUnitId,
+          request: AdRequest(),
+          size: AdSize.banner,
+        )..load();
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Scaffold(
-        backgroundColor: mapOfFunctionDetails!['BG Color'] ?? null,
-        appBar: PdfFunctionsAppBar(
-          onNotifyBodyPoppingSplitPDFFunctionScaffold: (bool value) {
-            setState(() {
-              notifyBodyPoppingSplitPDFFunctionScaffold = true;
-            });
-          },
-          notifyAppbarFileStatus: notifyAppbarFileStatus,
-          mapOfFunctionDetails: mapOfFunctionDetails,
-        ),
-        body: body,
+    return Scaffold(
+      //backgroundColor: mapOfFunctionDetails!['BG Color'] ?? null,
+      appBar: PdfFunctionsAppBar(
+        onNotifyBodyPoppingSplitPDFFunctionScaffold: (bool value) {
+          setState(() {
+            notifyBodyPoppingSplitPDFFunctionScaffold = true;
+          });
+        },
+        notifyAppbarFileStatus: notifyAppbarFileStatus,
+        mapOfFunctionDetails: mapOfFunctionDetails,
       ),
+      body: body,
+      // bottomNavigationBar: banner == null
+      //     ? SizedBox(
+      //         height: AdSize.banner.height.toDouble(),
+      //       )
+      //     : Column(
+      //         mainAxisAlignment: MainAxisAlignment.end,
+      //         children: [
+      //           Container(
+      //             height: AdSize.banner.height.toDouble(),
+      //             child: AdWidget(
+      //               ad: banner!,
+      //             ),
+      //           ),
+      //         ],
+      //       ),
     );
   }
 }

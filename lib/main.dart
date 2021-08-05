@@ -18,17 +18,24 @@ import 'package:files_tools/widgets/pdfFunctionsActionWidgets/reusableUIActionWi
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:provider/provider.dart';
 import 'dart:io';
-
+import 'ad_state.dart';
 import 'navigation/page_routes_model.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  final initFuture = MobileAds.instance.initialize();
+  final adState = AdState(initFuture);
   // await SystemChrome.setPreferredOrientations(<DeviceOrientation>[
   //   DeviceOrientation.portraitUp,
   //   DeviceOrientation.portraitDown
   // ]);
-  runApp(MyApp());
+  runApp(Provider.value(
+    value: adState,
+    builder: (context, child) => MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -47,11 +54,11 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Flutter App',
-        // darkTheme: ThemeData.dark(),
+        //darkTheme: ThemeData.dark(),
         theme: ThemeData(
           primarySwatch: Colors.blue,
           platform: TargetPlatform.android,
-          // scaffoldBackgroundColor: Colors.white,
+          scaffoldBackgroundColor: Colors.white,
         ),
         home: MainPagesScaffold(),
         routes: {

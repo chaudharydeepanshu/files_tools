@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:files_tools/widgets/topLevelPagesWidgets/homeWidgets/expanding_container/expanding_container.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:provider/provider.dart';
+import '../../ad_state.dart';
 import '../../toolExpandingContainersAndFunctionsMaps/tool_cards_details_maps.dart';
 
 class HomeBody extends StatefulWidget {
@@ -14,6 +17,24 @@ class _HomeBodyState extends State<HomeBody> {
   final PageController controller = PageController(initialPage: 0);
   List listOfToolCardsForDocuments = [];
   List listOfToolCardsForMedia = [];
+
+  BannerAd? banner;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final adState = Provider.of<AdState>(context);
+    adState.initialization.then((value) {
+      setState(() {
+        banner = BannerAd(
+          listener: adState.adListener,
+          adUnitId: adState.bannerAdUnitId,
+          request: AdRequest(),
+          size: AdSize.banner,
+        )..load();
+      });
+    });
+  }
 
   @override
   void initState() {
@@ -34,64 +55,92 @@ class _HomeBodyState extends State<HomeBody> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: [
-            Row(
-              children: [
-                Text(
-                  'Document Tools',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 8,
-            ),
-            Column(
-              children: List<Widget>.generate(
-                  listOfToolCardsForDocuments.length, (int index) {
-                return Column(
+    return Stack(
+      children: [
+        SingleChildScrollView(
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
                   children: [
-                    ExpandingContainer(
-                        mapOfCardDetails: listOfToolCardsForDocuments[index]),
+                    Row(
+                      children: [
+                        Text(
+                          'Document Tools',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 8,
+                    ),
+                    Column(
+                      children: List<Widget>.generate(
+                          listOfToolCardsForDocuments.length, (int index) {
+                        return Column(
+                          children: [
+                            ExpandingContainer(
+                                mapOfCardDetails:
+                                    listOfToolCardsForDocuments[index]),
+                          ],
+                        );
+                      }),
+                    ),
+                    SizedBox(
+                      height: 8,
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          'Media Tools',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 8,
+                    ),
+                    Column(
+                      children: List<Widget>.generate(
+                          listOfToolCardsForMedia.length, (int index) {
+                        return Column(
+                          children: [
+                            ExpandingContainer(
+                                mapOfCardDetails:
+                                    listOfToolCardsForMedia[index]),
+                          ],
+                        );
+                      }),
+                    ),
+                    SizedBox(
+                      height: 8,
+                    ),
                   ],
-                );
-              }),
-            ),
-            SizedBox(
-              height: 8,
-            ),
-            Row(
-              children: [
-                Text(
-                  'Media Tools',
-                  style: TextStyle(fontWeight: FontWeight.bold),
                 ),
-              ],
-            ),
-            SizedBox(
-              height: 8,
-            ),
-            Column(
-              children: List<Widget>.generate(listOfToolCardsForMedia.length,
-                  (int index) {
-                return Column(
-                  children: [
-                    ExpandingContainer(
-                        mapOfCardDetails: listOfToolCardsForMedia[index]),
-                  ],
-                );
-              }),
-            ),
-            SizedBox(
-              height: 8,
-            ),
-          ],
+              ),
+              SizedBox(
+                height: AdSize.banner.height.toDouble(),
+              )
+            ],
+          ),
         ),
-      ),
+        banner == null
+            ? SizedBox(
+                height: AdSize.banner.height.toDouble(),
+              )
+            : Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Container(
+                    height: AdSize.banner.height.toDouble(),
+                    child: AdWidget(
+                      ad: banner!,
+                    ),
+                  ),
+                ],
+              ),
+      ],
     );
   }
 }

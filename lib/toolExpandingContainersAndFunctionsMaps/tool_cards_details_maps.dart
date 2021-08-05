@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:files_tools/toolExpandingContainersAndFunctionsMaps/pdf%20_functions_details_maps.dart';
 import 'package:files_tools/ui/pdfFunctionsMainScaffold/pdfFunctionPagesScaffold.dart';
+import 'package:flutter/scheduler.dart';
 import '../navigation/page_routes_model.dart';
 
 //For PDF
