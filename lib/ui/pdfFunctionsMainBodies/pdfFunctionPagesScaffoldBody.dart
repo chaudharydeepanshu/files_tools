@@ -159,10 +159,10 @@ class _PDFFunctionBodyState extends State<PDFFunctionBody>
     ];
 
     dialogTextForPermanentlyDeniedPermission =
-        // 'In order to select documents, Demo App requires access to Files and Media permission.\nSince you have denied permission requests previously, we cannot ask again. So now you have to manually allow the permissions by pressing Settings > Permissions > Files and Media and select "Allow access to media only".';
-        'In order to select documents, Demo App requires access to photos and media permission.\nTo allow the permission tap Settings > Permissions > Files and Media and select "Allow access to media only".';
+        // 'In order to select documents, Files Tools App requires access to Files and Media permission.\nSince you have denied permission requests previously, we cannot ask again. So now you have to manually allow the permissions by pressing Settings > Permissions > Files and Media and select "Allow access to media only".';
+        'In order to select documents, Files Tools App requires access to photos and media permission.\nTo allow the permission tap Settings > Permissions > Files and Media and select "Allow access to media only".';
     dialogTextForDeniedPermission =
-        'In order to select documents, Demo App requires access to photos and media permission. Please allow access to continue further.';
+        'In order to select documents, Files Tools App requires access to photos and media permission. Please allow access to continue further.';
 
     super.initState();
   }

@@ -117,7 +117,7 @@ class _ResultZipScaffoldState extends State<ResultZipScaffold> {
       ),
     ];
     dialogTextForDeniedPermission =
-        'In order to extract the zip to your desired location, Demo App requires access to manage all files permission. To allow this permission tap "Continue" and enable "Allow access to manage all files".';
+        'In order to extract the zip to your desired location, Files Tools App requires access to manage all files permission. To allow this permission tap "Continue" and enable "Allow access to manage all files".';
 
     extensionOfFileName = extensionOfString(fileName: fileName);
     fileNameWithoutExtension = stringWithoutExtension(

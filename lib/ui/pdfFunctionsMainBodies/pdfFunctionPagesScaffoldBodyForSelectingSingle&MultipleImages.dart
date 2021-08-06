@@ -146,9 +146,9 @@ class _PDFFunctionBodyForSelectingSingleMultipleImagesState
     ];
 
     dialogTextForPermanentlyDeniedPermission =
-        'In order to select documents, Demo App requires access to photos and media permission.\nTo allow the permission tap Settings > Permissions > Files and Media and select "Allow access to media only".';
+        'In order to select documents, Files Tools App requires access to photos and media permission.\nTo allow the permission tap Settings > Permissions > Files and Media and select "Allow access to media only".';
     dialogTextForDeniedPermission =
-        'In order to select documents, Demo App requires access to photos and media permission. Please allow access to continue further.';
+        'In order to select documents, Files Tools App requires access to photos and media permission. Please allow access to continue further.';
 
     super.initState();
   }
