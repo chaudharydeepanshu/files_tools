@@ -195,7 +195,7 @@ class _PDFFunctionBodyForSelectingSingleMultipleImagesState
               child: Text('Yes'),
               onPressed: () {
                 shouldRenderingImagesLoopBeDisabled = true;
-                deleteCacheDir();
+                //deleteCacheDir();
                 deleteAppDir();
                 Navigator.of(context).pop(true);
               },
@@ -215,7 +215,7 @@ class _PDFFunctionBodyForSelectingSingleMultipleImagesState
   }
 
   Future<bool> _directPop() async {
-    deleteCacheDir();
+    //deleteCacheDir();
     deleteAppDir();
     return true;
   }

@@ -202,7 +202,7 @@ class _PDFFunctionBodyState extends State<PDFFunctionBody>
               child: Text('Yes'),
               onPressed: () {
                 shouldRenderingImagesLoopBeDisabled = true;
-                deleteCacheDir();
+                //deleteCacheDir();
                 deleteAppDir();
                 Navigator.of(context).pop(true);
               },
@@ -222,7 +222,7 @@ class _PDFFunctionBodyState extends State<PDFFunctionBody>
   }
 
   Future<bool> _directPop() async {
-    deleteCacheDir();
+    //deleteCacheDir();
     deleteAppDir();
     return true;
   }

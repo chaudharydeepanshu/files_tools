@@ -72,7 +72,7 @@ class _MainPagesScaffoldState extends State<MainPagesScaffold>
   @override
   void initState() {
     super.initState();
-    deleteCacheDir();
+    //deleteCacheDir();
     deleteAppDir();
     if (widget.arguments == null) {
       currentIndex = 0;
