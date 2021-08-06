@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'package:file_picker/file_picker.dart';
+import 'package:files_tools/widgets/pdfFunctionsMainWidgets/directPop.dart';
+import 'package:files_tools/widgets/pdfFunctionsMainWidgets/onWillPopDialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -15,11 +17,9 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import '../../../app_theme/fitness_app_theme.dart';
 import '../../../basicFunctionalityFunctions/getSizeFromBytes.dart';
-import '../../../basicFunctionalityFunctions/manageAppDirectoryAndCache.dart';
 import 'package:files_tools/ui/pdfViewerScaffold/pdfscaffold.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:files_tools/widgets/pdfFunctionsMainWidgets/pdfFunctionsButtons.dart';
-
 import '../../ad_state.dart';
 
 class PDFFunctionBody extends StatefulWidget {
@@ -159,7 +159,6 @@ class _PDFFunctionBodyState extends State<PDFFunctionBody>
     ];
 
     dialogTextForPermanentlyDeniedPermission =
-        // 'In order to select documents, Files Tools App requires access to Files and Media permission.\nSince you have denied permission requests previously, we cannot ask again. So now you have to manually allow the permissions by pressing Settings > Permissions > Files and Media and select "Allow access to media only".';
         'In order to select documents, Files Tools App requires access to photos and media permission.\nTo allow the permission tap Settings > Permissions > Files and Media and select "Allow access to media only".';
     dialogTextForDeniedPermission =
         'In order to select documents, Files Tools App requires access to photos and media permission. Please allow access to continue further.';
@@ -180,52 +179,6 @@ class _PDFFunctionBodyState extends State<PDFFunctionBody>
   bool shouldRenderingImagesLoopBeDisabled = false;
 
   List<pdfRenderer.PdfPageImage?> pdfPagesImages = [];
-
-  Future<bool> _onWillPop() async {
-    bool dialogAction;
-    dialogAction = await showDialog<bool>(
-      barrierDismissible: false,
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Alert'),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                Text('Going back would cancel loading the file.'),
-                Text('Do you still want to go back?'),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: Text('Yes'),
-              onPressed: () {
-                shouldRenderingImagesLoopBeDisabled = true;
-                //deleteCacheDir();
-                deleteAppDir();
-                Navigator.of(context).pop(true);
-              },
-            ),
-            TextButton(
-              child: Text('No'),
-              onPressed: () {
-                Navigator.of(context).pop(false);
-              },
-            ),
-          ],
-        );
-      },
-    ) as bool;
-
-    return dialogAction;
-  }
-
-  Future<bool> _directPop() async {
-    //deleteCacheDir();
-    deleteAppDir();
-    return true;
-  }
 
   var myChildSize = Size.zero;
   bool storagePermissionPermanentlyDenied = false;
@@ -317,7 +270,9 @@ class _PDFFunctionBodyState extends State<PDFFunctionBody>
           //refer https://stackoverflow.com/a/64183322 for more info
           key: ValueKey<int>(_count),
           child: WillPopScope(
-            onWillPop: isFilePicked == true ? _onWillPop : _directPop,
+            onWillPop: isFilePicked == true
+                ? () => onWillPop(context)
+                : () => directPop(),
             child: SingleChildScrollView(
               controller: scrollController,
               child: Stack(

@@ -319,13 +319,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.0"
-  native_admob_flutter:
-    dependency: "direct main"
-    description:
-      name: native_admob_flutter
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.5.0"
   native_pdf_renderer:
     dependency: "direct main"
     description:

@@ -4,7 +4,6 @@ import 'package:files_tools/basic_pdf_functions/Protect/EncryptPDF.dart';
 import 'package:files_tools/basic_pdf_functions/convertPDF/PDFToImages.dart';
 import 'package:files_tools/basic_pdf_functions/imagesToPdf/imagesToPdf.dart';
 import 'package:files_tools/basic_pdf_functions/merge/mergePDFPagesAsSingleDocument.dart';
-import 'package:files_tools/basic_pdf_functions/removingPDFPages.dart';
 import 'package:files_tools/basic_pdf_functions/split/customRanges/customRangePDFPagesAsSeparateDocument.dart';
 import 'package:files_tools/basic_pdf_functions/split/customRanges/customRangePDFPagesAsSingleDocument.dart';
 import 'package:files_tools/basic_pdf_functions/split/extractAllPages/extractAllPages.dart';
@@ -21,12 +20,7 @@ Future<dynamic> processSelectedDataFromUser(
     required bool shouldDataBeProcessed}) async {
   print('processSelectedDataFromUser called');
   dynamic dataFromFunctions;
-  if (processType == 'Remove PDF Data') {
-    dataFromFunctions = await removingPDFPagesUsingSelectedImagesList(
-        filePath!, selectedData!, shouldDataBeProcessed);
-    print('waiting for removingPDFPagesUsingSelectedImagesList');
-    return dataFromFunctions;
-  } else if (processType == 'Modify PDF Data') {
+  if (processType == 'Modify PDF Data') {
     dataFromFunctions = await modifyingPDFPagesUsingModifiedPDFDataMap(
         filePath!, pdfChangesDataMap!, shouldDataBeProcessed);
     print('waiting for modifyingPDFPagesUsingModifiedPDFDataMap');

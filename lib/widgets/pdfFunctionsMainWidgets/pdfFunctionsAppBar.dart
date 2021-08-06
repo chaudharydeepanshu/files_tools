@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import '../../app_theme/fitness_app_theme.dart';
+import 'onWillPopDialog.dart';
 
 class PdfFunctionsAppBar extends StatefulWidget with PreferredSizeWidget {
   const PdfFunctionsAppBar(
@@ -62,48 +63,7 @@ class _PdfFunctionsAppBarState extends State<PdfFunctionsAppBar> {
                                       Navigator.of(context).pop();
                                     } else if (widget.notifyAppbarFileStatus ==
                                         true) {
-                                      Future<bool> _onWillPop() async {
-                                        bool dialogAction;
-                                        dialogAction = await showDialog<bool>(
-                                          barrierDismissible: false,
-                                          context: context,
-                                          builder: (BuildContext context) {
-                                            return AlertDialog(
-                                              title: Text('Alert'),
-                                              content: SingleChildScrollView(
-                                                child: ListBody(
-                                                  children: <Widget>[
-                                                    Text(
-                                                        'Going back would cancel loading the file.'),
-                                                    Text(
-                                                        'Do you still want to go back?'),
-                                                  ],
-                                                ),
-                                              ),
-                                              actions: <Widget>[
-                                                TextButton(
-                                                  child: Text('Yes'),
-                                                  onPressed: () {
-                                                    Navigator.of(context)
-                                                        .pop(true);
-                                                  },
-                                                ),
-                                                TextButton(
-                                                  child: Text('No'),
-                                                  onPressed: () {
-                                                    Navigator.of(context)
-                                                        .pop(false);
-                                                  },
-                                                ),
-                                              ],
-                                            );
-                                          },
-                                        ) as bool;
-
-                                        return dialogAction;
-                                      }
-
-                                      _onWillPop().then((value) {
+                                      onWillPop(context).then((value) {
                                         if (value == true) {
                                           widget
                                               .onNotifyBodyPoppingSplitPDFFunctionScaffold
