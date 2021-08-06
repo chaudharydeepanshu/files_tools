@@ -16,12 +16,13 @@ Widget progressFakeDialogBox = SafeArea(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            CircularProgressIndicator(),
-            SizedBox(
-              height: 20,
-            ),
+            // CircularProgressIndicator(),
+            // SizedBox(
+            //   height: 20,
+            // ),
             Text(
-              'Processing Data',
+              'Processing Data\n\nPlease Wait...',
+              textAlign: TextAlign.center,
               style: TextStyle(
                 fontFamily: FitnessAppTheme.fontName,
                 fontWeight: FontWeight.w500,
