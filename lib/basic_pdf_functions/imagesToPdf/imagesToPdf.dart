@@ -180,6 +180,7 @@
 //   //});
 // }
 import 'dart:typed_data';
+import 'package:files_tools/basicFunctionalityFunctions/rotatingImageFile.dart';
 import 'package:flutter/services.dart';
 import 'package:files_tools/basicFunctionalityFunctions/deletingTempPDFFiles.dart';
 import 'package:files_tools/basicFunctionalityFunctions/fileNameManager.dart';
@@ -217,7 +218,29 @@ Future<PdfDocument?> imagesToPdf(List<String> imageFilePaths,
     File image = new File(
         imageFilePaths[index]); // Or any other way to get a File instance.
 
-    // image = await imageEncoder(imageFilePaths[index]);
+    //for rotation
+    //reassigning image variable with rotation
+    if (pdfChangesDataMap['Page Rotations List'][index] == 0) {
+      image = await rotateImage(
+          rotation: 0,
+          file: File(imageFilePaths[index]),
+          imageFileName: getFileNameFromFilePath(imageFilePaths[index]));
+    } else if (pdfChangesDataMap['Page Rotations List'][index] == 1) {
+      image = await rotateImage(
+          rotation: 90,
+          file: File(imageFilePaths[index]),
+          imageFileName: getFileNameFromFilePath(imageFilePaths[index]));
+    } else if (pdfChangesDataMap['Page Rotations List'][index] == 2) {
+      image = await rotateImage(
+          rotation: 180,
+          file: File(imageFilePaths[index]),
+          imageFileName: getFileNameFromFilePath(imageFilePaths[index]));
+    } else if (pdfChangesDataMap['Page Rotations List'][index] == 3) {
+      image = await rotateImage(
+          rotation: 270,
+          file: File(imageFilePaths[index]),
+          imageFileName: getFileNameFromFilePath(imageFilePaths[index]));
+    }
 
     //Create the PDF document
     PdfDocument document = PdfDocument();
@@ -228,19 +251,29 @@ Future<PdfDocument?> imagesToPdf(List<String> imageFilePaths,
     List<int> imageData = await _readImageData(image);
     final PdfImage pdfImage = PdfBitmap(imageData);
 
+    double pageWidth = pdfImage.width.toDouble();
+    double pageHeight = pdfImage.height.toDouble();
+
+    if (pdfChangesDataMap['Is Same Width Enabled'] == true) {
+      //Width for all PDF pages
+      pageWidth = 960;
+      //Caculating page height based on the fixed width and aspect ratio of the image
+      double ratio = pageWidth / pdfImage.width;
+      pageHeight = pdfImage.height * ratio;
+    }
+
     //set section orientation according to image size width
-    if (pdfImage.height >= pdfImage.width) {
+    if (pageHeight >= pageWidth) {
       section.pageSettings.orientation = PdfPageOrientation.portrait;
-    } else if (pdfImage.height < pdfImage.width) {
+    } else if (pageHeight < pageWidth) {
       section.pageSettings.orientation = PdfPageOrientation.landscape;
     }
 
     print(
-        "Img $index - width: ${pdfImage.width.toString() + ', height: ' + pdfImage.height.toString()}");
+        "Img $index - width: ${pageWidth.toString() + ', height: ' + pageHeight.toString()}");
 
     //setting section size
-    section.pageSettings.size =
-        Size(pdfImage.width.toDouble(), pdfImage.height.toDouble());
+    section.pageSettings.size = Size(pageWidth, pageHeight);
 
     //removing any margin from document
     section.pageSettings.margins.all = 0;
@@ -272,25 +305,25 @@ Future<PdfDocument?> imagesToPdf(List<String> imageFilePaths,
     reorderedListOfDocuments.insert(i, pdfDocument);
   }
 
-  //for rotation
-  for (int i = 0;
-      i < pdfChangesDataMap['Page Rotations List'].length &&
-          shouldDataBeProcessed == true;
-      i++) {
-    if (pdfChangesDataMap['Page Rotations List'][i] == 0) {
-      reorderedListOfDocuments[i].pageSettings.rotate =
-          PdfPageRotateAngle.rotateAngle0;
-    } else if (pdfChangesDataMap['Page Rotations List'][i] == 1) {
-      reorderedListOfDocuments[i].pageSettings.rotate =
-          PdfPageRotateAngle.rotateAngle90;
-    } else if (pdfChangesDataMap['Page Rotations List'][i] == 2) {
-      reorderedListOfDocuments[i].pageSettings.rotate =
-          PdfPageRotateAngle.rotateAngle180;
-    } else if (pdfChangesDataMap['Page Rotations List'][i] == 3) {
-      reorderedListOfDocuments[i].pageSettings.rotate =
-          PdfPageRotateAngle.rotateAngle270;
-    }
-  }
+  // //for rotation
+  // for (int i = 0;
+  //     i < pdfChangesDataMap['Page Rotations List'].length &&
+  //         shouldDataBeProcessed == true;
+  //     i++) {
+  //   if (pdfChangesDataMap['Page Rotations List'][i] == 0) {
+  //     reorderedListOfDocuments[i].pageSettings.rotate =
+  //         PdfPageRotateAngle.rotateAngle0;
+  //   } else if (pdfChangesDataMap['Page Rotations List'][i] == 1) {
+  //     reorderedListOfDocuments[i].pageSettings.rotate =
+  //         PdfPageRotateAngle.rotateAngle90;
+  //   } else if (pdfChangesDataMap['Page Rotations List'][i] == 2) {
+  //     reorderedListOfDocuments[i].pageSettings.rotate =
+  //         PdfPageRotateAngle.rotateAngle180;
+  //   } else if (pdfChangesDataMap['Page Rotations List'][i] == 3) {
+  //     reorderedListOfDocuments[i].pageSettings.rotate =
+  //         PdfPageRotateAngle.rotateAngle270;
+  //   }
+  // }
 
   List<PdfDocument> listOfDocumentsToDelete = [];
   for (var i = 0;

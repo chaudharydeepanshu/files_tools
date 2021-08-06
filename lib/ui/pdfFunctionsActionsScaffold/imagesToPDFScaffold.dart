@@ -111,6 +111,7 @@ class _ImagesToPDFScaffoldState extends State<ImagesToPDFScaffold> {
               'Deleted Page List': listOfDeletedImages,
               'Reordered Page List': reorderedList,
               'PDF File Name': "Image to pdf ${currentDateTimeInString()}.pdf",
+              'Is Same Width Enabled': _isSameSizeEnabled,
             },
             processType: widget.arguments!.processType,
             // filesPaths: widget.arguments!.filePaths,
@@ -232,6 +233,8 @@ class _ImagesToPDFScaffoldState extends State<ImagesToPDFScaffold> {
     );
   }
 
+  bool _isSameSizeEnabled = false;
+
   @override
   Widget build(BuildContext context) {
     print('listOfRotation: $listOfRotation');
@@ -254,7 +257,24 @@ class _ImagesToPDFScaffoldState extends State<ImagesToPDFScaffold> {
               appBarIconRightAction:
                   proceedButton() ? appBarIconRightAction : null,
             ),
-            body: carouselList(),
+            body: Column(
+              children: [
+                CheckboxListTile(
+                  title: const Text('Create same width(960px) document'),
+                  value: _isSameSizeEnabled,
+                  onChanged: tempImageFilesList.length < 2
+                      ? null
+                      : (bool? newValue) {
+                          FocusManager.instance.primaryFocus?.unfocus();
+                          setState(() {
+                            _isSameSizeEnabled = newValue!;
+                            print("_isSameSizeEnabled: $_isSameSizeEnabled");
+                          });
+                        },
+                ),
+                Expanded(child: carouselList()),
+              ],
+            ),
             bottomNavigationBar: BottomAppBar(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
