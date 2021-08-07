@@ -171,7 +171,7 @@ Map<String, dynamic>? mapOfCardDetailsForImages = {
   ],
 };
 
-//for darkMode
+//for darkMode //same for now but could be changed //see home initState & didChangePlatformBrightness to see how to change according to dark mode
 Map<String, dynamic>? mapOfCardDetailsForImagesForDarkMode = {
   'Card Title': 'Image Tools',
   'Card Title Color': Colors.black,
