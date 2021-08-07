@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'package:file_picker/file_picker.dart';
 import 'package:files_tools/widgets/pdfFunctionsMainWidgets/directPop.dart';
 import 'package:files_tools/widgets/pdfFunctionsMainWidgets/onWillPopDialog.dart';
