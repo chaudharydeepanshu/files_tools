@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'package:file_picker/file_picker.dart';
 import 'package:files_tools/widgets/pdfFunctionsMainWidgets/directPop.dart';
 import 'package:files_tools/widgets/pdfFunctionsMainWidgets/onWillPopDialog.dart';
@@ -681,7 +680,9 @@ class _PDFFunctionBodyState extends State<PDFFunctionBody>
                                                                   style: TextStyle(
                                                                       fontWeight:
                                                                           FontWeight
-                                                                              .w500),
+                                                                              .w500,
+                                                                      color: Colors
+                                                                          .black),
                                                                 ),
                                                                 SizedBox(
                                                                   height: 5,
@@ -692,7 +693,9 @@ class _PDFFunctionBodyState extends State<PDFFunctionBody>
                                                                       '${formatBytes(file.size, 2)}',
                                                                       style: TextStyle(
                                                                           fontSize:
-                                                                              12),
+                                                                              12,
+                                                                          color:
+                                                                              Colors.black),
                                                                     ),
                                                                   ],
                                                                 ),
@@ -919,6 +922,10 @@ class _PDFFunctionBodyState extends State<PDFFunctionBody>
                                                           Icon(
                                                             Icons.add,
                                                             size: 30,
+                                                            color: Theme.of(
+                                                                    context)
+                                                                .iconTheme
+                                                                .color,
                                                           ),
                                                         ],
                                                       )

@@ -459,6 +459,7 @@ class ButtonsOfRanges extends StatelessWidget {
               child: Text(
                 buttonText,
                 textAlign: TextAlign.center,
+                style: TextStyle(),
               ),
             ),
           ),

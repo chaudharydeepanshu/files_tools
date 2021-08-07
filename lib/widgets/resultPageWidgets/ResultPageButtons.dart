@@ -89,6 +89,7 @@ class _ResultPageButtonsState extends State<ResultPageButtons> {
                     ),
                     Text(
                       widget.buttonTitle,
+                      style: TextStyle(color: Colors.black),
                     )
                   ],
                 ),

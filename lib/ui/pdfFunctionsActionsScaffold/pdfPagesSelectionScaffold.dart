@@ -179,6 +179,7 @@ class _PDFPagesSelectionScaffoldState extends State<PDFPagesSelectionScaffold>
       setState(() {
         selectedDataProcessed = true;
       });
+      processingDialog(context); //shows the processing dialog
 
       PdfDocument? document;
       Future.delayed(const Duration(milliseconds: 500), () async {
@@ -221,6 +222,7 @@ class _PDFPagesSelectionScaffoldState extends State<PDFPagesSelectionScaffold>
           if (document != null &&
               shouldDataBeProcessed == true &&
               value != null) {
+            Navigator.pop(context); //closes the processing dialog
             Navigator.pushNamed(
               context,
               PageRoutes.resultPDFScaffold,
@@ -417,7 +419,7 @@ class _PDFPagesSelectionScaffoldState extends State<PDFPagesSelectionScaffold>
               ),
             ),
           ),
-          selectedDataProcessed == true ? progressFakeDialogBox : Container(),
+          //selectedDataProcessed == true ? progressFakeDialogBox : Container(),
         ],
       ),
     );

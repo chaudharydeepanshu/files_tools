@@ -102,6 +102,7 @@ class _ImagesToPDFScaffoldState extends State<ImagesToPDFScaffold> {
       setState(() {
         selectedDataProcessed = true;
       });
+      processingDialog(context); //shows the processing dialog
 
       PdfDocument? document;
       Future.delayed(const Duration(milliseconds: 500), () async {
@@ -148,6 +149,7 @@ class _ImagesToPDFScaffoldState extends State<ImagesToPDFScaffold> {
           if (document != null &&
               shouldDataBeProcessed == true &&
               value != null) {
+            Navigator.pop(context); //closes the processing dialog
             Navigator.pushNamed(
               context,
               PageRoutes.resultPDFScaffold,
@@ -470,7 +472,7 @@ class _ImagesToPDFScaffoldState extends State<ImagesToPDFScaffold> {
               ),
             ),
           ),
-          selectedDataProcessed == true ? progressFakeDialogBox : Container(),
+          //selectedDataProcessed == true ? progressFakeDialogBox : Container(),
         ],
       ),
     );

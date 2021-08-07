@@ -13,7 +13,7 @@ class HomeBody extends StatefulWidget {
   _HomeBodyState createState() => _HomeBodyState();
 }
 
-class _HomeBodyState extends State<HomeBody> {
+class _HomeBodyState extends State<HomeBody> with WidgetsBindingObserver {
   final PageController controller = PageController(initialPage: 0);
   List listOfToolCardsForDocuments = [];
   List listOfToolCardsForMedia = [];
@@ -37,18 +37,65 @@ class _HomeBodyState extends State<HomeBody> {
   }
 
   @override
+  void didChangePlatformBrightness() {
+    var brightness = WidgetsBinding.instance!.window.platformBrightness;
+    print(brightness);
+    // > should print Brightness.light / Brightness.dark when you switch
+    bool darkModeOn = brightness == Brightness.dark;
+    if (darkModeOn == true) {
+      setState(() {
+        listOfToolCardsForDocuments = [
+          mapOfCardDetailsForPDF,
+        ];
+        listOfToolCardsForMedia = [
+          mapOfCardDetailsForImagesForDarkMode,
+        ];
+      });
+    } else {
+      setState(() {
+        listOfToolCardsForDocuments = [
+          mapOfCardDetailsForPDF,
+        ];
+        listOfToolCardsForMedia = [
+          mapOfCardDetailsForImages,
+        ];
+      });
+    }
+    super.didChangePlatformBrightness();
+  }
+
+  @override
   void initState() {
     super.initState();
-    listOfToolCardsForDocuments = [
-      mapOfCardDetailsForPDF,
-    ];
-    listOfToolCardsForMedia = [
-      mapOfCardDetailsForImages,
-    ];
+    WidgetsBinding.instance!.addObserver(this); //most important
+    var brightness = WidgetsBinding.instance!.window.platformBrightness;
+    print(brightness);
+    // > should print Brightness.light / Brightness.dark when you switch
+    bool darkModeOn = brightness == Brightness.dark;
+    if (darkModeOn == true) {
+      setState(() {
+        listOfToolCardsForDocuments = [
+          mapOfCardDetailsForPDF,
+        ];
+        listOfToolCardsForMedia = [
+          mapOfCardDetailsForImagesForDarkMode,
+        ];
+      });
+    } else {
+      setState(() {
+        listOfToolCardsForDocuments = [
+          mapOfCardDetailsForPDF,
+        ];
+        listOfToolCardsForMedia = [
+          mapOfCardDetailsForImages,
+        ];
+      });
+    }
   }
 
   @override
   void dispose() {
+    WidgetsBinding.instance!.removeObserver(this);
     controller.dispose();
     super.dispose();
   }

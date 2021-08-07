@@ -81,10 +81,18 @@ class ExpandingContainer extends StatelessWidget {
       ),
       title: Text(
         mapOfCardDetails!['Card Title'] ?? 'PDF',
-        style: TextStyle(fontWeight: FontWeight.w500),
+        style: TextStyle(
+          fontWeight: FontWeight.w500,
+          color: mapOfCardDetails!['Card Title Color'] ?? Colors.black,
+        ),
       ),
-      subtitle: Text(mapOfCardDetails!['Card Subtitle'] ??
-          'Perform actions like merge, split and etc on PDF'),
+      subtitle: Text(
+        mapOfCardDetails!['Card Subtitle'] ??
+            'Perform actions like merge, split and etc on PDF',
+        style: TextStyle(
+          color: mapOfCardDetails!['Card Subtitle Color'] ?? Colors.black,
+        ),
+      ),
       children: List<Widget>.generate(
           mapOfCardDetails!['Functions Details'].length, (int index) {
         return Column(

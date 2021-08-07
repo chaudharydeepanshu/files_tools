@@ -37,3 +37,40 @@ Widget progressFakeDialogBox = SafeArea(
     ),
   ),
 );
+
+Future<void> processingDialog(BuildContext context) async {
+  await showDialog<bool>(
+    barrierDismissible: true,
+    context: context,
+    builder: (BuildContext context) {
+      return SimpleDialog(
+        // title: Center(
+        //   child: const Text('Processing'),
+        // ),
+        children: <Widget>[
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CircularProgressIndicator(),
+              SizedBox(
+                height: 20,
+              ),
+              Text(
+                'Processing Data\n\nPlease Wait...',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontFamily: FitnessAppTheme.fontName,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 18,
+                  letterSpacing: 0.0,
+                  //color: FitnessAppTheme.darkText,
+                ),
+              ),
+            ],
+          ),
+        ],
+      );
+    },
+  );
+}

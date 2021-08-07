@@ -105,6 +105,7 @@ class _PDFPagesModificationScaffoldState
       setState(() {
         selectedDataProcessed = true;
       });
+      processingDialog(context); //shows the processing dialog
 
       PdfDocument? document;
       Future.delayed(const Duration(milliseconds: 500), () async {
@@ -149,6 +150,7 @@ class _PDFPagesModificationScaffoldState
           if (document != null &&
               shouldDataBeProcessed == true &&
               value != null) {
+            Navigator.pop(context); //closes the processing dialog
             Navigator.pushNamed(
               context,
               PageRoutes.resultPDFScaffold,
@@ -481,7 +483,7 @@ class _PDFPagesModificationScaffoldState
               ),
             ),
           ),
-          selectedDataProcessed == true ? progressFakeDialogBox : Container(),
+          //selectedDataProcessed == true ? progressFakeDialogBox : Container(),
         ],
       ),
     );

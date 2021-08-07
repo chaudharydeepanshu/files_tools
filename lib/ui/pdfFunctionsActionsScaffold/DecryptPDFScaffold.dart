@@ -70,6 +70,7 @@ class _DecryptPDFScaffoldState extends State<DecryptPDFScaffold>
       setState(() {
         selectedDataProcessed = true;
       });
+      processingDialog(context); //shows the processing dialog
 
       var document;
       Future.delayed(const Duration(milliseconds: 500), () async {
@@ -121,6 +122,7 @@ class _DecryptPDFScaffoldState extends State<DecryptPDFScaffold>
           if (document != null &&
               shouldDataBeProcessed == true &&
               value != null) {
+            Navigator.pop(context); //closes the processing dialog
             Navigator.pushNamed(
               context,
               PageRoutes.resultPDFScaffold,
@@ -303,7 +305,7 @@ class _DecryptPDFScaffoldState extends State<DecryptPDFScaffold>
                 ),
               ),
             ),
-            selectedDataProcessed == true ? progressFakeDialogBox : Container(),
+            //selectedDataProcessed == true ? progressFakeDialogBox : Container(),
           ],
         ),
       ),

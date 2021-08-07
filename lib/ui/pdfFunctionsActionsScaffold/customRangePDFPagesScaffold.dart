@@ -118,6 +118,7 @@ class _CustomRangePDFPagesScaffoldState
       setState(() {
         selectedDataProcessed = true;
       });
+      processingDialog(context); //shows the processing dialog
       print("${widget.arguments!.processType + " As Single Document"}");
 
       PdfDocument? document;
@@ -157,6 +158,7 @@ class _CustomRangePDFPagesScaffoldState
           if (document != null &&
               shouldDataBeProcessed == true &&
               value != null) {
+            Navigator.pop(context); //closes the processing dialog
             Navigator.pushNamed(
               context,
               PageRoutes.resultPDFScaffold,
@@ -591,7 +593,7 @@ class _CustomRangePDFPagesScaffoldState
                 ),
               ),
             ),
-            selectedDataProcessed == true ? progressFakeDialogBox : Container(),
+            // selectedDataProcessed == true ? progressFakeDialogBox : Container(),
           ],
         ),
       ),

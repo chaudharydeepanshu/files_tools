@@ -1,10 +1,7 @@
-import 'package:files_tools/ad_state.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:files_tools/ui/topLevelPagesBodies/home.dart';
 import 'package:files_tools/ui/topLevelPagesBodies/tools.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:provider/provider.dart';
 import '../../basicFunctionalityFunctions/manageAppDirectoryAndCache.dart';
 import '../../widgets/reusableUIWidgets/ReusableTopAppBar.dart';
 

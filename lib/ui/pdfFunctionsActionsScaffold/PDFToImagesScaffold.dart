@@ -76,6 +76,7 @@ class _PDFToImagesScaffoldState extends State<PDFToImagesScaffold>
       setState(() {
         selectedDataProcessed = true;
       });
+      processingDialog(context); //shows the processing dialog
 
       List<String>? rangesPdfsFilePaths;
       Future.delayed(const Duration(milliseconds: 500), () async {
@@ -110,6 +111,7 @@ class _PDFToImagesScaffoldState extends State<PDFToImagesScaffold>
           if (rangesPdfsFilePaths != null &&
               shouldDataBeProcessed == true &&
               value != null) {
+            Navigator.pop(context); //closes the processing dialog
             Navigator.pushNamed(
               context,
               PageRoutes.resultZipScaffold,
@@ -371,7 +373,7 @@ class _PDFToImagesScaffoldState extends State<PDFToImagesScaffold>
                 ),
               ),
             ),
-            selectedDataProcessed == true ? progressFakeDialogBox : Container(),
+            // selectedDataProcessed == true ? progressFakeDialogBox : Container(),
           ],
         ),
       ),

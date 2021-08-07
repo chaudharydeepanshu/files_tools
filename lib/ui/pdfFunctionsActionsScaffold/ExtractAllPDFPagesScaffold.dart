@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:file_picker/file_picker.dart';
+import 'package:files_tools/app_theme/fitness_app_theme.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -66,6 +67,7 @@ class _ExtractAllPDFPagesScaffoldState extends State<ExtractAllPDFPagesScaffold>
       setState(() {
         selectedDataProcessed = true;
       });
+      processingDialog(context); //shows the processing dialog
 
       List<String>? rangesPdfsFilePaths;
       Future.delayed(const Duration(milliseconds: 500), () async {
@@ -100,6 +102,7 @@ class _ExtractAllPDFPagesScaffoldState extends State<ExtractAllPDFPagesScaffold>
           if (rangesPdfsFilePaths != null &&
               shouldDataBeProcessed == true &&
               value != null) {
+            Navigator.pop(context); //closes the processing dialog
             Navigator.pushNamed(
               context,
               PageRoutes.resultZipScaffold,
@@ -154,151 +157,6 @@ class _ExtractAllPDFPagesScaffoldState extends State<ExtractAllPDFPagesScaffold>
     return true;
   }
 
-  // Create a global key that uniquely identifies the Form widget
-  // and allows validation of the form.
-  //
-  // Note: This is a GlobalKey<FormState>,
-  // not a GlobalKey<MyCustomFormState>.
-  final _formKey = GlobalKey<FormState>();
-
-  Future<void> informationDialog() async {
-    await showDialog<bool>(
-      barrierDismissible: true,
-      context: context,
-      builder: (BuildContext context) {
-        return SimpleDialog(
-          title: Center(
-            child: const Text('Information'),
-          ),
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-              child: Container(
-                child: Column(
-                  children: [
-                    Text.rich(
-                      TextSpan(
-                          text:
-                              'Use this option to specify individual pages and page ranges that should be added to the output document.'),
-                    ),
-                    Row(
-                      children: [
-                        SizedBox(
-                          width: 15,
-                        ),
-                        Expanded(
-                          child: Column(
-                            children: [
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "• ",
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  ),
-                                  Expanded(
-                                    child: Text.rich(
-                                      TextSpan(
-                                        style: TextStyle(),
-                                        text:
-                                            'Enter pages separated by commas, ex: 1, 4-8, 10, 22-24',
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "• ",
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  ),
-                                  Expanded(
-                                    child: Text.rich(
-                                      TextSpan(
-                                        style: TextStyle(),
-                                        text:
-                                            'To specify a reverse page order swap first/last pages, e.g: 5-1',
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "• ",
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  ),
-                                  Expanded(
-                                    child: Text.rich(
-                                      TextSpan(
-                                        style: TextStyle(),
-                                        text:
-                                            'To specify only even pages from a range enter: 1-5E',
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "• ",
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  ),
-                                  Expanded(
-                                    child: Text.rich(
-                                      TextSpan(
-                                        style: TextStyle(),
-                                        text:
-                                            'To specify only odd pages from a range enter: 1-5D',
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "• ",
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  ),
-                                  Expanded(
-                                    child: Text.rich(
-                                      TextSpan(
-                                        style: TextStyle(),
-                                        text:
-                                            'To specify a set of pages that contain a specific word or phrase, enter your search text in double or single quotes: \"Your Search Text Here\"',
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
   int? pdfsCreatedCalc() {
     int currentValue = 1; //int.parse(textEditingController.text);
     numberOfPDFCreated = pdfPagesCount ~/
@@ -324,61 +182,58 @@ class _ExtractAllPDFPagesScaffoldState extends State<ExtractAllPDFPagesScaffold>
         onWillPop: shouldWePopScaffold == true ? _directPop : _onWillPop,
         child: Stack(
           children: [
-            Form(
-              key: _formKey,
-              child: Scaffold(
-                appBar: ReusableSilverAppBar(
-                  title: 'Extract All Pages',
-                  titleColor: Colors.black,
-                  leftButtonColor: Colors.red,
-                  appBarIconLeft: appBarIconLeft,
-                  appBarIconLeftToolTip: appBarIconLeftToolTip,
-                  appBarIconLeftAction: appBarIconLeftAction,
-                  rightButtonColor: Colors.blue,
-                  appBarIconRight: appBarIconRight,
-                  appBarIconRightToolTip: appBarIconRightToolTip,
-                  appBarIconRightAction:
-                      appBarIconRightActionForSeparateDocuments,
-                ),
-                body: SingleChildScrollView(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      children: <Widget>[
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                              child: Text(
-                                'Total number of Pages in PDF: $pdfPagesCount',
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ),
-                              decoration: BoxDecoration(),
+            Scaffold(
+              appBar: ReusableSilverAppBar(
+                title: 'Extract All Pages',
+                titleColor: Colors.black,
+                leftButtonColor: Colors.red,
+                appBarIconLeft: appBarIconLeft,
+                appBarIconLeftToolTip: appBarIconLeftToolTip,
+                appBarIconLeftAction: appBarIconLeftAction,
+                rightButtonColor: Colors.blue,
+                appBarIconRight: appBarIconRight,
+                appBarIconRightToolTip: appBarIconRightToolTip,
+                appBarIconRightAction:
+                    appBarIconRightActionForSeparateDocuments,
+              ),
+              body: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    children: <Widget>[
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            child: Text(
+                              'Total number of Pages in PDF: $pdfPagesCount',
+                              style: TextStyle(fontWeight: FontWeight.bold),
                             ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                              child: Text(
-                                'Number of PDFs will be created: $pdfPagesCount',
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ),
-                              decoration: BoxDecoration(),
+                            decoration: BoxDecoration(),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            child: Text(
+                              'Number of PDFs will be created: $pdfPagesCount',
+                              style: TextStyle(fontWeight: FontWeight.bold),
                             ),
-                          ],
-                        ),
-                      ],
-                    ),
+                            decoration: BoxDecoration(),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
                 ),
               ),
             ),
-            selectedDataProcessed == true ? progressFakeDialogBox : Container(),
+            // selectedDataProcessed == true ? progressFakeDialogBox : Container(),
           ],
         ),
       ),

@@ -323,7 +323,10 @@ class _CustomExpansionTileState extends State<CustomExpansionTile>
                     ),
                     RotationTransition(
                       turns: _iconTurns,
-                      child: const Icon(Icons.expand_more),
+                      child: const Icon(
+                        Icons.expand_more,
+                        //color: Colors.black,
+                      ),
                     ),
                   ],
                 ),

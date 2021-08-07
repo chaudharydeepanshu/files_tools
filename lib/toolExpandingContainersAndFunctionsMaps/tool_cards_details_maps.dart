@@ -141,7 +141,42 @@ Map<String, dynamic>? mapOfCardDetailsForPDF = {
 //For Images
 Map<String, dynamic>? mapOfCardDetailsForImages = {
   'Card Title': 'Image Tools',
+  'Card Title Color': Colors.black,
   'Card Subtitle': 'Convert image',
+  'Card Subtitle Color': Colors.black,
+  'Card Asset': 'assets/images/tools_icons/image_tools_icon.svg',
+  'Card Asset Color': null,
+  'Card Asset BG Color': Colors.blue.shade100,
+  'Collapsed Card BG Color': Colors.lightBlue.shade50,
+  'Card BG Effects Color': Colors.lightBlue.withOpacity(0.1),
+  'Expanded Sublist BG Color': Colors.blue.shade100,
+  'Functions Details': <Map<String, dynamic>>[
+    {
+      'Function': 'Convert Images',
+      'Icon Asset': 'assets/images/pdf_functions_icons/convert_pdf_icon.svg',
+      'Icon And Text Color': Colors.blue.shade100,
+      'Button Color': Colors.blue,
+      'Action': (context) {
+        Navigator.pushNamed(
+          context,
+          PageRoutes.pdfFunctionsPageScaffold,
+          arguments: PDFFunctionsPageScaffoldArguments(
+            pdfFunctionCurrentIndex: 1,
+            mapOfFunctionDetails: mapOfImageToPDFFunctionDetailsForImageTools,
+          ),
+        );
+        print('Split PDF opened');
+      },
+    },
+  ],
+};
+
+//for darkMode
+Map<String, dynamic>? mapOfCardDetailsForImagesForDarkMode = {
+  'Card Title': 'Image Tools',
+  'Card Title Color': Colors.black,
+  'Card Subtitle': 'Convert image',
+  'Card Subtitle Color': Colors.black,
   'Card Asset': 'assets/images/tools_icons/image_tools_icon.svg',
   'Card Asset Color': null,
   'Card Asset BG Color': Colors.blue.shade100,

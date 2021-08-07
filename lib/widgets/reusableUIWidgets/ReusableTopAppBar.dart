@@ -48,9 +48,9 @@ class _ReusableSilverAppBarState extends State<ReusableSilverAppBar> {
           centerTitle: true,
           title: Text(
             widget.title ?? 'Title',
-            style: TextStyle(color: widget.titleColor ?? Colors.black),
+            //style: TextStyle(color: widget.titleColor ?? Colors.black),
           ),
-          backgroundColor: Colors.white,
+          //backgroundColor: Colors.white,
           leading: Padding(
             padding: const EdgeInsets.only(left: 5, top: 8, bottom: 8),
             child: SizedBox(

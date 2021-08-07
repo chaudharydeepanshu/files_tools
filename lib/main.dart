@@ -54,12 +54,23 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Flutter App',
-        //darkTheme: ThemeData.dark(),
+        darkTheme: ThemeData.dark().copyWith(
+            iconTheme: IconThemeData(color: Colors.black),
+            checkboxTheme: CheckboxThemeData(
+              checkColor: MaterialStateProperty.all(Colors.white),
+              fillColor: MaterialStateProperty.all(Colors.lightBlueAccent),
+            )),
         theme: ThemeData(
           primarySwatch: Colors.blue,
           platform: TargetPlatform.android,
           scaffoldBackgroundColor: Colors.white,
+          primaryTextTheme: TextTheme(
+            headline6: TextStyle(color: Colors.black),
+          ),
+          iconTheme: IconThemeData(color: Colors.black),
+          appBarTheme: AppBarTheme(backgroundColor: Colors.white10),
         ),
+        themeMode: ThemeMode.system,
         home: MainPagesScaffold(),
         routes: {
           PageRoutes.mainPagesScaffold: (context) => MainPagesScaffold(
