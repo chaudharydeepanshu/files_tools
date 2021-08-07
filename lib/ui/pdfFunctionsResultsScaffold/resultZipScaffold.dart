@@ -376,7 +376,9 @@ class _ResultZipScaffoldState extends State<ResultZipScaffold> {
                                           widget.arguments!
                                               .rangesPdfsFilePaths[i],
                                           albumName: 'Files Tools')
-                                      .then((path) {});
+                                      .then((saved) {
+                                    print("saved $i - $saved");
+                                  });
                                   if (i ==
                                       widget.arguments!.rangesPdfsFilePaths
                                               .length -
