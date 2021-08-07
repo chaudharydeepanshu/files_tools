@@ -35,7 +35,8 @@ Future<String?> creatingAndSavingZipFileTemporarily(map) async {
     await ZipFile.createFromFiles(
             sourceDir: sourceDirectory, files: filesList, zipFile: zipFile)
         .whenComplete(() {
-      removingTempPDFFiles();
+      //removingTempPDFFiles();//disables as these individual file paths are required for saving files individually in gallery and downloads instead of regenerating from zip
+      //also it is not required as the automatically get removed
     });
     return '${sourceDirectoryPath + "/" + fileNameWithoutExtension + ' ' + 'Zip' + ' ' + 'file' + ".zip"}';
   }
