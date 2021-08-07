@@ -689,7 +689,9 @@ class _PDFFunctionBodyForSelectingSingleMultipleImagesState
                                                                   style: TextStyle(
                                                                       fontWeight:
                                                                           FontWeight
-                                                                              .w500),
+                                                                              .w500,
+                                                                      color: Colors
+                                                                          .black),
                                                                 ),
                                                                 SizedBox(
                                                                   height: 5,
@@ -700,7 +702,9 @@ class _PDFFunctionBodyForSelectingSingleMultipleImagesState
                                                                       '${formatBytes(filesSize, 2)}',
                                                                       style: TextStyle(
                                                                           fontSize:
-                                                                              12),
+                                                                              12,
+                                                                          color:
+                                                                              Colors.black),
                                                                     ),
                                                                   ],
                                                                 ),

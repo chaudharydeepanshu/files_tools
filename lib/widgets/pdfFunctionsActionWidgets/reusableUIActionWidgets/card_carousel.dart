@@ -92,8 +92,10 @@ class _CarouselListState extends State<CarouselList>
       ),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
-        child:
-            Text('Page ${currentPage + 1} of ${widget.listOfImages!.length}'),
+        child: Text(
+          'Page ${currentPage + 1} of ${widget.listOfImages!.length}',
+          style: TextStyle(color: Colors.black),
+        ),
       ),
     );
   }

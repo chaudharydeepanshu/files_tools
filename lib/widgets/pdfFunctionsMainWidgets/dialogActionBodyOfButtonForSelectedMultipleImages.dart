@@ -142,7 +142,8 @@ class _DialogActionBodyOfButtonForSelectedMultipleImagesState
                                       "${widget.fileName}",
                                       overflow: TextOverflow.ellipsis,
                                       style: TextStyle(
-                                          fontWeight: FontWeight.w500),
+                                          fontWeight: FontWeight.w500,
+                                          color: Colors.black),
                                     ),
                                     SizedBox(
                                       height: 5,
@@ -151,7 +152,9 @@ class _DialogActionBodyOfButtonForSelectedMultipleImagesState
                                       children: [
                                         Text(
                                           '${formatBytes(widget.fileByte, 2)}',
-                                          style: TextStyle(fontSize: 12),
+                                          style: TextStyle(
+                                              fontSize: 12,
+                                              color: Colors.black),
                                         ),
                                       ],
                                     ),
