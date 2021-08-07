@@ -141,6 +141,15 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.0"
+  document_file_save:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: master
+      resolved-ref: "12d520861247333e5601caa964fadb019170f083"
+      url: "https://github.com/brightseagit/document_file_save.git"
+    source: git
+    version: "1.0.3"
   extension:
     dependency: transitive
     description:
@@ -235,6 +244,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  gallery_saver:
+    dependency: "direct main"
+    description:
+      name: gallery_saver
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.1.2"
   get:
     dependency: transitive
     description:

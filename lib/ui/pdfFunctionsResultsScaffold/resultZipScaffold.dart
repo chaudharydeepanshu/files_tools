@@ -1,9 +1,14 @@
+import 'dart:typed_data';
+
 import 'package:file_picker/file_picker.dart';
+import 'package:files_tools/basicFunctionalityFunctions/currentDateTimeInString.dart';
+import 'package:files_tools/widgets/resultPageWidgets/savingDialog.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_archive/flutter_archive.dart';
 import 'package:flutter_file_dialog/flutter_file_dialog.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:gallery_saver/gallery_saver.dart';
 import 'package:open_file/open_file.dart';
 import 'package:files_tools/basicFunctionalityFunctions/fileNameManager.dart';
 import 'package:files_tools/navigation/page_routes_model.dart';
@@ -21,6 +26,7 @@ import '../../basicFunctionalityFunctions/getSizeFromBytes.dart';
 import 'package:path/path.dart' as PathLibrary;
 import 'package:store_redirect/store_redirect.dart';
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:document_file_save/document_file_save.dart';
 
 class ResultZipScaffold extends StatefulWidget {
   static const String routeName = '/resultZipScaffold';
@@ -70,6 +76,8 @@ class _ResultZipScaffoldState extends State<ResultZipScaffold> {
   late String fileNameWithoutExtension;
   late String newFileName;
 
+  String? extensionOfSingleFileFromZip;
+
   List<Widget>? dialogActionButtonsListForDeniedPermission;
   String? dialogTextForDeniedPermission;
 
@@ -88,7 +96,9 @@ class _ResultZipScaffoldState extends State<ResultZipScaffold> {
     print("filename : $fileName");
 
     if (Platform.isAndroid) {
-      androidDeviceInfo();
+      androidDeviceInfo().whenComplete(() {
+        setState(() {});
+      });
     }
 
     dialogActionButtonsListForDeniedPermission = [
@@ -122,6 +132,11 @@ class _ResultZipScaffoldState extends State<ResultZipScaffold> {
     extensionOfFileName = extensionOfString(fileName: fileName);
     fileNameWithoutExtension = stringWithoutExtension(
         fileName: fileName, extensionOfString: extensionOfFileName);
+
+    extensionOfSingleFileFromZip = extensionOfString(
+            fileName:
+                PathLibrary.basename(widget.arguments!.rangesPdfsFilePaths[0]))
+        .toLowerCase();
 
     _controller.text = fileNameWithoutExtension;
     tempZipPath = widget.arguments!.rangesPdfsZipFilePath;
@@ -179,6 +194,7 @@ class _ResultZipScaffoldState extends State<ResultZipScaffold> {
 
   @override
   Widget build(BuildContext context) {
+    print(extensionOfSingleFileFromZip);
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: WillPopScope(
@@ -325,6 +341,109 @@ class _ResultZipScaffoldState extends State<ResultZipScaffold> {
                         mapOfSubFunctionDetails:
                             widget.arguments!.mapOfSubFunctionDetails,
                       ),
+                      androidInfo != null
+                          ? androidInfo!.version.sdkInt! < 30 &&
+                                  Platform.isAndroid
+                              ? ResultPageButtons(
+                                  buttonTitle: 'Extract In Desired Folder',
+                                  onTapAction: () async {
+                                    FocusManager.instance.primaryFocus
+                                        ?.unfocus();
+                                    print(androidInfo!.version.sdkInt);
+                                    extractZipInUserDescribedLocation();
+                                  },
+                                  buttonIcon: Icons.folder_open_outlined,
+                                  mapOfSubFunctionDetails:
+                                      widget.arguments!.mapOfSubFunctionDetails,
+                                )
+                              : Container()
+                          : Container(),
+                      extensionOfSingleFileFromZip == '.jpg' ||
+                              extensionOfSingleFileFromZip == '.jpeg'
+                          ? ResultPageButtons(
+                              buttonTitle: 'Save To Gallery',
+                              onTapAction: () async {
+                                for (int i = 0;
+                                    i <
+                                        widget.arguments!.rangesPdfsFilePaths
+                                            .length;
+                                    i++) {
+                                  if (i == 0) {
+                                    savingDialog(
+                                        context); //shows the saving dialog
+                                  }
+                                  await GallerySaver.saveImage(
+                                          widget.arguments!
+                                              .rangesPdfsFilePaths[i],
+                                          albumName: 'Files Tools')
+                                      .then((path) {});
+                                  if (i ==
+                                      widget.arguments!.rangesPdfsFilePaths
+                                              .length -
+                                          1) {
+                                    Navigator.pop(
+                                        context); //closes the saving dialog
+                                  }
+                                }
+                              },
+                              buttonIcon: Icons.folder_open_outlined,
+                              mapOfSubFunctionDetails:
+                                  widget.arguments!.mapOfSubFunctionDetails,
+                            )
+                          : Container(),
+                      extensionOfSingleFileFromZip == '.pdf'
+                          ? ResultPageButtons(
+                              buttonTitle: 'Extract In Downloads',
+                              onTapAction: () async {
+                                File(widget.arguments!.rangesPdfsFilePaths[1])
+                                    .readAsBytesSync();
+                                //creating list of bytes, names and mimes
+                                List<Uint8List> filesBytesList = [];
+                                List<String> filesNamesList = [];
+                                List<String> filesMimesList =
+                                    List<String>.generate(
+                                        widget.arguments!.rangesPdfsFilePaths
+                                            .length,
+                                        (int index) => "appliation/pdf");
+                                for (int i = 0;
+                                    i <
+                                        widget.arguments!.rangesPdfsFilePaths
+                                            .length;
+                                    i++) {
+                                  if (i == 0) {
+                                    savingDialog(
+                                        context); //shows the saving dialog
+                                  }
+                                  filesBytesList.add(File(widget
+                                          .arguments!.rangesPdfsFilePaths[i])
+                                      .readAsBytesSync());
+                                  String fileName = PathLibrary.basename(
+                                      widget.arguments!.rangesPdfsFilePaths[i]);
+                                  String extensionOfFileName =
+                                      extensionOfString(fileName: fileName);
+                                  String fileNameWithoutExtension =
+                                      stringWithoutExtension(
+                                          fileName: fileName,
+                                          extensionOfString:
+                                              extensionOfFileName);
+                                  String newFileName =
+                                      "${fileNameWithoutExtension + ' ' + currentDateTimeInString() + extensionOfFileName}";
+                                  filesNamesList.add(newFileName);
+                                }
+                                await DocumentFileSave.saveMultipleFiles(
+                                        filesBytesList,
+                                        filesNamesList,
+                                        filesMimesList)
+                                    .whenComplete(() {
+                                  Navigator.pop(
+                                      context); //closes the saving dialog
+                                });
+                              },
+                              buttonIcon: Icons.folder_open_outlined,
+                              mapOfSubFunctionDetails:
+                                  widget.arguments!.mapOfSubFunctionDetails,
+                            )
+                          : Container(),
                       // ResultPageButtons(
                       //   buttonTitle: 'Extract Zip',
                       //   onTapAction: () async {

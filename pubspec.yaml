@@ -63,6 +63,11 @@ dependencies:
 #      ref: feature/suamusica
   provider: ^5.0.0
   adaptive_theme: ^2.2.0
+  gallery_saver: ^2.1.2
+  document_file_save:
+    git:
+      url: https://github.com/brightseagit/document_file_save.git
+      ref: master
 
 
   # The following adds the Cupertino Icons font to your application.
