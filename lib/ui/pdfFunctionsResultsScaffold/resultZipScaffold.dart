@@ -325,38 +325,38 @@ class _ResultZipScaffoldState extends State<ResultZipScaffold> {
                         mapOfSubFunctionDetails:
                             widget.arguments!.mapOfSubFunctionDetails,
                       ),
-                      ResultPageButtons(
-                        buttonTitle: 'Extract Zip',
-                        onTapAction: () async {
-                          FocusManager.instance.primaryFocus?.unfocus();
-                          print(androidInfo!.version.sdkInt);
-                          if (androidInfo!.version.sdkInt! >= 30 &&
-                              Platform.isAndroid) {
-                            if (await Permission
-                                .manageExternalStorage.isGranted) {
-                              print('Permission granted');
-                              extractZipInUserDescribedLocation();
-                            } else if (await Permission
-                                .manageExternalStorage.isDenied) {
-                              print(
-                                  'Denied. Show a dialog with a reason and again ask for the permission.');
-                              permissionDialogBox(
-                                  context: context,
-                                  text: dialogTextForDeniedPermission,
-                                  actionButtonsList:
-                                      dialogActionButtonsListForDeniedPermission);
-                            } else if (await Permission
-                                .manageExternalStorage.isPermanentlyDenied) {
-                              print('Take the user to the settings page.');
-                            }
-                          } else if (Platform.isAndroid) {
-                            extractZipInUserDescribedLocation();
-                          }
-                        },
-                        buttonIcon: Icons.folder_open_outlined,
-                        mapOfSubFunctionDetails:
-                            widget.arguments!.mapOfSubFunctionDetails,
-                      ),
+                      // ResultPageButtons(
+                      //   buttonTitle: 'Extract Zip',
+                      //   onTapAction: () async {
+                      //     FocusManager.instance.primaryFocus?.unfocus();
+                      //     print(androidInfo!.version.sdkInt);
+                      //     if (androidInfo!.version.sdkInt! >= 30 &&
+                      //         Platform.isAndroid) {
+                      //       if (await Permission
+                      //           .manageExternalStorage.isGranted) {
+                      //         print('Permission granted');
+                      //         extractZipInUserDescribedLocation();
+                      //       } else if (await Permission
+                      //           .manageExternalStorage.isDenied) {
+                      //         print(
+                      //             'Denied. Show a dialog with a reason and again ask for the permission.');
+                      //         permissionDialogBox(
+                      //             context: context,
+                      //             text: dialogTextForDeniedPermission,
+                      //             actionButtonsList:
+                      //                 dialogActionButtonsListForDeniedPermission);
+                      //       } else if (await Permission
+                      //           .manageExternalStorage.isPermanentlyDenied) {
+                      //         print('Take the user to the settings page.');
+                      //       }
+                      //     } else if (Platform.isAndroid) {
+                      //       extractZipInUserDescribedLocation();
+                      //     }
+                      //   },
+                      //   buttonIcon: Icons.folder_open_outlined,
+                      //   mapOfSubFunctionDetails:
+                      //       widget.arguments!.mapOfSubFunctionDetails,
+                      // ),
                       ResultPageButtons(
                         buttonTitle: 'Share Zip',
                         onTapAction: () async {
