@@ -62,6 +62,7 @@ dependencies:
 #      path: packages/google_mobile_ads
 #      ref: feature/suamusica
   provider: ^5.0.0
+  adaptive_theme: ^2.2.0
 
 
   # The following adds the Cupertino Icons font to your application.

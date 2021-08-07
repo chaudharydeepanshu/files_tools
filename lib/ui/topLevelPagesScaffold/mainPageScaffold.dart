@@ -1,3 +1,4 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:files_tools/ui/topLevelPagesBodies/home.dart';
@@ -81,21 +82,76 @@ class _MainPagesScaffoldState extends State<MainPagesScaffold>
   @override
   Widget build(BuildContext context) {
     // print("Audio file: " + (openFileUrl != null ? openFileUrl : "Nothing!"));
+    var appBarIconRightText = AdaptiveThemeMode.system.isSystem == true
+        ? 'System'
+        : AdaptiveThemeMode.light.isLight == true
+            ? 'Light'
+            : 'Dark';
+    print(appBarIconRightText);
     return Scaffold(
       appBar: currentIndex == 0
           ? ReusableSilverAppBar(
               title: 'Tools',
+              // appBarIconLeft: Icons.light,
+              // appBarIconLeftAction: () {
+              //   Scaffold.of(context).openDrawer();
+              // },
             )
           : currentIndex == 1
               ? ReusableSilverAppBar(
                   title: 'Recent Docs',
                 )
               : null,
+
       body: currentIndex == 0
           ? HomeBody()
           : currentIndex == 1
               ? Recent()
               : null,
+      drawer: Drawer(
+        // Add a ListView to the drawer. This ensures the user can scroll
+        // through the options in the drawer if there isn't enough vertical
+        // space to fit everything.
+        child: ListView(
+          // Important: Remove any padding from the ListView.
+          //padding: EdgeInsets.zero,
+          children: [
+            // const DrawerHeader(
+            //   decoration: BoxDecoration(
+            //     color: Colors.blue,
+            //   ),
+            //   child: Text('Files Tools'),
+            // ),
+            ListTile(
+              title: const Text('Theme Mode - System'),
+              onTap: () {
+                // Update the state of the app
+                AdaptiveTheme.of(context).setSystem();
+                // Then close the drawer
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              title: const Text('Theme Mode - Light'),
+              onTap: () {
+                // Update the state of the app
+                AdaptiveTheme.of(context).setLight();
+                // Then close the drawer
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              title: const Text('Theme Mode - Dark'),
+              onTap: () {
+                // Update the state of the app
+                AdaptiveTheme.of(context).setDark();
+                // Then close the drawer
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        ),
+      ),
       // bottomNavigationBar: ReusableBottomAppBar(
       //   onCurrentIndex: (value) => setState(() {
       //     currentIndex = value;
