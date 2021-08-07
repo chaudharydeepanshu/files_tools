@@ -4,6 +4,7 @@ import 'package:files_tools/basicFunctionalityFunctions/getSizeFromBytes.dart';
 import 'package:files_tools/basicFunctionalityFunctions/sizeCalculator.dart';
 import 'package:files_tools/navigation/page_routes_model.dart';
 import 'package:files_tools/ui/pdfViewerScaffold/pdfscaffold.dart';
+import 'package:open_file/open_file.dart';
 
 class DialogActionBodyOfButtonForSelectedMultipleFiles extends StatefulWidget {
   const DialogActionBodyOfButtonForSelectedMultipleFiles(
@@ -31,6 +32,8 @@ class _DialogActionBodyOfButtonForSelectedMultipleFilesState
   double defaultButtonElevation = 3;
   double onTapDownButtonElevation = 0;
   double buttonElevation = 3;
+
+  var _openResult = 'Unknown';
 
   @override
   Widget build(BuildContext context) {
@@ -72,14 +75,25 @@ class _DialogActionBodyOfButtonForSelectedMultipleFilesState
                     borderRadius: BorderRadius.circular(10.0),
                   ),
                   child: InkWell(
-                    onTap: () {
-                      Navigator.pushNamed(
-                        context,
-                        PageRoutes.pdfScaffold,
-                        arguments: PDFScaffoldArguments(
-                          pdfPath: widget.filePath,
-                        ),
-                      );
+                    onTap: () async {
+                      final _result = await OpenFile.open(widget.filePath);
+                      print(_result.message);
+
+                      setState(() {
+                        _openResult =
+                            "type=${_result.type}  message=${_result.message}";
+                      });
+                      if (_result.type == ResultType.noAppToOpen) {
+                        print(_openResult);
+                        //Using default app pdf viewer instead of suggesting downloading others
+                        Navigator.pushNamed(
+                          context,
+                          PageRoutes.pdfScaffold,
+                          arguments: PDFScaffoldArguments(
+                            pdfPath: widget.filePath,
+                          ),
+                        );
+                      }
                     },
                     customBorder: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10.0)),

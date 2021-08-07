@@ -12,6 +12,7 @@ import 'package:files_tools/navigation/page_routes_model.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:native_pdf_renderer/native_pdf_renderer.dart' as pdfRenderer;
 import 'package:files_tools/widgets/pdfFunctionsMainWidgets/permissionDialogBox.dart';
+import 'package:open_file/open_file.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import '../../../app_theme/fitness_app_theme.dart';
@@ -259,6 +260,8 @@ class _PDFFunctionBodyState extends State<PDFFunctionBody>
   }
 
   ScrollController scrollController = ScrollController();
+
+  var _openResult = 'Unknown';
 
   @override
   Widget build(BuildContext context) {
@@ -560,15 +563,31 @@ class _PDFFunctionBodyState extends State<PDFFunctionBody>
                                                         }
                                                       } else if (isFilePicked ==
                                                           true) {
-                                                        Navigator.pushNamed(
-                                                          context,
-                                                          PageRoutes
-                                                              .pdfScaffold,
-                                                          arguments:
-                                                              PDFScaffoldArguments(
-                                                            pdfPath: file.path,
-                                                          ),
-                                                        );
+                                                        final _result =
+                                                            await OpenFile.open(
+                                                                file.path);
+                                                        print(_result.message);
+
+                                                        setState(() {
+                                                          _openResult =
+                                                              "type=${_result.type}  message=${_result.message}";
+                                                        });
+                                                        if (_result.type ==
+                                                            ResultType
+                                                                .noAppToOpen) {
+                                                          print(_openResult);
+                                                          //Using default app pdf viewer instead of suggesting downloading others
+                                                          Navigator.pushNamed(
+                                                            context,
+                                                            PageRoutes
+                                                                .pdfScaffold,
+                                                            arguments:
+                                                                PDFScaffoldArguments(
+                                                              pdfPath:
+                                                                  file.path,
+                                                            ),
+                                                          );
+                                                        }
                                                       }
                                                     }
                                                   : () async {

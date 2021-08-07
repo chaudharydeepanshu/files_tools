@@ -1,3 +1,4 @@
+import 'package:files_tools/ui/pdfViewerScaffold/pdfscaffold.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_file_dialog/flutter_file_dialog.dart';
@@ -237,9 +238,17 @@ class _ResultPDFScaffoldState extends State<ResultPDFScaffold> {
                           });
                           if (_result.type == ResultType.noAppToOpen) {
                             print(_openResult);
-                            setState(() {
-                              viewPDFBannerStatus = true;
-                            });
+                            //Using default app pdf viewer instead of suggesting downloading others
+                            Navigator.pushNamed(
+                              context,
+                              PageRoutes.pdfScaffold,
+                              arguments: PDFScaffoldArguments(
+                                pdfPath: tempPdfPath,
+                              ),
+                            );
+                            // setState(() {
+                            //   viewPDFBannerStatus = true;
+                            // });
                           }
                         },
                         buttonIcon: Icons.preview,
@@ -282,11 +291,13 @@ class _ResultPDFScaffoldState extends State<ResultPDFScaffold> {
                           child: MaterialBanner(
                             padding: EdgeInsets.all(5),
                             content: Text(
-                                'Hello, no app was found on your device to view the pdf file.\n\nClick "INSTALL" to install "Files"(recommended) app which can open pdf files.'),
+                              'Hello, no app was found on your device to view the pdf file.\n\nClick "INSTALL" to install "Files"(recommended) app which can open pdf files.',
+                              style: TextStyle(color: Colors.black),
+                            ),
                             leading: Icon(Icons.info_outline_rounded),
                             backgroundColor: Color(0xffDBF0F3),
                             actions: <Widget>[
-                              TextButton(
+                              OutlinedButton(
                                 child: Text('INSTALL'),
                                 onPressed: () {
                                   setState(() {
@@ -297,7 +308,7 @@ class _ResultPDFScaffoldState extends State<ResultPDFScaffold> {
                                           "com.google.android.apps.nbu.files");
                                 },
                               ),
-                              TextButton(
+                              OutlinedButton(
                                 child: Text('DISMISS'),
                                 onPressed: () {
                                   setState(() {

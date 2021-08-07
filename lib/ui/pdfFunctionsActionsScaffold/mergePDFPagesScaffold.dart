@@ -12,6 +12,7 @@ import 'package:files_tools/ui/pdfFunctionsResultsScaffold/resultPdfScaffold.dar
 import 'package:files_tools/ui/pdfViewerScaffold/pdfscaffold.dart';
 import 'package:files_tools/widgets/pdfFunctionsActionWidgets/reusableUIActionWidgets/progressFakeDialogBox.dart';
 import 'package:files_tools/widgets/reusableUIWidgets/ReusableTopAppBar.dart';
+import 'package:open_file/open_file.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
 import 'package:uuid/uuid.dart';
 import 'package:native_pdf_renderer/native_pdf_renderer.dart' as pdfRenderer;
@@ -37,6 +38,8 @@ class _MergePDFPagesScaffoldState extends State<MergePDFPagesScaffold>
   List<Widget> filesListForReorderableListView = [];
   List<int> filesReorderRecorder = [];
   var myChildSize = Size.zero;
+
+  var _openResult = 'Unknown';
 
   @override
   void initState() {
@@ -96,15 +99,27 @@ class _MergePDFPagesScaffoldState extends State<MergePDFPagesScaffold>
                             borderRadius: BorderRadius.circular(10.0),
                           ),
                           child: InkWell(
-                            onTap: () {
-                              Navigator.pushNamed(
-                                context,
-                                PageRoutes.pdfScaffold,
-                                arguments: PDFScaffoldArguments(
-                                  pdfPath:
-                                      widget.arguments!.pdfFilesPaths[index],
-                                ),
-                              );
+                            onTap: () async {
+                              final _result = await OpenFile.open(
+                                  widget.arguments!.pdfFilesPaths[index]);
+                              print(_result.message);
+
+                              setState(() {
+                                _openResult =
+                                    "type=${_result.type}  message=${_result.message}";
+                              });
+                              if (_result.type == ResultType.noAppToOpen) {
+                                print(_openResult);
+                                //Using default app pdf viewer instead of suggesting downloading others
+                                Navigator.pushNamed(
+                                  context,
+                                  PageRoutes.pdfScaffold,
+                                  arguments: PDFScaffoldArguments(
+                                    pdfPath:
+                                        widget.arguments!.pdfFilesPaths[index],
+                                  ),
+                                );
+                              }
                             },
                             customBorder: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10.0)),

@@ -502,11 +502,12 @@ class _ResultZipScaffoldState extends State<ResultZipScaffold> {
                           child: MaterialBanner(
                             padding: EdgeInsets.all(5),
                             content: Text(
-                                'Hello, no app was found on your device to view the zip file.\n\nClick "INSTALL" to install "WinRAR"(recommended) app which can open zip files.'),
+                              'Hello, no app was found on your device to view the zip file.\n\nClick "INSTALL" to install "WinRAR"(recommended) app which can open zip files.',
+                            ),
                             leading: Icon(Icons.info_outline_rounded),
-                            backgroundColor: Color(0xffDBF0F3),
+                            //backgroundColor: Color(0xffDBF0F3),
                             actions: <Widget>[
-                              TextButton(
+                              OutlinedButton(
                                 child: Text('INSTALL'),
                                 onPressed: () {
                                   setState(() {
@@ -516,7 +517,7 @@ class _ResultZipScaffoldState extends State<ResultZipScaffold> {
                                       androidAppId: "com.rarlab.rar");
                                 },
                               ),
-                              TextButton(
+                              OutlinedButton(
                                 child: Text('DISMISS'),
                                 onPressed: () {
                                   setState(() {

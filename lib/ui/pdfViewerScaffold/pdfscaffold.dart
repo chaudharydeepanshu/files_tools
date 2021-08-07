@@ -36,7 +36,7 @@ class _HomePage extends State<PDFScaffold> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Syncfusion Flutter PDF Viewer'),
+        title: const Text('Files Tools PDF Viewer'),
         actions: <Widget>[
           IconButton(
             icon: const Icon(
@@ -44,7 +44,7 @@ class _HomePage extends State<PDFScaffold> {
               color: Colors.white,
             ),
             onPressed: () {
-              //_pdfViewerKey.currentState?.openBookmarkView();
+              _pdfViewerKey.currentState?.openBookmarkView();
             },
           ),
         ],
