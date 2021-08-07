@@ -188,8 +188,11 @@ class _ExtractAllPDFPagesScaffoldState extends State<ExtractAllPDFPagesScaffold>
                 rightButtonColor: Colors.blue,
                 appBarIconRight: appBarIconRight,
                 appBarIconRightToolTip: appBarIconRightToolTip,
-                appBarIconRightAction:
-                    appBarIconRightActionForSeparateDocuments,
+                appBarIconRightAction: pdfPagesCount != null
+                    ? pdfPagesCount! >= 2
+                        ? appBarIconRightActionForSeparateDocuments
+                        : null
+                    : null,
               ),
               body: SingleChildScrollView(
                 child: Padding(
@@ -214,21 +217,55 @@ class _ExtractAllPDFPagesScaffoldState extends State<ExtractAllPDFPagesScaffold>
                       SizedBox(
                         height: 10,
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                            child: pdfPagesCount != null
-                                ? Text(
-                                    'Number of PDFs will be created: $pdfPagesCount',
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  )
-                                : Container(),
-                            decoration: BoxDecoration(),
-                          ),
-                        ],
-                      ),
+                      pdfPagesCount != null
+                          ? pdfPagesCount! >= 2
+                              ? Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      child: pdfPagesCount != null
+                                          ? Text(
+                                              'Number of PDFs will be created: $pdfPagesCount',
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold),
+                                            )
+                                          : Container(),
+                                      decoration: BoxDecoration(),
+                                    ),
+                                  ],
+                                )
+                              : Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      child: pdfPagesCount != null
+                                          ? Text(
+                                              'Can\'t proceed further as pdf pages are less than 2',
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.red),
+                                            )
+                                          : Container(),
+                                      decoration: BoxDecoration(),
+                                    ),
+                                  ],
+                                )
+                          : Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Container(
+                                  child: pdfPagesCount != null
+                                      ? Text(
+                                          'Can\'t proceed further as pdf pages are less than 2',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.red),
+                                        )
+                                      : Container(),
+                                  decoration: BoxDecoration(),
+                                ),
+                              ],
+                            ),
                     ],
                   ),
                 ),
