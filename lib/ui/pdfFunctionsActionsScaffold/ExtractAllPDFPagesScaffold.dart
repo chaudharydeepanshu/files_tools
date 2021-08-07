@@ -9,6 +9,7 @@ import 'package:files_tools/basicFunctionalityFunctions/processSelectedDataFromU
 import 'package:files_tools/ui/pdfFunctionsResultsScaffold/resultZipScaffold.dart';
 import 'package:files_tools/widgets/pdfFunctionsActionWidgets/reusableUIActionWidgets/progressFakeDialogBox.dart';
 import 'package:files_tools/widgets/reusableUIWidgets/ReusableTopAppBar.dart';
+import 'package:native_pdf_renderer/native_pdf_renderer.dart' as pdfRenderer;
 
 class ExtractAllPDFPagesScaffold extends StatefulWidget {
   static const String routeName = '/extractAllPDFPagesScaffold';
@@ -28,15 +29,27 @@ class _ExtractAllPDFPagesScaffoldState extends State<ExtractAllPDFPagesScaffold>
   late List<bool> selectedImages;
   List<TextInputFormatter>? listTextInputFormatter;
   // TextEditingController textEditingController = TextEditingController();
-  late int pdfPagesCount;
+  int? pdfPagesCount;
   int numberOfPDFCreated = 0;
+  Future<void> pdfsPageCount() async {
+    String? filePath = widget.arguments!.pdfFile.path;
+    final newDocument = await pdfRenderer.PdfDocument.openFile(filePath!);
+    pdfPagesCount = newDocument.pagesCount;
+    newDocument.close();
+  }
+
   @override
   void initState() {
     super.initState();
     listTextInputFormatter = [
       FilteringTextInputFormatter.allow(RegExp('[0-9]')),
     ];
-    pdfPagesCount = widget.arguments!.pdfPagesImages!.length;
+
+    pdfsPageCount().whenComplete(() {
+      setState(() {});
+      return null;
+    });
+
     // textEditingController.addListener(() {
     //   setState(() {});
     // });
@@ -156,23 +169,6 @@ class _ExtractAllPDFPagesScaffoldState extends State<ExtractAllPDFPagesScaffold>
     return true;
   }
 
-  int? pdfsCreatedCalc() {
-    int currentValue = 1; //int.parse(textEditingController.text);
-    numberOfPDFCreated = pdfPagesCount ~/
-        currentValue; //this will give us the int value of division
-
-    //here we are checking if the double value of division is equal to the double value but with decimal digits set to 0
-    //if this condition passes than we can say that this is a perfect division otherwise not
-    //for more info check https://stackoverflow.com/a/58012722
-    if ((pdfPagesCount / currentValue) ==
-        (pdfPagesCount / currentValue).roundToDouble()) {
-      return numberOfPDFCreated;
-    } else {
-      //if not perfect division then add 1 to the number of pdf created
-      return ++numberOfPDFCreated;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -204,10 +200,13 @@ class _ExtractAllPDFPagesScaffoldState extends State<ExtractAllPDFPagesScaffold>
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Container(
-                            child: Text(
-                              'Total number of Pages in PDF: $pdfPagesCount',
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
+                            child: pdfPagesCount != null
+                                ? Text(
+                                    'Total number of Pages in PDF: $pdfPagesCount',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  )
+                                : Container(),
                             decoration: BoxDecoration(),
                           ),
                         ],
@@ -219,10 +218,13 @@ class _ExtractAllPDFPagesScaffoldState extends State<ExtractAllPDFPagesScaffold>
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Container(
-                            child: Text(
-                              'Number of PDFs will be created: $pdfPagesCount',
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
+                            child: pdfPagesCount != null
+                                ? Text(
+                                    'Number of PDFs will be created: $pdfPagesCount',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  )
+                                : Container(),
                             decoration: BoxDecoration(),
                           ),
                         ],
