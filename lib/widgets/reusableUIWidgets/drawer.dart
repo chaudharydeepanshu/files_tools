@@ -5,11 +5,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 class CustomDrawer extends StatefulWidget {
-  const CustomDrawer(
-      {Key? key, this.savedThemeMode, required this.onSavedThemeMode})
-      : super(key: key);
+  const CustomDrawer({Key? key, this.savedThemeMode}) : super(key: key);
   final AdaptiveThemeMode? savedThemeMode;
-  final ValueChanged<AdaptiveThemeMode> onSavedThemeMode;
 
   @override
   _CustomDrawerState createState() => _CustomDrawerState();
@@ -65,6 +62,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
 
   @override
   Widget build(BuildContext context) {
+    print(themeButtonText);
     return Drawer(
       // Add a ListView to the drawer. This ensures the user can scroll
       // through the options in the drawer if there isn't enough vertical

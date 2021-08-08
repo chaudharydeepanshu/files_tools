@@ -9,14 +9,12 @@ import '../../widgets/reusableUIWidgets/ReusableTopAppBar.dart';
 
 class MainPagesScaffold extends StatefulWidget {
   static const String routeName = '/mainPagesScaffold';
-  const MainPagesScaffold(
-      {Key? key,
-      this.arguments,
-      this.savedThemeMode,
-      required this.onSavedThemeMode})
-      : super(key: key);
+  const MainPagesScaffold({
+    Key? key,
+    this.arguments,
+    this.savedThemeMode,
+  }) : super(key: key);
   final AdaptiveThemeMode? savedThemeMode;
-  final ValueChanged<AdaptiveThemeMode> onSavedThemeMode;
   final MainPagesScaffoldArguments? arguments;
 
   @override
@@ -120,9 +118,6 @@ class _MainPagesScaffoldState extends State<MainPagesScaffold>
               : null,
       drawer: CustomDrawer(
         savedThemeMode: widget.savedThemeMode,
-        onSavedThemeMode: (AdaptiveThemeMode value) {
-          widget.onSavedThemeMode.call(value);
-        },
       ),
       // bottomNavigationBar: ReusableBottomAppBar(
       //   onCurrentIndex: (value) => setState(() {
