@@ -83,6 +83,7 @@ class _ResultPageButtonsState extends State<ResultPageButtons> {
                     Icon(
                       widget.buttonIcon,
                       size: 24,
+                      color: Colors.black,
                     ),
                     SizedBox(
                       width: 10,

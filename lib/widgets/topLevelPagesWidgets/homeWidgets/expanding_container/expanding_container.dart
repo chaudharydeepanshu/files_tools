@@ -54,6 +54,8 @@ class ExpandingContainer extends StatelessWidget {
       effectsColor: mapOfCardDetails!['Card BG Effects Color'] ??
           Colors.black.withOpacity(0.1),
       childrenPadding: EdgeInsets.only(right: 12, left: 12, top: 8.0),
+      cardTrailingArrowColor:
+          mapOfCardDetails!['Card Trailing Arrow Color'] ?? null,
       leading: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,

@@ -42,8 +42,10 @@ Future<void> main() async {
 
 class MyApp extends StatelessWidget {
   final AdaptiveThemeMode? savedThemeMode;
+  final ValueChanged<AdaptiveThemeMode>? onSavedThemeMode;
 
-  const MyApp({Key? key, this.savedThemeMode}) : super(key: key);
+  const MyApp({Key? key, this.savedThemeMode, this.onSavedThemeMode})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +67,7 @@ class MyApp extends StatelessWidget {
           primaryTextTheme: TextTheme(
             headline6: TextStyle(color: Colors.black),
           ),
-          iconTheme: IconThemeData(color: Colors.black),
+          //iconTheme: IconThemeData(color: Colors.black),
           appBarTheme: AppBarTheme(
             backgroundColor: Colors.white10,
             iconTheme: IconThemeData(
@@ -74,11 +76,16 @@ class MyApp extends StatelessWidget {
           ),
         ),
         dark: ThemeData.dark().copyWith(
-          iconTheme: IconThemeData(color: Colors.black),
+          // iconTheme: IconThemeData(color: Colors.black),
           checkboxTheme: CheckboxThemeData(
             checkColor: MaterialStateProperty.all(Colors.white),
             fillColor: MaterialStateProperty.all(Colors.lightBlueAccent),
           ),
+          // appBarTheme: AppBarTheme(
+          //   iconTheme: IconThemeData(
+          //     color: Colors.white,
+          //   ),
+          // ),
         ),
         initial: savedThemeMode ?? AdaptiveThemeMode.system,
         builder: (theme, darkTheme) => MaterialApp(
@@ -87,11 +94,20 @@ class MyApp extends StatelessWidget {
           darkTheme: darkTheme,
           theme: theme,
           themeMode: ThemeMode.system,
-          home: MainPagesScaffold(),
+          home: MainPagesScaffold(
+            savedThemeMode: savedThemeMode,
+            onSavedThemeMode: (AdaptiveThemeMode value) {
+              onSavedThemeMode!.call(value);
+            },
+          ),
           routes: {
             PageRoutes.mainPagesScaffold: (context) => MainPagesScaffold(
-                arguments: ModalRoute.of(context)!.settings.arguments
-                    as MainPagesScaffoldArguments?),
+                  arguments: ModalRoute.of(context)!.settings.arguments
+                      as MainPagesScaffoldArguments?,
+                  onSavedThemeMode: (AdaptiveThemeMode value) {
+                    onSavedThemeMode!.call(value);
+                  },
+                ),
             PageRoutes.pdfFunctionsPageScaffold: (context) =>
                 PDFFunctionsPageScaffold(
                     arguments: ModalRoute.of(context)!.settings.arguments

@@ -1,4 +1,5 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:files_tools/widgets/reusableUIWidgets/drawer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:files_tools/ui/topLevelPagesBodies/home.dart';
@@ -8,8 +9,14 @@ import '../../widgets/reusableUIWidgets/ReusableTopAppBar.dart';
 
 class MainPagesScaffold extends StatefulWidget {
   static const String routeName = '/mainPagesScaffold';
-  const MainPagesScaffold({Key? key, this.arguments}) : super(key: key);
-
+  const MainPagesScaffold(
+      {Key? key,
+      this.arguments,
+      this.savedThemeMode,
+      required this.onSavedThemeMode})
+      : super(key: key);
+  final AdaptiveThemeMode? savedThemeMode;
+  final ValueChanged<AdaptiveThemeMode> onSavedThemeMode;
   final MainPagesScaffoldArguments? arguments;
 
   @override
@@ -79,6 +86,7 @@ class _MainPagesScaffoldState extends State<MainPagesScaffold>
     }
   }
 
+  final _scaffoldKey = GlobalKey<ScaffoldState>(); // new line
   @override
   Widget build(BuildContext context) {
     // print("Audio file: " + (openFileUrl != null ? openFileUrl : "Nothing!"));
@@ -89,13 +97,15 @@ class _MainPagesScaffoldState extends State<MainPagesScaffold>
             : 'Dark';
     print(appBarIconRightText);
     return Scaffold(
+      key: _scaffoldKey,
       appBar: currentIndex == 0
           ? ReusableSilverAppBar(
               title: 'Tools',
-              // appBarIconLeft: Icons.light,
-              // appBarIconLeftAction: () {
-              //   Scaffold.of(context).openDrawer();
-              // },
+              appBarIconLeft: Icons.menu,
+              appBarIconLeftToolTip: 'Open navigation menu',
+              appBarIconLeftAction: () {
+                _scaffoldKey.currentState!.openDrawer();
+              },
             )
           : currentIndex == 1
               ? ReusableSilverAppBar(
@@ -108,49 +118,11 @@ class _MainPagesScaffoldState extends State<MainPagesScaffold>
           : currentIndex == 1
               ? Recent()
               : null,
-      drawer: Drawer(
-        // Add a ListView to the drawer. This ensures the user can scroll
-        // through the options in the drawer if there isn't enough vertical
-        // space to fit everything.
-        child: ListView(
-          // Important: Remove any padding from the ListView.
-          //padding: EdgeInsets.zero,
-          children: [
-            // const DrawerHeader(
-            //   decoration: BoxDecoration(
-            //     color: Colors.blue,
-            //   ),
-            //   child: Text('Files Tools'),
-            // ),
-            ListTile(
-              title: const Text('Theme Mode - System'),
-              onTap: () {
-                // Update the state of the app
-                AdaptiveTheme.of(context).setSystem();
-                // Then close the drawer
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              title: const Text('Theme Mode - Light'),
-              onTap: () {
-                // Update the state of the app
-                AdaptiveTheme.of(context).setLight();
-                // Then close the drawer
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              title: const Text('Theme Mode - Dark'),
-              onTap: () {
-                // Update the state of the app
-                AdaptiveTheme.of(context).setDark();
-                // Then close the drawer
-                Navigator.pop(context);
-              },
-            ),
-          ],
-        ),
+      drawer: CustomDrawer(
+        savedThemeMode: widget.savedThemeMode,
+        onSavedThemeMode: (AdaptiveThemeMode value) {
+          widget.onSavedThemeMode.call(value);
+        },
       ),
       // bottomNavigationBar: ReusableBottomAppBar(
       //   onCurrentIndex: (value) => setState(() {

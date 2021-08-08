@@ -68,6 +68,7 @@ dependencies:
     git:
       url: https://github.com/brightseagit/document_file_save.git
       ref: master
+  package_info_plus: ^1.0.4
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -94,6 +95,8 @@ flutter:
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
   assets:
+    #App General Assets
+    - assets/images/logos/files_tools_app_logo.svg
     #pdf functions icons
     - assets/images/pdf_functions_icons/compress_icon.svg
     - assets/images/pdf_functions_icons/encrypt_decrypt_icon.svg

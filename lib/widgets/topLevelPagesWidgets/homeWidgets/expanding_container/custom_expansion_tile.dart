@@ -55,6 +55,7 @@ class CustomExpansionTile extends StatefulWidget {
     this.iconColor,
     this.collapsedIconColor,
     this.effectsColor,
+    this.cardTrailingArrowColor,
   })  : assert(
           expandedCrossAxisAlignment != CrossAxisAlignment.baseline,
           'CrossAxisAlignment.baseline is not supported since the expanded children '
@@ -177,6 +178,9 @@ class CustomExpansionTile extends StatefulWidget {
   ///
   /// Used to override to the [ListTileTheme.textColor].
   final Color? collapsedTextColor;
+
+  ///
+  final Color? cardTrailingArrowColor;
 
   final Color? effectsColor;
 
@@ -323,9 +327,9 @@ class _CustomExpansionTileState extends State<CustomExpansionTile>
                     ),
                     RotationTransition(
                       turns: _iconTurns,
-                      child: const Icon(
+                      child: Icon(
                         Icons.expand_more,
-                        //color: Colors.black,
+                        color: widget.cardTrailingArrowColor ?? null,
                       ),
                     ),
                   ],

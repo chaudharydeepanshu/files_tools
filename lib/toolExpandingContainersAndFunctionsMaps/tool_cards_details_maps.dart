@@ -13,6 +13,7 @@ Map<String, dynamic>? mapOfCardDetailsForPDF = {
   'Card Asset BG Color': Colors.red.shade100,
   'Collapsed Card BG Color': Colors.red.shade50,
   'Card BG Effects Color': Colors.red.withOpacity(0.1),
+  'Card Trailing Arrow Color': Colors.black,
   'Expanded Sublist BG Color': Colors.red.shade100,
   'Functions Details': <Map<String, dynamic>>[
     {
@@ -149,6 +150,7 @@ Map<String, dynamic>? mapOfCardDetailsForImages = {
   'Card Asset BG Color': Colors.blue.shade100,
   'Collapsed Card BG Color': Colors.lightBlue.shade50,
   'Card BG Effects Color': Colors.lightBlue.withOpacity(0.1),
+  'Card Trailing Arrow Color': Colors.black,
   'Expanded Sublist BG Color': Colors.blue.shade100,
   'Functions Details': <Map<String, dynamic>>[
     {
@@ -182,6 +184,7 @@ Map<String, dynamic>? mapOfCardDetailsForImagesForDarkMode = {
   'Card Asset BG Color': Colors.blue.shade100,
   'Collapsed Card BG Color': Colors.lightBlue.shade50,
   'Card BG Effects Color': Colors.lightBlue.withOpacity(0.1),
+  'Card Trailing Arrow Color': Colors.black,
   'Expanded Sublist BG Color': Colors.blue.shade100,
   'Functions Details': <Map<String, dynamic>>[
     {

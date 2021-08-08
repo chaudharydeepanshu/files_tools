@@ -304,8 +304,7 @@ class _ResultZipScaffoldState extends State<ResultZipScaffold> {
                         decoration: InputDecoration(
                           hintText: "File Name",
                           suffixText: extensionOfFileName,
-                          icon: Icon(Icons.drive_file_rename_outline,
-                              color: Colors.black),
+                          icon: Icon(Icons.drive_file_rename_outline),
                           border: OutlineInputBorder(),
                         ),
                       ),

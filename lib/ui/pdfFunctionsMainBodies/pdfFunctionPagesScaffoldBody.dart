@@ -941,10 +941,9 @@ class _PDFFunctionBodyState extends State<PDFFunctionBody>
                                                           Icon(
                                                             Icons.add,
                                                             size: 30,
-                                                            color: Theme.of(
-                                                                    context)
-                                                                .iconTheme
-                                                                .color,
+                                                            color:
+                                                                FitnessAppTheme
+                                                                    .darkText,
                                                           ),
                                                         ],
                                                       )

@@ -82,7 +82,7 @@ class _ReusableSilverAppBarState extends State<ReusableSilverAppBar> {
                           child: Icon(
                             widget.appBarIconLeft ?? null,
                             size: 24,
-                            color: widget.leftButtonColor ?? Colors.black,
+                            color: widget.leftButtonColor ?? null,
                           ),
                         ),
                       ),
