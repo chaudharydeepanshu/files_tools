@@ -62,6 +62,8 @@ class MyApp extends StatelessWidget {
       ),
       dark: ThemeData.dark().copyWith(
         // iconTheme: IconThemeData(color: Colors.black),
+        // scaffoldBackgroundColor: Color(0xFF121212),
+        // canvasColor: Color(0xFF121212),
         checkboxTheme: CheckboxThemeData(
           checkColor: MaterialStateProperty.all(Colors.white),
           fillColor: MaterialStateProperty.all(Colors.lightBlueAccent),
