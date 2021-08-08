@@ -52,10 +52,10 @@ Future<void> processingDialog(BuildContext context) async {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              CircularProgressIndicator(),
-              SizedBox(
-                height: 20,
-              ),
+              // CircularProgressIndicator(),
+              // SizedBox(
+              //   height: 20,
+              // ),
               Text(
                 'Processing Data\n\nPlease Wait...',
                 textAlign: TextAlign.center,
