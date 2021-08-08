@@ -115,11 +115,14 @@ class _CustomDrawerState extends State<CustomDrawer> {
             ),
           ),
           packageInfo != null
-              ? Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text("App Version - $version+$buildNumber"),
-                  ],
+              ? Padding(
+                  padding: const EdgeInsets.only(bottom: 8.0, top: 8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text("App Version - $version+$buildNumber"),
+                    ],
+                  ),
                 )
               : Container(),
         ],
