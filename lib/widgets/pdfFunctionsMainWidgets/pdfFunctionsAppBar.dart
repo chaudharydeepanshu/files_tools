@@ -28,7 +28,14 @@ class _PdfFunctionsAppBarState extends State<PdfFunctionsAppBar> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: widget.mapOfFunctionDetails!['BG Color'] ?? null,
+      decoration: BoxDecoration(
+        color: widget.mapOfFunctionDetails!['BG Color'] ?? null,
+        border: Border(
+          bottom: BorderSide(
+            color: widget.mapOfFunctionDetails!['BG Color'] ?? null,
+          ),
+        ),
+      ),
       child: SafeArea(
         child: Container(
           child: Padding(
@@ -128,7 +135,7 @@ class _PdfFunctionsAppBarState extends State<PdfFunctionsAppBar> {
                         widget.mapOfFunctionDetails!['Icon Asset'] ??
                             'assets/images/tools_icons/pdf_tools_icon.svg',
                         fit: BoxFit.fitHeight,
-                        height: 120,
+                        height: 85,
                         color: widget
                                 .mapOfFunctionDetails!['Icon And Text Color'] ??
                             null,

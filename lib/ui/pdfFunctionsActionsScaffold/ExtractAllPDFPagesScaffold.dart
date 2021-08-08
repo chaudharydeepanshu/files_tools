@@ -202,15 +202,18 @@ class _ExtractAllPDFPagesScaffoldState extends State<ExtractAllPDFPagesScaffold>
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Container(
-                            child: pdfPagesCount != null
-                                ? Text(
-                                    'Total number of Pages in PDF: $pdfPagesCount',
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  )
-                                : Container(),
-                            decoration: BoxDecoration(),
+                          Expanded(
+                            child: Container(
+                              child: pdfPagesCount != null
+                                  ? Text(
+                                      'Total number of Pages in PDF: $pdfPagesCount',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                      textAlign: TextAlign.center,
+                                    )
+                                  : Container(),
+                              decoration: BoxDecoration(),
+                            ),
                           ),
                         ],
                       ),
@@ -222,47 +225,57 @@ class _ExtractAllPDFPagesScaffoldState extends State<ExtractAllPDFPagesScaffold>
                               ? Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Container(
-                                      child: pdfPagesCount != null
-                                          ? Text(
-                                              'Number of PDFs will be created: $pdfPagesCount',
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold),
-                                            )
-                                          : Container(),
-                                      decoration: BoxDecoration(),
+                                    Expanded(
+                                      child: Container(
+                                        child: pdfPagesCount != null
+                                            ? Text(
+                                                'Number of PDFs will be created: $pdfPagesCount',
+                                                style: TextStyle(
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                                textAlign: TextAlign.center,
+                                              )
+                                            : Container(),
+                                        decoration: BoxDecoration(),
+                                      ),
                                     ),
                                   ],
                                 )
                               : Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Container(
-                                      child: pdfPagesCount != null
-                                          ? Text(
-                                              'Can\'t proceed further as pdf pages are less than 2',
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Colors.red),
-                                            )
-                                          : Container(),
-                                      decoration: BoxDecoration(),
+                                    Expanded(
+                                      child: Container(
+                                        child: pdfPagesCount != null
+                                            ? Text(
+                                                'Can\'t proceed further as pdf pages are less than 2',
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.red),
+                                                textAlign: TextAlign.center,
+                                              )
+                                            : Container(),
+                                        decoration: BoxDecoration(),
+                                      ),
                                     ),
                                   ],
                                 )
                           : Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Container(
-                                  child: pdfPagesCount != null
-                                      ? Text(
-                                          'Can\'t proceed further as pdf pages are less than 2',
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.red),
-                                        )
-                                      : Container(),
-                                  decoration: BoxDecoration(),
+                                Expanded(
+                                  child: Container(
+                                    child: pdfPagesCount != null
+                                        ? Text(
+                                            'Can\'t proceed further as pdf pages are less than 2',
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.red),
+                                            textAlign: TextAlign.center,
+                                          )
+                                        : Container(),
+                                    decoration: BoxDecoration(),
+                                  ),
                                 ),
                               ],
                             ),

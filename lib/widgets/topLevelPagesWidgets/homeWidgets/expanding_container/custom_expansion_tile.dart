@@ -313,7 +313,7 @@ class _CustomExpansionTileState extends State<CustomExpansionTile>
                             children: [
                               widget.title,
                               Container(
-                                width: 200,
+                                width: 180,
                                 child: widget.subtitle,
                               ),
                             ],
