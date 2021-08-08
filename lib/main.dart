@@ -16,12 +16,10 @@ import 'package:files_tools/ui/pdfFunctionsResultsScaffold/resultZipScaffold.dar
 import 'package:files_tools/ui/pdfViewerScaffold/pdfscaffold.dart';
 import 'package:files_tools/ui/topLevelPagesScaffold/mainPageScaffold.dart';
 import 'package:files_tools/widgets/pdfFunctionsActionWidgets/reusableUIActionWidgets/reorder_pages_scaffold.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
-import 'dart:io';
 import 'ad_state.dart';
 import 'navigation/page_routes_model.dart';
 
