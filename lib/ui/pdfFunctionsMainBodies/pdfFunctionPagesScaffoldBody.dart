@@ -275,130 +275,206 @@ class _PDFFunctionBodyState extends State<PDFFunctionBody>
             onWillPop: isFilePicked == true
                 ? () => onWillPop(context)
                 : () => directPop(),
-            child: SingleChildScrollView(
-              controller: scrollController,
-              child: Stack(
-                children: [
-                  Container(
-                    height: 15,
-                    color: widget.mapOfFunctionDetails!['BG Color'] ?? null,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 15),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        // color: Color(0xFFFFAFAFA),
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(10),
-                          topRight: Radius.circular(10),
+            child: NotificationListener<OverscrollIndicatorNotification>(
+              onNotification: (OverscrollIndicatorNotification overscroll) {
+                overscroll.disallowGlow();
+                return false;
+              },
+              child: SingleChildScrollView(
+                controller: scrollController,
+                child: Stack(
+                  children: [
+                    Container(
+                      height: 15,
+                      color: widget.mapOfFunctionDetails!['BG Color'] ?? null,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 15),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          // color: Color(0xFFFFAFAFA),
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(10),
+                            topRight: Radius.circular(10),
+                          ),
                         ),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(top: 25),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 20, right: 20),
-                                    child: GestureDetector(
-                                      onTapDown:
-                                          (TapDownDetails tapDownDetails) {
-                                        setState(() {
-                                          buttonElevation =
-                                              onTapDownButtonElevation;
-                                        });
-                                      },
-                                      onTapUp: (TapUpDetails tapUpDetails) {
-                                        setState(() {
-                                          buttonElevation =
-                                              defaultButtonElevation;
-                                        });
-                                      },
-                                      onTapCancel: () {
-                                        setState(() {
-                                          buttonElevation =
-                                              defaultButtonElevation;
-                                        });
-                                      },
-                                      onPanEnd:
-                                          (DragEndDetails dragEndDetails) {
-                                        setState(() {
-                                          buttonElevation =
-                                              defaultButtonElevation;
-                                        });
-                                      },
-                                      child: Material(
-                                        elevation:
-                                            isFilePickingInitiated == false
-                                                ? buttonElevation
-                                                : 0,
-                                        color: widget.mapOfFunctionDetails![
-                                                'Select File Button Color'] ??
-                                            Color(0xffE4EAF6),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10.0),
-                                        ),
-                                        child: InkWell(
-                                          onTap: isFilePickingInitiated == false
-                                              ? storagePermissionPermanentlyDenied ==
-                                                      false
-                                                  ? () async {
-                                                      if (isFilePicked ==
-                                                              false &&
-                                                          isFilePickingInitiated ==
-                                                              false) {
-                                                        final status =
-                                                            await Permission
-                                                                .storage
-                                                                .request();
-                                                        if (status ==
-                                                            PermissionStatus
-                                                                .granted) {
-                                                          isFilePickingInitiated =
-                                                              true;
-
-                                                          print(
-                                                              'Permission granted');
-                                                          FilePickerResult?
-                                                              result =
-                                                              await FilePicker
-                                                                  .platform
-                                                                  .pickFiles(
-                                                            type:
-                                                                FileType.custom,
-                                                            allowMultiple:
-                                                                false,
-                                                            allowedExtensions: [
-                                                              'pdf',
-                                                            ],
-                                                          );
-                                                          if (result != null) {
-                                                            file = result
-                                                                .files.first;
-
-                                                            bool
-                                                                isEncryptedDocument =
-                                                                checkEncryptedDocument(
-                                                                    file.path!);
-
-                                                            bool
-                                                                shouldEncryptedDocumentsAllowed =
-                                                                widget.mapOfFunctionDetails![
-                                                                    'Encrypted Files Allowed'];
-
-                                                            filesEncryptedCount =
-                                                                0;
-
-                                                            if (shouldEncryptedDocumentsAllowed ==
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(top: 25),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 20, right: 20),
+                                      child: GestureDetector(
+                                        onTapDown:
+                                            (TapDownDetails tapDownDetails) {
+                                          setState(() {
+                                            buttonElevation =
+                                                onTapDownButtonElevation;
+                                          });
+                                        },
+                                        onTapUp: (TapUpDetails tapUpDetails) {
+                                          setState(() {
+                                            buttonElevation =
+                                                defaultButtonElevation;
+                                          });
+                                        },
+                                        onTapCancel: () {
+                                          setState(() {
+                                            buttonElevation =
+                                                defaultButtonElevation;
+                                          });
+                                        },
+                                        onPanEnd:
+                                            (DragEndDetails dragEndDetails) {
+                                          setState(() {
+                                            buttonElevation =
+                                                defaultButtonElevation;
+                                          });
+                                        },
+                                        child: Material(
+                                          elevation:
+                                              isFilePickingInitiated == false
+                                                  ? buttonElevation
+                                                  : 0,
+                                          color: widget.mapOfFunctionDetails![
+                                                  'Select File Button Color'] ??
+                                              Color(0xffE4EAF6),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10.0),
+                                          ),
+                                          child: InkWell(
+                                            onTap: isFilePickingInitiated ==
+                                                    false
+                                                ? storagePermissionPermanentlyDenied ==
+                                                        false
+                                                    ? () async {
+                                                        if (isFilePicked ==
+                                                                false &&
+                                                            isFilePickingInitiated ==
                                                                 false) {
-                                                              if (isEncryptedDocument ==
+                                                          final status =
+                                                              await Permission
+                                                                  .storage
+                                                                  .request();
+                                                          if (status ==
+                                                              PermissionStatus
+                                                                  .granted) {
+                                                            isFilePickingInitiated =
+                                                                true;
+
+                                                            print(
+                                                                'Permission granted');
+                                                            FilePickerResult?
+                                                                result =
+                                                                await FilePicker
+                                                                    .platform
+                                                                    .pickFiles(
+                                                              type: FileType
+                                                                  .custom,
+                                                              allowMultiple:
+                                                                  false,
+                                                              allowedExtensions: [
+                                                                'pdf',
+                                                              ],
+                                                            );
+                                                            if (result !=
+                                                                null) {
+                                                              file = result
+                                                                  .files.first;
+
+                                                              bool
+                                                                  isEncryptedDocument =
+                                                                  checkEncryptedDocument(
+                                                                      file.path!);
+
+                                                              bool
+                                                                  shouldEncryptedDocumentsAllowed =
+                                                                  widget.mapOfFunctionDetails![
+                                                                      'Encrypted Files Allowed'];
+
+                                                              filesEncryptedCount =
+                                                                  0;
+
+                                                              if (shouldEncryptedDocumentsAllowed ==
                                                                   false) {
+                                                                if (isEncryptedDocument ==
+                                                                    false) {
+                                                                  print(file
+                                                                      .name);
+                                                                  print(file
+                                                                      .bytes);
+                                                                  print(file
+                                                                      .size);
+                                                                  print(file
+                                                                      .extension);
+                                                                  print(file
+                                                                      .path);
+                                                                  print(
+                                                                      'Document not encrypted & encrypted documents are not allowed');
+
+                                                                  setState(() {
+                                                                    isFilePickingInitiated =
+                                                                        false;
+                                                                    isFilePicked =
+                                                                        true;
+                                                                    widget
+                                                                        .onNotifyAppbarFileStatus
+                                                                        ?.call(
+                                                                            true);
+                                                                  });
+
+                                                                  shouldRenderingImagesLoopBeDisabled =
+                                                                      false;
+
+                                                                  if (isFileLoadingRequired ==
+                                                                      true) {
+                                                                    nativePDFRendererToImg(
+                                                                        file.path!);
+                                                                  } else {
+                                                                    isFileLoaded =
+                                                                        true;
+                                                                  }
+
+                                                                  isFilePickingInitiated =
+                                                                      false; //as the file should be picked and loaded in the app cache & here loaded doesn't mean converting to images
+                                                                } else {
+                                                                  print(
+                                                                      'Document encrypted & encrypted documents are not allowed');
+
+                                                                  filesEncryptedCount++;
+                                                                  setState(() {
+                                                                    isFilePickingInitiated =
+                                                                        false;
+                                                                  });
+                                                                  final encryptedFileWarningSnackBar =
+                                                                      SnackBar(
+                                                                    content:
+                                                                        const Text(
+                                                                            'Encrypted File is not allowed!\nDecrypt it using the decrypt function.'),
+                                                                    action:
+                                                                        SnackBarAction(
+                                                                      label:
+                                                                          'Ok',
+                                                                      onPressed:
+                                                                          () {
+                                                                        // Some code to undo the change.
+                                                                      },
+                                                                    ),
+                                                                  );
+                                                                  ScaffoldMessenger.of(
+                                                                          context)
+                                                                      .showSnackBar(
+                                                                          encryptedFileWarningSnackBar);
+                                                                } //show snackbar for document encrypted here as not allowed through above condition
+                                                              } else {
+                                                                //document not encrypted but allowed encrypted
                                                                 print(
                                                                     file.name);
                                                                 print(
@@ -409,8 +485,6 @@ class _PDFFunctionBodyState extends State<PDFFunctionBody>
                                                                     .extension);
                                                                 print(
                                                                     file.path);
-                                                                print(
-                                                                    'Document not encrypted & encrypted documents are not allowed');
 
                                                                 setState(() {
                                                                   isFilePickingInitiated =
@@ -428,8 +502,17 @@ class _PDFFunctionBodyState extends State<PDFFunctionBody>
 
                                                                 if (isFileLoadingRequired ==
                                                                     true) {
-                                                                  nativePDFRendererToImg(
-                                                                      file.path!);
+                                                                  if (isEncryptedDocument ==
+                                                                      false) {
+                                                                    nativePDFRendererToImg(
+                                                                        file.path!);
+                                                                    print(
+                                                                        'Document not encrypted & encrypted documents are allowed');
+                                                                  } else {
+                                                                    print(
+                                                                        'Document encrypted & encrypted documents are allowed');
+                                                                    filesEncryptedCount++;
+                                                                  }
                                                                 } else {
                                                                   isFileLoaded =
                                                                       true;
@@ -437,663 +520,593 @@ class _PDFFunctionBodyState extends State<PDFFunctionBody>
 
                                                                 isFilePickingInitiated =
                                                                     false; //as the file should be picked and loaded in the app cache & here loaded doesn't mean converting to images
-                                                              } else {
-                                                                print(
-                                                                    'Document encrypted & encrypted documents are not allowed');
-
-                                                                filesEncryptedCount++;
-                                                                setState(() {
-                                                                  isFilePickingInitiated =
-                                                                      false;
-                                                                });
-                                                                final encryptedFileWarningSnackBar =
-                                                                    SnackBar(
-                                                                  content:
-                                                                      const Text(
-                                                                          'Encrypted File is not allowed!\nDecrypt it using the decrypt function.'),
-                                                                  action:
-                                                                      SnackBarAction(
-                                                                    label: 'Ok',
-                                                                    onPressed:
-                                                                        () {
-                                                                      // Some code to undo the change.
-                                                                    },
-                                                                  ),
-                                                                );
-                                                                ScaffoldMessenger.of(
-                                                                        context)
-                                                                    .showSnackBar(
-                                                                        encryptedFileWarningSnackBar);
-                                                              } //show snackbar for document encrypted here as not allowed through above condition
+                                                              }
                                                             } else {
-                                                              //document not encrypted but allowed encrypted
-                                                              print(file.name);
-                                                              print(file.bytes);
-                                                              print(file.size);
-                                                              print(file
-                                                                  .extension);
-                                                              print(file.path);
-
                                                               setState(() {
+                                                                print(
+                                                                    'User canceled the picker');
                                                                 isFilePickingInitiated =
                                                                     false;
                                                                 isFilePicked =
-                                                                    true;
+                                                                    false;
                                                                 widget
                                                                     .onNotifyAppbarFileStatus
                                                                     ?.call(
-                                                                        true);
+                                                                        false);
                                                               });
-
-                                                              shouldRenderingImagesLoopBeDisabled =
-                                                                  false;
-
-                                                              if (isFileLoadingRequired ==
-                                                                  true) {
-                                                                if (isEncryptedDocument ==
-                                                                    false) {
-                                                                  nativePDFRendererToImg(
-                                                                      file.path!);
-                                                                  print(
-                                                                      'Document not encrypted & encrypted documents are allowed');
-                                                                } else {
-                                                                  print(
-                                                                      'Document encrypted & encrypted documents are allowed');
-                                                                  filesEncryptedCount++;
-                                                                }
-                                                              } else {
-                                                                isFileLoaded =
-                                                                    true;
-                                                              }
-
-                                                              isFilePickingInitiated =
-                                                                  false; //as the file should be picked and loaded in the app cache & here loaded doesn't mean converting to images
+                                                              // User canceled the picker
                                                             }
-                                                          } else {
+                                                          } else if (status ==
+                                                              PermissionStatus
+                                                                  .denied) {
+                                                            print(
+                                                                'Denied. Show a dialog with a reason and again ask for the permission.');
+                                                            permissionDialogBox(
+                                                                actionButtonsList:
+                                                                    dialogActionButtonsListForDeniedPermission,
+                                                                text:
+                                                                    dialogTextForDeniedPermission,
+                                                                context:
+                                                                    context);
+                                                          } else if (status ==
+                                                              PermissionStatus
+                                                                  .permanentlyDenied) {
+                                                            print(
+                                                                'Take the user to the settings page.');
                                                             setState(() {
-                                                              print(
-                                                                  'User canceled the picker');
-                                                              isFilePickingInitiated =
-                                                                  false;
-                                                              isFilePicked =
-                                                                  false;
-                                                              widget
-                                                                  .onNotifyAppbarFileStatus
-                                                                  ?.call(false);
+                                                              storagePermissionPermanentlyDenied =
+                                                                  true;
                                                             });
-                                                            // User canceled the picker
+                                                            addBoolToSF() async {
+                                                              SharedPreferences
+                                                                  prefs =
+                                                                  await SharedPreferences
+                                                                      .getInstance();
+                                                              prefs.setBool(
+                                                                  'storagePermissionPermanentlyDeniedBoolValue',
+                                                                  true);
+                                                            }
+
+                                                            addBoolToSF();
+                                                            permissionDialogBox(
+                                                                actionButtonsList:
+                                                                    dialogActionButtonsListForPermanentlyDeniedPermission,
+                                                                text:
+                                                                    dialogTextForPermanentlyDeniedPermission,
+                                                                context:
+                                                                    context);
                                                           }
-                                                        } else if (status ==
-                                                            PermissionStatus
-                                                                .denied) {
+                                                        } else if (isFilePicked ==
+                                                            true) {
+                                                          final _result =
+                                                              await OpenFile
+                                                                  .open(file
+                                                                      .path);
                                                           print(
-                                                              'Denied. Show a dialog with a reason and again ask for the permission.');
-                                                          permissionDialogBox(
-                                                              actionButtonsList:
-                                                                  dialogActionButtonsListForDeniedPermission,
-                                                              text:
-                                                                  dialogTextForDeniedPermission,
-                                                              context: context);
-                                                        } else if (status ==
-                                                            PermissionStatus
-                                                                .permanentlyDenied) {
-                                                          print(
-                                                              'Take the user to the settings page.');
+                                                              _result.message);
+
                                                           setState(() {
-                                                            storagePermissionPermanentlyDenied =
-                                                                true;
+                                                            _openResult =
+                                                                "type=${_result.type}  message=${_result.message}";
                                                           });
-                                                          addBoolToSF() async {
-                                                            SharedPreferences
-                                                                prefs =
-                                                                await SharedPreferences
-                                                                    .getInstance();
-                                                            prefs.setBool(
-                                                                'storagePermissionPermanentlyDeniedBoolValue',
-                                                                true);
+                                                          if (_result.type ==
+                                                              ResultType
+                                                                  .noAppToOpen) {
+                                                            print(_openResult);
+                                                            //Using default app pdf viewer instead of suggesting downloading others
+                                                            Navigator.pushNamed(
+                                                              context,
+                                                              PageRoutes
+                                                                  .pdfScaffold,
+                                                              arguments:
+                                                                  PDFScaffoldArguments(
+                                                                pdfPath:
+                                                                    file.path,
+                                                              ),
+                                                            );
                                                           }
-
-                                                          addBoolToSF();
-                                                          permissionDialogBox(
-                                                              actionButtonsList:
-                                                                  dialogActionButtonsListForPermanentlyDeniedPermission,
-                                                              text:
-                                                                  dialogTextForPermanentlyDeniedPermission,
-                                                              context: context);
-                                                        }
-                                                      } else if (isFilePicked ==
-                                                          true) {
-                                                        final _result =
-                                                            await OpenFile.open(
-                                                                file.path);
-                                                        print(_result.message);
-
-                                                        setState(() {
-                                                          _openResult =
-                                                              "type=${_result.type}  message=${_result.message}";
-                                                        });
-                                                        if (_result.type ==
-                                                            ResultType
-                                                                .noAppToOpen) {
-                                                          print(_openResult);
-                                                          //Using default app pdf viewer instead of suggesting downloading others
-                                                          Navigator.pushNamed(
-                                                            context,
-                                                            PageRoutes
-                                                                .pdfScaffold,
-                                                            arguments:
-                                                                PDFScaffoldArguments(
-                                                              pdfPath:
-                                                                  file.path,
-                                                            ),
-                                                          );
                                                         }
                                                       }
-                                                    }
-                                                  : () async {
-                                                      permissionDialogBox(
-                                                          actionButtonsList:
-                                                              dialogActionButtonsListForPermanentlyDeniedPermission,
-                                                          text:
-                                                              dialogTextForPermanentlyDeniedPermission,
-                                                          context: context);
-                                                    }
-                                              : null,
-                                          customBorder: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(10.0)),
-                                          focusColor: widget
-                                                      .mapOfFunctionDetails![
-                                                  'Select File Button Effects Color'] ??
-                                              Colors.black.withOpacity(0.1),
-                                          highlightColor: widget
-                                                      .mapOfFunctionDetails![
-                                                  'Select File Button Effects Color'] ??
-                                              Colors.black.withOpacity(0.1),
-                                          splashColor: widget
-                                                      .mapOfFunctionDetails![
-                                                  'Select File Button Effects Color'] ??
-                                              Colors.black.withOpacity(0.1),
-                                          hoverColor: widget
-                                                      .mapOfFunctionDetails![
-                                                  'Select File Button Effects Color'] ??
-                                              Colors.black.withOpacity(0.1),
-                                          child: Container(
-                                            height: isFilePicked == true
-                                                ? null
-                                                : 75,
-                                            decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.only(
-                                                topLeft: Radius.circular(10),
-                                                topRight: Radius.circular(10),
-                                                bottomLeft: Radius.circular(10),
-                                                bottomRight:
-                                                    Radius.circular(10),
+                                                    : () async {
+                                                        permissionDialogBox(
+                                                            actionButtonsList:
+                                                                dialogActionButtonsListForPermanentlyDeniedPermission,
+                                                            text:
+                                                                dialogTextForPermanentlyDeniedPermission,
+                                                            context: context);
+                                                      }
+                                                : null,
+                                            customBorder:
+                                                RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10.0)),
+                                            focusColor: widget
+                                                        .mapOfFunctionDetails![
+                                                    'Select File Button Effects Color'] ??
+                                                Colors.black.withOpacity(0.1),
+                                            highlightColor: widget
+                                                        .mapOfFunctionDetails![
+                                                    'Select File Button Effects Color'] ??
+                                                Colors.black.withOpacity(0.1),
+                                            splashColor: widget
+                                                        .mapOfFunctionDetails![
+                                                    'Select File Button Effects Color'] ??
+                                                Colors.black.withOpacity(0.1),
+                                            hoverColor: widget
+                                                        .mapOfFunctionDetails![
+                                                    'Select File Button Effects Color'] ??
+                                                Colors.black.withOpacity(0.1),
+                                            child: Container(
+                                              height: isFilePicked == true
+                                                  ? null
+                                                  : 75,
+                                              decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.only(
+                                                  topLeft: Radius.circular(10),
+                                                  topRight: Radius.circular(10),
+                                                  bottomLeft:
+                                                      Radius.circular(10),
+                                                  bottomRight:
+                                                      Radius.circular(10),
+                                                ),
                                               ),
-                                            ),
-                                            child: isFilePicked == true
-                                                ? Column(
-                                                    children: [
-                                                      Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .start,
-                                                        children: <Widget>[
-                                                          MeasureSize(
-                                                            onChange: (size) {
-                                                              setState(() {
-                                                                myChildSize =
-                                                                    size;
-                                                                print(
-                                                                    myChildSize);
-                                                              });
-                                                            },
-                                                            child: Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                          .only(
-                                                                      left: 8.0,
-                                                                      top: 20,
-                                                                      bottom:
-                                                                          20),
-                                                              child: SvgPicture.asset(
-                                                                  widget.mapOfFunctionDetails![
-                                                                          'Select File Icon Asset'] ??
-                                                                      'assets/images/tools_icons/pdf_tools_icon.svg',
-                                                                  fit: BoxFit
-                                                                      .fitHeight,
-                                                                  height: 35,
-                                                                  color: widget
-                                                                              .mapOfFunctionDetails![
-                                                                          'Select File Icon Color'] ??
-                                                                      null,
-                                                                  alignment:
-                                                                      Alignment
-                                                                          .center,
-                                                                  semanticsLabel:
-                                                                      'A red up arrow'),
-                                                              // Image.asset(
-                                                              //   'assets/images/pdf_icon.png',
-                                                              //   fit: BoxFit.fitHeight,
-                                                              //   height: 35,
-                                                              // ),
+                                              child: isFilePicked == true
+                                                  ? Column(
+                                                      children: [
+                                                        Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .start,
+                                                          children: <Widget>[
+                                                            MeasureSize(
+                                                              onChange: (size) {
+                                                                setState(() {
+                                                                  myChildSize =
+                                                                      size;
+                                                                  print(
+                                                                      myChildSize);
+                                                                });
+                                                              },
+                                                              child: Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                            .only(
+                                                                        left:
+                                                                            8.0,
+                                                                        top: 20,
+                                                                        bottom:
+                                                                            20),
+                                                                child: SvgPicture.asset(
+                                                                    widget.mapOfFunctionDetails!['Select File Icon Asset'] ??
+                                                                        'assets/images/tools_icons/pdf_tools_icon.svg',
+                                                                    fit: BoxFit
+                                                                        .fitHeight,
+                                                                    height: 35,
+                                                                    color: widget.mapOfFunctionDetails![
+                                                                            'Select File Icon Color'] ??
+                                                                        null,
+                                                                    alignment:
+                                                                        Alignment
+                                                                            .center,
+                                                                    semanticsLabel:
+                                                                        'A red up arrow'),
+                                                                // Image.asset(
+                                                                //   'assets/images/pdf_icon.png',
+                                                                //   fit: BoxFit.fitHeight,
+                                                                //   height: 35,
+                                                                // ),
+                                                              ),
                                                             ),
-                                                          ),
-                                                          SizedBox(
-                                                            width: 15,
-                                                          ),
-                                                          Expanded(
-                                                            child: Column(
+                                                            SizedBox(
+                                                              width: 15,
+                                                            ),
+                                                            Expanded(
+                                                              child: Column(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .center,
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .start,
+                                                                children: [
+                                                                  Text(
+                                                                    file.name,
+                                                                    overflow:
+                                                                        TextOverflow
+                                                                            .ellipsis,
+                                                                    style: TextStyle(
+                                                                        fontWeight:
+                                                                            FontWeight
+                                                                                .w500,
+                                                                        color: Colors
+                                                                            .black),
+                                                                  ),
+                                                                  SizedBox(
+                                                                    height: 5,
+                                                                  ),
+                                                                  Row(
+                                                                    children: [
+                                                                      Text(
+                                                                        '${formatBytes(file.size, 2)}',
+                                                                        style: TextStyle(
+                                                                            fontSize:
+                                                                                12,
+                                                                            color:
+                                                                                Colors.black),
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                            Row(
                                                               mainAxisAlignment:
                                                                   MainAxisAlignment
-                                                                      .center,
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .start,
+                                                                      .end,
                                                               children: [
-                                                                Text(
-                                                                  file.name,
-                                                                  overflow:
-                                                                      TextOverflow
-                                                                          .ellipsis,
-                                                                  style: TextStyle(
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w500,
-                                                                      color: Colors
-                                                                          .black),
-                                                                ),
                                                                 SizedBox(
-                                                                  height: 5,
+                                                                  width: 10,
                                                                 ),
-                                                                Row(
-                                                                  children: [
-                                                                    Text(
-                                                                      '${formatBytes(file.size, 2)}',
-                                                                      style: TextStyle(
-                                                                          fontSize:
-                                                                              12,
-                                                                          color:
-                                                                              Colors.black),
-                                                                    ),
-                                                                  ],
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                          Row(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .end,
-                                                            children: [
-                                                              SizedBox(
-                                                                width: 10,
-                                                              ),
-                                                              Container(
-                                                                height:
-                                                                    myChildSize
-                                                                        .height,
-                                                                child:
-                                                                    VerticalDivider(
-                                                                  color: Colors
-                                                                      .black,
-                                                                  // thickness: 1,
-                                                                  width: 0,
-                                                                  indent: 5,
-                                                                  endIndent: 5,
-                                                                ),
-                                                              ),
-                                                              Ink(
-                                                                decoration:
-                                                                    BoxDecoration(
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .only(
-                                                                    topRight: Radius
-                                                                        .circular(
-                                                                            10),
-                                                                    bottomRight: shouldRenderingImagesLoopBeDisabled ==
-                                                                                false &&
-                                                                            isFileLoaded ==
-                                                                                false
-                                                                        ? Radius
-                                                                            .circular(
-                                                                                0)
-                                                                        : Radius.circular(
-                                                                            10),
-                                                                  ),
-                                                                ),
-                                                                child: InkWell(
-                                                                  onTap: () {
-                                                                    setState(
-                                                                        () {
-                                                                      shouldRenderingImagesLoopBeDisabled =
-                                                                          true;
-                                                                      isFileLoaded =
-                                                                          false;
-                                                                      isFilePicked =
-                                                                          false;
-                                                                      widget
-                                                                          .onNotifyAppbarFileStatus
-                                                                          ?.call(
-                                                                              false);
-                                                                      FilePicker
-                                                                          .platform
-                                                                          .clearTemporaryFiles();
-
-                                                                      // This is the trick to reset whole page! Required to reset step-2 button warnings
-                                                                      ++_count; //the count would change the key of this widget forcing it to reset
-                                                                    });
-                                                                  },
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .only(
-                                                                    topRight: Radius
-                                                                        .circular(
-                                                                            10),
-                                                                    bottomRight: shouldRenderingImagesLoopBeDisabled ==
-                                                                                false &&
-                                                                            isFileLoaded ==
-                                                                                false
-                                                                        ? Radius
-                                                                            .circular(
-                                                                                0)
-                                                                        : Radius.circular(
-                                                                            10),
-                                                                  ),
-                                                                  focusColor: widget
-                                                                              .mapOfFunctionDetails![
-                                                                          'Select File Button Effects Color'] ??
-                                                                      Colors
-                                                                          .black
-                                                                          .withOpacity(
-                                                                              0.1),
-                                                                  highlightColor: widget
-                                                                              .mapOfFunctionDetails![
-                                                                          'Select File Button Effects Color'] ??
-                                                                      Colors
-                                                                          .black
-                                                                          .withOpacity(
-                                                                              0.1),
-                                                                  splashColor: widget
-                                                                              .mapOfFunctionDetails![
-                                                                          'Select File Button Effects Color'] ??
-                                                                      Colors
-                                                                          .black
-                                                                          .withOpacity(
-                                                                              0.1),
-                                                                  hoverColor: widget
-                                                                              .mapOfFunctionDetails![
-                                                                          'Select File Button Effects Color'] ??
-                                                                      Colors
-                                                                          .black
-                                                                          .withOpacity(
-                                                                              0.1),
+                                                                Container(
+                                                                  height:
+                                                                      myChildSize
+                                                                          .height,
                                                                   child:
-                                                                      Container(
-                                                                    width: 50,
-                                                                    height: myChildSize
-                                                                        .height,
-                                                                    child: Icon(
-                                                                      Icons
-                                                                          .close_outlined,
-                                                                      size: 20,
-                                                                      color: Colors
-                                                                          .black,
-                                                                    ),
+                                                                      VerticalDivider(
+                                                                    color: Colors
+                                                                        .black,
+                                                                    // thickness: 1,
+                                                                    width: 0,
+                                                                    indent: 5,
+                                                                    endIndent:
+                                                                        5,
                                                                   ),
                                                                 ),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        ],
-                                                      ),
-                                                      shouldRenderingImagesLoopBeDisabled ==
-                                                                  false &&
-                                                              isFileLoaded ==
-                                                                  false //this condition means that the loading bar will only show when shouldRenderingImagesLoopBeDisabled & isFileLoaded is false. shouldRenderingImagesLoopBeDisabled false means that we have not disabled loading images and isFileLoaded false means file has not loaded until now.
-                                                          ? Stack(
-                                                              children: [
-                                                                ClipRRect(
-                                                                  borderRadius: BorderRadius.only(
-                                                                      bottomLeft:
+                                                                Ink(
+                                                                  decoration:
+                                                                      BoxDecoration(
+                                                                    borderRadius:
+                                                                        BorderRadius
+                                                                            .only(
+                                                                      topRight:
                                                                           Radius.circular(
                                                                               10),
-                                                                      bottomRight:
-                                                                          Radius.circular(
-                                                                              10)),
-                                                                  child:
-                                                                      LinearProgressIndicator(
-                                                                    value: controller
-                                                                        .value,
-                                                                    backgroundColor:
-                                                                        Colors.blue[
-                                                                            100],
-                                                                    valueColor: AlwaysStoppedAnimation<
-                                                                            Color>(
-                                                                        Colors
-                                                                            .blue),
-                                                                    minHeight:
-                                                                        16,
-                                                                    semanticsLabel:
-                                                                        'Linear progress indicator',
+                                                                      bottomRight: shouldRenderingImagesLoopBeDisabled ==
+                                                                                  false &&
+                                                                              isFileLoaded ==
+                                                                                  false
+                                                                          ? Radius.circular(
+                                                                              0)
+                                                                          : Radius.circular(
+                                                                              10),
+                                                                    ),
                                                                   ),
-                                                                ),
-                                                                Row(
-                                                                  mainAxisAlignment:
-                                                                      MainAxisAlignment
-                                                                          .center,
-                                                                  children: [
-                                                                    Text(
-                                                                      'Loading File: $loadedPercent %',
-                                                                      overflow:
-                                                                          TextOverflow
-                                                                              .clip,
-                                                                      softWrap:
-                                                                          false,
-                                                                      maxLines:
-                                                                          1,
-                                                                      textAlign:
-                                                                          TextAlign
-                                                                              .start,
-                                                                      style:
-                                                                          TextStyle(
+                                                                  child:
+                                                                      InkWell(
+                                                                    onTap: () {
+                                                                      setState(
+                                                                          () {
+                                                                        shouldRenderingImagesLoopBeDisabled =
+                                                                            true;
+                                                                        isFileLoaded =
+                                                                            false;
+                                                                        isFilePicked =
+                                                                            false;
+                                                                        widget
+                                                                            .onNotifyAppbarFileStatus
+                                                                            ?.call(false);
+                                                                        FilePicker
+                                                                            .platform
+                                                                            .clearTemporaryFiles();
+
+                                                                        // This is the trick to reset whole page! Required to reset step-2 button warnings
+                                                                        ++_count; //the count would change the key of this widget forcing it to reset
+                                                                      });
+                                                                    },
+                                                                    borderRadius:
+                                                                        BorderRadius
+                                                                            .only(
+                                                                      topRight:
+                                                                          Radius.circular(
+                                                                              10),
+                                                                      bottomRight: shouldRenderingImagesLoopBeDisabled ==
+                                                                                  false &&
+                                                                              isFileLoaded ==
+                                                                                  false
+                                                                          ? Radius.circular(
+                                                                              0)
+                                                                          : Radius.circular(
+                                                                              10),
+                                                                    ),
+                                                                    focusColor: widget.mapOfFunctionDetails![
+                                                                            'Select File Button Effects Color'] ??
+                                                                        Colors
+                                                                            .black
+                                                                            .withOpacity(0.1),
+                                                                    highlightColor: widget.mapOfFunctionDetails![
+                                                                            'Select File Button Effects Color'] ??
+                                                                        Colors
+                                                                            .black
+                                                                            .withOpacity(0.1),
+                                                                    splashColor: widget.mapOfFunctionDetails![
+                                                                            'Select File Button Effects Color'] ??
+                                                                        Colors
+                                                                            .black
+                                                                            .withOpacity(0.1),
+                                                                    hoverColor: widget.mapOfFunctionDetails![
+                                                                            'Select File Button Effects Color'] ??
+                                                                        Colors
+                                                                            .black
+                                                                            .withOpacity(0.1),
+                                                                    child:
+                                                                        Container(
+                                                                      width: 50,
+                                                                      height: myChildSize
+                                                                          .height,
+                                                                      child:
+                                                                          Icon(
+                                                                        Icons
+                                                                            .close_outlined,
+                                                                        size:
+                                                                            20,
                                                                         color: Colors
                                                                             .black,
                                                                       ),
                                                                     ),
-                                                                  ],
+                                                                  ),
                                                                 ),
                                                               ],
-                                                            )
-                                                          : Container(),
-                                                    ],
-                                                  )
-                                                : isFilePickingInitiated ==
-                                                        false
-                                                    ? Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .center,
-                                                        children: [
-                                                          Text(
-                                                            'Select File',
-                                                            textAlign: TextAlign
-                                                                .center,
-                                                            style: TextStyle(
-                                                              fontFamily:
-                                                                  FitnessAppTheme
-                                                                      .fontName,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500,
-                                                              fontSize: 20,
-                                                              letterSpacing:
-                                                                  0.0,
+                                                            ),
+                                                          ],
+                                                        ),
+                                                        shouldRenderingImagesLoopBeDisabled ==
+                                                                    false &&
+                                                                isFileLoaded ==
+                                                                    false //this condition means that the loading bar will only show when shouldRenderingImagesLoopBeDisabled & isFileLoaded is false. shouldRenderingImagesLoopBeDisabled false means that we have not disabled loading images and isFileLoaded false means file has not loaded until now.
+                                                            ? Stack(
+                                                                children: [
+                                                                  ClipRRect(
+                                                                    borderRadius: BorderRadius.only(
+                                                                        bottomLeft:
+                                                                            Radius.circular(
+                                                                                10),
+                                                                        bottomRight:
+                                                                            Radius.circular(10)),
+                                                                    child:
+                                                                        LinearProgressIndicator(
+                                                                      value: controller
+                                                                          .value,
+                                                                      backgroundColor:
+                                                                          Colors
+                                                                              .blue[100],
+                                                                      valueColor: AlwaysStoppedAnimation<
+                                                                              Color>(
+                                                                          Colors
+                                                                              .blue),
+                                                                      minHeight:
+                                                                          16,
+                                                                      semanticsLabel:
+                                                                          'Linear progress indicator',
+                                                                    ),
+                                                                  ),
+                                                                  Row(
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .center,
+                                                                    children: [
+                                                                      Text(
+                                                                        'Loading File: $loadedPercent %',
+                                                                        overflow:
+                                                                            TextOverflow.clip,
+                                                                        softWrap:
+                                                                            false,
+                                                                        maxLines:
+                                                                            1,
+                                                                        textAlign:
+                                                                            TextAlign.start,
+                                                                        style:
+                                                                            TextStyle(
+                                                                          color:
+                                                                              Colors.black,
+                                                                        ),
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                ],
+                                                              )
+                                                            : Container(),
+                                                      ],
+                                                    )
+                                                  : isFilePickingInitiated ==
+                                                          false
+                                                      ? Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .center,
+                                                          children: [
+                                                            Text(
+                                                              'Select File',
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .center,
+                                                              style: TextStyle(
+                                                                fontFamily:
+                                                                    FitnessAppTheme
+                                                                        .fontName,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500,
+                                                                fontSize: 20,
+                                                                letterSpacing:
+                                                                    0.0,
+                                                                color:
+                                                                    FitnessAppTheme
+                                                                        .darkText,
+                                                              ),
+                                                            ),
+                                                            SizedBox(
+                                                              width: 8,
+                                                            ),
+                                                            Icon(
+                                                              Icons.add,
+                                                              size: 30,
                                                               color:
                                                                   FitnessAppTheme
                                                                       .darkText,
                                                             ),
-                                                          ),
-                                                          SizedBox(
-                                                            width: 8,
-                                                          ),
-                                                          Icon(
-                                                            Icons.add,
-                                                            size: 30,
-                                                            color:
-                                                                FitnessAppTheme
-                                                                    .darkText,
-                                                          ),
-                                                        ],
-                                                      )
-                                                    : Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .center,
-                                                        children: [
-                                                          Text(
-                                                            'Please wait ...',
-                                                            textAlign: TextAlign
-                                                                .center,
-                                                            style: TextStyle(
-                                                              fontFamily:
-                                                                  FitnessAppTheme
-                                                                      .fontName,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500,
-                                                              fontSize: 20,
-                                                              letterSpacing:
-                                                                  0.0,
-                                                              color:
-                                                                  FitnessAppTheme
-                                                                      .darkText,
+                                                          ],
+                                                        )
+                                                      : Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .center,
+                                                          children: [
+                                                            Text(
+                                                              'Please wait ...',
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .center,
+                                                              style: TextStyle(
+                                                                fontFamily:
+                                                                    FitnessAppTheme
+                                                                        .fontName,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500,
+                                                                fontSize: 20,
+                                                                letterSpacing:
+                                                                    0.0,
+                                                                color:
+                                                                    FitnessAppTheme
+                                                                        .darkText,
+                                                              ),
                                                             ),
-                                                          ),
-                                                        ],
-                                                      ),
+                                                          ],
+                                                        ),
+                                            ),
                                           ),
                                         ),
                                       ),
                                     ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Stack(
+                              children: [
+                                Divider(
+                                  height: 50,
+                                  thickness: 1.5,
+                                ),
+                                Container(
+                                  height: 50,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          border: Border.all(
+                                              color: Colors.grey.shade400),
+                                          color: Colors.white,
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(20)),
+                                        ),
+                                        height: 30,
+                                        width: 70,
+                                        child: Center(
+                                          child: Text(
+                                            'Step - 2',
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                              fontFamily:
+                                                  FitnessAppTheme.fontName,
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 14,
+                                              letterSpacing: 0.0,
+                                              color: FitnessAppTheme.darkText,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ],
                             ),
-                          ),
-                          Stack(
-                            children: [
-                              Divider(
-                                height: 50,
-                                thickness: 1.5,
-                              ),
-                              Container(
-                                height: 50,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
+                            ListView(
+                              shrinkWrap: true,
+                              controller: scrollController,
+                              children: List<Widget>.generate(
+                                  widget
+                                      .mapOfFunctionDetails![
+                                          'Sublist Functions']
+                                      .length, (int index) {
+                                return Column(
                                   children: [
-                                    Container(
-                                      decoration: BoxDecoration(
-                                        border: Border.all(
-                                            color: Colors.grey.shade400),
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(20)),
-                                      ),
-                                      height: 30,
-                                      width: 70,
-                                      child: Center(
-                                        child: Text(
-                                          'Step - 2',
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                            fontFamily:
-                                                FitnessAppTheme.fontName,
-                                            fontWeight: FontWeight.w500,
-                                            fontSize: 14,
-                                            letterSpacing: 0.0,
-                                            color: FitnessAppTheme.darkText,
-                                          ),
-                                        ),
-                                      ),
+                                    PDFFunctions(
+                                      filePickedStatus: isFilePicked,
+                                      fileLoadingStatus: isFileLoaded,
+                                      onTapAction: () => widget
+                                                      .mapOfFunctionDetails![
+                                                  'Sublist Functions'][index]
+                                              ['Action'](
+                                          file,
+                                          pdfPagesImages,
+                                          widget.mapOfFunctionDetails![
+                                              'Sublist Functions'][index],
+                                          context),
+                                      subFunctionDetailMap:
+                                          widget.mapOfFunctionDetails![
+                                              'Sublist Functions'][index],
+                                    ),
+                                    SizedBox(
+                                      height: index ==
+                                              widget
+                                                      .mapOfFunctionDetails![
+                                                          'Sublist Functions']
+                                                      .length -
+                                                  1
+                                          ? AdSize.banner.height.toDouble() + 10
+                                          : 20,
                                     ),
                                   ],
-                                ),
-                              ),
-                            ],
-                          ),
-                          ListView(
-                            shrinkWrap: true,
-                            controller: scrollController,
-                            children: List<Widget>.generate(
-                                widget
-                                    .mapOfFunctionDetails!['Sublist Functions']
-                                    .length, (int index) {
-                              return Column(
-                                children: [
-                                  PDFFunctions(
-                                    filePickedStatus: isFilePicked,
-                                    fileLoadingStatus: isFileLoaded,
-                                    onTapAction: () => widget
-                                                    .mapOfFunctionDetails![
-                                                'Sublist Functions'][index]
-                                            ['Action'](
-                                        file,
-                                        pdfPagesImages,
-                                        widget.mapOfFunctionDetails![
-                                            'Sublist Functions'][index],
-                                        context),
-                                    subFunctionDetailMap:
-                                        widget.mapOfFunctionDetails![
-                                            'Sublist Functions'][index],
-                                  ),
-                                  SizedBox(
-                                    height: index ==
-                                            widget
-                                                    .mapOfFunctionDetails![
-                                                        'Sublist Functions']
-                                                    .length -
-                                                1
-                                        ? AdSize.banner.height.toDouble() + 10
-                                        : 20,
-                                  ),
-                                ],
-                              );
-                            }),
-                          ),
-                        ],
+                                );
+                              }),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.grey.shade400),
-                          color: Colors.white,
-                          borderRadius: BorderRadius.all(Radius.circular(20)),
-                        ),
-                        height: 30,
-                        width: 70,
-                        child: Center(
-                          child: Text(
-                            'Step - 1',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontFamily: FitnessAppTheme.fontName,
-                              fontWeight: FontWeight.w500,
-                              fontSize: 14,
-                              letterSpacing: 0.0,
-                              color: FitnessAppTheme.darkText,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.grey.shade400),
+                            color: Colors.white,
+                            borderRadius: BorderRadius.all(Radius.circular(20)),
+                          ),
+                          height: 30,
+                          width: 70,
+                          child: Center(
+                            child: Text(
+                              'Step - 1',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontFamily: FitnessAppTheme.fontName,
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14,
+                                letterSpacing: 0.0,
+                                color: FitnessAppTheme.darkText,
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                ],
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
