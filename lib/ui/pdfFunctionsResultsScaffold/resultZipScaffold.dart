@@ -385,6 +385,18 @@ class _ResultZipScaffoldState extends State<ResultZipScaffold> {
                                           1) {
                                     Navigator.pop(
                                         context); //closes the saving dialog
+                                    final filesSavedNotifierSnackBar = SnackBar(
+                                      content: const Text(
+                                          'Files successfully saved in gallery.'),
+                                      action: SnackBarAction(
+                                        label: 'Ok',
+                                        onPressed: () {
+                                          // Some code to undo the change.
+                                        },
+                                      ),
+                                    );
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                        filesSavedNotifierSnackBar);
                                   }
                                 }
                               },
@@ -439,6 +451,18 @@ class _ResultZipScaffoldState extends State<ResultZipScaffold> {
                                     .whenComplete(() {
                                   Navigator.pop(
                                       context); //closes the saving dialog
+                                  final filesSavedNotifierSnackBar = SnackBar(
+                                    content: const Text(
+                                        'Files successfully saved in downloads.'),
+                                    action: SnackBarAction(
+                                      label: 'Ok',
+                                      onPressed: () {
+                                        // Some code to undo the change.
+                                      },
+                                    ),
+                                  );
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(filesSavedNotifierSnackBar);
                                 });
                               },
                               buttonIcon: Icons.folder_open_outlined,

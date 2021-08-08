@@ -332,8 +332,6 @@ class _PDFFunctionBodyForMultipleFilesState
 
   ScrollController scrollController = ScrollController();
 
-  var _openResult = 'Unknown';
-
   @override
   Widget build(BuildContext context) {
     return Stack(
