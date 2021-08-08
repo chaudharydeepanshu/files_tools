@@ -15,12 +15,12 @@ import 'package:files_tools/widgets/pdfFunctionsMainWidgets/permissionDialogBox.
 import 'package:open_file/open_file.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
-import '../../../app_theme/fitness_app_theme.dart';
+import '../../../app_theme/app_theme.dart';
 import '../../../basicFunctionalityFunctions/getSizeFromBytes.dart';
 import 'package:files_tools/ui/pdfViewerScaffold/pdfscaffold.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:files_tools/widgets/pdfFunctionsMainWidgets/pdfFunctionsButtons.dart';
-import '../../ad_state.dart';
+import '../../ads_state/ad_state.dart';
 
 class PDFFunctionBody extends StatefulWidget {
   const PDFFunctionBody(
@@ -932,7 +932,7 @@ class _PDFFunctionBodyState extends State<PDFFunctionBody>
                                                                       .center,
                                                               style: TextStyle(
                                                                 fontFamily:
-                                                                    FitnessAppTheme
+                                                                    AppTheme
                                                                         .fontName,
                                                                 fontWeight:
                                                                     FontWeight
@@ -940,9 +940,8 @@ class _PDFFunctionBodyState extends State<PDFFunctionBody>
                                                                 fontSize: 20,
                                                                 letterSpacing:
                                                                     0.0,
-                                                                color:
-                                                                    FitnessAppTheme
-                                                                        .darkText,
+                                                                color: AppTheme
+                                                                    .darkText,
                                                               ),
                                                             ),
                                                             SizedBox(
@@ -951,9 +950,8 @@ class _PDFFunctionBodyState extends State<PDFFunctionBody>
                                                             Icon(
                                                               Icons.add,
                                                               size: 30,
-                                                              color:
-                                                                  FitnessAppTheme
-                                                                      .darkText,
+                                                              color: AppTheme
+                                                                  .darkText,
                                                             ),
                                                           ],
                                                         )
@@ -969,7 +967,7 @@ class _PDFFunctionBodyState extends State<PDFFunctionBody>
                                                                       .center,
                                                               style: TextStyle(
                                                                 fontFamily:
-                                                                    FitnessAppTheme
+                                                                    AppTheme
                                                                         .fontName,
                                                                 fontWeight:
                                                                     FontWeight
@@ -977,9 +975,8 @@ class _PDFFunctionBodyState extends State<PDFFunctionBody>
                                                                 fontSize: 20,
                                                                 letterSpacing:
                                                                     0.0,
-                                                                color:
-                                                                    FitnessAppTheme
-                                                                        .darkText,
+                                                                color: AppTheme
+                                                                    .darkText,
                                                               ),
                                                             ),
                                                           ],
@@ -1019,12 +1016,11 @@ class _PDFFunctionBodyState extends State<PDFFunctionBody>
                                             'Step - 2',
                                             textAlign: TextAlign.center,
                                             style: TextStyle(
-                                              fontFamily:
-                                                  FitnessAppTheme.fontName,
+                                              fontFamily: AppTheme.fontName,
                                               fontWeight: FontWeight.w500,
                                               fontSize: 14,
                                               letterSpacing: 0.0,
-                                              color: FitnessAppTheme.darkText,
+                                              color: AppTheme.darkText,
                                             ),
                                           ),
                                         ),
@@ -1094,11 +1090,11 @@ class _PDFFunctionBodyState extends State<PDFFunctionBody>
                               'Step - 1',
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                fontFamily: FitnessAppTheme.fontName,
+                                fontFamily: AppTheme.fontName,
                                 fontWeight: FontWeight.w500,
                                 fontSize: 14,
                                 letterSpacing: 0.0,
-                                color: FitnessAppTheme.darkText,
+                                color: AppTheme.darkText,
                               ),
                             ),
                           ),

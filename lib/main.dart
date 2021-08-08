@@ -20,7 +20,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
-import 'ad_state.dart';
+import 'ads_state/ad_state.dart';
 import 'navigation/page_routes_model.dart';
 
 Future<void> main() async {

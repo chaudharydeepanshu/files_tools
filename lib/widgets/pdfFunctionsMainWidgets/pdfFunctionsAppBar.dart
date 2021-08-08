@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import '../../app_theme/fitness_app_theme.dart';
+import '../../app_theme/app_theme.dart';
 import 'onWillPopDialog.dart';
 
 class PdfFunctionsAppBar extends StatefulWidget with PreferredSizeWidget {
@@ -102,11 +102,11 @@ class _PdfFunctionsAppBarState extends State<PdfFunctionsAppBar> {
                                 'Split PDF',
                             textAlign: TextAlign.start,
                             style: TextStyle(
-                                fontFamily: FitnessAppTheme.fontName,
+                                fontFamily: AppTheme.fontName,
                                 fontWeight: FontWeight.w800,
                                 fontSize: 17,
                                 letterSpacing: -0.1,
-                                color: FitnessAppTheme.darkText),
+                                color: AppTheme.darkText),
                           ),
                         ),
                         SizedBox(
@@ -119,10 +119,10 @@ class _PdfFunctionsAppBarState extends State<PdfFunctionsAppBar> {
                                 'Easily extract pages from PDF file',
                             textAlign: TextAlign.left,
                             style: TextStyle(
-                              fontFamily: FitnessAppTheme.fontName,
+                              fontFamily: AppTheme.fontName,
                               fontWeight: FontWeight.w600,
                               fontSize: 13,
-                              color: FitnessAppTheme.grey.withOpacity(1),
+                              color: AppTheme.grey.withOpacity(1),
                             ),
                           ),
                         ),

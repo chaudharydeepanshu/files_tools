@@ -20,7 +20,7 @@ import 'dart:async';
 import 'package:files_tools/basicFunctionalityFunctions/manageAppDirectoryAndCache.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:share_plus/share_plus.dart';
-import '../../app_theme/fitness_app_theme.dart';
+import '../../app_theme/app_theme.dart';
 import '../../basicFunctionalityFunctions/getSizeFromBytes.dart';
 import 'package:path/path.dart' as PathLibrary;
 import 'package:store_redirect/store_redirect.dart';
@@ -241,7 +241,7 @@ class _ResultZipScaffoldState extends State<ResultZipScaffold> {
                           'Your files are ready',
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                            fontFamily: FitnessAppTheme.fontName,
+                            fontFamily: AppTheme.fontName,
                             fontWeight: FontWeight.w600,
                             fontSize: 25,
                             color: Color(0xFFF2C614),
@@ -257,7 +257,7 @@ class _ResultZipScaffoldState extends State<ResultZipScaffold> {
                           'File Size : ${formatBytes(File('$tempZipPath').lengthSync(), 2)}',
                           textAlign: TextAlign.left,
                           style: TextStyle(
-                            fontFamily: FitnessAppTheme.fontName,
+                            fontFamily: AppTheme.fontName,
                             fontWeight: FontWeight.w600,
                             fontSize: 16,
                             color: Color(0xFFF2C614),

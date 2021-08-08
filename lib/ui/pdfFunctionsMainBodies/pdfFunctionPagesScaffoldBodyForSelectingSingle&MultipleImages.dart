@@ -16,14 +16,14 @@ import 'package:files_tools/widgets/pdfFunctionsMainWidgets/dialogActionBodyOfBu
 import 'package:files_tools/widgets/pdfFunctionsMainWidgets/permissionDialogBox.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
-import '../../../app_theme/fitness_app_theme.dart';
+import '../../../app_theme/app_theme.dart';
 import '../../../basicFunctionalityFunctions/getSizeFromBytes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:files_tools/widgets/pdfFunctionsMainWidgets/pdfFunctionsButtons.dart';
 
-import '../../ad_state.dart';
+import '../../ads_state/ad_state.dart';
 
 class PDFFunctionBodyForSelectingSingleMultipleImages extends StatefulWidget {
   const PDFFunctionBodyForSelectingSingleMultipleImages(
@@ -916,7 +916,7 @@ class _PDFFunctionBodyForSelectingSingleMultipleImagesState
                                                                       .center,
                                                               style: TextStyle(
                                                                 fontFamily:
-                                                                    FitnessAppTheme
+                                                                    AppTheme
                                                                         .fontName,
                                                                 fontWeight:
                                                                     FontWeight
@@ -924,9 +924,8 @@ class _PDFFunctionBodyForSelectingSingleMultipleImagesState
                                                                 fontSize: 20,
                                                                 letterSpacing:
                                                                     0.0,
-                                                                color:
-                                                                    FitnessAppTheme
-                                                                        .darkText,
+                                                                color: AppTheme
+                                                                    .darkText,
                                                               ),
                                                             ),
                                                             SizedBox(
@@ -952,7 +951,7 @@ class _PDFFunctionBodyForSelectingSingleMultipleImagesState
                                                                       .center,
                                                               style: TextStyle(
                                                                 fontFamily:
-                                                                    FitnessAppTheme
+                                                                    AppTheme
                                                                         .fontName,
                                                                 fontWeight:
                                                                     FontWeight
@@ -960,9 +959,8 @@ class _PDFFunctionBodyForSelectingSingleMultipleImagesState
                                                                 fontSize: 20,
                                                                 letterSpacing:
                                                                     0.0,
-                                                                color:
-                                                                    FitnessAppTheme
-                                                                        .darkText,
+                                                                color: AppTheme
+                                                                    .darkText,
                                                               ),
                                                             ),
                                                           ],
@@ -1002,12 +1000,11 @@ class _PDFFunctionBodyForSelectingSingleMultipleImagesState
                                             'Step - 2',
                                             textAlign: TextAlign.center,
                                             style: TextStyle(
-                                              fontFamily:
-                                                  FitnessAppTheme.fontName,
+                                              fontFamily: AppTheme.fontName,
                                               fontWeight: FontWeight.w500,
                                               fontSize: 14,
                                               letterSpacing: 0.0,
-                                              color: FitnessAppTheme.darkText,
+                                              color: AppTheme.darkText,
                                             ),
                                           ),
                                         ),
@@ -1085,11 +1082,11 @@ class _PDFFunctionBodyForSelectingSingleMultipleImagesState
                               'Step - 1',
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                fontFamily: FitnessAppTheme.fontName,
+                                fontFamily: AppTheme.fontName,
                                 fontWeight: FontWeight.w500,
                                 fontSize: 14,
                                 letterSpacing: 0.0,
-                                color: FitnessAppTheme.darkText,
+                                color: AppTheme.darkText,
                               ),
                             ),
                           ),

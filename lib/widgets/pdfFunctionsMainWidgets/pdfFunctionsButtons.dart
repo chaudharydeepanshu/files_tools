@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:files_tools/app_theme/fitness_app_theme.dart';
+import 'package:files_tools/app_theme/app_theme.dart';
 
 class PDFFunctions extends StatefulWidget {
   const PDFFunctions(
@@ -125,7 +125,7 @@ class _PDFFunctionsState extends State<PDFFunctions> {
                                       'Extract select pages',
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
-                                    fontFamily: FitnessAppTheme.fontName,
+                                    fontFamily: AppTheme.fontName,
                                     fontWeight: FontWeight.w500,
                                     fontSize: 15,
                                     letterSpacing: 0.0,
@@ -133,7 +133,7 @@ class _PDFFunctionsState extends State<PDFFunctions> {
                                         ? Colors.black
                                         : widget.subFunctionDetailMap![
                                                 'Button Text Color'] ??
-                                            FitnessAppTheme.darkText,
+                                            AppTheme.darkText,
                                   ),
                                 ),
                                 SizedBox(
@@ -144,7 +144,7 @@ class _PDFFunctionsState extends State<PDFFunctions> {
                                       'All selected page will be extracted in 1 PDF',
                                   textAlign: TextAlign.start,
                                   style: TextStyle(
-                                    fontFamily: FitnessAppTheme.fontName,
+                                    fontFamily: AppTheme.fontName,
                                     fontWeight: FontWeight.w500,
                                     fontSize: 12,
                                     letterSpacing: 0.0,
@@ -152,7 +152,7 @@ class _PDFFunctionsState extends State<PDFFunctions> {
                                         ? Colors.black
                                         : widget.subFunctionDetailMap![
                                                 'Button Text Color'] ??
-                                            FitnessAppTheme.darkText,
+                                            AppTheme.darkText,
                                   ),
                                 ),
                               ],
@@ -183,13 +183,13 @@ class _PDFFunctionsState extends State<PDFFunctions> {
                                     child: Text(
                                       'Complete Step - 1 To Unlock',
                                       style: TextStyle(
-                                        fontFamily: FitnessAppTheme.fontName,
+                                        fontFamily: AppTheme.fontName,
                                         fontWeight: FontWeight.w400,
                                         fontSize: 13,
                                         letterSpacing: 0.0,
                                         color: widget.subFunctionDetailMap![
                                                 'Button Text Color'] ??
-                                            FitnessAppTheme.darkText,
+                                            AppTheme.darkText,
                                       ),
                                     ),
                                   ),
@@ -215,14 +215,13 @@ class _PDFFunctionsState extends State<PDFFunctions> {
                                         child: Text(
                                           'Unlocked Once Loading Completes',
                                           style: TextStyle(
-                                            fontFamily:
-                                                FitnessAppTheme.fontName,
+                                            fontFamily: AppTheme.fontName,
                                             fontWeight: FontWeight.w400,
                                             fontSize: 13,
                                             letterSpacing: 0.0,
                                             color: widget.subFunctionDetailMap![
                                                     'Button Text Color'] ??
-                                                FitnessAppTheme.darkText,
+                                                AppTheme.darkText,
                                           ),
                                         ),
                                       ),

@@ -15,7 +15,7 @@ import 'package:files_tools/widgets/reusableUIWidgets/ReusableTopAppBar.dart';
 import 'dart:io';
 import 'dart:async';
 import 'package:files_tools/basicFunctionalityFunctions/manageAppDirectoryAndCache.dart';
-import '../../app_theme/fitness_app_theme.dart';
+import '../../app_theme/app_theme.dart';
 import '../../basicFunctionalityFunctions/getSizeFromBytes.dart';
 
 class ResultPDFScaffold extends StatefulWidget {
@@ -158,7 +158,7 @@ class _ResultPDFScaffoldState extends State<ResultPDFScaffold> {
                           'Your PDF is ready',
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                            fontFamily: FitnessAppTheme.fontName,
+                            fontFamily: AppTheme.fontName,
                             fontWeight: FontWeight.w600,
                             fontSize: 25,
                             color: Colors.red,
@@ -174,7 +174,7 @@ class _ResultPDFScaffoldState extends State<ResultPDFScaffold> {
                           'File Size : ${formatBytes(File('$tempPdfPath').lengthSync(), 2)}',
                           textAlign: TextAlign.left,
                           style: TextStyle(
-                            fontFamily: FitnessAppTheme.fontName,
+                            fontFamily: AppTheme.fontName,
                             fontWeight: FontWeight.w600,
                             fontSize: 16,
                             color: Colors.red,

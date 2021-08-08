@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:files_tools/app_theme/fitness_app_theme.dart';
+import 'package:files_tools/app_theme/app_theme.dart';
 
 Widget progressFakeDialogBox = SafeArea(
   child: Scaffold(
@@ -24,11 +24,11 @@ Widget progressFakeDialogBox = SafeArea(
               'Processing Data\n\nPlease Wait...',
               textAlign: TextAlign.center,
               style: TextStyle(
-                fontFamily: FitnessAppTheme.fontName,
+                fontFamily: AppTheme.fontName,
                 fontWeight: FontWeight.w500,
                 fontSize: 18,
                 letterSpacing: 0.0,
-                color: FitnessAppTheme.darkText,
+                color: AppTheme.darkText,
               ),
             ),
           ],
@@ -60,7 +60,7 @@ Future<void> processingDialog(BuildContext context) async {
                 'Processing Data\n\nPlease Wait...',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  fontFamily: FitnessAppTheme.fontName,
+                  fontFamily: AppTheme.fontName,
                   fontWeight: FontWeight.w500,
                   fontSize: 18,
                   letterSpacing: 0.0,

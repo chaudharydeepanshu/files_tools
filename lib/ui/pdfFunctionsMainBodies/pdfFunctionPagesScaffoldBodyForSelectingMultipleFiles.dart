@@ -15,13 +15,13 @@ import 'package:files_tools/widgets/pdfFunctionsMainWidgets/permissionDialogBox.
 import 'package:files_tools/widgets/pdfFunctionsMainWidgets/dialogActionBodyOfButtonForSelectedMultipleFiles.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
-import '../../../app_theme/fitness_app_theme.dart';
+import '../../../app_theme/app_theme.dart';
 import '../../../basicFunctionalityFunctions/getSizeFromBytes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:io';
 import 'package:files_tools/widgets/pdfFunctionsMainWidgets/pdfFunctionsButtons.dart';
 
-import '../../ad_state.dart';
+import '../../ads_state/ad_state.dart';
 
 class PDFFunctionBodyForMultipleFiles extends StatefulWidget {
   const PDFFunctionBodyForMultipleFiles(
@@ -1064,7 +1064,7 @@ class _PDFFunctionBodyForMultipleFilesState
                                                                       .center,
                                                               style: TextStyle(
                                                                 fontFamily:
-                                                                    FitnessAppTheme
+                                                                    AppTheme
                                                                         .fontName,
                                                                 fontWeight:
                                                                     FontWeight
@@ -1072,9 +1072,8 @@ class _PDFFunctionBodyForMultipleFilesState
                                                                 fontSize: 20,
                                                                 letterSpacing:
                                                                     0.0,
-                                                                color:
-                                                                    FitnessAppTheme
-                                                                        .darkText,
+                                                                color: AppTheme
+                                                                    .darkText,
                                                               ),
                                                             ),
                                                             SizedBox(
@@ -1100,7 +1099,7 @@ class _PDFFunctionBodyForMultipleFilesState
                                                                       .center,
                                                               style: TextStyle(
                                                                 fontFamily:
-                                                                    FitnessAppTheme
+                                                                    AppTheme
                                                                         .fontName,
                                                                 fontWeight:
                                                                     FontWeight
@@ -1108,9 +1107,8 @@ class _PDFFunctionBodyForMultipleFilesState
                                                                 fontSize: 20,
                                                                 letterSpacing:
                                                                     0.0,
-                                                                color:
-                                                                    FitnessAppTheme
-                                                                        .darkText,
+                                                                color: AppTheme
+                                                                    .darkText,
                                                               ),
                                                             ),
                                                           ],
@@ -1150,12 +1148,11 @@ class _PDFFunctionBodyForMultipleFilesState
                                             'Step - 2',
                                             textAlign: TextAlign.center,
                                             style: TextStyle(
-                                              fontFamily:
-                                                  FitnessAppTheme.fontName,
+                                              fontFamily: AppTheme.fontName,
                                               fontWeight: FontWeight.w500,
                                               fontSize: 14,
                                               letterSpacing: 0.0,
-                                              color: FitnessAppTheme.darkText,
+                                              color: AppTheme.darkText,
                                             ),
                                           ),
                                         ),
@@ -1228,11 +1225,11 @@ class _PDFFunctionBodyForMultipleFilesState
                               'Step - 1',
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                fontFamily: FitnessAppTheme.fontName,
+                                fontFamily: AppTheme.fontName,
                                 fontWeight: FontWeight.w500,
                                 fontSize: 14,
                                 letterSpacing: 0.0,
-                                color: FitnessAppTheme.darkText,
+                                color: AppTheme.darkText,
                               ),
                             ),
                           ),

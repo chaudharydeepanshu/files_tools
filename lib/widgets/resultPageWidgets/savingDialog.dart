@@ -1,4 +1,4 @@
-import 'package:files_tools/app_theme/fitness_app_theme.dart';
+import 'package:files_tools/app_theme/app_theme.dart';
 import 'package:flutter/material.dart';
 
 Future<void> savingDialog(BuildContext context) async {
@@ -23,7 +23,7 @@ Future<void> savingDialog(BuildContext context) async {
                 'Saving Data\n\nPlease Wait...',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  fontFamily: FitnessAppTheme.fontName,
+                  fontFamily: AppTheme.fontName,
                   fontWeight: FontWeight.w500,
                   fontSize: 18,
                   letterSpacing: 0.0,

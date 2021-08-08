@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:files_tools/widgets/topLevelPagesWidgets/homeWidgets/expanding_container/expanding_container.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
-import '../../ad_state.dart';
+import '../../ads_state/ad_state.dart';
 import '../../toolExpandingContainersAndFunctionsMaps/tool_cards_details_maps.dart';
 
 class HomeBody extends StatefulWidget {
