@@ -931,6 +931,7 @@ class _PDFFunctionBodyForSelectingSingleMultipleImagesState
                                                           Icon(
                                                             Icons.add,
                                                             size: 30,
+                                                            color: Colors.black,
                                                           ),
                                                         ],
                                                       )

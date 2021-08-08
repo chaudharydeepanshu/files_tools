@@ -1073,6 +1073,7 @@ class _PDFFunctionBodyForMultipleFilesState
                                                           Icon(
                                                             Icons.add,
                                                             size: 30,
+                                                            color: Colors.black,
                                                           ),
                                                         ],
                                                       )
