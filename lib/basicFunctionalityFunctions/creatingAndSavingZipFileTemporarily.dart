@@ -14,12 +14,12 @@ Future<String?> creatingAndSavingZipFileTemporarily(map) async {
       fileName: _pdfFileName, extensionOfString: extensionOfFileName);
 
   //removing unnecessary documents from getExternalStorageDirectory
-  void removingTempPDFFiles() {
-    for (int i = 0; i < _rangesPdfsFilePaths.length; i++) {
-      deletingTempPDFFiles(
-          "${getFileNameFromFilePath(_rangesPdfsFilePaths[i])}");
-    }
-  }
+  // void removingTempPDFFiles() {
+  //   for (int i = 0; i < _rangesPdfsFilePaths.length; i++) {
+  //     deletingTempPDFFiles(
+  //         "${getFileNameFromFilePath(_rangesPdfsFilePaths[i])}");
+  //   }
+  // }
 
   //creating a zip archive of the pdf documents and saving temporarily
   Future<String?> saveFileTemporarily(String fileName) async {

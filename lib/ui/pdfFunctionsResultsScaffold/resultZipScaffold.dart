@@ -13,7 +13,6 @@ import 'package:open_file/open_file.dart';
 import 'package:files_tools/basicFunctionalityFunctions/fileNameManager.dart';
 import 'package:files_tools/navigation/page_routes_model.dart';
 import 'package:files_tools/ui/topLevelPagesScaffold/mainPageScaffold.dart';
-import 'package:files_tools/widgets/pdfFunctionsMainWidgets/permissionDialogBox.dart';
 import 'package:files_tools/widgets/resultPageWidgets/ResultPageButtons.dart';
 import 'package:files_tools/widgets/reusableUIWidgets/ReusableTopAppBar.dart';
 import 'dart:io';
