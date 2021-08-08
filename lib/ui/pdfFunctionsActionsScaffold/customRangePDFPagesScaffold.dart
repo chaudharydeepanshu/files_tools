@@ -187,6 +187,7 @@ class _CustomRangePDFPagesScaffoldState
       setState(() {
         selectedDataProcessed = true;
       });
+      processingDialog(context); //shows the processing dialog
 
       List<String>? rangesPdfsFilePaths;
       Future.delayed(const Duration(milliseconds: 500), () async {
@@ -225,6 +226,7 @@ class _CustomRangePDFPagesScaffoldState
           if (rangesPdfsFilePaths != null &&
               shouldDataBeProcessed == true &&
               value != null) {
+            Navigator.pop(context); //closes the processing dialog
             Navigator.pushNamed(
               context,
               PageRoutes.resultZipScaffold,
