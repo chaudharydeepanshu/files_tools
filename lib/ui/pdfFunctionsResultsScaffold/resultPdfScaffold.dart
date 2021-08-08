@@ -148,7 +148,7 @@ class _ResultPDFScaffoldState extends State<ResultPDFScaffold> {
                             fit: BoxFit.fitHeight,
                             height: 100,
                             alignment: Alignment.center,
-                            semanticsLabel: 'A red up arrow'),
+                            semanticsLabel: 'PDF File Icon'),
                       ),
                       SizedBox(
                         height: 20,

@@ -140,7 +140,8 @@ class _PdfFunctionsAppBarState extends State<PdfFunctionsAppBar> {
                                 .mapOfFunctionDetails!['Icon And Text Color'] ??
                             null,
                         alignment: Alignment.center,
-                        semanticsLabel: 'A red up arrow'),
+                        semanticsLabel:
+                            '${widget.mapOfFunctionDetails!['Title']} Icon'),
                     // Image.asset(
                     //   widget.mapOfFunctionDetails!['Icon Asset'] ??
                     //       'assets/images/pdf_icon.png',

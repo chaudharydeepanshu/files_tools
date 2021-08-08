@@ -302,7 +302,7 @@ class _CustomExpansionTileState extends State<CustomExpansionTile>
                                   height: 45,
                                   color: null,
                                   alignment: Alignment.center,
-                                  semanticsLabel: 'A red up arrow'),
+                                  semanticsLabel: 'No Asset Function Icon'),
                               // Image.asset(
                               //   'assets/images/pdf_icon.png',
                               //   fit: BoxFit.fitHeight,

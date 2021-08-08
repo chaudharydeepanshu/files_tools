@@ -231,7 +231,7 @@ class _ResultZipScaffoldState extends State<ResultZipScaffold> {
                             fit: BoxFit.fitHeight,
                             height: 100,
                             alignment: Alignment.center,
-                            semanticsLabel: 'A red up arrow'),
+                            semanticsLabel: 'Zip File Icon'),
                       ),
                       SizedBox(
                         height: 20,

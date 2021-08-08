@@ -674,7 +674,7 @@ class _PDFFunctionBodyForSelectingSingleMultipleImagesState
                                                                         Alignment
                                                                             .center,
                                                                     semanticsLabel:
-                                                                        'A red up arrow'),
+                                                                        'File Icon'),
                                                                 // Image.asset(
                                                                 //   'assets/images/pdf_icon.png',
                                                                 //   fit: BoxFit.fitHeight,

@@ -87,7 +87,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                             fit: BoxFit.fitHeight,
                             height: 100,
                             alignment: Alignment.center,
-                            semanticsLabel: 'A red up arrow'),
+                            semanticsLabel: 'App Logo'),
                         SizedBox(
                           height: 10,
                         ),

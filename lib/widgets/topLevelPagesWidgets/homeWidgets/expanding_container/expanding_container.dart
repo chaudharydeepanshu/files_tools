@@ -76,7 +76,7 @@ class ExpandingContainer extends StatelessWidget {
                   height: 45,
                   color: mapOfCardDetails!['Card Asset Color'] ?? null,
                   alignment: Alignment.center,
-                  semanticsLabel: 'A red up arrow'),
+                  semanticsLabel: '${mapOfCardDetails!['Card Title']} Icon'),
             ),
           ),
         ],
@@ -159,7 +159,8 @@ class ButtonsOfDocFunctions extends StatelessWidget {
                       color:
                           mapOfFunctionIconAndAction!['Icon And Text Color'] ??
                               Color(0xFFF9C7D8),
-                      semanticsLabel: 'A red up arrow'),
+                      semanticsLabel:
+                          '${mapOfFunctionIconAndAction!['Function']} Icon'),
                   SizedBox(
                     width: 10,
                   ),

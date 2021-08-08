@@ -143,7 +143,7 @@ class _DialogActionBodyOfButtonForSelectedMultipleFilesState
                                               'Select File Icon Color'] ??
                                           null,
                                       alignment: Alignment.center,
-                                      semanticsLabel: 'A red up arrow'),
+                                      semanticsLabel: 'File Icon'),
                                   // Image.asset(
                                   //   'assets/images/pdf_icon.png',
                                   //   fit: BoxFit.fitHeight,
