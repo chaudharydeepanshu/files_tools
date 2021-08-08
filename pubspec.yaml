@@ -31,7 +31,6 @@ dependencies:
   path_provider: ^2.0.2
   native_pdf_renderer: ^3.1.0
   pdf_merger: ^0.0.6
-  #file_picker_cross: ^4.4.0
   flutter_file_dialog: ^2.1.1
   flutter_svg: ^0.22.0
   reorderable_grid_view: ^1.1.0-alpha.4
