@@ -80,7 +80,6 @@ class _BannerADState extends State<BannerAD> with WidgetsBindingObserver {
 
   @override
   void dispose() {
-    WidgetsBinding.instance!.removeObserver(this);
     _connectivitySubscription.cancel();
     super.dispose();
   }
@@ -97,7 +96,6 @@ class _BannerADState extends State<BannerAD> with WidgetsBindingObserver {
     //     lifecycleEventHandler.LifecycleEventHandler(resumeCallBack: () async {
     //   print('resumeCallBack');
     // }));
-    WidgetsBinding.instance!.addObserver(this);
   }
 
   // Platform messages are asynchronous, so we initialize in an async method.
@@ -130,36 +128,22 @@ class _BannerADState extends State<BannerAD> with WidgetsBindingObserver {
     });
   }
 
-  tempFunction() async {
-    await createAnchoredBanner(context).then((value) {
-      setState(() {
-        size = value;
-      });
-    });
-  }
-
-  @override
-  void didChangeMetrics() {
-    tempFunction();
-    print('orientation changed');
-  }
-
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     final adState = Provider.of<AdState>(context);
     // size = AnchoredAdaptiveBannerAdSize(Orientation.portrait,height: 50, width: 150);
     adState.initialization.then((value) async {
-      if (size == null) {
-        size = await createAnchoredBanner(context);
-      }
+      // if (size == null) {
+      size = await createAnchoredBanner(context);
+      // }
       setState(() {
         banner = BannerAd(
           listener: adState.adListener,
           adUnitId: adState.bannerAdUnitId,
           request: AdRequest(),
-          size: //size!,
-              AdSize.banner,
+          size: size!,
+          //AdSize.banner,
         )..load();
       });
     });
