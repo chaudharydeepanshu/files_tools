@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:files_tools/ads_state/ad_state.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -12,7 +13,9 @@ import 'package:files_tools/ui/pdfFunctionsResultsScaffold/resultPdfScaffold.dar
 import 'package:files_tools/ui/pdfViewerScaffold/pdfscaffold.dart';
 import 'package:files_tools/widgets/pdfFunctionsActionWidgets/reusableUIActionWidgets/progressFakeDialogBox.dart';
 import 'package:files_tools/widgets/reusableUIWidgets/ReusableTopAppBar.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:open_file/open_file.dart';
+import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
 import 'package:uuid/uuid.dart';
 import 'package:native_pdf_renderer/native_pdf_renderer.dart' as pdfRenderer;
@@ -344,65 +347,102 @@ class _MergePDFPagesScaffoldState extends State<MergePDFPagesScaffold>
     return true;
   }
 
+  BannerAd? banner;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final adState = Provider.of<AdState>(context);
+    adState.initialization.then((value) {
+      setState(() {
+        banner = BannerAd(
+          listener: adState.adListener,
+          adUnitId: adState.bannerAdUnitId,
+          request: AdRequest(),
+          size: AdSize.banner,
+        )..load();
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-      child: WillPopScope(
-        onWillPop: shouldWePopScaffold == true ? _directPop : _onWillPop,
-        child: Stack(
-          children: [
-            Scaffold(
-              appBar: ReusableSilverAppBar(
-                title: 'Reorder & Merge PDFs',
-                titleColor: Colors.black,
-                leftButtonColor: Colors.red,
-                appBarIconLeft: appBarIconLeft,
-                appBarIconLeftToolTip: appBarIconLeftToolTip,
-                appBarIconLeftAction: appBarIconLeftAction,
-                rightButtonColor: Colors.blue,
-                appBarIconRight: appBarIconRight,
-                appBarIconRightToolTip: appBarIconRightToolTip,
-                appBarIconRightAction: appBarIconRightAction,
-              ),
-              body: SingleChildScrollView(
-                child: Column(
-                  children: <Widget>[
-                    ReorderableListView(
-                      header: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          children: [
-                            Text('Reorder PDFs:'),
-                          ],
-                        ),
-                      ),
-                      shrinkWrap: true,
-                      physics: ClampingScrollPhysics(),
-                      children: filesListForReorderableListView,
-                      onReorder: (int oldIndex, int newIndex) {
-                        setState(() {
-                          if (oldIndex < newIndex) {
-                            newIndex -= 1;
-                          }
-                          final Widget item = filesListForReorderableListView
-                              .removeAt(oldIndex);
-                          filesListForReorderableListView.insert(
-                              newIndex, item);
-
-                          final int item2 =
-                              filesReorderRecorder.removeAt(oldIndex);
-                          filesReorderRecorder.insert(newIndex, item2);
-                        });
-                      },
-                    ),
-                  ],
-                ),
-              ),
+    return WillPopScope(
+      onWillPop: shouldWePopScaffold == true ? _directPop : _onWillPop,
+      child: Stack(
+        children: [
+          Scaffold(
+            appBar: ReusableSilverAppBar(
+              title: 'Reorder & Merge PDFs',
+              titleColor: Colors.black,
+              leftButtonColor: Colors.red,
+              appBarIconLeft: appBarIconLeft,
+              appBarIconLeftToolTip: appBarIconLeftToolTip,
+              appBarIconLeftAction: appBarIconLeftAction,
+              rightButtonColor: Colors.blue,
+              appBarIconRight: appBarIconRight,
+              appBarIconRightToolTip: appBarIconRightToolTip,
+              appBarIconRightAction: appBarIconRightAction,
             ),
-            // selectedDataProcessed == true ? progressFakeDialogBox : Container(),
-          ],
-        ),
+            body: Stack(
+              children: [
+                SingleChildScrollView(
+                  child: Column(
+                    children: <Widget>[
+                      ReorderableListView(
+                        header: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            children: [
+                              Text('Reorder PDFs:'),
+                            ],
+                          ),
+                        ),
+                        shrinkWrap: true,
+                        physics: ClampingScrollPhysics(),
+                        children: filesListForReorderableListView,
+                        onReorder: (int oldIndex, int newIndex) {
+                          setState(() {
+                            if (oldIndex < newIndex) {
+                              newIndex -= 1;
+                            }
+                            final Widget item = filesListForReorderableListView
+                                .removeAt(oldIndex);
+                            filesListForReorderableListView.insert(
+                                newIndex, item);
+
+                            final int item2 =
+                                filesReorderRecorder.removeAt(oldIndex);
+                            filesReorderRecorder.insert(newIndex, item2);
+                          });
+                        },
+                      ),
+                      SizedBox(
+                        height: AdSize.banner.height.toDouble(),
+                      ),
+                    ],
+                  ),
+                ),
+                banner == null
+                    ? SizedBox(
+                        height: AdSize.banner.height.toDouble(),
+                      )
+                    : Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Container(
+                            height: AdSize.banner.height.toDouble(),
+                            child: AdWidget(
+                              ad: banner!,
+                            ),
+                          ),
+                        ],
+                      ),
+              ],
+            ),
+          ),
+          // selectedDataProcessed == true ? progressFakeDialogBox : Container(),
+        ],
       ),
     );
   }

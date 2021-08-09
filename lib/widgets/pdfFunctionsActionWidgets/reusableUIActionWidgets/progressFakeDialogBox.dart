@@ -40,7 +40,7 @@ Widget progressFakeDialogBox = SafeArea(
 
 Future<void> processingDialog(BuildContext context) async {
   await showDialog<bool>(
-    barrierDismissible: true,
+    barrierDismissible: false,
     context: context,
     builder: (BuildContext context) {
       return SimpleDialog(

@@ -1,13 +1,16 @@
+import 'package:files_tools/ads_state/ad_state.dart';
 import 'package:files_tools/ui/pdfViewerScaffold/pdfscaffold.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_file_dialog/flutter_file_dialog.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:open_file/open_file.dart';
 import 'package:files_tools/basicFunctionalityFunctions/fileNameManager.dart';
 import 'package:files_tools/navigation/page_routes_model.dart';
 import 'package:files_tools/ui/topLevelPagesScaffold/mainPageScaffold.dart';
 import 'package:files_tools/widgets/resultPageWidgets/ResultPageButtons.dart';
+import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:store_redirect/store_redirect.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
@@ -108,6 +111,24 @@ class _ResultPDFScaffoldState extends State<ResultPDFScaffold> {
   }
 
   var _openResult = 'Unknown';
+
+  BannerAd? banner;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final adState = Provider.of<AdState>(context);
+    adState.initialization.then((value) {
+      setState(() {
+        banner = BannerAd(
+          listener: adState.adListener,
+          adUnitId: adState.bannerAdUnitId,
+          request: AdRequest(),
+          size: AdSize.banner,
+        )..load();
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -274,10 +295,28 @@ class _ResultPDFScaffoldState extends State<ResultPDFScaffold> {
                         mapOfSubFunctionDetails:
                             widget.arguments!.mapOfSubFunctionDetails,
                       ),
+                      SizedBox(
+                        height: AdSize.banner.height.toDouble(),
+                      ),
                     ],
                   ),
                 ),
               ),
+              banner == null
+                  ? SizedBox(
+                      height: AdSize.banner.height.toDouble(),
+                    )
+                  : Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Container(
+                          height: AdSize.banner.height.toDouble(),
+                          child: AdWidget(
+                            ad: banner!,
+                          ),
+                        ),
+                      ],
+                    ),
               viewPDFBannerStatus
                   ? Column(
                       mainAxisAlignment: MainAxisAlignment.end,
