@@ -48,7 +48,7 @@ class _PdfFunctionsAppBarState extends State<PdfFunctionsAppBar> {
                   SizedBox(
                     width: 220,
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Padding(
