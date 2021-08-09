@@ -32,6 +32,7 @@ class _PdfFunctionsAppBarState extends State<PdfFunctionsAppBar> {
         color: widget.mapOfFunctionDetails!['BG Color'] ?? null,
         border: Border(
           bottom: BorderSide(
+            width: 2,
             color: widget.mapOfFunctionDetails!['BG Color'] ?? null,
           ),
         ),

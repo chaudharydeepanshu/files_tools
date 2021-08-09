@@ -269,7 +269,16 @@ class _PDFFunctionBodyState extends State<PDFFunctionBody>
                   children: [
                     Container(
                       height: 15,
-                      color: widget.mapOfFunctionDetails!['BG Color'] ?? null,
+                      decoration: BoxDecoration(
+                        color: widget.mapOfFunctionDetails!['BG Color'] ?? null,
+                        border: Border(
+                          top: BorderSide(
+                            width: 2,
+                            color: widget.mapOfFunctionDetails!['BG Color'] ??
+                                null,
+                          ),
+                        ),
+                      ),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(top: 15),
