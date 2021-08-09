@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:file_picker/file_picker.dart';
 import 'package:files_tools/ads_state/banner_ad.dart';
 import 'package:files_tools/basicFunctionalityFunctions/currentDateTimeInString.dart';
+import 'package:files_tools/widgets/annotatedRegion.dart';
 import 'package:files_tools/widgets/resultPageWidgets/savingDialog.dart';
 import 'package:files_tools/widgets/resultPageWidgets/viewFileBanner.dart';
 import 'package:flutter/foundation.dart';
@@ -197,198 +198,269 @@ class _ResultZipScaffoldState extends State<ResultZipScaffold> {
   @override
   Widget build(BuildContext context) {
     print(extensionOfSingleFileFromZip);
-    return GestureDetector(
-      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-      child: WillPopScope(
-        onWillPop: () async {
-          deleteFile();
-          //deleteCacheDir();
-          deleteAppDir();
-          return true;
-        },
-        child: Scaffold(
-          appBar: ReusableSilverAppBar(
-            title: 'Result',
-            titleColor: Colors.black,
-            leftButtonColor: Colors.red,
-            appBarIconLeft: appBarIconLeft,
-            appBarIconLeftToolTip: appBarIconLeftToolTip,
-            appBarIconLeftAction: appBarIconLeftAction,
-            rightButtonColor: Colors.blue,
-            appBarIconRight: appBarIconRight,
-            appBarIconRightToolTip: appBarIconRightToolTip,
-            appBarIconRightAction: appBarIconRightAction,
-          ),
-          body: Stack(
-            children: [
-              SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.all(24.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Center(
-                        child: SvgPicture.asset(
-                            'assets/images/tools_icons/zip_tools_icon.svg',
-                            fit: BoxFit.fitHeight,
-                            height: 100,
-                            alignment: Alignment.center,
-                            semanticsLabel: 'Zip File Icon'),
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Center(
-                        child: Text(
-                          'Your files are ready',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontFamily: AppTheme.fontName,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 25,
-                            color: Color(0xFFF2C614),
+    return ReusableAnnotatedRegion(
+      child: GestureDetector(
+        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+        child: WillPopScope(
+          onWillPop: () async {
+            deleteFile();
+            //deleteCacheDir();
+            deleteAppDir();
+            return true;
+          },
+          child: Scaffold(
+            appBar: ReusableSilverAppBar(
+              title: 'Result',
+              titleColor: Colors.black,
+              leftButtonColor: Colors.red,
+              appBarIconLeft: appBarIconLeft,
+              appBarIconLeftToolTip: appBarIconLeftToolTip,
+              appBarIconLeftAction: appBarIconLeftAction,
+              rightButtonColor: Colors.blue,
+              appBarIconRight: appBarIconRight,
+              appBarIconRightToolTip: appBarIconRightToolTip,
+              appBarIconRightAction: appBarIconRightAction,
+            ),
+            body: Stack(
+              children: [
+                SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.all(24.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Center(
+                          child: SvgPicture.asset(
+                              'assets/images/tools_icons/zip_tools_icon.svg',
+                              fit: BoxFit.fitHeight,
+                              height: 100,
+                              alignment: Alignment.center,
+                              semanticsLabel: 'Zip File Icon'),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Center(
+                          child: Text(
+                            'Your files are ready',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontFamily: AppTheme.fontName,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 25,
+                              color: Color(0xFFF2C614),
+                            ),
                           ),
                         ),
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Center(
-                        child: Text(
-                          // 'Test',
-                          'File Size : ${formatBytes(File('$tempZipPath').lengthSync(), 2)}',
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                            fontFamily: AppTheme.fontName,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 16,
-                            color: Color(0xFFF2C614),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Center(
+                          child: Text(
+                            // 'Test',
+                            'File Size : ${formatBytes(File('$tempZipPath').lengthSync(), 2)}',
+                            textAlign: TextAlign.left,
+                            style: TextStyle(
+                              fontFamily: AppTheme.fontName,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 16,
+                              color: Color(0xFFF2C614),
+                            ),
                           ),
                         ),
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      TextFormField(
-                        controller: _controller,
-                        maxLength: 100,
-                        onChanged: (String value) {
-                          newFileName = _controller.text + extensionOfFileName;
-                          try {
-                            var file = File(tempZipPath);
+                        SizedBox(
+                          height: 20,
+                        ),
+                        TextFormField(
+                          controller: _controller,
+                          maxLength: 100,
+                          onChanged: (String value) {
+                            newFileName =
+                                _controller.text + extensionOfFileName;
+                            try {
+                              var file = File(tempZipPath);
 
-                            String changeFileNameOnlySync(
-                                File file, String newFileName) {
-                              var path = file.path;
-                              var lastSeparator =
-                                  path.lastIndexOf(Platform.pathSeparator);
-                              var newPath =
-                                  path.substring(0, lastSeparator + 1) +
-                                      newFileName;
+                              String changeFileNameOnlySync(
+                                  File file, String newFileName) {
+                                var path = file.path;
+                                var lastSeparator =
+                                    path.lastIndexOf(Platform.pathSeparator);
+                                var newPath =
+                                    path.substring(0, lastSeparator + 1) +
+                                        newFileName;
 
-                              file.renameSync(newPath);
-                              return newPath;
+                                file.renameSync(newPath);
+                                return newPath;
+                              }
+
+                              tempZipPath =
+                                  changeFileNameOnlySync(file, newFileName);
+
+                              file = File(tempZipPath);
+                            } catch (e) {
+                              print(e);
                             }
-
-                            tempZipPath =
-                                changeFileNameOnlySync(file, newFileName);
-
-                            file = File(tempZipPath);
-                          } catch (e) {
-                            print(e);
-                          }
-                          // creatingAndSavingFileTemporarily(newFileName)
-                          //     .whenComplete(() {
-                          //   setState(() {});
-                          // });
-                        },
-                        decoration: InputDecoration(
-                          hintText: "File Name",
-                          suffixText: extensionOfFileName,
-                          icon: Icon(Icons.drive_file_rename_outline),
-                          border: OutlineInputBorder(),
+                            // creatingAndSavingFileTemporarily(newFileName)
+                            //     .whenComplete(() {
+                            //   setState(() {});
+                            // });
+                          },
+                          decoration: InputDecoration(
+                            hintText: "File Name",
+                            suffixText: extensionOfFileName,
+                            icon: Icon(Icons.drive_file_rename_outline),
+                            border: OutlineInputBorder(),
+                          ),
                         ),
-                      ),
-                      ResultPageButtons(
-                        buttonTitle: 'View Zip',
-                        onTapAction: () async {
-                          FocusManager.instance.primaryFocus?.unfocus();
-                          final _result = await OpenFile.open(tempZipPath);
-                          print(_result.message);
+                        ResultPageButtons(
+                          buttonTitle: 'View Zip',
+                          onTapAction: () async {
+                            FocusManager.instance.primaryFocus?.unfocus();
+                            final _result = await OpenFile.open(tempZipPath);
+                            print(_result.message);
 
-                          setState(() {
-                            _openResult =
-                                "type=${_result.type}  message=${_result.message}";
-                          });
-                          if (_result.type == ResultType.noAppToOpen) {
-                            print(_openResult);
                             setState(() {
-                              viewZipBannerStatus = true;
+                              _openResult =
+                                  "type=${_result.type}  message=${_result.message}";
                             });
-                          }
-                        },
-                        buttonIcon: Icons.preview,
-                        mapOfSubFunctionDetails:
-                            widget.arguments!.mapOfSubFunctionDetails,
-                      ),
-                      ResultPageButtons(
-                        buttonTitle: 'Save Zip',
-                        onTapAction: () async {
-                          FocusManager.instance.primaryFocus?.unfocus();
-                          await saveFileInUserDescribedLocation();
-                        },
-                        buttonIcon: Icons.save,
-                        mapOfSubFunctionDetails:
-                            widget.arguments!.mapOfSubFunctionDetails,
-                      ),
-                      androidInfo != null
-                          ? androidInfo!.version.sdkInt! < 30 &&
-                                  Platform.isAndroid
-                              ? ResultPageButtons(
-                                  buttonTitle: 'Extract In Desired Folder',
-                                  onTapAction: () async {
-                                    FocusManager.instance.primaryFocus
-                                        ?.unfocus();
-                                    print(androidInfo!.version.sdkInt);
-                                    extractZipInUserDescribedLocation();
-                                  },
-                                  buttonIcon: Icons.folder_open_outlined,
-                                  mapOfSubFunctionDetails:
-                                      widget.arguments!.mapOfSubFunctionDetails,
-                                )
-                              : Container()
-                          : Container(),
-                      extensionOfSingleFileFromZip == '.jpg' ||
-                              extensionOfSingleFileFromZip == '.jpeg'
-                          ? ResultPageButtons(
-                              buttonTitle: 'Save To Gallery',
-                              onTapAction: () async {
-                                for (int i = 0;
-                                    i <
+                            if (_result.type == ResultType.noAppToOpen) {
+                              print(_openResult);
+                              setState(() {
+                                viewZipBannerStatus = true;
+                              });
+                            }
+                          },
+                          buttonIcon: Icons.preview,
+                          mapOfSubFunctionDetails:
+                              widget.arguments!.mapOfSubFunctionDetails,
+                        ),
+                        ResultPageButtons(
+                          buttonTitle: 'Save Zip',
+                          onTapAction: () async {
+                            FocusManager.instance.primaryFocus?.unfocus();
+                            await saveFileInUserDescribedLocation();
+                          },
+                          buttonIcon: Icons.save,
+                          mapOfSubFunctionDetails:
+                              widget.arguments!.mapOfSubFunctionDetails,
+                        ),
+                        androidInfo != null
+                            ? androidInfo!.version.sdkInt! < 30 &&
+                                    Platform.isAndroid
+                                ? ResultPageButtons(
+                                    buttonTitle: 'Extract In Desired Folder',
+                                    onTapAction: () async {
+                                      FocusManager.instance.primaryFocus
+                                          ?.unfocus();
+                                      print(androidInfo!.version.sdkInt);
+                                      extractZipInUserDescribedLocation();
+                                    },
+                                    buttonIcon: Icons.folder_open_outlined,
+                                    mapOfSubFunctionDetails: widget
+                                        .arguments!.mapOfSubFunctionDetails,
+                                  )
+                                : Container()
+                            : Container(),
+                        extensionOfSingleFileFromZip == '.jpg' ||
+                                extensionOfSingleFileFromZip == '.jpeg'
+                            ? ResultPageButtons(
+                                buttonTitle: 'Save To Gallery',
+                                onTapAction: () async {
+                                  for (int i = 0;
+                                      i <
+                                          widget.arguments!.rangesPdfsFilePaths
+                                              .length;
+                                      i++) {
+                                    if (i == 0) {
+                                      savingDialog(
+                                          context); //shows the saving dialog
+                                    }
+                                    await GallerySaver.saveImage(
+                                            widget.arguments!
+                                                .rangesPdfsFilePaths[i],
+                                            albumName: 'Files Tools')
+                                        .then((saved) {
+                                      print("saved $i - $saved");
+                                    });
+                                    if (i ==
                                         widget.arguments!.rangesPdfsFilePaths
-                                            .length;
-                                    i++) {
-                                  if (i == 0) {
-                                    savingDialog(
-                                        context); //shows the saving dialog
+                                                .length -
+                                            1) {
+                                      Navigator.pop(
+                                          context); //closes the saving dialog
+                                      final filesSavedNotifierSnackBar =
+                                          SnackBar(
+                                        content: const Text(
+                                            'Files successfully saved in gallery.'),
+                                        action: SnackBarAction(
+                                          label: 'Ok',
+                                          onPressed: () {
+                                            // Some code to undo the change.
+                                          },
+                                        ),
+                                      );
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                              filesSavedNotifierSnackBar);
+                                    }
                                   }
-                                  await GallerySaver.saveImage(
-                                          widget.arguments!
-                                              .rangesPdfsFilePaths[i],
-                                          albumName: 'Files Tools')
-                                      .then((saved) {
-                                    print("saved $i - $saved");
-                                  });
-                                  if (i ==
-                                      widget.arguments!.rangesPdfsFilePaths
-                                              .length -
-                                          1) {
+                                },
+                                buttonIcon: Icons.folder_open_outlined,
+                                mapOfSubFunctionDetails:
+                                    widget.arguments!.mapOfSubFunctionDetails,
+                              )
+                            : Container(),
+                        extensionOfSingleFileFromZip == '.pdf'
+                            ? ResultPageButtons(
+                                buttonTitle: 'Extract In Downloads',
+                                onTapAction: () async {
+                                  File(widget.arguments!.rangesPdfsFilePaths[1])
+                                      .readAsBytesSync();
+                                  //creating list of bytes, names and mimes
+                                  List<Uint8List> filesBytesList = [];
+                                  List<String> filesNamesList = [];
+                                  List<String> filesMimesList =
+                                      List<String>.generate(
+                                          widget.arguments!.rangesPdfsFilePaths
+                                              .length,
+                                          (int index) => "appliation/pdf");
+                                  for (int i = 0;
+                                      i <
+                                          widget.arguments!.rangesPdfsFilePaths
+                                              .length;
+                                      i++) {
+                                    if (i == 0) {
+                                      savingDialog(
+                                          context); //shows the saving dialog
+                                    }
+                                    filesBytesList.add(File(widget
+                                            .arguments!.rangesPdfsFilePaths[i])
+                                        .readAsBytesSync());
+                                    String fileName = PathLibrary.basename(
+                                        widget
+                                            .arguments!.rangesPdfsFilePaths[i]);
+                                    String extensionOfFileName =
+                                        extensionOfString(fileName: fileName);
+                                    String fileNameWithoutExtension =
+                                        stringWithoutExtension(
+                                            fileName: fileName,
+                                            extensionOfString:
+                                                extensionOfFileName);
+                                    String newFileName =
+                                        "${fileNameWithoutExtension + ' ' + currentDateTimeInString() + extensionOfFileName}";
+                                    filesNamesList.add(newFileName);
+                                  }
+                                  await DocumentFileSave.saveMultipleFiles(
+                                          filesBytesList,
+                                          filesNamesList,
+                                          filesMimesList)
+                                      .whenComplete(() {
                                     Navigator.pop(
                                         context); //closes the saving dialog
                                     final filesSavedNotifierSnackBar = SnackBar(
                                       content: const Text(
-                                          'Files successfully saved in gallery.'),
+                                          'Files successfully saved in downloads.'),
                                       action: SnackBarAction(
                                         label: 'Ok',
                                         onPressed: () {
@@ -398,141 +470,76 @@ class _ResultZipScaffoldState extends State<ResultZipScaffold> {
                                     );
                                     ScaffoldMessenger.of(context).showSnackBar(
                                         filesSavedNotifierSnackBar);
-                                  }
-                                }
-                              },
-                              buttonIcon: Icons.folder_open_outlined,
-                              mapOfSubFunctionDetails:
-                                  widget.arguments!.mapOfSubFunctionDetails,
-                            )
-                          : Container(),
-                      extensionOfSingleFileFromZip == '.pdf'
-                          ? ResultPageButtons(
-                              buttonTitle: 'Extract In Downloads',
-                              onTapAction: () async {
-                                File(widget.arguments!.rangesPdfsFilePaths[1])
-                                    .readAsBytesSync();
-                                //creating list of bytes, names and mimes
-                                List<Uint8List> filesBytesList = [];
-                                List<String> filesNamesList = [];
-                                List<String> filesMimesList =
-                                    List<String>.generate(
-                                        widget.arguments!.rangesPdfsFilePaths
-                                            .length,
-                                        (int index) => "appliation/pdf");
-                                for (int i = 0;
-                                    i <
-                                        widget.arguments!.rangesPdfsFilePaths
-                                            .length;
-                                    i++) {
-                                  if (i == 0) {
-                                    savingDialog(
-                                        context); //shows the saving dialog
-                                  }
-                                  filesBytesList.add(File(widget
-                                          .arguments!.rangesPdfsFilePaths[i])
-                                      .readAsBytesSync());
-                                  String fileName = PathLibrary.basename(
-                                      widget.arguments!.rangesPdfsFilePaths[i]);
-                                  String extensionOfFileName =
-                                      extensionOfString(fileName: fileName);
-                                  String fileNameWithoutExtension =
-                                      stringWithoutExtension(
-                                          fileName: fileName,
-                                          extensionOfString:
-                                              extensionOfFileName);
-                                  String newFileName =
-                                      "${fileNameWithoutExtension + ' ' + currentDateTimeInString() + extensionOfFileName}";
-                                  filesNamesList.add(newFileName);
-                                }
-                                await DocumentFileSave.saveMultipleFiles(
-                                        filesBytesList,
-                                        filesNamesList,
-                                        filesMimesList)
-                                    .whenComplete(() {
-                                  Navigator.pop(
-                                      context); //closes the saving dialog
-                                  final filesSavedNotifierSnackBar = SnackBar(
-                                    content: const Text(
-                                        'Files successfully saved in downloads.'),
-                                    action: SnackBarAction(
-                                      label: 'Ok',
-                                      onPressed: () {
-                                        // Some code to undo the change.
-                                      },
-                                    ),
-                                  );
-                                  ScaffoldMessenger.of(context)
-                                      .showSnackBar(filesSavedNotifierSnackBar);
-                                });
-                              },
-                              buttonIcon: Icons.folder_open_outlined,
-                              mapOfSubFunctionDetails:
-                                  widget.arguments!.mapOfSubFunctionDetails,
-                            )
-                          : Container(),
-                      // ResultPageButtons(
-                      //   buttonTitle: 'Extract Zip',
-                      //   onTapAction: () async {
-                      //     FocusManager.instance.primaryFocus?.unfocus();
-                      //     print(androidInfo!.version.sdkInt);
-                      //     if (androidInfo!.version.sdkInt! >= 30 &&
-                      //         Platform.isAndroid) {
-                      //       if (await Permission
-                      //           .manageExternalStorage.isGranted) {
-                      //         print('Permission granted');
-                      //         extractZipInUserDescribedLocation();
-                      //       } else if (await Permission
-                      //           .manageExternalStorage.isDenied) {
-                      //         print(
-                      //             'Denied. Show a dialog with a reason and again ask for the permission.');
-                      //         permissionDialogBox(
-                      //             context: context,
-                      //             text: dialogTextForDeniedPermission,
-                      //             actionButtonsList:
-                      //                 dialogActionButtonsListForDeniedPermission);
-                      //       } else if (await Permission
-                      //           .manageExternalStorage.isPermanentlyDenied) {
-                      //         print('Take the user to the settings page.');
-                      //       }
-                      //     } else if (Platform.isAndroid) {
-                      //       extractZipInUserDescribedLocation();
-                      //     }
-                      //   },
-                      //   buttonIcon: Icons.folder_open_outlined,
-                      //   mapOfSubFunctionDetails:
-                      //       widget.arguments!.mapOfSubFunctionDetails,
-                      // ),
-                      ResultPageButtons(
-                        buttonTitle: 'Share Zip',
-                        onTapAction: () async {
-                          Share.shareFiles([tempZipPath]);
-                        },
-                        buttonIcon: Icons.share,
-                        mapOfSubFunctionDetails:
-                            widget.arguments!.mapOfSubFunctionDetails,
-                      ),
-                      SizedBox(
-                        height: AdSize.banner.height.toDouble(),
-                      ),
-                    ],
+                                  });
+                                },
+                                buttonIcon: Icons.folder_open_outlined,
+                                mapOfSubFunctionDetails:
+                                    widget.arguments!.mapOfSubFunctionDetails,
+                              )
+                            : Container(),
+                        // ResultPageButtons(
+                        //   buttonTitle: 'Extract Zip',
+                        //   onTapAction: () async {
+                        //     FocusManager.instance.primaryFocus?.unfocus();
+                        //     print(androidInfo!.version.sdkInt);
+                        //     if (androidInfo!.version.sdkInt! >= 30 &&
+                        //         Platform.isAndroid) {
+                        //       if (await Permission
+                        //           .manageExternalStorage.isGranted) {
+                        //         print('Permission granted');
+                        //         extractZipInUserDescribedLocation();
+                        //       } else if (await Permission
+                        //           .manageExternalStorage.isDenied) {
+                        //         print(
+                        //             'Denied. Show a dialog with a reason and again ask for the permission.');
+                        //         permissionDialogBox(
+                        //             context: context,
+                        //             text: dialogTextForDeniedPermission,
+                        //             actionButtonsList:
+                        //                 dialogActionButtonsListForDeniedPermission);
+                        //       } else if (await Permission
+                        //           .manageExternalStorage.isPermanentlyDenied) {
+                        //         print('Take the user to the settings page.');
+                        //       }
+                        //     } else if (Platform.isAndroid) {
+                        //       extractZipInUserDescribedLocation();
+                        //     }
+                        //   },
+                        //   buttonIcon: Icons.folder_open_outlined,
+                        //   mapOfSubFunctionDetails:
+                        //       widget.arguments!.mapOfSubFunctionDetails,
+                        // ),
+                        ResultPageButtons(
+                          buttonTitle: 'Share Zip',
+                          onTapAction: () async {
+                            Share.shareFiles([tempZipPath]);
+                          },
+                          buttonIcon: Icons.share,
+                          mapOfSubFunctionDetails:
+                              widget.arguments!.mapOfSubFunctionDetails,
+                        ),
+                        SizedBox(
+                          height: AdSize.banner.height.toDouble(),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              BannerAD(),
-              viewZipBannerStatus
-                  ? NoFileOpenerAvailableNotifierBanner(
-                      onViewZipBannerStatus: (bool value) {
-                        setState(() {
-                          viewZipBannerStatus = value;
-                        });
-                      },
-                      redirectAndroidAppId: 'com.rarlab.rar',
-                      bannerText:
-                          'Hello, no app was found on your device to view the zip file.\n\nClick "INSTALL" to install "WinRAR"(recommended) app which can open zip files.',
-                    )
-                  : Container(),
-            ],
+                BannerAD(),
+                viewZipBannerStatus
+                    ? NoFileOpenerAvailableNotifierBanner(
+                        onViewZipBannerStatus: (bool value) {
+                          setState(() {
+                            viewZipBannerStatus = value;
+                          });
+                        },
+                        redirectAndroidAppId: 'com.rarlab.rar',
+                        bannerText:
+                            'Hello, no app was found on your device to view the zip file.\n\nClick "INSTALL" to install "WinRAR"(recommended) app which can open zip files.',
+                      )
+                    : Container(),
+              ],
+            ),
           ),
         ),
       ),

@@ -1,5 +1,6 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:files_tools/ads_state/banner_ad.dart';
+import 'package:files_tools/widgets/annotatedRegion.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:files_tools/basicFunctionalityFunctions/creatingAndSavingPDFFileTemporarily.dart';
@@ -135,81 +136,83 @@ class _CompressPDFScaffoldState extends State<CompressPDFScaffold>
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-      child: WillPopScope(
-        onWillPop: shouldWePopScaffold == true ? _directPop : _onWillPop,
-        child: Stack(
-          children: [
-            Scaffold(
-              appBar: ReusableSilverAppBar(
-                title: 'Specify Compression',
-                titleColor: Colors.black,
-                leftButtonColor: Colors.red,
-                appBarIconLeft: appBarIconLeft,
-                appBarIconLeftToolTip: appBarIconLeftToolTip,
-                appBarIconLeftAction: appBarIconLeftAction,
-                rightButtonColor: Colors.blue,
-                appBarIconRight: appBarIconRight,
-                appBarIconRightToolTip: appBarIconRightToolTip,
-                appBarIconRightAction: appBarIconRightAction,
-              ),
-              body: Stack(
-                children: [
-                  SingleChildScrollView(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        children: <Widget>[
-                          RadioListTile<Qualities>(
-                            controlAffinity: ListTileControlAffinity.trailing,
-                            title: const Text('Less Compression'),
-                            subtitle:
-                                const Text('High quality, less compression'),
-                            value: Qualities.high,
-                            groupValue: _method,
-                            onChanged: (Qualities? value) {
-                              setState(() {
-                                _method = value;
-                              });
-                            },
-                          ),
-                          RadioListTile<Qualities>(
-                            controlAffinity: ListTileControlAffinity.trailing,
-                            title: const Text('Recommended Compression'),
-                            subtitle:
-                                const Text('Good quality, good compression'),
-                            value: Qualities.medium,
-                            groupValue: _method,
-                            onChanged: (Qualities? value) {
-                              setState(() {
-                                _method = value;
-                              });
-                            },
-                          ),
-                          RadioListTile<Qualities>(
-                            controlAffinity: ListTileControlAffinity.trailing,
-                            title: const Text('Extreme Compression'),
-                            subtitle:
-                                const Text('less quality, High compression'),
-                            value: Qualities.low,
-                            groupValue: _method,
-                            onChanged: (Qualities? value) {
-                              setState(() {
-                                _method = value;
-                              });
-                            },
-                          ),
-                        ],
+    return ReusableAnnotatedRegion(
+      child: GestureDetector(
+        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+        child: WillPopScope(
+          onWillPop: shouldWePopScaffold == true ? _directPop : _onWillPop,
+          child: Stack(
+            children: [
+              Scaffold(
+                appBar: ReusableSilverAppBar(
+                  title: 'Specify Compression',
+                  titleColor: Colors.black,
+                  leftButtonColor: Colors.red,
+                  appBarIconLeft: appBarIconLeft,
+                  appBarIconLeftToolTip: appBarIconLeftToolTip,
+                  appBarIconLeftAction: appBarIconLeftAction,
+                  rightButtonColor: Colors.blue,
+                  appBarIconRight: appBarIconRight,
+                  appBarIconRightToolTip: appBarIconRightToolTip,
+                  appBarIconRightAction: appBarIconRightAction,
+                ),
+                body: Stack(
+                  children: [
+                    SingleChildScrollView(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          children: <Widget>[
+                            RadioListTile<Qualities>(
+                              controlAffinity: ListTileControlAffinity.trailing,
+                              title: const Text('Less Compression'),
+                              subtitle:
+                                  const Text('High quality, less compression'),
+                              value: Qualities.high,
+                              groupValue: _method,
+                              onChanged: (Qualities? value) {
+                                setState(() {
+                                  _method = value;
+                                });
+                              },
+                            ),
+                            RadioListTile<Qualities>(
+                              controlAffinity: ListTileControlAffinity.trailing,
+                              title: const Text('Recommended Compression'),
+                              subtitle:
+                                  const Text('Good quality, good compression'),
+                              value: Qualities.medium,
+                              groupValue: _method,
+                              onChanged: (Qualities? value) {
+                                setState(() {
+                                  _method = value;
+                                });
+                              },
+                            ),
+                            RadioListTile<Qualities>(
+                              controlAffinity: ListTileControlAffinity.trailing,
+                              title: const Text('Extreme Compression'),
+                              subtitle:
+                                  const Text('less quality, High compression'),
+                              value: Qualities.low,
+                              groupValue: _method,
+                              onChanged: (Qualities? value) {
+                                setState(() {
+                                  _method = value;
+                                });
+                              },
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                  BannerAD(),
-                ],
+                    BannerAD(),
+                  ],
+                ),
               ),
-            ),
-            // selectedDataProcessed == true ? progressFakeDialogBox : Container(),
-          ],
+              // selectedDataProcessed == true ? progressFakeDialogBox : Container(),
+            ],
+          ),
         ),
       ),
     );

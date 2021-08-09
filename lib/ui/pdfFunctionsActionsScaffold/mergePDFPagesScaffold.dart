@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:files_tools/ads_state/ad_state.dart';
 import 'package:files_tools/ads_state/banner_ad.dart';
+import 'package:files_tools/widgets/annotatedRegion.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -350,68 +351,71 @@ class _MergePDFPagesScaffoldState extends State<MergePDFPagesScaffold>
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: shouldWePopScaffold == true ? _directPop : _onWillPop,
-      child: Stack(
-        children: [
-          Scaffold(
-            appBar: ReusableSilverAppBar(
-              title: 'Reorder & Merge PDFs',
-              titleColor: Colors.black,
-              leftButtonColor: Colors.red,
-              appBarIconLeft: appBarIconLeft,
-              appBarIconLeftToolTip: appBarIconLeftToolTip,
-              appBarIconLeftAction: appBarIconLeftAction,
-              rightButtonColor: Colors.blue,
-              appBarIconRight: appBarIconRight,
-              appBarIconRightToolTip: appBarIconRightToolTip,
-              appBarIconRightAction: appBarIconRightAction,
-            ),
-            body: Stack(
-              children: [
-                SingleChildScrollView(
-                  child: Column(
-                    children: <Widget>[
-                      ReorderableListView(
-                        header: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                            children: [
-                              Text('Reorder PDFs:'),
-                            ],
+    return ReusableAnnotatedRegion(
+      child: WillPopScope(
+        onWillPop: shouldWePopScaffold == true ? _directPop : _onWillPop,
+        child: Stack(
+          children: [
+            Scaffold(
+              appBar: ReusableSilverAppBar(
+                title: 'Reorder & Merge PDFs',
+                titleColor: Colors.black,
+                leftButtonColor: Colors.red,
+                appBarIconLeft: appBarIconLeft,
+                appBarIconLeftToolTip: appBarIconLeftToolTip,
+                appBarIconLeftAction: appBarIconLeftAction,
+                rightButtonColor: Colors.blue,
+                appBarIconRight: appBarIconRight,
+                appBarIconRightToolTip: appBarIconRightToolTip,
+                appBarIconRightAction: appBarIconRightAction,
+              ),
+              body: Stack(
+                children: [
+                  SingleChildScrollView(
+                    child: Column(
+                      children: <Widget>[
+                        ReorderableListView(
+                          header: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              children: [
+                                Text('Reorder PDFs:'),
+                              ],
+                            ),
                           ),
-                        ),
-                        shrinkWrap: true,
-                        physics: ClampingScrollPhysics(),
-                        children: filesListForReorderableListView,
-                        onReorder: (int oldIndex, int newIndex) {
-                          setState(() {
-                            if (oldIndex < newIndex) {
-                              newIndex -= 1;
-                            }
-                            final Widget item = filesListForReorderableListView
-                                .removeAt(oldIndex);
-                            filesListForReorderableListView.insert(
-                                newIndex, item);
+                          shrinkWrap: true,
+                          physics: ClampingScrollPhysics(),
+                          children: filesListForReorderableListView,
+                          onReorder: (int oldIndex, int newIndex) {
+                            setState(() {
+                              if (oldIndex < newIndex) {
+                                newIndex -= 1;
+                              }
+                              final Widget item =
+                                  filesListForReorderableListView
+                                      .removeAt(oldIndex);
+                              filesListForReorderableListView.insert(
+                                  newIndex, item);
 
-                            final int item2 =
-                                filesReorderRecorder.removeAt(oldIndex);
-                            filesReorderRecorder.insert(newIndex, item2);
-                          });
-                        },
-                      ),
-                      SizedBox(
-                        height: AdSize.banner.height.toDouble(),
-                      ),
-                    ],
+                              final int item2 =
+                                  filesReorderRecorder.removeAt(oldIndex);
+                              filesReorderRecorder.insert(newIndex, item2);
+                            });
+                          },
+                        ),
+                        SizedBox(
+                          height: AdSize.banner.height.toDouble(),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                BannerAD(),
-              ],
+                  BannerAD(),
+                ],
+              ),
             ),
-          ),
-          // selectedDataProcessed == true ? progressFakeDialogBox : Container(),
-        ],
+            // selectedDataProcessed == true ? progressFakeDialogBox : Container(),
+          ],
+        ),
       ),
     );
   }

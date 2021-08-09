@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:file_picker/file_picker.dart';
 import 'package:files_tools/ads_state/banner_ad.dart';
+import 'package:files_tools/widgets/annotatedRegion.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -314,75 +315,77 @@ class _PDFToImagesScaffoldState extends State<PDFToImagesScaffold>
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-      child: WillPopScope(
-        onWillPop: shouldWePopScaffold == true ? _directPop : _onWillPop,
-        child: Stack(
-          children: [
-            Form(
-              key: _formKey,
-              child: Scaffold(
-                appBar: ReusableSilverAppBar(
-                  title: 'Convert To Images',
-                  titleColor: Colors.black,
-                  leftButtonColor: Colors.red,
-                  appBarIconLeft: appBarIconLeft,
-                  appBarIconLeftToolTip: appBarIconLeftToolTip,
-                  appBarIconLeftAction: appBarIconLeftAction,
-                  rightButtonColor: Colors.blue,
-                  appBarIconRight: appBarIconRight,
-                  appBarIconRightToolTip: appBarIconRightToolTip,
-                  appBarIconRightAction:
-                      appBarIconRightActionForSeparateDocuments,
-                ),
-                body: Stack(
-                  children: [
-                    SingleChildScrollView(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          children: <Widget>[
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Container(
-                                  child: Text(
-                                    'Total number of Pages in PDF: $pdfPagesCount',
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
+    return ReusableAnnotatedRegion(
+      child: GestureDetector(
+        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+        child: WillPopScope(
+          onWillPop: shouldWePopScaffold == true ? _directPop : _onWillPop,
+          child: Stack(
+            children: [
+              Form(
+                key: _formKey,
+                child: Scaffold(
+                  appBar: ReusableSilverAppBar(
+                    title: 'Convert To Images',
+                    titleColor: Colors.black,
+                    leftButtonColor: Colors.red,
+                    appBarIconLeft: appBarIconLeft,
+                    appBarIconLeftToolTip: appBarIconLeftToolTip,
+                    appBarIconLeftAction: appBarIconLeftAction,
+                    rightButtonColor: Colors.blue,
+                    appBarIconRight: appBarIconRight,
+                    appBarIconRightToolTip: appBarIconRightToolTip,
+                    appBarIconRightAction:
+                        appBarIconRightActionForSeparateDocuments,
+                  ),
+                  body: Stack(
+                    children: [
+                      SingleChildScrollView(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            children: <Widget>[
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    child: Text(
+                                      'Total number of Pages in PDF: $pdfPagesCount',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    decoration: BoxDecoration(),
                                   ),
-                                  decoration: BoxDecoration(),
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Container(
-                                  child: Text(
-                                    'Number of Images will be created: $pdfPagesCount',
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    child: Text(
+                                      'Number of Images will be created: $pdfPagesCount',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    decoration: BoxDecoration(),
                                   ),
-                                  decoration: BoxDecoration(),
-                                ),
-                              ],
-                            ),
-                          ],
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                    BannerAD(),
-                  ],
+                      BannerAD(),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            // selectedDataProcessed == true ? progressFakeDialogBox : Container(),
-          ],
+              // selectedDataProcessed == true ? progressFakeDialogBox : Container(),
+            ],
+          ),
         ),
       ),
     );

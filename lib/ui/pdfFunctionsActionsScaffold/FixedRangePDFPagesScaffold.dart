@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:file_picker/file_picker.dart';
 import 'package:files_tools/ads_state/ad_state.dart';
 import 'package:files_tools/ads_state/banner_ad.dart';
+import 'package:files_tools/widgets/annotatedRegion.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -323,134 +324,136 @@ class _FixedRangePDFPagesScaffoldState extends State<FixedRangePDFPagesScaffold>
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-      child: WillPopScope(
-        onWillPop: shouldWePopScaffold == true ? _directPop : _onWillPop,
-        child: Stack(
-          children: [
-            Form(
-              key: _formKey,
-              child: Scaffold(
-                appBar: ReusableSilverAppBar(
-                  title: 'Specify Split Range',
-                  titleColor: Colors.black,
-                  leftButtonColor: Colors.red,
-                  appBarIconLeft: appBarIconLeft,
-                  appBarIconLeftToolTip: appBarIconLeftToolTip,
-                  appBarIconLeftAction: appBarIconLeftAction,
-                  rightButtonColor: Colors.blue,
-                  appBarIconRight: appBarIconRight,
-                  appBarIconRightToolTip: appBarIconRightToolTip,
-                  appBarIconRightAction: _formKey.currentState != null
-                      ? _formKey.currentState!.validate()
-                          ? appBarIconRightActionForSeparateDocuments
-                          : null
-                      : null,
-                ),
-                body: Stack(
-                  children: [
-                    SingleChildScrollView(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          children: <Widget>[
-                            Row(
-                              children: [
-                                Container(
-                                  child: Text(
-                                    'Total number of Pages in PDF: $pdfPagesCount',
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
+    return ReusableAnnotatedRegion(
+      child: GestureDetector(
+        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+        child: WillPopScope(
+          onWillPop: shouldWePopScaffold == true ? _directPop : _onWillPop,
+          child: Stack(
+            children: [
+              Form(
+                key: _formKey,
+                child: Scaffold(
+                  appBar: ReusableSilverAppBar(
+                    title: 'Specify Split Range',
+                    titleColor: Colors.black,
+                    leftButtonColor: Colors.red,
+                    appBarIconLeft: appBarIconLeft,
+                    appBarIconLeftToolTip: appBarIconLeftToolTip,
+                    appBarIconLeftAction: appBarIconLeftAction,
+                    rightButtonColor: Colors.blue,
+                    appBarIconRight: appBarIconRight,
+                    appBarIconRightToolTip: appBarIconRightToolTip,
+                    appBarIconRightAction: _formKey.currentState != null
+                        ? _formKey.currentState!.validate()
+                            ? appBarIconRightActionForSeparateDocuments
+                            : null
+                        : null,
+                  ),
+                  body: Stack(
+                    children: [
+                      SingleChildScrollView(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            children: <Widget>[
+                              Row(
+                                children: [
+                                  Container(
+                                    child: Text(
+                                      'Total number of Pages in PDF: $pdfPagesCount',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    decoration: BoxDecoration(),
                                   ),
-                                  decoration: BoxDecoration(),
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Row(
-                              children: [
-                                Text('Split PDF in page ranges of:'),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 5,
-                            ),
-                            TextFormField(
-                              controller: textEditingController,
-                              keyboardType: TextInputType.number,
-                              inputFormatters: listTextInputFormatter,
-                              onChanged: (String value) {
-                                if (value.isNotEmpty) {
-                                  if (int.parse(value.substring(0, 1)) == 0) {
-                                    String newValue = value.substring(0, 0) +
-                                        '' +
-                                        value.substring(0 + 1);
-                                    textEditingController.value =
-                                        TextEditingValue(
-                                      text: newValue,
-                                      selection: TextSelection.fromPosition(
-                                        TextPosition(offset: newValue.length),
-                                      ),
-                                    );
-                                  }
-                                }
-                              },
-                              decoration: InputDecoration(
-                                labelText: 'Type a number',
-                                helperText: ' ',
-                                hintText: 'Ex: ${pdfPagesCount - 1}',
-                                border: OutlineInputBorder(),
+                                ],
                               ),
-                              //autofocus: true,
-                              showCursor: true,
-                              autovalidateMode:
-                                  AutovalidateMode.onUserInteraction,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Empty Field';
-                                } else if (int.parse(value) == pdfPagesCount)
-                                //RegExp('[a-zA-Z0-9 \"‘\'‘,-]')
-                                {
-                                  return 'Type a shorter number than total number of pages';
-                                } else if (int.parse(value) > pdfPagesCount)
-                                //RegExp('[a-zA-Z0-9 \"‘\'‘,-]')
-                                {
-                                  return 'Out of range';
-                                }
-                                return null;
-                              },
-                            ),
-                            _formKey.currentState != null
-                                ? _formKey.currentState!.validate()
-                                    ? Row(
-                                        children: [
-                                          Container(
-                                            child: Text(
-                                              'Number of PDFs will be created: ${pdfsCreatedCalc()}',
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Row(
+                                children: [
+                                  Text('Split PDF in page ranges of:'),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              TextFormField(
+                                controller: textEditingController,
+                                keyboardType: TextInputType.number,
+                                inputFormatters: listTextInputFormatter,
+                                onChanged: (String value) {
+                                  if (value.isNotEmpty) {
+                                    if (int.parse(value.substring(0, 1)) == 0) {
+                                      String newValue = value.substring(0, 0) +
+                                          '' +
+                                          value.substring(0 + 1);
+                                      textEditingController.value =
+                                          TextEditingValue(
+                                        text: newValue,
+                                        selection: TextSelection.fromPosition(
+                                          TextPosition(offset: newValue.length),
+                                        ),
+                                      );
+                                    }
+                                  }
+                                },
+                                decoration: InputDecoration(
+                                  labelText: 'Type a number',
+                                  helperText: ' ',
+                                  hintText: 'Ex: ${pdfPagesCount - 1}',
+                                  border: OutlineInputBorder(),
+                                ),
+                                //autofocus: true,
+                                showCursor: true,
+                                autovalidateMode:
+                                    AutovalidateMode.onUserInteraction,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Empty Field';
+                                  } else if (int.parse(value) == pdfPagesCount)
+                                  //RegExp('[a-zA-Z0-9 \"‘\'‘,-]')
+                                  {
+                                    return 'Type a shorter number than total number of pages';
+                                  } else if (int.parse(value) > pdfPagesCount)
+                                  //RegExp('[a-zA-Z0-9 \"‘\'‘,-]')
+                                  {
+                                    return 'Out of range';
+                                  }
+                                  return null;
+                                },
+                              ),
+                              _formKey.currentState != null
+                                  ? _formKey.currentState!.validate()
+                                      ? Row(
+                                          children: [
+                                            Container(
+                                              child: Text(
+                                                'Number of PDFs will be created: ${pdfsCreatedCalc()}',
+                                              ),
+                                              decoration: BoxDecoration(),
                                             ),
-                                            decoration: BoxDecoration(),
-                                          ),
-                                        ],
-                                      )
-                                    : Container()
-                                : Container(),
-                            SizedBox(
-                              height: AdSize.banner.height.toDouble(),
-                            ),
-                          ],
+                                          ],
+                                        )
+                                      : Container()
+                                  : Container(),
+                              SizedBox(
+                                height: AdSize.banner.height.toDouble(),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                    BannerAD(),
-                  ],
+                      BannerAD(),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            // selectedDataProcessed == true ? progressFakeDialogBox : Container(),
-          ],
+              // selectedDataProcessed == true ? progressFakeDialogBox : Container(),
+            ],
+          ),
         ),
       ),
     );

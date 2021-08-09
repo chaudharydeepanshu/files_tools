@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:files_tools/ads_state/banner_ad.dart';
+import 'package:files_tools/widgets/annotatedRegion.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:files_tools/basicFunctionalityFunctions/creatingAndSavingPDFFileTemporarily.dart';
@@ -242,242 +243,247 @@ class _ImagesToPDFScaffoldState extends State<ImagesToPDFScaffold> {
   Widget build(BuildContext context) {
     print('listOfRotation: $listOfRotation');
     print('listOfDeletedImages: $listOfDeletedImages');
-    return WillPopScope(
-      onWillPop: shouldWePopScaffold == true ? _directPop : _onWillPop,
-      child: Stack(
-        children: [
-          Scaffold(
-            appBar: ReusableSilverAppBar(
-              title: 'Convert To PDF',
-              titleColor: Colors.black,
-              leftButtonColor: Colors.red,
-              appBarIconLeft: appBarIconLeft,
-              appBarIconLeftToolTip: appBarIconLeftToolTip,
-              appBarIconLeftAction: appBarIconLeftAction,
-              rightButtonColor: Colors.blue,
-              appBarIconRight: appBarIconRight,
-              appBarIconRightToolTip: appBarIconRightToolTip,
-              appBarIconRightAction:
-                  proceedButton() ? appBarIconRightAction : null,
-            ),
-            body: Column(
-              children: [
-                CheckboxListTile(
-                  title: const Text('Create same width(960px) document'),
-                  value: _isSameSizeEnabled,
-                  onChanged: tempImageFilesList.length < 2
-                      ? null
-                      : (bool? newValue) {
-                          FocusManager.instance.primaryFocus?.unfocus();
-                          setState(() {
-                            _isSameSizeEnabled = newValue!;
-                            print("_isSameSizeEnabled: $_isSameSizeEnabled");
-                          });
-                        },
-                ),
-                Expanded(
-                  child: carouselList(),
-                ),
-                BannerAD(),
-              ],
-            ),
-            bottomNavigationBar: BottomAppBar(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
+    return ReusableAnnotatedRegion(
+      child: WillPopScope(
+        onWillPop: shouldWePopScaffold == true ? _directPop : _onWillPop,
+        child: Stack(
+          children: [
+            Scaffold(
+              appBar: ReusableSilverAppBar(
+                title: 'Convert To PDF',
+                titleColor: Colors.black,
+                leftButtonColor: Colors.red,
+                appBarIconLeft: appBarIconLeft,
+                appBarIconLeftToolTip: appBarIconLeftToolTip,
+                appBarIconLeftAction: appBarIconLeftAction,
+                rightButtonColor: Colors.blue,
+                appBarIconRight: appBarIconRight,
+                appBarIconRightToolTip: appBarIconRightToolTip,
+                appBarIconRightAction:
+                    proceedButton() ? appBarIconRightAction : null,
+              ),
+              body: Column(
                 children: [
-                  bottomNavBarButtonsForFileModifications(
-                    buttonIcon: Icon(Icons.rotate_right),
-                    buttonTitle: 'Rotate',
-                    onTapAction: () {
-                      print('working');
-                      setState(() {
-                        decorationImageListForReorder[currentIndex] =
-                            listOfDeletedImages[currentIndex] == false
-                                ? RotatedBox(
-                                    quarterTurns:
-                                        listOfRotation[currentIndex] == 3
-                                            ? 0
-                                            : listOfRotation[currentIndex] + 1,
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                          image:
-                                              tempImageFilesList[currentIndex],
-                                          fit: BoxFit.scaleDown,
-                                          colorFilter: ColorFilter.mode(
-                                              Colors.red.withOpacity(0.6),
-                                              BlendMode.srcATop),
-                                        ),
-                                      ),
-                                    ))
-                                : RotatedBox(
-                                    quarterTurns:
-                                        listOfRotation[currentIndex] == 3
-                                            ? 0
-                                            : listOfRotation[currentIndex] + 1,
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                          image:
-                                              tempImageFilesList[currentIndex],
-                                          fit: BoxFit.scaleDown,
-                                        ),
-                                      ),
-                                    ));
-
-                        listOfRotation[currentIndex] =
-                            listOfRotation[currentIndex] == 3
-                                ? 0
-                                : listOfRotation[currentIndex] + 1;
-                      });
-                    },
-                    mapOfSubFunctionDetails:
-                        widget.arguments!.mapOfSubFunctionDetails,
-                  ),
-                  bottomNavBarButtonsForFileModifications(
-                    buttonIcon: Icon(Icons.delete),
-                    buttonTitle: listOfDeletedImages[currentIndex] == true
-                        ? 'Delete'
-                        : 'Restore',
-                    onTapAction: widget.arguments!.files.length != 1
-                        ? () {
+                  CheckboxListTile(
+                    title: const Text('Create same width(960px) document'),
+                    value: _isSameSizeEnabled,
+                    onChanged: tempImageFilesList.length < 2
+                        ? null
+                        : (bool? newValue) {
+                            FocusManager.instance.primaryFocus?.unfocus();
                             setState(() {
-                              decorationImageListForReorder[
-                                  currentIndex] = listOfDeletedImages[
-                                          currentIndex] ==
-                                      true
-                                  ? RotatedBox(
-                                      quarterTurns: listOfRotation[
-                                                  currentIndex] ==
-                                              0
-                                          ? 0
-                                          : listOfRotation[currentIndex] == 1
-                                              ? 1
-                                              : listOfRotation[currentIndex] ==
-                                                      2
-                                                  ? 2
-                                                  : listOfRotation[
-                                                              currentIndex] ==
-                                                          3
-                                                      ? 3
-                                                      : listOfRotation[
-                                                                  currentIndex] ==
-                                                              4
-                                                          ? 0
-                                                          : 0,
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          image: DecorationImage(
-                                            image: tempImageFilesList[
-                                                currentIndex],
-                                            fit: BoxFit.scaleDown,
-                                            colorFilter: ColorFilter.mode(
-                                                Colors.red.withOpacity(0.6),
-                                                BlendMode.srcATop),
-                                          ),
-                                        ),
-                                      ))
-                                  : RotatedBox(
-                                      quarterTurns: listOfRotation[
-                                                  currentIndex] ==
-                                              0
-                                          ? 0
-                                          : listOfRotation[currentIndex] == 1
-                                              ? 1
-                                              : listOfRotation[currentIndex] ==
-                                                      2
-                                                  ? 2
-                                                  : listOfRotation[
-                                                              currentIndex] ==
-                                                          3
-                                                      ? 3
-                                                      : listOfRotation[
-                                                                  currentIndex] ==
-                                                              4
-                                                          ? 0
-                                                          : 0,
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          image: DecorationImage(
-                                            image: tempImageFilesList[
-                                                currentIndex],
-                                            fit: BoxFit.scaleDown,
-                                          ),
-                                        ),
-                                      ));
-
-                              listOfDeletedImages[currentIndex] =
-                                  listOfDeletedImages[currentIndex] == true
-                                      ? false
-                                      : true;
+                              _isSameSizeEnabled = newValue!;
+                              print("_isSameSizeEnabled: $_isSameSizeEnabled");
                             });
-                          }
-                        : null,
-                    mapOfSubFunctionDetails:
-                        widget.arguments!.mapOfSubFunctionDetails,
+                          },
                   ),
-                  bottomNavBarButtonsForFileModifications(
-                    buttonIcon: Icon(Icons.reorder),
-                    buttonTitle: 'Reorder',
-                    onTapAction: widget.arguments!.files.length != 1
-                        ? () {
-                            Navigator.pushNamed(
-                              context,
-                              PageRoutes.reorderPDFPagesScaffold,
-                              arguments: ReorderPDFPagesScaffoldArguments(
-                                pdfPagesImages: tempImageFilesList,
-                                //pdfFile: widget.arguments!.pdfFile,
-                                onPDFPagesImages: (List value) {
-                                  setState(() {
-                                    tempImageFilesList = value;
-                                  });
-                                },
-                                listOfRotationOfImages: listOfRotation,
-                                onListOfRotationOfImages: (List<int> value) {
-                                  setState(() {
-                                    listOfRotation = value;
-                                  });
-                                },
-                                listOfDeletedImagesRecord: listOfDeletedImages,
-                                onListOfDeletedImagesRecord:
-                                    (List<bool> value) {
-                                  setState(() {
-                                    listOfDeletedImages = value;
-                                  });
-                                },
-                                decorationImageListForReorder:
-                                    decorationImageListForReorder,
-                                onDecorationImageListForReorder:
-                                    (List<RotatedBox> value) {
-                                  setState(() {
-                                    decorationImageListForReorder = value;
-                                  });
-                                },
-                                reorderedList: reorderedList,
-                                onReorderedList: (List<int> value) {
-                                  setState(() {
-                                    reorderedList = value;
-                                  });
-                                },
-                                controllerValueList: controllerValueList,
-                                onControllerValueList: (List<double> value) {
-                                  setState(() {
-                                    controllerValueList = value;
-                                  });
-                                },
-                              ),
-                            );
-                          }
-                        : null,
-                    mapOfSubFunctionDetails:
-                        widget.arguments!.mapOfSubFunctionDetails,
+                  Expanded(
+                    child: carouselList(),
                   ),
+                  BannerAD(),
                 ],
               ),
+              bottomNavigationBar: BottomAppBar(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    bottomNavBarButtonsForFileModifications(
+                      buttonIcon: Icon(Icons.rotate_right),
+                      buttonTitle: 'Rotate',
+                      onTapAction: () {
+                        print('working');
+                        setState(() {
+                          decorationImageListForReorder[
+                              currentIndex] = listOfDeletedImages[
+                                      currentIndex] ==
+                                  false
+                              ? RotatedBox(
+                                  quarterTurns:
+                                      listOfRotation[currentIndex] == 3
+                                          ? 0
+                                          : listOfRotation[currentIndex] + 1,
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                        image: tempImageFilesList[currentIndex],
+                                        fit: BoxFit.scaleDown,
+                                        colorFilter: ColorFilter.mode(
+                                            Colors.red.withOpacity(0.6),
+                                            BlendMode.srcATop),
+                                      ),
+                                    ),
+                                  ))
+                              : RotatedBox(
+                                  quarterTurns:
+                                      listOfRotation[currentIndex] == 3
+                                          ? 0
+                                          : listOfRotation[currentIndex] + 1,
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                        image: tempImageFilesList[currentIndex],
+                                        fit: BoxFit.scaleDown,
+                                      ),
+                                    ),
+                                  ));
+
+                          listOfRotation[currentIndex] =
+                              listOfRotation[currentIndex] == 3
+                                  ? 0
+                                  : listOfRotation[currentIndex] + 1;
+                        });
+                      },
+                      mapOfSubFunctionDetails:
+                          widget.arguments!.mapOfSubFunctionDetails,
+                    ),
+                    bottomNavBarButtonsForFileModifications(
+                      buttonIcon: Icon(Icons.delete),
+                      buttonTitle: listOfDeletedImages[currentIndex] == true
+                          ? 'Delete'
+                          : 'Restore',
+                      onTapAction: widget.arguments!.files.length != 1
+                          ? () {
+                              setState(() {
+                                decorationImageListForReorder[
+                                    currentIndex] = listOfDeletedImages[
+                                            currentIndex] ==
+                                        true
+                                    ? RotatedBox(
+                                        quarterTurns: listOfRotation[
+                                                    currentIndex] ==
+                                                0
+                                            ? 0
+                                            : listOfRotation[currentIndex] == 1
+                                                ? 1
+                                                : listOfRotation[
+                                                            currentIndex] ==
+                                                        2
+                                                    ? 2
+                                                    : listOfRotation[
+                                                                currentIndex] ==
+                                                            3
+                                                        ? 3
+                                                        : listOfRotation[
+                                                                    currentIndex] ==
+                                                                4
+                                                            ? 0
+                                                            : 0,
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            image: DecorationImage(
+                                              image: tempImageFilesList[
+                                                  currentIndex],
+                                              fit: BoxFit.scaleDown,
+                                              colorFilter: ColorFilter.mode(
+                                                  Colors.red.withOpacity(0.6),
+                                                  BlendMode.srcATop),
+                                            ),
+                                          ),
+                                        ))
+                                    : RotatedBox(
+                                        quarterTurns: listOfRotation[
+                                                    currentIndex] ==
+                                                0
+                                            ? 0
+                                            : listOfRotation[currentIndex] == 1
+                                                ? 1
+                                                : listOfRotation[
+                                                            currentIndex] ==
+                                                        2
+                                                    ? 2
+                                                    : listOfRotation[
+                                                                currentIndex] ==
+                                                            3
+                                                        ? 3
+                                                        : listOfRotation[
+                                                                    currentIndex] ==
+                                                                4
+                                                            ? 0
+                                                            : 0,
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            image: DecorationImage(
+                                              image: tempImageFilesList[
+                                                  currentIndex],
+                                              fit: BoxFit.scaleDown,
+                                            ),
+                                          ),
+                                        ));
+
+                                listOfDeletedImages[currentIndex] =
+                                    listOfDeletedImages[currentIndex] == true
+                                        ? false
+                                        : true;
+                              });
+                            }
+                          : null,
+                      mapOfSubFunctionDetails:
+                          widget.arguments!.mapOfSubFunctionDetails,
+                    ),
+                    bottomNavBarButtonsForFileModifications(
+                      buttonIcon: Icon(Icons.reorder),
+                      buttonTitle: 'Reorder',
+                      onTapAction: widget.arguments!.files.length != 1
+                          ? () {
+                              Navigator.pushNamed(
+                                context,
+                                PageRoutes.reorderPDFPagesScaffold,
+                                arguments: ReorderPDFPagesScaffoldArguments(
+                                  pdfPagesImages: tempImageFilesList,
+                                  //pdfFile: widget.arguments!.pdfFile,
+                                  onPDFPagesImages: (List value) {
+                                    setState(() {
+                                      tempImageFilesList = value;
+                                    });
+                                  },
+                                  listOfRotationOfImages: listOfRotation,
+                                  onListOfRotationOfImages: (List<int> value) {
+                                    setState(() {
+                                      listOfRotation = value;
+                                    });
+                                  },
+                                  listOfDeletedImagesRecord:
+                                      listOfDeletedImages,
+                                  onListOfDeletedImagesRecord:
+                                      (List<bool> value) {
+                                    setState(() {
+                                      listOfDeletedImages = value;
+                                    });
+                                  },
+                                  decorationImageListForReorder:
+                                      decorationImageListForReorder,
+                                  onDecorationImageListForReorder:
+                                      (List<RotatedBox> value) {
+                                    setState(() {
+                                      decorationImageListForReorder = value;
+                                    });
+                                  },
+                                  reorderedList: reorderedList,
+                                  onReorderedList: (List<int> value) {
+                                    setState(() {
+                                      reorderedList = value;
+                                    });
+                                  },
+                                  controllerValueList: controllerValueList,
+                                  onControllerValueList: (List<double> value) {
+                                    setState(() {
+                                      controllerValueList = value;
+                                    });
+                                  },
+                                ),
+                              );
+                            }
+                          : null,
+                      mapOfSubFunctionDetails:
+                          widget.arguments!.mapOfSubFunctionDetails,
+                    ),
+                  ],
+                ),
+              ),
             ),
-          ),
-          //selectedDataProcessed == true ? progressFakeDialogBox : Container(),
-        ],
+            //selectedDataProcessed == true ? progressFakeDialogBox : Container(),
+          ],
+        ),
       ),
     );
   }

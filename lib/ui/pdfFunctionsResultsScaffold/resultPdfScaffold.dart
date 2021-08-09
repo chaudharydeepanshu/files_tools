@@ -1,6 +1,7 @@
 import 'package:files_tools/ads_state/ad_state.dart';
 import 'package:files_tools/ads_state/banner_ad.dart';
 import 'package:files_tools/ui/pdfViewerScaffold/pdfscaffold.dart';
+import 'package:files_tools/widgets/annotatedRegion.dart';
 import 'package:files_tools/widgets/resultPageWidgets/viewFileBanner.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -116,190 +117,194 @@ class _ResultPDFScaffoldState extends State<ResultPDFScaffold> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-      child: WillPopScope(
-        onWillPop: () async {
-          deleteFile();
-          //deleteCacheDir();
-          deleteAppDir();
-          return true;
-        },
-        child: Scaffold(
-          appBar: ReusableSilverAppBar(
-            title: 'Result',
-            titleColor: Colors.black,
-            leftButtonColor: Colors.red,
-            appBarIconLeft: appBarIconLeft,
-            appBarIconLeftToolTip: appBarIconLeftToolTip,
-            appBarIconLeftAction: appBarIconLeftAction,
-            rightButtonColor: Colors.blue,
-            appBarIconRight: appBarIconRight,
-            appBarIconRightToolTip: appBarIconRightToolTip,
-            appBarIconRightAction: appBarIconRightAction,
-          ),
-          body: Stack(
-            children: [
-              SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.all(24.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Center(
-                        child: SvgPicture.asset(
-                            'assets/images/tools_icons/pdf_tools_icon.svg',
-                            fit: BoxFit.fitHeight,
-                            height: 100,
-                            alignment: Alignment.center,
-                            semanticsLabel: 'PDF File Icon'),
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Center(
-                        child: Text(
-                          'Your PDF is ready',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontFamily: AppTheme.fontName,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 25,
-                            color: Colors.red,
+    return ReusableAnnotatedRegion(
+      child: GestureDetector(
+        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+        child: WillPopScope(
+          onWillPop: () async {
+            deleteFile();
+            //deleteCacheDir();
+            deleteAppDir();
+            return true;
+          },
+          child: Scaffold(
+            appBar: ReusableSilverAppBar(
+              title: 'Result',
+              titleColor: Colors.black,
+              leftButtonColor: Colors.red,
+              appBarIconLeft: appBarIconLeft,
+              appBarIconLeftToolTip: appBarIconLeftToolTip,
+              appBarIconLeftAction: appBarIconLeftAction,
+              rightButtonColor: Colors.blue,
+              appBarIconRight: appBarIconRight,
+              appBarIconRightToolTip: appBarIconRightToolTip,
+              appBarIconRightAction: appBarIconRightAction,
+            ),
+            body: Stack(
+              children: [
+                SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.all(24.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Center(
+                          child: SvgPicture.asset(
+                              'assets/images/tools_icons/pdf_tools_icon.svg',
+                              fit: BoxFit.fitHeight,
+                              height: 100,
+                              alignment: Alignment.center,
+                              semanticsLabel: 'PDF File Icon'),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Center(
+                          child: Text(
+                            'Your PDF is ready',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontFamily: AppTheme.fontName,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 25,
+                              color: Colors.red,
+                            ),
                           ),
                         ),
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Center(
-                        child: Text(
-                          // 'Test',
-                          'File Size : ${formatBytes(File('$tempPdfPath').lengthSync(), 2)}',
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                            fontFamily: AppTheme.fontName,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 16,
-                            color: Colors.red,
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Center(
+                          child: Text(
+                            // 'Test',
+                            'File Size : ${formatBytes(File('$tempPdfPath').lengthSync(), 2)}',
+                            textAlign: TextAlign.left,
+                            style: TextStyle(
+                              fontFamily: AppTheme.fontName,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 16,
+                              color: Colors.red,
+                            ),
                           ),
                         ),
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      TextFormField(
-                        controller: _controller,
-                        maxLength: 100,
-                        onChanged: (String value) {
-                          newFileName = _controller.text + extensionOfFileName;
-                          try {
-                            var file = File(tempPdfPath);
+                        SizedBox(
+                          height: 20,
+                        ),
+                        TextFormField(
+                          controller: _controller,
+                          maxLength: 100,
+                          onChanged: (String value) {
+                            newFileName =
+                                _controller.text + extensionOfFileName;
+                            try {
+                              var file = File(tempPdfPath);
 
-                            String changeFileNameOnlySync(
-                                File file, String newFileName) {
-                              var path = file.path;
-                              var lastSeparator =
-                                  path.lastIndexOf(Platform.pathSeparator);
-                              var newPath =
-                                  path.substring(0, lastSeparator + 1) +
-                                      newFileName;
+                              String changeFileNameOnlySync(
+                                  File file, String newFileName) {
+                                var path = file.path;
+                                var lastSeparator =
+                                    path.lastIndexOf(Platform.pathSeparator);
+                                var newPath =
+                                    path.substring(0, lastSeparator + 1) +
+                                        newFileName;
 
-                              file.renameSync(newPath);
-                              return newPath;
+                                file.renameSync(newPath);
+                                return newPath;
+                              }
+
+                              tempPdfPath =
+                                  changeFileNameOnlySync(file, newFileName);
+
+                              file = File(tempPdfPath);
+                            } catch (e) {
+                              print(e);
                             }
-
-                            tempPdfPath =
-                                changeFileNameOnlySync(file, newFileName);
-
-                            file = File(tempPdfPath);
-                          } catch (e) {
-                            print(e);
-                          }
-                          // creatingAndSavingFileTemporarily(newFileName)
-                          //     .whenComplete(() {
-                          //   setState(() {});
-                          // });
-                        },
-                        decoration: InputDecoration(
-                          hintText: "File Name",
-                          suffixText: extensionOfFileName,
-                          icon: Icon(Icons.drive_file_rename_outline,
-                              color: Colors.black),
-                          border: OutlineInputBorder(),
-                        ),
-                      ),
-                      ResultPageButtons(
-                        buttonTitle: 'View Document',
-                        onTapAction: () async {
-                          FocusManager.instance.primaryFocus?.unfocus();
-                          final _result = await OpenFile.open(tempPdfPath);
-                          print(_result.message);
-
-                          setState(() {
-                            _openResult =
-                                "type=${_result.type}  message=${_result.message}";
-                          });
-                          if (_result.type == ResultType.noAppToOpen) {
-                            print(_openResult);
-                            //Using default app pdf viewer instead of suggesting downloading others
-                            Navigator.pushNamed(
-                              context,
-                              PageRoutes.pdfScaffold,
-                              arguments: PDFScaffoldArguments(
-                                pdfPath: tempPdfPath,
-                              ),
-                            );
-                            // setState(() {
-                            //   viewPDFBannerStatus = true;
+                            // creatingAndSavingFileTemporarily(newFileName)
+                            //     .whenComplete(() {
+                            //   setState(() {});
                             // });
-                          }
-                        },
-                        buttonIcon: Icons.preview,
-                        mapOfSubFunctionDetails:
-                            widget.arguments!.mapOfSubFunctionDetails,
-                      ),
-                      ResultPageButtons(
-                        buttonTitle: 'Save Document',
-                        onTapAction: () async {
-                          FocusManager.instance.primaryFocus?.unfocus();
-                          await saveFileInUserDescribedLocation();
-                        },
-                        buttonIcon: Icons.save,
-                        mapOfSubFunctionDetails:
-                            widget.arguments!.mapOfSubFunctionDetails,
-                      ),
-                      ResultPageButtons(
-                        buttonTitle: 'Share Document',
-                        onTapAction: () async {
-                          Share.shareFiles([tempPdfPath]);
-                        },
-                        buttonIcon: Icons.share,
-                        mapOfSubFunctionDetails:
-                            widget.arguments!.mapOfSubFunctionDetails,
-                      ),
-                      SizedBox(
-                        height: AdSize.banner.height.toDouble(),
-                      ),
-                    ],
+                          },
+                          decoration: InputDecoration(
+                            hintText: "File Name",
+                            suffixText: extensionOfFileName,
+                            icon: Icon(Icons.drive_file_rename_outline,
+                                color: Colors.black),
+                            border: OutlineInputBorder(),
+                          ),
+                        ),
+                        ResultPageButtons(
+                          buttonTitle: 'View Document',
+                          onTapAction: () async {
+                            FocusManager.instance.primaryFocus?.unfocus();
+                            final _result = await OpenFile.open(tempPdfPath);
+                            print(_result.message);
+
+                            setState(() {
+                              _openResult =
+                                  "type=${_result.type}  message=${_result.message}";
+                            });
+                            if (_result.type == ResultType.noAppToOpen) {
+                              print(_openResult);
+                              //Using default app pdf viewer instead of suggesting downloading others
+                              Navigator.pushNamed(
+                                context,
+                                PageRoutes.pdfScaffold,
+                                arguments: PDFScaffoldArguments(
+                                  pdfPath: tempPdfPath,
+                                ),
+                              );
+                              // setState(() {
+                              //   viewPDFBannerStatus = true;
+                              // });
+                            }
+                          },
+                          buttonIcon: Icons.preview,
+                          mapOfSubFunctionDetails:
+                              widget.arguments!.mapOfSubFunctionDetails,
+                        ),
+                        ResultPageButtons(
+                          buttonTitle: 'Save Document',
+                          onTapAction: () async {
+                            FocusManager.instance.primaryFocus?.unfocus();
+                            await saveFileInUserDescribedLocation();
+                          },
+                          buttonIcon: Icons.save,
+                          mapOfSubFunctionDetails:
+                              widget.arguments!.mapOfSubFunctionDetails,
+                        ),
+                        ResultPageButtons(
+                          buttonTitle: 'Share Document',
+                          onTapAction: () async {
+                            Share.shareFiles([tempPdfPath]);
+                          },
+                          buttonIcon: Icons.share,
+                          mapOfSubFunctionDetails:
+                              widget.arguments!.mapOfSubFunctionDetails,
+                        ),
+                        SizedBox(
+                          height: AdSize.banner.height.toDouble(),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              BannerAD(),
-              viewPDFBannerStatus
-                  ? NoFileOpenerAvailableNotifierBanner(
-                      onViewZipBannerStatus: (bool value) {
-                        setState(() {
-                          viewPDFBannerStatus = value;
-                        });
-                      },
-                      redirectAndroidAppId: 'com.google.android.apps.nbu.files',
-                      bannerText:
-                          'Hello, no app was found on your device to view the pdf file.\n\nClick "INSTALL" to install "Files"(recommended) app which can open pdf files.',
-                    )
-                  : Container(),
-            ],
+                BannerAD(),
+                viewPDFBannerStatus
+                    ? NoFileOpenerAvailableNotifierBanner(
+                        onViewZipBannerStatus: (bool value) {
+                          setState(() {
+                            viewPDFBannerStatus = value;
+                          });
+                        },
+                        redirectAndroidAppId:
+                            'com.google.android.apps.nbu.files',
+                        bannerText:
+                            'Hello, no app was found on your device to view the pdf file.\n\nClick "INSTALL" to install "Files"(recommended) app which can open pdf files.',
+                      )
+                    : Container(),
+              ],
+            ),
           ),
         ),
       ),

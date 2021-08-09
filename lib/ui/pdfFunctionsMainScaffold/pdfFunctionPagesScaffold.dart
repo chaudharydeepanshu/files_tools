@@ -1,9 +1,12 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:files_tools/widgets/annotatedRegion.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:files_tools/ui/pdfFunctionsMainBodies/pdfFunctionPagesScaffoldBody.dart';
 import 'package:files_tools/ui/pdfFunctionsMainBodies/pdfFunctionPagesScaffoldBodyForSelectingMultipleFiles.dart';
 import 'package:files_tools/ui/pdfFunctionsMainBodies/pdfFunctionPagesScaffoldBodyForSelectingSingle&MultipleImages.dart';
 import 'package:files_tools/widgets/pdfFunctionsMainWidgets/pdfFunctionsAppBar.dart';
+import 'package:flutter/services.dart';
 
 class PDFFunctionsPageScaffold extends StatefulWidget {
   static const String routeName = '/pdfFunctionsPageScaffold';
@@ -76,18 +79,20 @@ class _PDFFunctionsPageScaffoldState extends State<PDFFunctionsPageScaffold> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      //backgroundColor: mapOfFunctionDetails!['BG Color'] ?? null,
-      appBar: PdfFunctionsAppBar(
-        onNotifyBodyPoppingSplitPDFFunctionScaffold: (bool value) {
-          setState(() {
-            notifyBodyPoppingSplitPDFFunctionScaffold = true;
-          });
-        },
-        notifyAppbarFileStatus: notifyAppbarFileStatus,
-        mapOfFunctionDetails: mapOfFunctionDetails,
+    return ReusableAnnotatedRegion(
+      child: Scaffold(
+        //backgroundColor: mapOfFunctionDetails!['BG Color'] ?? null,
+        appBar: PdfFunctionsAppBar(
+          onNotifyBodyPoppingSplitPDFFunctionScaffold: (bool value) {
+            setState(() {
+              notifyBodyPoppingSplitPDFFunctionScaffold = true;
+            });
+          },
+          notifyAppbarFileStatus: notifyAppbarFileStatus,
+          mapOfFunctionDetails: mapOfFunctionDetails,
+        ),
+        body: body,
       ),
-      body: body,
     );
   }
 }

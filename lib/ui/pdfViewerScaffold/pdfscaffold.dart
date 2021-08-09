@@ -1,3 +1,4 @@
+import 'package:files_tools/widgets/annotatedRegion.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
@@ -34,37 +35,39 @@ class _HomePage extends State<PDFScaffold> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Files Tools PDF Viewer'),
-        actions: <Widget>[
-          IconButton(
-            icon: const Icon(
-              Icons.bookmark,
-              color: Colors.white,
+    return ReusableAnnotatedRegion(
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Files Tools PDF Viewer'),
+          actions: <Widget>[
+            IconButton(
+              icon: const Icon(
+                Icons.bookmark,
+                //color: Colors.white,
+              ),
+              onPressed: () {
+                _pdfViewerKey.currentState?.openBookmarkView();
+              },
             ),
-            onPressed: () {
-              _pdfViewerKey.currentState?.openBookmarkView();
-            },
-          ),
-        ],
-      ),
-      body:
-          // TextButton(
-          //   onPressed: () {
-          //     OpenFile.open(widget.arguments!.pdfPath);
-          //   },
-          //   child: Text('Test'),
-          // )
+          ],
+        ),
+        body:
+            // TextButton(
+            //   onPressed: () {
+            //     OpenFile.open(widget.arguments!.pdfPath);
+            //   },
+            //   child: Text('Test'),
+            // )
 
-          //PdfViewer.openFile(widget.arguments.pdfPath),
-          // pdfView(),
-          SfPdfViewer.file(
-        File(widget.arguments!.pdfPath.toString()),
-        // File(
-        //     '/storage/emulated/0/Download/Schedule_Term End Examinations_Winter Semester 2020-21.pdf'),
-        enableDoubleTapZooming: true,
-        key: _pdfViewerKey,
+            //PdfViewer.openFile(widget.arguments.pdfPath),
+            // pdfView(),
+            SfPdfViewer.file(
+          File(widget.arguments!.pdfPath.toString()),
+          // File(
+          //     '/storage/emulated/0/Download/Schedule_Term End Examinations_Winter Semester 2020-21.pdf'),
+          enableDoubleTapZooming: true,
+          key: _pdfViewerKey,
+        ),
       ),
     );
   }
