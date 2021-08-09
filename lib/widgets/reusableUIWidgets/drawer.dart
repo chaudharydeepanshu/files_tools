@@ -1,8 +1,12 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+import 'dailog_box_for_leaving_app.dart';
 
 class CustomDrawer extends StatefulWidget {
   const CustomDrawer({Key? key, this.savedThemeMode}) : super(key: key);
@@ -47,10 +51,31 @@ class _CustomDrawerState extends State<CustomDrawer> {
     });
   }
 
+  List<Widget>? dialogActionButtonsListForLeavingApp;
+  String? dialogTextForForLeavingApp;
+
   @override
   void initState() {
     buttonTextCalc();
     packageInfoCalc();
+
+    dialogActionButtonsListForLeavingApp = [
+      OutlinedButton(
+        onPressed: () {
+          Navigator.pop(context);
+        },
+        child: const Text('No'),
+      ),
+      OutlinedButton(
+        onPressed: () async {
+          Navigator.pop(context);
+          launch('https://pureinfoapps.com/Files%20Tools/Privacy%20Policy');
+        },
+        child: const Text('Yes'),
+      ),
+    ];
+    dialogTextForForLeavingApp =
+        'You are leaving the app to open the privacy policy url. So, please confirm that do you want to leave the app?';
 
     super.initState();
   }
@@ -108,6 +133,24 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     // Then close the drawer
                     //Navigator.pop(context);
                   },
+                ),
+              ],
+            ),
+          ),
+          RichText(
+            text: new TextSpan(
+              children: [
+                TextSpan(
+                  text: 'Privacy Policy',
+                  style: new TextStyle(color: Colors.blue),
+                  recognizer: new TapGestureRecognizer()
+                    ..onTap = () {
+                      leavingAppDialogBox(
+                          actionButtonsList:
+                              dialogActionButtonsListForLeavingApp,
+                          text: dialogTextForForLeavingApp,
+                          context: context);
+                    },
                 ),
               ],
             ),
