@@ -348,100 +348,107 @@ class _FixedRangePDFPagesScaffoldState extends State<FixedRangePDFPagesScaffold>
                           : null
                       : null,
                 ),
-                body: SingleChildScrollView(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      children: <Widget>[
-                        Row(
-                          children: [
-                            Container(
-                              child: Text(
-                                'Total number of Pages in PDF: $pdfPagesCount',
-                                style: TextStyle(fontWeight: FontWeight.bold),
+                body: Stack(
+                  children: [
+                    SingleChildScrollView(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          children: <Widget>[
+                            Row(
+                              children: [
+                                Container(
+                                  child: Text(
+                                    'Total number of Pages in PDF: $pdfPagesCount',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                  decoration: BoxDecoration(),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Row(
+                              children: [
+                                Text('Split PDF in page ranges of:'),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            TextFormField(
+                              controller: textEditingController,
+                              keyboardType: TextInputType.number,
+                              inputFormatters: listTextInputFormatter,
+                              onChanged: (String value) {
+                                if (value.isNotEmpty) {
+                                  if (int.parse(value.substring(0, 1)) == 0) {
+                                    String newValue = value.substring(0, 0) +
+                                        '' +
+                                        value.substring(0 + 1);
+                                    textEditingController.value =
+                                        TextEditingValue(
+                                      text: newValue,
+                                      selection: TextSelection.fromPosition(
+                                        TextPosition(offset: newValue.length),
+                                      ),
+                                    );
+                                  }
+                                }
+                              },
+                              decoration: InputDecoration(
+                                labelText: 'Type a number',
+                                helperText: ' ',
+                                hintText: 'Ex: ${pdfPagesCount - 1}',
+                                border: OutlineInputBorder(),
                               ),
-                              decoration: BoxDecoration(),
+                              //autofocus: true,
+                              showCursor: true,
+                              autovalidateMode:
+                                  AutovalidateMode.onUserInteraction,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Empty Field';
+                                } else if (int.parse(value) == pdfPagesCount)
+                                //RegExp('[a-zA-Z0-9 \"‘\'‘,-]')
+                                {
+                                  return 'Type a shorter number than total number of pages';
+                                } else if (int.parse(value) > pdfPagesCount)
+                                //RegExp('[a-zA-Z0-9 \"‘\'‘,-]')
+                                {
+                                  return 'Out of range';
+                                }
+                                return null;
+                              },
+                            ),
+                            _formKey.currentState != null
+                                ? _formKey.currentState!.validate()
+                                    ? Row(
+                                        children: [
+                                          Container(
+                                            child: Text(
+                                              'Number of PDFs will be created: ${pdfsCreatedCalc()}',
+                                            ),
+                                            decoration: BoxDecoration(),
+                                          ),
+                                        ],
+                                      )
+                                    : Container()
+                                : Container(),
+                            SizedBox(
+                              height: AdSize.banner.height.toDouble(),
                             ),
                           ],
                         ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Row(
-                          children: [
-                            Text('Split PDF in page ranges of:'),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        TextFormField(
-                          controller: textEditingController,
-                          keyboardType: TextInputType.number,
-                          inputFormatters: listTextInputFormatter,
-                          onChanged: (String value) {
-                            if (value.isNotEmpty) {
-                              if (int.parse(value.substring(0, 1)) == 0) {
-                                String newValue = value.substring(0, 0) +
-                                    '' +
-                                    value.substring(0 + 1);
-                                textEditingController.value = TextEditingValue(
-                                  text: newValue,
-                                  selection: TextSelection.fromPosition(
-                                    TextPosition(offset: newValue.length),
-                                  ),
-                                );
-                              }
-                            }
-                          },
-                          decoration: InputDecoration(
-                            labelText: 'Type a number',
-                            helperText: ' ',
-                            hintText: 'Ex: ${pdfPagesCount - 1}',
-                            border: OutlineInputBorder(),
-                          ),
-                          //autofocus: true,
-                          showCursor: true,
-                          autovalidateMode: AutovalidateMode.onUserInteraction,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Empty Field';
-                            } else if (int.parse(value) == pdfPagesCount)
-                            //RegExp('[a-zA-Z0-9 \"‘\'‘,-]')
-                            {
-                              return 'Type a shorter number than total number of pages';
-                            } else if (int.parse(value) > pdfPagesCount)
-                            //RegExp('[a-zA-Z0-9 \"‘\'‘,-]')
-                            {
-                              return 'Out of range';
-                            }
-                            return null;
-                          },
-                        ),
-                        _formKey.currentState != null
-                            ? _formKey.currentState!.validate()
-                                ? Row(
-                                    children: [
-                                      Container(
-                                        child: Text(
-                                          'Number of PDFs will be created: ${pdfsCreatedCalc()}',
-                                        ),
-                                        decoration: BoxDecoration(),
-                                      ),
-                                    ],
-                                  )
-                                : Container()
-                            : Container(),
-                        SizedBox(
-                          height: AdSize.banner.height.toDouble(),
-                        ),
-                      ],
+                      ),
                     ),
-                  ),
+                    BannerAD(),
+                  ],
                 ),
               ),
             ),
-            BannerAD(),
             // selectedDataProcessed == true ? progressFakeDialogBox : Container(),
           ],
         ),

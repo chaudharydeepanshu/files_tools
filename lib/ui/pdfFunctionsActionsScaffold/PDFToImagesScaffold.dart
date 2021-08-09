@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:file_picker/file_picker.dart';
+import 'package:files_tools/ads_state/banner_ad.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -335,41 +336,48 @@ class _PDFToImagesScaffoldState extends State<PDFToImagesScaffold>
                   appBarIconRightAction:
                       appBarIconRightActionForSeparateDocuments,
                 ),
-                body: SingleChildScrollView(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      children: <Widget>[
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                              child: Text(
-                                'Total number of Pages in PDF: $pdfPagesCount',
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ),
-                              decoration: BoxDecoration(),
+                body: Stack(
+                  children: [
+                    SingleChildScrollView(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          children: <Widget>[
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Container(
+                                  child: Text(
+                                    'Total number of Pages in PDF: $pdfPagesCount',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                  decoration: BoxDecoration(),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Container(
+                                  child: Text(
+                                    'Number of Images will be created: $pdfPagesCount',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                  decoration: BoxDecoration(),
+                                ),
+                              ],
                             ),
                           ],
                         ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                              child: Text(
-                                'Number of Images will be created: $pdfPagesCount',
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ),
-                              decoration: BoxDecoration(),
-                            ),
-                          ],
-                        ),
-                      ],
+                      ),
                     ),
-                  ),
+                    BannerAD(),
+                  ],
                 ),
               ),
             ),

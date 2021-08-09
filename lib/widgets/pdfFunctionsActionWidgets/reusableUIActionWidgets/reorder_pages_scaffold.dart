@@ -734,10 +734,12 @@
 // //Note: things are not getting replaced on drag and drop they are all somewhat getting rearranging
 
 import 'package:file_picker/file_picker.dart';
+import 'package:files_tools/ads_state/banner_ad.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:files_tools/widgets/reusableUIWidgets/ReusableTopAppBar.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:reorderable_grid_view/reorderable_grid_view.dart';
 
 class ReorderPDFPagesScaffold extends StatefulWidget {
@@ -1042,506 +1044,548 @@ class _ReorderPDFPagesScaffoldState extends State<ReorderPDFPagesScaffold>
               appBarIconRightAction:
                   proceedButton() ? appBarIconRightAction : null,
             ),
-            body: Padding(
-              padding: const EdgeInsets.only(top: 8.0),
-              child: ReorderableGridView(
-                crossAxisSpacing: 10,
-                mainAxisSpacing: 0,
-                crossAxisCount: 2,
-                childAspectRatio: 0.68,
-                children: this.data!.map((e) => buildItem(e)).toList(),
-                dragWidgetBuilder: dragWidget,
-                scrollSpeedController:
-                    (int timeInMilliSecond, double overSize, double itemSize) {
-                  print(
-                      "timeInMilliSecond: $timeInMilliSecond, overSize: $overSize, itemSize $itemSize");
-                  if (timeInMilliSecond > 1500) {
-                    scrollSpeedVariable = 15;
-                  } else {
-                    scrollSpeedVariable = 5;
-                  }
-                  return scrollSpeedVariable;
-                },
-                onReorder: (oldIndex, newIndex) {
-                  print("reorder: $oldIndex -> $newIndex");
-                  HapticFeedback.lightImpact();
+            body: Stack(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: Column(
+                    children: [
+                      Expanded(
+                        child: ReorderableGridView(
+                          crossAxisSpacing: 10,
+                          mainAxisSpacing: 0,
+                          crossAxisCount: 2,
+                          childAspectRatio: 0.68,
+                          children:
+                              this.data!.map((e) => buildItem(e)).toList(),
+                          dragWidgetBuilder: dragWidget,
+                          scrollSpeedController: (int timeInMilliSecond,
+                              double overSize, double itemSize) {
+                            print(
+                                "timeInMilliSecond: $timeInMilliSecond, overSize: $overSize, itemSize $itemSize");
+                            if (timeInMilliSecond > 1500) {
+                              scrollSpeedVariable = 15;
+                            } else {
+                              scrollSpeedVariable = 5;
+                            }
+                            return scrollSpeedVariable;
+                          },
+                          onReorder: (oldIndex, newIndex) {
+                            print("reorder: $oldIndex -> $newIndex");
+                            HapticFeedback.lightImpact();
 
-                  widget.arguments!.pdfPagesImages = [...tmpImagesList];
-                  int indexOfFirstItem = widget.arguments!.pdfPagesImages!
-                      .indexOf(widget.arguments!.pdfPagesImages![oldIndex]);
-                  int indexOfSecondItem = widget.arguments!.pdfPagesImages!
-                      .indexOf(widget.arguments!.pdfPagesImages![newIndex]);
+                            widget.arguments!.pdfPagesImages = [
+                              ...tmpImagesList
+                            ];
+                            int indexOfFirstItem =
+                                widget.arguments!.pdfPagesImages!.indexOf(widget
+                                    .arguments!.pdfPagesImages![oldIndex]);
+                            int indexOfSecondItem =
+                                widget.arguments!.pdfPagesImages!.indexOf(widget
+                                    .arguments!.pdfPagesImages![newIndex]);
 
-                  if (indexOfFirstItem > indexOfSecondItem) {
-                    for (int i = widget.arguments!.pdfPagesImages!.indexOf(
-                            widget.arguments!.pdfPagesImages![oldIndex]);
-                        i >
-                            widget.arguments!.pdfPagesImages!.indexOf(
-                                widget.arguments!.pdfPagesImages![newIndex]);
-                        i--) {
-                      var tmp = widget.arguments!.pdfPagesImages![i - 1];
-                      widget.arguments!.pdfPagesImages![i - 1] =
-                          widget.arguments!.pdfPagesImages![i];
-                      widget.arguments!.pdfPagesImages![i] = tmp;
-                    }
-                  } else {
-                    for (int i = widget.arguments!.pdfPagesImages!.indexOf(
-                            widget.arguments!.pdfPagesImages![oldIndex]);
-                        i <
-                            widget.arguments!.pdfPagesImages!.indexOf(
-                                widget.arguments!.pdfPagesImages![newIndex]);
-                        i++) {
-                      var tmp = widget.arguments!.pdfPagesImages![i + 1];
-                      widget.arguments!.pdfPagesImages![i + 1] =
-                          widget.arguments!.pdfPagesImages![i];
-                      widget.arguments!.pdfPagesImages![i] = tmp;
-                    }
-                  }
-                  tmpImagesList = [...widget.arguments!.pdfPagesImages!];
+                            if (indexOfFirstItem > indexOfSecondItem) {
+                              for (int i = widget.arguments!.pdfPagesImages!
+                                      .indexOf(widget.arguments!
+                                          .pdfPagesImages![oldIndex]);
+                                  i >
+                                      widget.arguments!.pdfPagesImages!.indexOf(
+                                          widget.arguments!
+                                              .pdfPagesImages![newIndex]);
+                                  i--) {
+                                var tmp =
+                                    widget.arguments!.pdfPagesImages![i - 1];
+                                widget.arguments!.pdfPagesImages![i - 1] =
+                                    widget.arguments!.pdfPagesImages![i];
+                                widget.arguments!.pdfPagesImages![i] = tmp;
+                              }
+                            } else {
+                              for (int i = widget.arguments!.pdfPagesImages!
+                                      .indexOf(widget.arguments!
+                                          .pdfPagesImages![oldIndex]);
+                                  i <
+                                      widget.arguments!.pdfPagesImages!.indexOf(
+                                          widget.arguments!
+                                              .pdfPagesImages![newIndex]);
+                                  i++) {
+                                var tmp =
+                                    widget.arguments!.pdfPagesImages![i + 1];
+                                widget.arguments!.pdfPagesImages![i + 1] =
+                                    widget.arguments!.pdfPagesImages![i];
+                                widget.arguments!.pdfPagesImages![i] = tmp;
+                              }
+                            }
+                            tmpImagesList = [
+                              ...widget.arguments!.pdfPagesImages!
+                            ];
 
-                  //For decoration of image
-                  widget.arguments!.decorationImageListForReorder = [
-                    ...tmp2ImagesList
-                  ];
-                  int indexOfFirstItem2 = widget
-                      .arguments!.decorationImageListForReorder!
-                      .indexOf(widget
-                          .arguments!.decorationImageListForReorder![oldIndex]);
-                  int indexOfSecondItem2 = widget
-                      .arguments!.decorationImageListForReorder!
-                      .indexOf(widget
-                          .arguments!.decorationImageListForReorder![newIndex]);
-
-                  if (indexOfFirstItem2 > indexOfSecondItem2) {
-                    for (int i = widget
-                            .arguments!.decorationImageListForReorder!
-                            .indexOf(widget.arguments!
-                                .decorationImageListForReorder![oldIndex]);
-                        i >
-                            widget.arguments!.decorationImageListForReorder!
+                            //For decoration of image
+                            widget.arguments!.decorationImageListForReorder = [
+                              ...tmp2ImagesList
+                            ];
+                            int indexOfFirstItem2 = widget
+                                .arguments!.decorationImageListForReorder!
+                                .indexOf(widget.arguments!
+                                    .decorationImageListForReorder![oldIndex]);
+                            int indexOfSecondItem2 = widget
+                                .arguments!.decorationImageListForReorder!
                                 .indexOf(widget.arguments!
                                     .decorationImageListForReorder![newIndex]);
-                        i--) {
-                      var tmp = widget
-                          .arguments!.decorationImageListForReorder![i - 1];
-                      widget.arguments!.decorationImageListForReorder![i - 1] =
-                          widget.arguments!.decorationImageListForReorder![i];
-                      widget.arguments!.decorationImageListForReorder![i] = tmp;
 
-                      //for recording reorder of images as list. Not to be misunderstood as reordered list of images. Real images reordered is tmpImagesList
-                      int tmp1 = tmpReorderedList[i - 1];
-                      tmpReorderedList[i - 1] = tmpReorderedList[i];
-                      tmpReorderedList[i] = tmp1;
+                            if (indexOfFirstItem2 > indexOfSecondItem2) {
+                              for (int i = widget
+                                      .arguments!.decorationImageListForReorder!
+                                      .indexOf(widget.arguments!
+                                              .decorationImageListForReorder![
+                                          oldIndex]);
+                                  i >
+                                      widget.arguments!
+                                          .decorationImageListForReorder!
+                                          .indexOf(widget.arguments!
+                                                  .decorationImageListForReorder![
+                                              newIndex]);
+                                  i--) {
+                                var tmp = widget.arguments!
+                                    .decorationImageListForReorder![i - 1];
+                                widget.arguments!
+                                        .decorationImageListForReorder![i - 1] =
+                                    widget.arguments!
+                                        .decorationImageListForReorder![i];
+                                widget.arguments!
+                                    .decorationImageListForReorder![i] = tmp;
 
-                      //for recording reorder of RotationOfImages images as list. Which would be passed back to carousel list for display
-                      int tmp2 = tmpListOfRotationOfImages[i - 1];
-                      tmpListOfRotationOfImages[i - 1] =
-                          tmpListOfRotationOfImages[i];
-                      tmpListOfRotationOfImages[i] = tmp2;
+                                //for recording reorder of images as list. Not to be misunderstood as reordered list of images. Real images reordered is tmpImagesList
+                                int tmp1 = tmpReorderedList[i - 1];
+                                tmpReorderedList[i - 1] = tmpReorderedList[i];
+                                tmpReorderedList[i] = tmp1;
 
-                      //for recording reorder of deletedImages as list.  Which would be passed back to carousel list for display
-                      bool tmp3 = tmpListOfDeletedImagesRecord[i - 1];
-                      tmpListOfDeletedImagesRecord[i - 1] =
-                          tmpListOfDeletedImagesRecord[i];
-                      tmpListOfDeletedImagesRecord[i] = tmp3;
+                                //for recording reorder of RotationOfImages images as list. Which would be passed back to carousel list for display
+                                int tmp2 = tmpListOfRotationOfImages[i - 1];
+                                tmpListOfRotationOfImages[i - 1] =
+                                    tmpListOfRotationOfImages[i];
+                                tmpListOfRotationOfImages[i] = tmp2;
 
-                      //for recording reorder of controllerValueList as list.  Which would be passed back to carousel list for changes in controllerValue due to reorder
-                      double tmp4 = tmpControllerValueList[i - 1];
-                      tmpControllerValueList[i - 1] = tmpControllerValueList[i];
-                      tmpControllerValueList[i] = tmp4;
-                    }
-                  } else {
-                    for (int i = widget
-                            .arguments!.decorationImageListForReorder!
-                            .indexOf(widget.arguments!
-                                .decorationImageListForReorder![oldIndex]);
-                        i <
-                            widget.arguments!.decorationImageListForReorder!
-                                .indexOf(widget.arguments!
-                                    .decorationImageListForReorder![newIndex]);
-                        i++) {
-                      var tmp = widget
-                          .arguments!.decorationImageListForReorder![i + 1];
-                      widget.arguments!.decorationImageListForReorder![i + 1] =
-                          widget.arguments!.decorationImageListForReorder![i];
-                      widget.arguments!.decorationImageListForReorder![i] = tmp;
+                                //for recording reorder of deletedImages as list.  Which would be passed back to carousel list for display
+                                bool tmp3 = tmpListOfDeletedImagesRecord[i - 1];
+                                tmpListOfDeletedImagesRecord[i - 1] =
+                                    tmpListOfDeletedImagesRecord[i];
+                                tmpListOfDeletedImagesRecord[i] = tmp3;
 
-                      //for recording reorder of images as list. Not to be misunderstood as reordered list of images. Real images reordered is tmpImagesList
-                      int tmp1 = tmpReorderedList[i + 1];
-                      tmpReorderedList[i + 1] = tmpReorderedList[i];
-                      tmpReorderedList[i] = tmp1;
+                                //for recording reorder of controllerValueList as list.  Which would be passed back to carousel list for changes in controllerValue due to reorder
+                                double tmp4 = tmpControllerValueList[i - 1];
+                                tmpControllerValueList[i - 1] =
+                                    tmpControllerValueList[i];
+                                tmpControllerValueList[i] = tmp4;
+                              }
+                            } else {
+                              for (int i = widget
+                                      .arguments!.decorationImageListForReorder!
+                                      .indexOf(widget.arguments!
+                                              .decorationImageListForReorder![
+                                          oldIndex]);
+                                  i <
+                                      widget.arguments!
+                                          .decorationImageListForReorder!
+                                          .indexOf(widget.arguments!
+                                                  .decorationImageListForReorder![
+                                              newIndex]);
+                                  i++) {
+                                var tmp = widget.arguments!
+                                    .decorationImageListForReorder![i + 1];
+                                widget.arguments!
+                                        .decorationImageListForReorder![i + 1] =
+                                    widget.arguments!
+                                        .decorationImageListForReorder![i];
+                                widget.arguments!
+                                    .decorationImageListForReorder![i] = tmp;
 
-                      //for recording reorder of RotationOfImages images as list. Which would be passed back to carousel list for display
-                      int tmp2 = tmpListOfRotationOfImages[i + 1];
-                      tmpListOfRotationOfImages[i + 1] =
-                          tmpListOfRotationOfImages[i];
-                      tmpListOfRotationOfImages[i] = tmp2;
+                                //for recording reorder of images as list. Not to be misunderstood as reordered list of images. Real images reordered is tmpImagesList
+                                int tmp1 = tmpReorderedList[i + 1];
+                                tmpReorderedList[i + 1] = tmpReorderedList[i];
+                                tmpReorderedList[i] = tmp1;
 
-                      //for recording reorder of deletedImages as list.  Which would be passed back to carousel list for display
-                      bool tmp3 = tmpListOfDeletedImagesRecord[i + 1];
-                      tmpListOfDeletedImagesRecord[i + 1] =
-                          tmpListOfDeletedImagesRecord[i];
-                      tmpListOfDeletedImagesRecord[i] = tmp3;
+                                //for recording reorder of RotationOfImages images as list. Which would be passed back to carousel list for display
+                                int tmp2 = tmpListOfRotationOfImages[i + 1];
+                                tmpListOfRotationOfImages[i + 1] =
+                                    tmpListOfRotationOfImages[i];
+                                tmpListOfRotationOfImages[i] = tmp2;
 
-                      //for recording reorder of controllerValueList as list.  Which would be passed back to carousel list for changes in controllerValue due to reorder
-                      double tmp4 = tmpControllerValueList[i + 1];
-                      tmpControllerValueList[i + 1] = tmpControllerValueList[i];
-                      tmpControllerValueList[i] = tmp4;
-                    }
-                  }
-                  tmp2ImagesList = [
-                    ...widget.arguments!.decorationImageListForReorder!
-                  ];
+                                //for recording reorder of deletedImages as list.  Which would be passed back to carousel list for display
+                                bool tmp3 = tmpListOfDeletedImagesRecord[i + 1];
+                                tmpListOfDeletedImagesRecord[i + 1] =
+                                    tmpListOfDeletedImagesRecord[i];
+                                tmpListOfDeletedImagesRecord[i] = tmp3;
 
-                  setState(
-                    () {
-                      pos = null;
-                      print(pos);
-                    },
-                  );
-                },
-              ),
-              // DragAndDropGridView(
-              //   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              //     crossAxisCount: 2,
-              //     childAspectRatio: 0.69, //childAspectRatio: 3 / 4.5,
-              //   ),
-              //   itemBuilder: (BuildContext context, int index) {
-              //     print('itemBuilder ran');
-              //
-              //     RotatedBox rotatedBoxImage =
-              //         widget.arguments!.decorationImageListForReorder![index];
-              //     return Opacity(
-              //       opacity: pos != null
-              //           ? pos == index
-              //               ? 0 //0.6
-              //               : 1
-              //           : 1,
-              //       child: Column(
-              //         children: <Widget>[
-              //           Container(
-              //             decoration: BoxDecoration(
-              //               border: Border.all(
-              //                 width: 1, //selectedImages[index] == true ? 2 : 1,
-              //                 color: selectedImages[index] == true
-              //                     ? Colors.blue
-              //                     : Colors.grey,
-              //               ),
-              //             ),
-              //             child: ConstrainedBox(
-              //               constraints: BoxConstraints(
-              //                 maxHeight: 234,
-              //                 maxWidth: 165,
-              //               ),
-              //               child: ClipRRect(
-              //                 child: Container(
-              //                   height: 234,
-              //                   width: 165,
-              //                   decoration: BoxDecoration(
-              //                     color: selectedImages[index] == true
-              //                         ? Colors.lightBlue[100]
-              //                         : Colors.transparent,
-              //                   ),
-              //                   child: Stack(
-              //                     children: [
-              //                       rotatedBoxImage,
-              //                     ],
-              //                   ),
-              //                 ),
-              //               ),
-              //             ),
-              //           ),
-              //           Text('${index + 1}'),
-              //           SizedBox(
-              //             height: 5,
-              //           ),
-              //         ],
-              //       ),
-              //     );
-              //   },
-              //   isCustomChildWhenDragging: false,
-              //   childWhenDragging: (pos) => Container(),
-              //   isCustomFeedback: true,
-              //   feedback: (index) {
-              //     RotatedBox rotatedBoxImage =
-              //         widget.arguments!.decorationImageListForReorder![index];
-              //     return Opacity(
-              //       opacity: pos != null
-              //           ? pos == index
-              //               ? 0.6
-              //               : 1
-              //           : 1,
-              //       child: Column(
-              //         children: <Widget>[
-              //           Container(
-              //             decoration: BoxDecoration(
-              //               border: Border.all(
-              //                 width: 1, //selectedImages[index] == true ? 2 : 1,
-              //                 color: Colors.blue,
-              //               ),
-              //               borderRadius: BorderRadius.only(
-              //                 topLeft: Radius.circular(10),
-              //                 topRight: Radius.circular(10),
-              //                 bottomLeft: Radius.circular(10),
-              //                 bottomRight: Radius.circular(10),
-              //               ),
-              //             ),
-              //             child: ConstrainedBox(
-              //               constraints: BoxConstraints(
-              //                 maxHeight: 234,
-              //                 maxWidth: 165,
-              //               ),
-              //               child: ClipRRect(
-              //                 borderRadius: BorderRadius.only(
-              //                   topLeft: Radius.circular(10.0),
-              //                   topRight: Radius.circular(10.0),
-              //                   bottomLeft: Radius.circular(10.0),
-              //                   bottomRight: Radius.circular(10.0),
-              //                 ),
-              //                 child: Container(
-              //                     height: 234,
-              //                     width: 165,
-              //                     decoration: BoxDecoration(
-              //                       color: selectedImages[index] == true
-              //                           ? Colors.lightBlue[100]
-              //                           : Colors.transparent,
-              //                     ),
-              //                     child: rotatedBoxImage),
-              //               ),
-              //             ),
-              //           ),
-              //         ],
-              //       ),
-              //     );
-              //   },
-              //   onWillAccept: (oldIndex, newIndex) {
-              //     print('onWillAccept ran');
-              //     widget.arguments!.pdfPagesImages = [...tmpImagesList];
-              //     int indexOfFirstItem = widget.arguments!.pdfPagesImages!
-              //         .indexOf(widget.arguments!.pdfPagesImages![oldIndex]);
-              //     int indexOfSecondItem = widget.arguments!.pdfPagesImages!
-              //         .indexOf(widget.arguments!.pdfPagesImages![newIndex]);
-              //
-              //     if (indexOfFirstItem > indexOfSecondItem) {
-              //       for (int i = widget.arguments!.pdfPagesImages!.indexOf(
-              //               widget.arguments!.pdfPagesImages![oldIndex]);
-              //           i >
-              //               widget.arguments!.pdfPagesImages!.indexOf(
-              //                   widget.arguments!.pdfPagesImages![newIndex]);
-              //           i--) {
-              //         var tmp = widget.arguments!.pdfPagesImages![i - 1];
-              //         widget.arguments!.pdfPagesImages![i - 1] =
-              //             widget.arguments!.pdfPagesImages![i];
-              //         widget.arguments!.pdfPagesImages![i] = tmp;
-              //       }
-              //     } else {
-              //       for (int i = widget.arguments!.pdfPagesImages!.indexOf(
-              //               widget.arguments!.pdfPagesImages![oldIndex]);
-              //           i <
-              //               widget.arguments!.pdfPagesImages!.indexOf(
-              //                   widget.arguments!.pdfPagesImages![newIndex]);
-              //           i++) {
-              //         var tmp = widget.arguments!.pdfPagesImages![i + 1];
-              //         widget.arguments!.pdfPagesImages![i + 1] =
-              //             widget.arguments!.pdfPagesImages![i];
-              //         widget.arguments!.pdfPagesImages![i] = tmp;
-              //       }
-              //     }
-              //
-              //     //
-              //     widget.arguments!.decorationImageListForReorder = [
-              //       ...tmp2ImagesList
-              //     ];
-              //     int indexOfFirstItem2 = widget
-              //         .arguments!.decorationImageListForReorder!
-              //         .indexOf(widget
-              //             .arguments!.decorationImageListForReorder![oldIndex]);
-              //     int indexOfSecondItem2 = widget
-              //         .arguments!.decorationImageListForReorder!
-              //         .indexOf(widget
-              //             .arguments!.decorationImageListForReorder![newIndex]);
-              //
-              //     if (indexOfFirstItem2 > indexOfSecondItem2) {
-              //       for (int i = widget
-              //               .arguments!.decorationImageListForReorder!
-              //               .indexOf(widget.arguments!
-              //                   .decorationImageListForReorder![oldIndex]);
-              //           i >
-              //               widget.arguments!.decorationImageListForReorder!
-              //                   .indexOf(widget.arguments!
-              //                       .decorationImageListForReorder![newIndex]);
-              //           i--) {
-              //         var tmp = widget
-              //             .arguments!.decorationImageListForReorder![i - 1];
-              //         widget.arguments!.decorationImageListForReorder![i - 1] =
-              //             widget.arguments!.decorationImageListForReorder![i];
-              //         widget.arguments!.decorationImageListForReorder![i] = tmp;
-              //       }
-              //     } else {
-              //       for (int i = widget
-              //               .arguments!.decorationImageListForReorder!
-              //               .indexOf(widget.arguments!
-              //                   .decorationImageListForReorder![oldIndex]);
-              //           i <
-              //               widget.arguments!.decorationImageListForReorder!
-              //                   .indexOf(widget.arguments!
-              //                       .decorationImageListForReorder![newIndex]);
-              //           i++) {
-              //         var tmp = widget
-              //             .arguments!.decorationImageListForReorder![i + 1];
-              //         widget.arguments!.decorationImageListForReorder![i + 1] =
-              //             widget.arguments!.decorationImageListForReorder![i];
-              //         widget.arguments!.decorationImageListForReorder![i] = tmp;
-              //       }
-              //     }
-              //
-              //     setState(
-              //       () {
-              //         pos = newIndex;
-              //         print(pos);
-              //       },
-              //     );
-              //     return true;
-              //   },
-              //   onReorder: (oldIndex, newIndex) {
-              //     HapticFeedback.lightImpact();
-              //
-              //     widget.arguments!.pdfPagesImages = [...tmpImagesList];
-              //     int indexOfFirstItem = widget.arguments!.pdfPagesImages!
-              //         .indexOf(widget.arguments!.pdfPagesImages![oldIndex]);
-              //     int indexOfSecondItem = widget.arguments!.pdfPagesImages!
-              //         .indexOf(widget.arguments!.pdfPagesImages![newIndex]);
-              //
-              //     if (indexOfFirstItem > indexOfSecondItem) {
-              //       for (int i = widget.arguments!.pdfPagesImages!.indexOf(
-              //               widget.arguments!.pdfPagesImages![oldIndex]);
-              //           i >
-              //               widget.arguments!.pdfPagesImages!.indexOf(
-              //                   widget.arguments!.pdfPagesImages![newIndex]);
-              //           i--) {
-              //         var tmp = widget.arguments!.pdfPagesImages![i - 1];
-              //         widget.arguments!.pdfPagesImages![i - 1] =
-              //             widget.arguments!.pdfPagesImages![i];
-              //         widget.arguments!.pdfPagesImages![i] = tmp;
-              //       }
-              //     } else {
-              //       for (int i = widget.arguments!.pdfPagesImages!.indexOf(
-              //               widget.arguments!.pdfPagesImages![oldIndex]);
-              //           i <
-              //               widget.arguments!.pdfPagesImages!.indexOf(
-              //                   widget.arguments!.pdfPagesImages![newIndex]);
-              //           i++) {
-              //         var tmp = widget.arguments!.pdfPagesImages![i + 1];
-              //         widget.arguments!.pdfPagesImages![i + 1] =
-              //             widget.arguments!.pdfPagesImages![i];
-              //         widget.arguments!.pdfPagesImages![i] = tmp;
-              //       }
-              //     }
-              //     tmpImagesList = [...widget.arguments!.pdfPagesImages!];
-              //
-              //     //For decoration of image
-              //     widget.arguments!.decorationImageListForReorder = [
-              //       ...tmp2ImagesList
-              //     ];
-              //     int indexOfFirstItem2 = widget
-              //         .arguments!.decorationImageListForReorder!
-              //         .indexOf(widget
-              //             .arguments!.decorationImageListForReorder![oldIndex]);
-              //     int indexOfSecondItem2 = widget
-              //         .arguments!.decorationImageListForReorder!
-              //         .indexOf(widget
-              //             .arguments!.decorationImageListForReorder![newIndex]);
-              //
-              //     if (indexOfFirstItem2 > indexOfSecondItem2) {
-              //       for (int i = widget
-              //               .arguments!.decorationImageListForReorder!
-              //               .indexOf(widget.arguments!
-              //                   .decorationImageListForReorder![oldIndex]);
-              //           i >
-              //               widget.arguments!.decorationImageListForReorder!
-              //                   .indexOf(widget.arguments!
-              //                       .decorationImageListForReorder![newIndex]);
-              //           i--) {
-              //         var tmp = widget
-              //             .arguments!.decorationImageListForReorder![i - 1];
-              //         widget.arguments!.decorationImageListForReorder![i - 1] =
-              //             widget.arguments!.decorationImageListForReorder![i];
-              //         widget.arguments!.decorationImageListForReorder![i] = tmp;
-              //
-              //         //for recording reorder of images as list. Not to be misunderstood as reordered list of images. Real images reordered is tmpImagesList
-              //         int tmp1 = tmpReorderedList[i - 1];
-              //         tmpReorderedList[i - 1] = tmpReorderedList[i];
-              //         tmpReorderedList[i] = tmp1;
-              //
-              //         //for recording reorder of RotationOfImages images as list. Which would be passed back to carousel list for display
-              //         int tmp2 = tmpListOfRotationOfImages[i - 1];
-              //         tmpListOfRotationOfImages[i - 1] =
-              //             tmpListOfRotationOfImages[i];
-              //         tmpListOfRotationOfImages[i] = tmp2;
-              //
-              //         //for recording reorder of deletedImages as list.  Which would be passed back to carousel list for display
-              //         bool tmp3 = tmpListOfDeletedImagesRecord[i - 1];
-              //         tmpListOfDeletedImagesRecord[i - 1] =
-              //             tmpListOfDeletedImagesRecord[i];
-              //         tmpListOfDeletedImagesRecord[i] = tmp3;
-              //
-              //         //for recording reorder of controllerValueList as list.  Which would be passed back to carousel list for changes in controllerValue due to reorder
-              //         double tmp4 = tmpControllerValueList[i - 1];
-              //         tmpControllerValueList[i - 1] = tmpControllerValueList[i];
-              //         tmpControllerValueList[i] = tmp4;
-              //       }
-              //     } else {
-              //       for (int i = widget
-              //               .arguments!.decorationImageListForReorder!
-              //               .indexOf(widget.arguments!
-              //                   .decorationImageListForReorder![oldIndex]);
-              //           i <
-              //               widget.arguments!.decorationImageListForReorder!
-              //                   .indexOf(widget.arguments!
-              //                       .decorationImageListForReorder![newIndex]);
-              //           i++) {
-              //         var tmp = widget
-              //             .arguments!.decorationImageListForReorder![i + 1];
-              //         widget.arguments!.decorationImageListForReorder![i + 1] =
-              //             widget.arguments!.decorationImageListForReorder![i];
-              //         widget.arguments!.decorationImageListForReorder![i] = tmp;
-              //
-              //         //for recording reorder of images as list. Not to be misunderstood as reordered list of images. Real images reordered is tmpImagesList
-              //         int tmp1 = tmpReorderedList[i + 1];
-              //         tmpReorderedList[i + 1] = tmpReorderedList[i];
-              //         tmpReorderedList[i] = tmp1;
-              //
-              //         //for recording reorder of RotationOfImages images as list. Which would be passed back to carousel list for display
-              //         int tmp2 = tmpListOfRotationOfImages[i + 1];
-              //         tmpListOfRotationOfImages[i + 1] =
-              //             tmpListOfRotationOfImages[i];
-              //         tmpListOfRotationOfImages[i] = tmp2;
-              //
-              //         //for recording reorder of deletedImages as list.  Which would be passed back to carousel list for display
-              //         bool tmp3 = tmpListOfDeletedImagesRecord[i + 1];
-              //         tmpListOfDeletedImagesRecord[i + 1] =
-              //             tmpListOfDeletedImagesRecord[i];
-              //         tmpListOfDeletedImagesRecord[i] = tmp3;
-              //
-              //         //for recording reorder of controllerValueList as list.  Which would be passed back to carousel list for changes in controllerValue due to reorder
-              //         double tmp4 = tmpControllerValueList[i + 1];
-              //         tmpControllerValueList[i + 1] = tmpControllerValueList[i];
-              //         tmpControllerValueList[i] = tmp4;
-              //       }
-              //     }
-              //     tmp2ImagesList = [
-              //       ...widget.arguments!.decorationImageListForReorder!
-              //     ];
-              //
-              //     setState(
-              //       () {
-              //         pos = null;
-              //         print(pos);
-              //       },
-              //     );
-              //   },
-              //   itemCount: widget.arguments!.pdfPagesImages!.length,
-              // ),
+                                //for recording reorder of controllerValueList as list.  Which would be passed back to carousel list for changes in controllerValue due to reorder
+                                double tmp4 = tmpControllerValueList[i + 1];
+                                tmpControllerValueList[i + 1] =
+                                    tmpControllerValueList[i];
+                                tmpControllerValueList[i] = tmp4;
+                              }
+                            }
+                            tmp2ImagesList = [
+                              ...widget
+                                  .arguments!.decorationImageListForReorder!
+                            ];
+
+                            setState(
+                              () {
+                                pos = null;
+                                print(pos);
+                              },
+                            );
+                          },
+                        ),
+                      ),
+                      SizedBox(
+                        height: AdSize.banner.height.toDouble(),
+                      ),
+                    ],
+                  ),
+                  // DragAndDropGridView(
+                  //   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  //     crossAxisCount: 2,
+                  //     childAspectRatio: 0.69, //childAspectRatio: 3 / 4.5,
+                  //   ),
+                  //   itemBuilder: (BuildContext context, int index) {
+                  //     print('itemBuilder ran');
+                  //
+                  //     RotatedBox rotatedBoxImage =
+                  //         widget.arguments!.decorationImageListForReorder![index];
+                  //     return Opacity(
+                  //       opacity: pos != null
+                  //           ? pos == index
+                  //               ? 0 //0.6
+                  //               : 1
+                  //           : 1,
+                  //       child: Column(
+                  //         children: <Widget>[
+                  //           Container(
+                  //             decoration: BoxDecoration(
+                  //               border: Border.all(
+                  //                 width: 1, //selectedImages[index] == true ? 2 : 1,
+                  //                 color: selectedImages[index] == true
+                  //                     ? Colors.blue
+                  //                     : Colors.grey,
+                  //               ),
+                  //             ),
+                  //             child: ConstrainedBox(
+                  //               constraints: BoxConstraints(
+                  //                 maxHeight: 234,
+                  //                 maxWidth: 165,
+                  //               ),
+                  //               child: ClipRRect(
+                  //                 child: Container(
+                  //                   height: 234,
+                  //                   width: 165,
+                  //                   decoration: BoxDecoration(
+                  //                     color: selectedImages[index] == true
+                  //                         ? Colors.lightBlue[100]
+                  //                         : Colors.transparent,
+                  //                   ),
+                  //                   child: Stack(
+                  //                     children: [
+                  //                       rotatedBoxImage,
+                  //                     ],
+                  //                   ),
+                  //                 ),
+                  //               ),
+                  //             ),
+                  //           ),
+                  //           Text('${index + 1}'),
+                  //           SizedBox(
+                  //             height: 5,
+                  //           ),
+                  //         ],
+                  //       ),
+                  //     );
+                  //   },
+                  //   isCustomChildWhenDragging: false,
+                  //   childWhenDragging: (pos) => Container(),
+                  //   isCustomFeedback: true,
+                  //   feedback: (index) {
+                  //     RotatedBox rotatedBoxImage =
+                  //         widget.arguments!.decorationImageListForReorder![index];
+                  //     return Opacity(
+                  //       opacity: pos != null
+                  //           ? pos == index
+                  //               ? 0.6
+                  //               : 1
+                  //           : 1,
+                  //       child: Column(
+                  //         children: <Widget>[
+                  //           Container(
+                  //             decoration: BoxDecoration(
+                  //               border: Border.all(
+                  //                 width: 1, //selectedImages[index] == true ? 2 : 1,
+                  //                 color: Colors.blue,
+                  //               ),
+                  //               borderRadius: BorderRadius.only(
+                  //                 topLeft: Radius.circular(10),
+                  //                 topRight: Radius.circular(10),
+                  //                 bottomLeft: Radius.circular(10),
+                  //                 bottomRight: Radius.circular(10),
+                  //               ),
+                  //             ),
+                  //             child: ConstrainedBox(
+                  //               constraints: BoxConstraints(
+                  //                 maxHeight: 234,
+                  //                 maxWidth: 165,
+                  //               ),
+                  //               child: ClipRRect(
+                  //                 borderRadius: BorderRadius.only(
+                  //                   topLeft: Radius.circular(10.0),
+                  //                   topRight: Radius.circular(10.0),
+                  //                   bottomLeft: Radius.circular(10.0),
+                  //                   bottomRight: Radius.circular(10.0),
+                  //                 ),
+                  //                 child: Container(
+                  //                     height: 234,
+                  //                     width: 165,
+                  //                     decoration: BoxDecoration(
+                  //                       color: selectedImages[index] == true
+                  //                           ? Colors.lightBlue[100]
+                  //                           : Colors.transparent,
+                  //                     ),
+                  //                     child: rotatedBoxImage),
+                  //               ),
+                  //             ),
+                  //           ),
+                  //         ],
+                  //       ),
+                  //     );
+                  //   },
+                  //   onWillAccept: (oldIndex, newIndex) {
+                  //     print('onWillAccept ran');
+                  //     widget.arguments!.pdfPagesImages = [...tmpImagesList];
+                  //     int indexOfFirstItem = widget.arguments!.pdfPagesImages!
+                  //         .indexOf(widget.arguments!.pdfPagesImages![oldIndex]);
+                  //     int indexOfSecondItem = widget.arguments!.pdfPagesImages!
+                  //         .indexOf(widget.arguments!.pdfPagesImages![newIndex]);
+                  //
+                  //     if (indexOfFirstItem > indexOfSecondItem) {
+                  //       for (int i = widget.arguments!.pdfPagesImages!.indexOf(
+                  //               widget.arguments!.pdfPagesImages![oldIndex]);
+                  //           i >
+                  //               widget.arguments!.pdfPagesImages!.indexOf(
+                  //                   widget.arguments!.pdfPagesImages![newIndex]);
+                  //           i--) {
+                  //         var tmp = widget.arguments!.pdfPagesImages![i - 1];
+                  //         widget.arguments!.pdfPagesImages![i - 1] =
+                  //             widget.arguments!.pdfPagesImages![i];
+                  //         widget.arguments!.pdfPagesImages![i] = tmp;
+                  //       }
+                  //     } else {
+                  //       for (int i = widget.arguments!.pdfPagesImages!.indexOf(
+                  //               widget.arguments!.pdfPagesImages![oldIndex]);
+                  //           i <
+                  //               widget.arguments!.pdfPagesImages!.indexOf(
+                  //                   widget.arguments!.pdfPagesImages![newIndex]);
+                  //           i++) {
+                  //         var tmp = widget.arguments!.pdfPagesImages![i + 1];
+                  //         widget.arguments!.pdfPagesImages![i + 1] =
+                  //             widget.arguments!.pdfPagesImages![i];
+                  //         widget.arguments!.pdfPagesImages![i] = tmp;
+                  //       }
+                  //     }
+                  //
+                  //     //
+                  //     widget.arguments!.decorationImageListForReorder = [
+                  //       ...tmp2ImagesList
+                  //     ];
+                  //     int indexOfFirstItem2 = widget
+                  //         .arguments!.decorationImageListForReorder!
+                  //         .indexOf(widget
+                  //             .arguments!.decorationImageListForReorder![oldIndex]);
+                  //     int indexOfSecondItem2 = widget
+                  //         .arguments!.decorationImageListForReorder!
+                  //         .indexOf(widget
+                  //             .arguments!.decorationImageListForReorder![newIndex]);
+                  //
+                  //     if (indexOfFirstItem2 > indexOfSecondItem2) {
+                  //       for (int i = widget
+                  //               .arguments!.decorationImageListForReorder!
+                  //               .indexOf(widget.arguments!
+                  //                   .decorationImageListForReorder![oldIndex]);
+                  //           i >
+                  //               widget.arguments!.decorationImageListForReorder!
+                  //                   .indexOf(widget.arguments!
+                  //                       .decorationImageListForReorder![newIndex]);
+                  //           i--) {
+                  //         var tmp = widget
+                  //             .arguments!.decorationImageListForReorder![i - 1];
+                  //         widget.arguments!.decorationImageListForReorder![i - 1] =
+                  //             widget.arguments!.decorationImageListForReorder![i];
+                  //         widget.arguments!.decorationImageListForReorder![i] = tmp;
+                  //       }
+                  //     } else {
+                  //       for (int i = widget
+                  //               .arguments!.decorationImageListForReorder!
+                  //               .indexOf(widget.arguments!
+                  //                   .decorationImageListForReorder![oldIndex]);
+                  //           i <
+                  //               widget.arguments!.decorationImageListForReorder!
+                  //                   .indexOf(widget.arguments!
+                  //                       .decorationImageListForReorder![newIndex]);
+                  //           i++) {
+                  //         var tmp = widget
+                  //             .arguments!.decorationImageListForReorder![i + 1];
+                  //         widget.arguments!.decorationImageListForReorder![i + 1] =
+                  //             widget.arguments!.decorationImageListForReorder![i];
+                  //         widget.arguments!.decorationImageListForReorder![i] = tmp;
+                  //       }
+                  //     }
+                  //
+                  //     setState(
+                  //       () {
+                  //         pos = newIndex;
+                  //         print(pos);
+                  //       },
+                  //     );
+                  //     return true;
+                  //   },
+                  //   onReorder: (oldIndex, newIndex) {
+                  //     HapticFeedback.lightImpact();
+                  //
+                  //     widget.arguments!.pdfPagesImages = [...tmpImagesList];
+                  //     int indexOfFirstItem = widget.arguments!.pdfPagesImages!
+                  //         .indexOf(widget.arguments!.pdfPagesImages![oldIndex]);
+                  //     int indexOfSecondItem = widget.arguments!.pdfPagesImages!
+                  //         .indexOf(widget.arguments!.pdfPagesImages![newIndex]);
+                  //
+                  //     if (indexOfFirstItem > indexOfSecondItem) {
+                  //       for (int i = widget.arguments!.pdfPagesImages!.indexOf(
+                  //               widget.arguments!.pdfPagesImages![oldIndex]);
+                  //           i >
+                  //               widget.arguments!.pdfPagesImages!.indexOf(
+                  //                   widget.arguments!.pdfPagesImages![newIndex]);
+                  //           i--) {
+                  //         var tmp = widget.arguments!.pdfPagesImages![i - 1];
+                  //         widget.arguments!.pdfPagesImages![i - 1] =
+                  //             widget.arguments!.pdfPagesImages![i];
+                  //         widget.arguments!.pdfPagesImages![i] = tmp;
+                  //       }
+                  //     } else {
+                  //       for (int i = widget.arguments!.pdfPagesImages!.indexOf(
+                  //               widget.arguments!.pdfPagesImages![oldIndex]);
+                  //           i <
+                  //               widget.arguments!.pdfPagesImages!.indexOf(
+                  //                   widget.arguments!.pdfPagesImages![newIndex]);
+                  //           i++) {
+                  //         var tmp = widget.arguments!.pdfPagesImages![i + 1];
+                  //         widget.arguments!.pdfPagesImages![i + 1] =
+                  //             widget.arguments!.pdfPagesImages![i];
+                  //         widget.arguments!.pdfPagesImages![i] = tmp;
+                  //       }
+                  //     }
+                  //     tmpImagesList = [...widget.arguments!.pdfPagesImages!];
+                  //
+                  //     //For decoration of image
+                  //     widget.arguments!.decorationImageListForReorder = [
+                  //       ...tmp2ImagesList
+                  //     ];
+                  //     int indexOfFirstItem2 = widget
+                  //         .arguments!.decorationImageListForReorder!
+                  //         .indexOf(widget
+                  //             .arguments!.decorationImageListForReorder![oldIndex]);
+                  //     int indexOfSecondItem2 = widget
+                  //         .arguments!.decorationImageListForReorder!
+                  //         .indexOf(widget
+                  //             .arguments!.decorationImageListForReorder![newIndex]);
+                  //
+                  //     if (indexOfFirstItem2 > indexOfSecondItem2) {
+                  //       for (int i = widget
+                  //               .arguments!.decorationImageListForReorder!
+                  //               .indexOf(widget.arguments!
+                  //                   .decorationImageListForReorder![oldIndex]);
+                  //           i >
+                  //               widget.arguments!.decorationImageListForReorder!
+                  //                   .indexOf(widget.arguments!
+                  //                       .decorationImageListForReorder![newIndex]);
+                  //           i--) {
+                  //         var tmp = widget
+                  //             .arguments!.decorationImageListForReorder![i - 1];
+                  //         widget.arguments!.decorationImageListForReorder![i - 1] =
+                  //             widget.arguments!.decorationImageListForReorder![i];
+                  //         widget.arguments!.decorationImageListForReorder![i] = tmp;
+                  //
+                  //         //for recording reorder of images as list. Not to be misunderstood as reordered list of images. Real images reordered is tmpImagesList
+                  //         int tmp1 = tmpReorderedList[i - 1];
+                  //         tmpReorderedList[i - 1] = tmpReorderedList[i];
+                  //         tmpReorderedList[i] = tmp1;
+                  //
+                  //         //for recording reorder of RotationOfImages images as list. Which would be passed back to carousel list for display
+                  //         int tmp2 = tmpListOfRotationOfImages[i - 1];
+                  //         tmpListOfRotationOfImages[i - 1] =
+                  //             tmpListOfRotationOfImages[i];
+                  //         tmpListOfRotationOfImages[i] = tmp2;
+                  //
+                  //         //for recording reorder of deletedImages as list.  Which would be passed back to carousel list for display
+                  //         bool tmp3 = tmpListOfDeletedImagesRecord[i - 1];
+                  //         tmpListOfDeletedImagesRecord[i - 1] =
+                  //             tmpListOfDeletedImagesRecord[i];
+                  //         tmpListOfDeletedImagesRecord[i] = tmp3;
+                  //
+                  //         //for recording reorder of controllerValueList as list.  Which would be passed back to carousel list for changes in controllerValue due to reorder
+                  //         double tmp4 = tmpControllerValueList[i - 1];
+                  //         tmpControllerValueList[i - 1] = tmpControllerValueList[i];
+                  //         tmpControllerValueList[i] = tmp4;
+                  //       }
+                  //     } else {
+                  //       for (int i = widget
+                  //               .arguments!.decorationImageListForReorder!
+                  //               .indexOf(widget.arguments!
+                  //                   .decorationImageListForReorder![oldIndex]);
+                  //           i <
+                  //               widget.arguments!.decorationImageListForReorder!
+                  //                   .indexOf(widget.arguments!
+                  //                       .decorationImageListForReorder![newIndex]);
+                  //           i++) {
+                  //         var tmp = widget
+                  //             .arguments!.decorationImageListForReorder![i + 1];
+                  //         widget.arguments!.decorationImageListForReorder![i + 1] =
+                  //             widget.arguments!.decorationImageListForReorder![i];
+                  //         widget.arguments!.decorationImageListForReorder![i] = tmp;
+                  //
+                  //         //for recording reorder of images as list. Not to be misunderstood as reordered list of images. Real images reordered is tmpImagesList
+                  //         int tmp1 = tmpReorderedList[i + 1];
+                  //         tmpReorderedList[i + 1] = tmpReorderedList[i];
+                  //         tmpReorderedList[i] = tmp1;
+                  //
+                  //         //for recording reorder of RotationOfImages images as list. Which would be passed back to carousel list for display
+                  //         int tmp2 = tmpListOfRotationOfImages[i + 1];
+                  //         tmpListOfRotationOfImages[i + 1] =
+                  //             tmpListOfRotationOfImages[i];
+                  //         tmpListOfRotationOfImages[i] = tmp2;
+                  //
+                  //         //for recording reorder of deletedImages as list.  Which would be passed back to carousel list for display
+                  //         bool tmp3 = tmpListOfDeletedImagesRecord[i + 1];
+                  //         tmpListOfDeletedImagesRecord[i + 1] =
+                  //             tmpListOfDeletedImagesRecord[i];
+                  //         tmpListOfDeletedImagesRecord[i] = tmp3;
+                  //
+                  //         //for recording reorder of controllerValueList as list.  Which would be passed back to carousel list for changes in controllerValue due to reorder
+                  //         double tmp4 = tmpControllerValueList[i + 1];
+                  //         tmpControllerValueList[i + 1] = tmpControllerValueList[i];
+                  //         tmpControllerValueList[i] = tmp4;
+                  //       }
+                  //     }
+                  //     tmp2ImagesList = [
+                  //       ...widget.arguments!.decorationImageListForReorder!
+                  //     ];
+                  //
+                  //     setState(
+                  //       () {
+                  //         pos = null;
+                  //         print(pos);
+                  //       },
+                  //     );
+                  //   },
+                  //   itemCount: widget.arguments!.pdfPagesImages!.length,
+                  // ),
+                ),
+                BannerAD(),
+              ],
             ),
           ),
           selectedDataProcessed == true

@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:files_tools/ads_state/banner_ad.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:files_tools/basicFunctionalityFunctions/creatingAndSavingPDFFileTemporarily.dart';
@@ -274,7 +275,10 @@ class _ImagesToPDFScaffoldState extends State<ImagesToPDFScaffold> {
                           });
                         },
                 ),
-                Expanded(child: carouselList()),
+                Expanded(
+                  child: carouselList(),
+                ),
+                BannerAD(),
               ],
             ),
             bottomNavigationBar: BottomAppBar(

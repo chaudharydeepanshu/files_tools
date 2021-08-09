@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:file_picker/file_picker.dart';
+import 'package:files_tools/ads_state/banner_ad.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:files_tools/basicFunctionalityFunctions/creatingAndSavingPDFFileTemporarily.dart';
@@ -291,7 +292,14 @@ class _PDFPagesModificationScaffoldState
               appBarIconRightAction:
                   proceedButton() ? appBarIconRightAction : null,
             ),
-            body: carouselList(),
+            body: Column(
+              children: [
+                Expanded(
+                  child: carouselList(),
+                ),
+                BannerAD(),
+              ],
+            ),
             bottomNavigationBar: BottomAppBar(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
