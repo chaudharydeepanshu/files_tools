@@ -449,7 +449,7 @@ class _PDFPagesSelectionScaffoldState extends State<PDFPagesSelectionScaffold>
                           ),
                         ),
                         SizedBox(
-                          height: AdSize.banner.height.toDouble() + 10,
+                          height: AdSize.banner.height.toDouble() + 20,
                         ),
                       ],
                     ),

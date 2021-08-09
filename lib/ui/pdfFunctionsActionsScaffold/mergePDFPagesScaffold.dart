@@ -402,7 +402,7 @@ class _MergePDFPagesScaffoldState extends State<MergePDFPagesScaffold>
                           },
                         ),
                         SizedBox(
-                          height: AdSize.banner.height.toDouble() + 10,
+                          height: AdSize.banner.height.toDouble() + 20,
                         ),
                       ],
                     ),

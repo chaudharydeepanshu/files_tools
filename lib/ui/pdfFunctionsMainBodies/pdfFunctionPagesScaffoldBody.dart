@@ -1053,7 +1053,7 @@ class _PDFFunctionBodyState extends State<PDFFunctionBody>
                                                           'Sublist Functions']
                                                       .length -
                                                   1
-                                          ? AdSize.banner.height.toDouble() + 10
+                                          ? AdSize.banner.height.toDouble() + 20
                                           : 20,
                                     ),
                                   ],

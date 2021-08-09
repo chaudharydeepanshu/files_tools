@@ -438,7 +438,7 @@ class _FixedRangePDFPagesScaffoldState extends State<FixedRangePDFPagesScaffold>
                                       : Container()
                                   : Container(),
                               SizedBox(
-                                height: AdSize.banner.height.toDouble() + 10,
+                                height: AdSize.banner.height.toDouble() + 20,
                               ),
                             ],
                           ),

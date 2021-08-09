@@ -280,7 +280,7 @@ class _ResultPDFScaffoldState extends State<ResultPDFScaffold> {
                               widget.arguments!.mapOfSubFunctionDetails,
                         ),
                         SizedBox(
-                          height: AdSize.banner.height.toDouble() + 10,
+                          height: AdSize.banner.height.toDouble() + 20,
                         ),
                       ],
                     ),

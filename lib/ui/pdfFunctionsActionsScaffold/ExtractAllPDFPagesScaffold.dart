@@ -292,7 +292,7 @@ class _ExtractAllPDFPagesScaffoldState extends State<ExtractAllPDFPagesScaffold>
                                     ],
                                   ),
                             SizedBox(
-                              height: AdSize.banner.height.toDouble() + 10,
+                              height: AdSize.banner.height.toDouble() + 20,
                             ),
                           ],
                         ),

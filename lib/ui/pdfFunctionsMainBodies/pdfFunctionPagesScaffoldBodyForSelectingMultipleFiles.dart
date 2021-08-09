@@ -1178,7 +1178,7 @@ class _PDFFunctionBodyForMultipleFilesState
                                                           'Sublist Functions']
                                                       .length -
                                                   1
-                                          ? AdSize.banner.height.toDouble() + 10
+                                          ? AdSize.banner.height.toDouble() + 20
                                           : 20,
                                     ),
                                   ],
