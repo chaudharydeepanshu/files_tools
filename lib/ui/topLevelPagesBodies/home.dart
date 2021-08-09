@@ -1,3 +1,5 @@
+import 'package:files_tools/ads_state/banner_ad.dart';
+import 'package:files_tools/basicFunctionalityFunctions/sizeCalculator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:files_tools/widgets/topLevelPagesWidgets/homeWidgets/expanding_container/expanding_container.dart';
@@ -17,24 +19,6 @@ class _HomeBodyState extends State<HomeBody> with WidgetsBindingObserver {
   final PageController controller = PageController(initialPage: 0);
   List listOfToolCardsForDocuments = [];
   List listOfToolCardsForMedia = [];
-
-  BannerAd? banner;
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    final adState = Provider.of<AdState>(context);
-    adState.initialization.then((value) {
-      setState(() {
-        banner = BannerAd(
-          listener: adState.adListener,
-          adUnitId: adState.bannerAdUnitId,
-          request: AdRequest(),
-          size: AdSize.banner,
-        )..load();
-      });
-    });
-  }
 
   @override
   void didChangePlatformBrightness() {
@@ -167,26 +151,12 @@ class _HomeBodyState extends State<HomeBody> with WidgetsBindingObserver {
                 ),
               ),
               SizedBox(
-                height: AdSize.banner.height.toDouble(),
-              )
+                height: AdSize.banner.height.toDouble() + 10,
+              ),
             ],
           ),
         ),
-        banner == null
-            ? SizedBox(
-                height: AdSize.banner.height.toDouble(),
-              )
-            : Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Container(
-                    height: AdSize.banner.height.toDouble(),
-                    child: AdWidget(
-                      ad: banner!,
-                    ),
-                  ),
-                ],
-              ),
+        BannerAD(),
       ],
     );
   }

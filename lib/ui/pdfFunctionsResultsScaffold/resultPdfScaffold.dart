@@ -1,4 +1,3 @@
-import 'package:files_tools/ads_state/ad_state.dart';
 import 'package:files_tools/ads_state/banner_ad.dart';
 import 'package:files_tools/ui/pdfViewerScaffold/pdfscaffold.dart';
 import 'package:files_tools/widgets/annotatedRegion.dart';
@@ -13,9 +12,7 @@ import 'package:files_tools/basicFunctionalityFunctions/fileNameManager.dart';
 import 'package:files_tools/navigation/page_routes_model.dart';
 import 'package:files_tools/ui/topLevelPagesScaffold/mainPageScaffold.dart';
 import 'package:files_tools/widgets/resultPageWidgets/ResultPageButtons.dart';
-import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:store_redirect/store_redirect.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
 import 'package:files_tools/widgets/reusableUIWidgets/ReusableTopAppBar.dart';
 import 'dart:io';
@@ -283,7 +280,7 @@ class _ResultPDFScaffoldState extends State<ResultPDFScaffold> {
                               widget.arguments!.mapOfSubFunctionDetails,
                         ),
                         SizedBox(
-                          height: AdSize.banner.height.toDouble(),
+                          height: AdSize.banner.height.toDouble() + 10,
                         ),
                       ],
                     ),

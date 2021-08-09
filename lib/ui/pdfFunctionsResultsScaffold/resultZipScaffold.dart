@@ -27,7 +27,6 @@ import 'package:share_plus/share_plus.dart';
 import '../../app_theme/app_theme.dart';
 import '../../basicFunctionalityFunctions/getSizeFromBytes.dart';
 import 'package:path/path.dart' as PathLibrary;
-import 'package:store_redirect/store_redirect.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:document_file_save/document_file_save.dart';
 
@@ -519,7 +518,7 @@ class _ResultZipScaffoldState extends State<ResultZipScaffold> {
                               widget.arguments!.mapOfSubFunctionDetails,
                         ),
                         SizedBox(
-                          height: AdSize.banner.height.toDouble(),
+                          height: AdSize.banner.height.toDouble() + 10,
                         ),
                       ],
                     ),

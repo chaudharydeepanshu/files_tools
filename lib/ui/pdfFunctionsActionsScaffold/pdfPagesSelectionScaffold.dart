@@ -123,6 +123,7 @@
 
 import 'package:file_picker/file_picker.dart';
 import 'package:files_tools/ads_state/banner_ad.dart';
+import 'package:files_tools/basicFunctionalityFunctions/sizeCalculator.dart';
 import 'package:files_tools/widgets/annotatedRegion.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -448,7 +449,7 @@ class _PDFPagesSelectionScaffoldState extends State<PDFPagesSelectionScaffold>
                           ),
                         ),
                         SizedBox(
-                          height: AdSize.banner.height.toDouble(),
+                          height: AdSize.banner.height.toDouble() + 10,
                         ),
                       ],
                     ),

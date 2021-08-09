@@ -15,14 +15,11 @@ import 'package:native_pdf_renderer/native_pdf_renderer.dart' as pdfRenderer;
 import 'package:files_tools/widgets/pdfFunctionsMainWidgets/permissionDialogBox.dart';
 import 'package:files_tools/widgets/pdfFunctionsMainWidgets/dialogActionBodyOfButtonForSelectedMultipleFiles.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:provider/provider.dart';
 import '../../../app_theme/app_theme.dart';
 import '../../../basicFunctionalityFunctions/getSizeFromBytes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:io';
 import 'package:files_tools/widgets/pdfFunctionsMainWidgets/pdfFunctionsButtons.dart';
-
-import '../../ads_state/ad_state.dart';
 
 class PDFFunctionBodyForMultipleFiles extends StatefulWidget {
   const PDFFunctionBodyForMultipleFiles(

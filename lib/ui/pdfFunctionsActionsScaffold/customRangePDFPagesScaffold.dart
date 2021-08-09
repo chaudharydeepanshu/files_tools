@@ -1,6 +1,5 @@
 import 'dart:ui';
 import 'package:file_picker/file_picker.dart';
-import 'package:files_tools/ads_state/ad_state.dart';
 import 'package:files_tools/ads_state/banner_ad.dart';
 import 'package:files_tools/widgets/annotatedRegion.dart';
 import 'package:flutter/foundation.dart';
@@ -15,12 +14,9 @@ import 'package:files_tools/ui/pdfFunctionsResultsScaffold/resultZipScaffold.dar
 import 'package:files_tools/widgets/pdfFunctionsActionWidgets/reusableUIActionWidgets/progressFakeDialogBox.dart';
 import 'package:files_tools/widgets/reusableUIWidgets/ReusableTopAppBar.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
 import '../../basicFunctionalityFunctions/creatingAndSavingPDFFileTemporarily.dart';
 import 'package:uuid/uuid.dart';
-
-import 'FixedRangePDFPagesScaffold.dart';
 
 var uuid = Uuid();
 
