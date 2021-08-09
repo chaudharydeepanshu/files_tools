@@ -1,5 +1,7 @@
 import 'package:files_tools/ads_state/ad_state.dart';
+import 'package:files_tools/ads_state/banner_ad.dart';
 import 'package:files_tools/ui/pdfViewerScaffold/pdfscaffold.dart';
+import 'package:files_tools/widgets/resultPageWidgets/viewFileBanner.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_file_dialog/flutter_file_dialog.dart';
@@ -111,24 +113,6 @@ class _ResultPDFScaffoldState extends State<ResultPDFScaffold> {
   }
 
   var _openResult = 'Unknown';
-
-  BannerAd? banner;
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    final adState = Provider.of<AdState>(context);
-    adState.initialization.then((value) {
-      setState(() {
-        banner = BannerAd(
-          listener: adState.adListener,
-          adUnitId: adState.bannerAdUnitId,
-          request: AdRequest(),
-          size: AdSize.banner,
-        )..load();
-      });
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -302,63 +286,17 @@ class _ResultPDFScaffoldState extends State<ResultPDFScaffold> {
                   ),
                 ),
               ),
-              banner == null
-                  ? SizedBox(
-                      height: AdSize.banner.height.toDouble(),
-                    )
-                  : Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Container(
-                          height: AdSize.banner.height.toDouble(),
-                          child: AdWidget(
-                            ad: banner!,
-                          ),
-                        ),
-                      ],
-                    ),
+              BannerAD(),
               viewPDFBannerStatus
-                  ? Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Container(
-                          decoration: BoxDecoration(
-                            border: Border(
-                                //top: BorderSide(color: Colors.grey, width: 1.5),
-                                ),
-                          ),
-                          child: MaterialBanner(
-                            padding: EdgeInsets.all(5),
-                            content: Text(
-                              'Hello, no app was found on your device to view the pdf file.\n\nClick "INSTALL" to install "Files"(recommended) app which can open pdf files.',
-                              style: TextStyle(color: Colors.black),
-                            ),
-                            leading: Icon(Icons.info_outline_rounded),
-                            backgroundColor: Color(0xffDBF0F3),
-                            actions: <Widget>[
-                              OutlinedButton(
-                                child: Text('INSTALL'),
-                                onPressed: () {
-                                  setState(() {
-                                    viewPDFBannerStatus = false;
-                                  });
-                                  StoreRedirect.redirect(
-                                      androidAppId:
-                                          "com.google.android.apps.nbu.files");
-                                },
-                              ),
-                              OutlinedButton(
-                                child: Text('DISMISS'),
-                                onPressed: () {
-                                  setState(() {
-                                    viewPDFBannerStatus = false;
-                                  });
-                                },
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
+                  ? NoFileOpenerAvailableNotifierBanner(
+                      onViewZipBannerStatus: (bool value) {
+                        setState(() {
+                          viewPDFBannerStatus = value;
+                        });
+                      },
+                      redirectAndroidAppId: 'com.google.android.apps.nbu.files',
+                      bannerText:
+                          'Hello, no app was found on your device to view the pdf file.\n\nClick "INSTALL" to install "Files"(recommended) app which can open pdf files.',
                     )
                   : Container(),
             ],

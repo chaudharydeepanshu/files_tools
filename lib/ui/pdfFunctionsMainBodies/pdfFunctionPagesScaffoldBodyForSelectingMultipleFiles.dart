@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:file_picker/file_picker.dart';
+import 'package:files_tools/ads_state/banner_ad.dart';
 import 'package:files_tools/widgets/pdfFunctionsMainWidgets/directPop.dart';
 import 'package:files_tools/widgets/pdfFunctionsMainWidgets/onWillPopDialog.dart';
 import 'package:flutter/cupertino.dart';
@@ -311,24 +312,6 @@ class _PDFFunctionBodyForMultipleFilesState
   }
 
   int filesEncryptedCount = 0;
-
-  BannerAd? banner;
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    final adState = Provider.of<AdState>(context);
-    adState.initialization.then((value) {
-      setState(() {
-        banner = BannerAd(
-          listener: adState.adListener,
-          adUnitId: adState.bannerAdUnitId,
-          request: AdRequest(),
-          size: AdSize.banner,
-        )..load();
-      });
-    });
-  }
 
   ScrollController scrollController = ScrollController();
 
@@ -1242,21 +1225,7 @@ class _PDFFunctionBodyForMultipleFilesState
             ),
           ),
         ),
-        banner == null
-            ? SizedBox(
-                height: AdSize.banner.height.toDouble(),
-              )
-            : Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Container(
-                    height: AdSize.banner.height.toDouble(),
-                    child: AdWidget(
-                      ad: banner!,
-                    ),
-                  ),
-                ],
-              ),
+        BannerAD(),
       ],
     );
   }

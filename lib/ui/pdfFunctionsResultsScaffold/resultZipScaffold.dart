@@ -1,14 +1,17 @@
 import 'dart:typed_data';
 
 import 'package:file_picker/file_picker.dart';
+import 'package:files_tools/ads_state/banner_ad.dart';
 import 'package:files_tools/basicFunctionalityFunctions/currentDateTimeInString.dart';
 import 'package:files_tools/widgets/resultPageWidgets/savingDialog.dart';
+import 'package:files_tools/widgets/resultPageWidgets/viewFileBanner.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_archive/flutter_archive.dart';
 import 'package:flutter_file_dialog/flutter_file_dialog.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gallery_saver/gallery_saver.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:open_file/open_file.dart';
 import 'package:files_tools/basicFunctionalityFunctions/fileNameManager.dart';
 import 'package:files_tools/navigation/page_routes_model.dart';
@@ -509,50 +512,24 @@ class _ResultZipScaffoldState extends State<ResultZipScaffold> {
                         mapOfSubFunctionDetails:
                             widget.arguments!.mapOfSubFunctionDetails,
                       ),
+                      SizedBox(
+                        height: AdSize.banner.height.toDouble(),
+                      ),
                     ],
                   ),
                 ),
               ),
+              BannerAD(),
               viewZipBannerStatus
-                  ? Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Container(
-                          decoration: BoxDecoration(
-                            border: Border(
-                                //top: BorderSide(color: Colors.grey, width: 1.5),
-                                ),
-                          ),
-                          child: MaterialBanner(
-                            padding: EdgeInsets.all(5),
-                            content: Text(
-                              'Hello, no app was found on your device to view the zip file.\n\nClick "INSTALL" to install "WinRAR"(recommended) app which can open zip files.',
-                            ),
-                            leading: Icon(Icons.info_outline_rounded),
-                            //backgroundColor: Color(0xffDBF0F3),
-                            actions: <Widget>[
-                              OutlinedButton(
-                                child: Text('INSTALL'),
-                                onPressed: () {
-                                  setState(() {
-                                    viewZipBannerStatus = false;
-                                  });
-                                  StoreRedirect.redirect(
-                                      androidAppId: "com.rarlab.rar");
-                                },
-                              ),
-                              OutlinedButton(
-                                child: Text('DISMISS'),
-                                onPressed: () {
-                                  setState(() {
-                                    viewZipBannerStatus = false;
-                                  });
-                                },
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
+                  ? NoFileOpenerAvailableNotifierBanner(
+                      onViewZipBannerStatus: (bool value) {
+                        setState(() {
+                          viewZipBannerStatus = value;
+                        });
+                      },
+                      redirectAndroidAppId: 'com.rarlab.rar',
+                      bannerText:
+                          'Hello, no app was found on your device to view the zip file.\n\nClick "INSTALL" to install "WinRAR"(recommended) app which can open zip files.',
                     )
                   : Container(),
             ],

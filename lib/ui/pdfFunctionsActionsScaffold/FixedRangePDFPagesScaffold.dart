@@ -1,5 +1,7 @@
 import 'dart:ui';
 import 'package:file_picker/file_picker.dart';
+import 'package:files_tools/ads_state/ad_state.dart';
+import 'package:files_tools/ads_state/banner_ad.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -9,6 +11,8 @@ import 'package:files_tools/basicFunctionalityFunctions/processSelectedDataFromU
 import 'package:files_tools/ui/pdfFunctionsResultsScaffold/resultZipScaffold.dart';
 import 'package:files_tools/widgets/pdfFunctionsActionWidgets/reusableUIActionWidgets/progressFakeDialogBox.dart';
 import 'package:files_tools/widgets/reusableUIWidgets/ReusableTopAppBar.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:provider/provider.dart';
 
 class FixedRangePDFPagesScaffold extends StatefulWidget {
   static const String routeName = '/fixedRangePDFPagesScaffold';
@@ -428,12 +432,16 @@ class _FixedRangePDFPagesScaffoldState extends State<FixedRangePDFPagesScaffold>
                                   )
                                 : Container()
                             : Container(),
+                        SizedBox(
+                          height: AdSize.banner.height.toDouble(),
+                        ),
                       ],
                     ),
                   ),
                 ),
               ),
             ),
+            BannerAD(),
             // selectedDataProcessed == true ? progressFakeDialogBox : Container(),
           ],
         ),

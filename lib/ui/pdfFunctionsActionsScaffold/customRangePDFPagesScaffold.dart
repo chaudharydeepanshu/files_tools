@@ -1,5 +1,7 @@
 import 'dart:ui';
 import 'package:file_picker/file_picker.dart';
+import 'package:files_tools/ads_state/ad_state.dart';
+import 'package:files_tools/ads_state/banner_ad.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -11,9 +13,13 @@ import 'package:files_tools/ui/pdfFunctionsResultsScaffold/resultPdfScaffold.dar
 import 'package:files_tools/ui/pdfFunctionsResultsScaffold/resultZipScaffold.dart';
 import 'package:files_tools/widgets/pdfFunctionsActionWidgets/reusableUIActionWidgets/progressFakeDialogBox.dart';
 import 'package:files_tools/widgets/reusableUIWidgets/ReusableTopAppBar.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
 import '../../basicFunctionalityFunctions/creatingAndSavingPDFFileTemporarily.dart';
 import 'package:uuid/uuid.dart';
+
+import 'FixedRangePDFPagesScaffold.dart';
 
 var uuid = Uuid();
 
@@ -481,117 +487,129 @@ class _CustomRangePDFPagesScaffoldState
                           : null
                       : null,
                 ),
-                body: SingleChildScrollView(
-                  child: Column(
-                    children: <Widget>[
-                      ReorderableListView(
-                        header: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                            children: [
-                              Text('Add Pages and Ranges: '),
-                            ],
-                          ),
-                        ),
-                        shrinkWrap: true,
-                        physics: ClampingScrollPhysics(),
-                        children: ranges,
-                        onReorder: (int oldIndex, int newIndex) {
-                          setState(() {
-                            if (oldIndex < newIndex) {
-                              newIndex -= 1;
-                            }
-                            final Widget item = ranges.removeAt(oldIndex);
-                            ranges.insert(newIndex, item);
-
-                            final int item2 =
-                                rangesReorderRecorder.removeAt(oldIndex);
-                            rangesReorderRecorder.insert(newIndex, item2);
-                          });
-                        },
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      OutlinedButton(
-                        onPressed: () {
-                          FocusManager.instance.primaryFocus?.unfocus();
-                          String temp = "${uuid.v1()}";
-                          setState(() {
-                            ranges.add(RangeWidget(
-                              listOfQuartetsOfButtonsOfRanges:
-                                  listOfQuartetsOfButtonsOfRanges,
-                              listTextEditingControllerPairs:
-                                  listTextEditingControllerPairs,
-                              index: ranges.length,
-                              pdfPageCount:
-                                  widget.arguments!.pdfPagesImages!.length,
-                              // key: Key('${ranges.length}'),
-                              key: Key('$temp'),
-                              onListOfQuartetsOfButtonsOfRanges:
-                                  (List<List<bool>> value) {
-                                setState(() {
-                                  listOfQuartetsOfButtonsOfRanges = value;
-                                });
-                              },
-                              onListTextEditingControllerPairs:
-                                  (List<List<TextEditingController>> value) {
-                                setState(() {
-                                  listTextEditingControllerPairs = value;
-                                });
-                              },
-                              onDeleteRange: (int value) {
-                                int? rangeToDelete;
-                                for (int i = 0;
-                                    i < rangesReorderRecorder.length;
-                                    i++) {
-                                  if (value == rangesReorderRecorder[i]) {
-                                    rangeToDelete = i;
-                                    print(i);
-                                  }
+                body: Stack(
+                  children: [
+                    SingleChildScrollView(
+                      child: Column(
+                        children: <Widget>[
+                          ReorderableListView(
+                            header: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(
+                                children: [
+                                  Text('Add Pages and Ranges: '),
+                                ],
+                              ),
+                            ),
+                            shrinkWrap: true,
+                            physics: ClampingScrollPhysics(),
+                            children: ranges,
+                            onReorder: (int oldIndex, int newIndex) {
+                              setState(() {
+                                if (oldIndex < newIndex) {
+                                  newIndex -= 1;
                                 }
-                                setState(() {
-                                  print('rangeToDelete: $rangeToDelete');
-                                  print('value: $value');
-                                  ranges.removeAt(rangeToDelete!);
-                                  rangesReorderRecorder.removeAt(rangeToDelete);
-                                  setStateLimiterForAddPostFrameCallback =
-                                      ranges.length - 1;
-                                });
-                              },
-                              rangeNumber: rangeCountWithoutDeletion.length,
-                              color: widget.arguments!
-                                      .mapOfSubFunctionDetails!['Main Color'] ??
-                                  Colors.lightBlue,
-                            ));
-                          });
-                          rangesReorderRecorder
-                              .add(rangeCountWithoutDeletion.length + 1);
-                          rangeCountWithoutDeletion
-                              .add(rangeCountWithoutDeletion.length + 1);
-                        },
-                        child: Text('+ Add Range'),
+                                final Widget item = ranges.removeAt(oldIndex);
+                                ranges.insert(newIndex, item);
+
+                                final int item2 =
+                                    rangesReorderRecorder.removeAt(oldIndex);
+                                rangesReorderRecorder.insert(newIndex, item2);
+                              });
+                            },
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          OutlinedButton(
+                            onPressed: () {
+                              FocusManager.instance.primaryFocus?.unfocus();
+                              String temp = "${uuid.v1()}";
+                              setState(() {
+                                ranges.add(RangeWidget(
+                                  listOfQuartetsOfButtonsOfRanges:
+                                      listOfQuartetsOfButtonsOfRanges,
+                                  listTextEditingControllerPairs:
+                                      listTextEditingControllerPairs,
+                                  index: ranges.length,
+                                  pdfPageCount:
+                                      widget.arguments!.pdfPagesImages!.length,
+                                  // key: Key('${ranges.length}'),
+                                  key: Key('$temp'),
+                                  onListOfQuartetsOfButtonsOfRanges:
+                                      (List<List<bool>> value) {
+                                    setState(() {
+                                      listOfQuartetsOfButtonsOfRanges = value;
+                                    });
+                                  },
+                                  onListTextEditingControllerPairs:
+                                      (List<List<TextEditingController>>
+                                          value) {
+                                    setState(() {
+                                      listTextEditingControllerPairs = value;
+                                    });
+                                  },
+                                  onDeleteRange: (int value) {
+                                    int? rangeToDelete;
+                                    for (int i = 0;
+                                        i < rangesReorderRecorder.length;
+                                        i++) {
+                                      if (value == rangesReorderRecorder[i]) {
+                                        rangeToDelete = i;
+                                        print(i);
+                                      }
+                                    }
+                                    setState(() {
+                                      print('rangeToDelete: $rangeToDelete');
+                                      print('value: $value');
+                                      ranges.removeAt(rangeToDelete!);
+                                      rangesReorderRecorder
+                                          .removeAt(rangeToDelete);
+                                      setStateLimiterForAddPostFrameCallback =
+                                          ranges.length - 1;
+                                    });
+                                  },
+                                  rangeNumber: rangeCountWithoutDeletion.length,
+                                  color: widget.arguments!
+                                              .mapOfSubFunctionDetails![
+                                          'Main Color'] ??
+                                      Colors.lightBlue,
+                                ));
+                              });
+                              rangesReorderRecorder
+                                  .add(rangeCountWithoutDeletion.length + 1);
+                              rangeCountWithoutDeletion
+                                  .add(rangeCountWithoutDeletion.length + 1);
+                            },
+                            child: Text('+ Add Range'),
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          CheckboxListTile(
+                            title: const Text(
+                                'Create separate documents for each page range'),
+                            value: _isSeparateDocumentsEnabled,
+                            onChanged: ranges.length < 2
+                                ? null
+                                : (bool? newValue) {
+                                    FocusManager.instance.primaryFocus
+                                        ?.unfocus();
+                                    setState(() {
+                                      _isSeparateDocumentsEnabled = newValue!;
+                                      print(
+                                          "_isSeparateDocumentsEnabled: $_isSeparateDocumentsEnabled");
+                                    });
+                                  },
+                          ),
+                          SizedBox(
+                            height: AdSize.banner.height.toDouble() + 20,
+                          ),
+                        ],
                       ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      CheckboxListTile(
-                        title: const Text(
-                            'Create separate documents for each page range'),
-                        value: _isSeparateDocumentsEnabled,
-                        onChanged: ranges.length < 2
-                            ? null
-                            : (bool? newValue) {
-                                FocusManager.instance.primaryFocus?.unfocus();
-                                setState(() {
-                                  _isSeparateDocumentsEnabled = newValue!;
-                                  print(
-                                      "_isSeparateDocumentsEnabled: $_isSeparateDocumentsEnabled");
-                                });
-                              },
-                      ),
-                    ],
-                  ),
+                    ),
+                    BannerAD(),
+                  ],
                 ),
               ),
             ),

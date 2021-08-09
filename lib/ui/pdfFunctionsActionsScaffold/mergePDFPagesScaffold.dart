@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:files_tools/ads_state/ad_state.dart';
+import 'package:files_tools/ads_state/banner_ad.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -347,24 +348,6 @@ class _MergePDFPagesScaffoldState extends State<MergePDFPagesScaffold>
     return true;
   }
 
-  BannerAd? banner;
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    final adState = Provider.of<AdState>(context);
-    adState.initialization.then((value) {
-      setState(() {
-        banner = BannerAd(
-          listener: adState.adListener,
-          adUnitId: adState.bannerAdUnitId,
-          request: AdRequest(),
-          size: AdSize.banner,
-        )..load();
-      });
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -423,21 +406,7 @@ class _MergePDFPagesScaffoldState extends State<MergePDFPagesScaffold>
                     ],
                   ),
                 ),
-                banner == null
-                    ? SizedBox(
-                        height: AdSize.banner.height.toDouble(),
-                      )
-                    : Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Container(
-                            height: AdSize.banner.height.toDouble(),
-                            child: AdWidget(
-                              ad: banner!,
-                            ),
-                          ),
-                        ],
-                      ),
+                BannerAD(),
               ],
             ),
           ),
