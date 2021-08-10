@@ -1,6 +1,8 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'dart:io';
 
 class ReusableAnnotatedRegion extends StatefulWidget {
   const ReusableAnnotatedRegion({Key? key, required this.child})
@@ -71,6 +73,7 @@ class _ReusableAnnotatedRegionState extends State<ReusableAnnotatedRegion>
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle(
+        //todo:issue with status bar color on changing theme modes
         // statusBarColor:
         //     darkModeOn! ? Colors.black : Colors.white, //Colors.transparent,
         // statusBarIconBrightness:
