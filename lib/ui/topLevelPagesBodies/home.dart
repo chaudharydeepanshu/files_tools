@@ -99,7 +99,10 @@ class _HomeBodyState extends State<HomeBody> with WidgetsBindingObserver {
                       children: [
                         Text(
                           'Document Tools',
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
                         ),
                       ],
                     ),
@@ -125,7 +128,10 @@ class _HomeBodyState extends State<HomeBody> with WidgetsBindingObserver {
                       children: [
                         Text(
                           'Media Tools',
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
                         ),
                       ],
                     ),

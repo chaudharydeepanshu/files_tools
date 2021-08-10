@@ -925,32 +925,34 @@ class _ReorderPDFPagesScaffoldState extends State<ReorderPDFPagesScaffold>
           : 1,
       child: Column(
         children: <Widget>[
-          Container(
-            decoration: BoxDecoration(
-              border: Border.all(
-                width: 1, //selectedImages[index] == true ? 2 : 1,
-                color:
-                    selectedImages[index] == true ? Colors.blue : Colors.grey,
+          Expanded(
+            child: Container(
+              decoration: BoxDecoration(
+                border: Border.all(
+                  width: 1, //selectedImages[index] == true ? 2 : 1,
+                  color:
+                      selectedImages[index] == true ? Colors.blue : Colors.grey,
+                ),
               ),
-            ),
-            child: ConstrainedBox(
-              constraints: BoxConstraints(
-                maxHeight: 234,
-                maxWidth: 165,
-              ),
-              child: ClipRRect(
-                child: Container(
-                  height: 234,
-                  width: 165,
-                  decoration: BoxDecoration(
-                    color: selectedImages[index] == true
-                        ? Colors.lightBlue[100]
-                        : Colors.transparent,
-                  ),
-                  child: Stack(
-                    children: [
-                      rotatedBoxImage,
-                    ],
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxHeight: 234,
+                  maxWidth: 165,
+                ),
+                child: ClipRRect(
+                  child: Container(
+                    height: 234,
+                    width: 165,
+                    decoration: BoxDecoration(
+                      color: selectedImages[index] == true
+                          ? Colors.lightBlue[100]
+                          : Colors.transparent,
+                    ),
+                    child: Stack(
+                      children: [
+                        rotatedBoxImage,
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -958,7 +960,10 @@ class _ReorderPDFPagesScaffoldState extends State<ReorderPDFPagesScaffold>
           ),
           Text('${index + 1}'),
           SizedBox(
-            height: 5,
+            height: index == widget.arguments!.pdfPagesImages!.length - 1 ||
+                    index == widget.arguments!.pdfPagesImages!.length - 2
+                ? AdSize.banner.height.toDouble() + 20
+                : 5,
           ),
         ],
       ),
@@ -1237,9 +1242,9 @@ class _ReorderPDFPagesScaffoldState extends State<ReorderPDFPagesScaffold>
                           },
                         ),
                       ),
-                      SizedBox(
-                        height: AdSize.banner.height.toDouble(),
-                      ),
+                      // SizedBox(
+                      //   height: AdSize.banner.height.toDouble(),
+                      // ),
                     ],
                   ),
                   // DragAndDropGridView(

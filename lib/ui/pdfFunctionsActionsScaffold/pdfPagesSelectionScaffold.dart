@@ -440,7 +440,20 @@ class _PDFPagesSelectionScaffoldState extends State<PDFPagesSelectionScaffold>
                                     ),
                                     Text('${index + 1}'),
                                     SizedBox(
-                                      height: 5,
+                                      height: index ==
+                                                  widget
+                                                          .arguments!
+                                                          .pdfPagesImages!
+                                                          .length -
+                                                      1 ||
+                                              index ==
+                                                  widget
+                                                          .arguments!
+                                                          .pdfPagesImages!
+                                                          .length -
+                                                      2
+                                          ? AdSize.banner.height.toDouble() + 20
+                                          : 5,
                                     ),
                                   ],
                                 );
@@ -448,9 +461,9 @@ class _PDFPagesSelectionScaffoldState extends State<PDFPagesSelectionScaffold>
                             ),
                           ),
                         ),
-                        SizedBox(
-                          height: AdSize.banner.height.toDouble() + 20,
-                        ),
+                        // SizedBox(
+                        //   height: AdSize.banner.height.toDouble() + 20,
+                        // ),
                       ],
                     ),
                   ),

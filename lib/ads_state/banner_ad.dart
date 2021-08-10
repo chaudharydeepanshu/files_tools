@@ -37,7 +37,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 //   @override
 //   Widget build(BuildContext context) {
 //     return banner == null
-//         ? SizedBox(
+//         ? Container(
 //             height: AdSize.banner.height.toDouble(),
 //           )
 //         : Column(
@@ -138,13 +138,15 @@ class _BannerADState extends State<BannerAD> with WidgetsBindingObserver {
       size = await createAnchoredBanner(context);
       // }
       setState(() {
-        banner = BannerAd(
-          listener: adState.adListener,
-          adUnitId: adState.bannerAdUnitId,
-          request: AdRequest(),
-          size: size!,
-          //AdSize.banner,
-        )..load();
+        if (adState.bannerAdUnitId != null) {
+          banner = BannerAd(
+            listener: adState.adListener,
+            adUnitId: adState.bannerAdUnitId!,
+            request: AdRequest(),
+            size: size!,
+            // AdSize.banner,
+          )..load();
+        }
       });
     });
   }
