@@ -170,7 +170,7 @@ class _BannerADState extends State<BannerAD> with WidgetsBindingObserver {
                   Container(
                     height: AdSize.banner.height.toDouble() + 10,
                     width: size!.width.toDouble(),
-                    color: Colors.grey.shade300,
+                    color: Colors.grey,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -194,7 +194,7 @@ class _BannerADState extends State<BannerAD> with WidgetsBindingObserver {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Container(
-                    color: Colors.grey.shade300,
+                    color: Colors.grey,
                     width: size!.width.toDouble(),
                     height: size!.height.toDouble(),
                     child: Stack(
