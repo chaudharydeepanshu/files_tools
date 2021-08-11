@@ -5,7 +5,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
-
 import 'dailog_box_for_leaving_app.dart';
 
 class CustomDrawer extends StatefulWidget {
@@ -69,7 +68,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
       OutlinedButton(
         onPressed: () async {
           Navigator.pop(context);
-          launch('https://pureinfoapps.com/Files%20Tools/Privacy%20Policy');
+          launch('https://pureinfoapps.com/files-tools/privacy-policy');
         },
         child: const Text('Yes'),
       ),
