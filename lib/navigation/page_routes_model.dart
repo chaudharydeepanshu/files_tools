@@ -1,20 +1,20 @@
-import 'package:files_tools/ui/pdfFunctionsActionsScaffold/CompressPDFScaffold.dart';
-import 'package:files_tools/ui/pdfFunctionsActionsScaffold/DecryptPDFScaffold.dart';
-import 'package:files_tools/ui/pdfFunctionsActionsScaffold/EncryptPDFScaffold.dart';
-import 'package:files_tools/ui/pdfFunctionsActionsScaffold/ExtractAllPDFPagesScaffold.dart';
-import 'package:files_tools/ui/pdfFunctionsActionsScaffold/FixedRangePDFPagesScaffold.dart';
-import 'package:files_tools/ui/pdfFunctionsActionsScaffold/PDFToImagesScaffold.dart';
-import 'package:files_tools/ui/pdfFunctionsActionsScaffold/customRangePDFPagesScaffold.dart';
-import 'package:files_tools/ui/pdfFunctionsActionsScaffold/imagesToPDFScaffold.dart';
-import 'package:files_tools/ui/pdfFunctionsActionsScaffold/mergePDFPagesScaffold.dart';
+import 'package:files_tools/ui/functionsActionsScaffold/CompressPDFScaffold.dart';
+import 'package:files_tools/ui/functionsActionsScaffold/DecryptPDFScaffold.dart';
+import 'package:files_tools/ui/functionsActionsScaffold/EncryptPDFScaffold.dart';
+import 'package:files_tools/ui/functionsActionsScaffold/ExtractAllPDFPagesScaffold.dart';
+import 'package:files_tools/ui/functionsActionsScaffold/FixedRangePDFPagesScaffold.dart';
+import 'package:files_tools/ui/functionsActionsScaffold/PDFToImagesScaffold.dart';
+import 'package:files_tools/ui/functionsActionsScaffold/customRangePDFPagesScaffold.dart';
+import 'package:files_tools/ui/functionsActionsScaffold/imagesToPDFScaffold.dart';
+import 'package:files_tools/ui/functionsActionsScaffold/mergePDFPagesScaffold.dart';
 import 'package:files_tools/ui/topLevelPagesScaffold/mainPageScaffold.dart';
-import 'package:files_tools/ui/pdfFunctionsMainScaffold/pdfFunctionPagesScaffold.dart';
-import 'package:files_tools/ui/pdfFunctionsActionsScaffold/pdfPagesModificationScaffold.dart';
-import 'package:files_tools/ui/pdfFunctionsActionsScaffold/pdfPagesSelectionScaffold.dart';
+import 'package:files_tools/ui/functionsMainScaffold/pdfFunctionPagesScaffold.dart';
+import 'package:files_tools/ui/functionsActionsScaffold/pdfPagesModificationScaffold.dart';
+import 'package:files_tools/ui/functionsActionsScaffold/pdfPagesSelectionScaffold.dart';
 import 'package:files_tools/ui/pdfViewerScaffold/pdfscaffold.dart';
-import 'package:files_tools/widgets/pdfFunctionsActionWidgets/reusableUIActionWidgets/reorder_pages_scaffold.dart';
-import 'package:files_tools/ui/pdfFunctionsResultsScaffold/resultPdfScaffold.dart';
-import 'package:files_tools/ui/pdfFunctionsResultsScaffold/resultZipScaffold.dart';
+import 'package:files_tools/widgets/functionsActionWidgets/reusableUIActionWidgets/reorder_pages_scaffold.dart';
+import 'package:files_tools/ui/functionsResultsScaffold/resultPdfScaffold.dart';
+import 'package:files_tools/ui/functionsResultsScaffold/resultZipScaffold.dart';
 
 class PageRoutes {
   static String mainPagesScaffold = MainPagesScaffold.routeName;

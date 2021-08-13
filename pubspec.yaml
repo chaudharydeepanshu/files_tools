@@ -69,6 +69,7 @@ dependencies:
       ref: master
   package_info_plus: ^1.0.4
   connectivity_plus: ^1.0.6
+  image_cropper: ^1.4.1
 
 
   # The following adds the Cupertino Icons font to your application.

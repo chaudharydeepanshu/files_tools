@@ -1,10 +1,10 @@
 import 'package:files_tools/widgets/annotatedRegion.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:files_tools/ui/pdfFunctionsMainBodies/pdfFunctionPagesScaffoldBody.dart';
-import 'package:files_tools/ui/pdfFunctionsMainBodies/pdfFunctionPagesScaffoldBodyForSelectingMultipleFiles.dart';
-import 'package:files_tools/ui/pdfFunctionsMainBodies/pdfFunctionPagesScaffoldBodyForSelectingSingle&MultipleImages.dart';
-import 'package:files_tools/widgets/pdfFunctionsMainWidgets/pdfFunctionsAppBar.dart';
+import 'package:files_tools/ui/functionsMainBodies/pdfFunctionPagesScaffoldBody.dart';
+import 'package:files_tools/ui/functionsMainBodies/pdfFunctionPagesScaffoldBodyForSelectingMultipleFiles.dart';
+import 'package:files_tools/ui/functionsMainBodies/pdfFunctionPagesScaffoldBodyForSelectingSingle&MultipleImages.dart';
+import 'package:files_tools/widgets/functionsMainWidgets/functionsAppBar.dart';
 
 class PDFFunctionsPageScaffold extends StatefulWidget {
   static const String routeName = '/pdfFunctionsPageScaffold';

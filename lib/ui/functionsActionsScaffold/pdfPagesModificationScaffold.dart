@@ -1,36 +1,38 @@
 import 'dart:ui';
+import 'package:file_picker/file_picker.dart';
 import 'package:files_tools/ads/banner_ad.dart';
 import 'package:files_tools/widgets/annotatedRegion.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:files_tools/basicFunctionalityFunctions/creatingAndSavingPDFFileTemporarily.dart';
-import 'package:files_tools/basicFunctionalityFunctions/currentDateTimeInString.dart';
 import 'package:files_tools/basicFunctionalityFunctions/processSelectedDataFromUser.dart';
 import 'package:files_tools/navigation/page_routes_model.dart';
-import 'package:files_tools/widgets/pdfFunctionsActionWidgets/reusableUIActionWidgets/bottomNavBarButtonsForFileModifications.dart';
-import 'package:files_tools/widgets/pdfFunctionsActionWidgets/reusableUIActionWidgets/card_carousel.dart';
-import 'package:files_tools/widgets/pdfFunctionsActionWidgets/reusableUIActionWidgets/progressFakeDialogBox.dart';
-import 'package:files_tools/widgets/pdfFunctionsActionWidgets/reusableUIActionWidgets/reorder_pages_scaffold.dart';
-import 'package:files_tools/ui/pdfFunctionsResultsScaffold/resultPdfScaffold.dart';
+import 'package:files_tools/widgets/functionsActionWidgets/reusableUIActionWidgets/bottomNavBarButtonsForFileModifications.dart';
+import 'package:files_tools/widgets/functionsActionWidgets/reusableUIActionWidgets/card_carousel.dart';
+import 'package:files_tools/widgets/functionsActionWidgets/reusableUIActionWidgets/progressFakeDialogBox.dart';
+import 'package:files_tools/widgets/functionsActionWidgets/reusableUIActionWidgets/reorder_pages_scaffold.dart';
+import 'package:files_tools/ui/functionsResultsScaffold/resultPdfScaffold.dart';
 import 'package:files_tools/widgets/reusableUIWidgets/ReusableTopAppBar.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
-import 'dart:io';
 
-class ImagesToPDFScaffold extends StatefulWidget {
-  static const String routeName = '/imagesToPDFScaffold';
+class PDFPagesModificationScaffold extends StatefulWidget {
+  static const String routeName = '/pdfPagesModificationScaffold';
 
-  const ImagesToPDFScaffold({Key? key, this.arguments}) : super(key: key);
+  const PDFPagesModificationScaffold({Key? key, this.arguments})
+      : super(key: key);
 
-  final ImagesToPDFScaffoldArguments? arguments;
+  final PDFPagesModificationScaffoldArguments? arguments;
 
   @override
-  _ImagesToPDFScaffoldState createState() => _ImagesToPDFScaffoldState();
+  _PDFPagesModificationScaffoldState createState() =>
+      _PDFPagesModificationScaffoldState();
 }
 
-class _ImagesToPDFScaffoldState extends State<ImagesToPDFScaffold> {
+class _PDFPagesModificationScaffoldState
+    extends State<PDFPagesModificationScaffold> {
   late List<int>
       listOfRotation; //0 for no change, 1 for 90 degree right, 2 180 degree right, 3 for 270 degree right, 4 for 360 degree right. I know 0 and 4 are same in theory but they are required for some distinction. Check carousel animations for more clarity.
-  late List tempImageFilesList = [];
+  late List tempImageList = [];
   late List<bool> listOfDeletedImages; //false for delete
 
   late List<RotatedBox> decorationImageListForReorder;
@@ -42,30 +44,32 @@ class _ImagesToPDFScaffoldState extends State<ImagesToPDFScaffold> {
   @override
   void initState() {
     listOfRotation =
-        new List<int>.generate(widget.arguments!.files.length, (i) {
+        new List<int>.generate(widget.arguments!.pdfPagesImages!.length, (i) {
       return 0;
     });
 
-    for (int i = 0; i < widget.arguments!.files.length; i++) {
-      tempImageFilesList.add(FileImage(widget.arguments!.compressedFiles[i]));
+    for (int i = 0; i < widget.arguments!.pdfPagesImages!.length; i++) {
+      tempImageList
+          .add(MemoryImage(widget.arguments!.pdfPagesImages![i].bytes));
     }
 
     listOfDeletedImages =
-        new List<bool>.generate(widget.arguments!.files.length, (i) {
+        new List<bool>.generate(widget.arguments!.pdfPagesImages!.length, (i) {
       return true;
     });
 
-    reorderedList = List<int>.generate(widget.arguments!.files.length, (i) {
+    reorderedList =
+        List<int>.generate(widget.arguments!.pdfPagesImages!.length, (i) {
       return i + 1;
     });
 
     controllerValueList =
-        List<double>.generate(widget.arguments!.files.length, (i) {
+        List<double>.generate(widget.arguments!.pdfPagesImages!.length, (i) {
       return 0.0;
     });
 
-    decorationImageListForReorder =
-        new List<RotatedBox>.generate(widget.arguments!.filePaths.length, (i) {
+    decorationImageListForReorder = new List<RotatedBox>.generate(
+        widget.arguments!.pdfPagesImages!.length, (i) {
       return RotatedBox(
         quarterTurns: listOfRotation[i] == 0
             ? 0
@@ -81,8 +85,7 @@ class _ImagesToPDFScaffoldState extends State<ImagesToPDFScaffold> {
         child: Container(
           decoration: BoxDecoration(
             image: DecorationImage(
-              image: tempImageFilesList[i],
-              //MemoryImage(widget.arguments!.pdfPagesImages![i].bytes),
+              image: tempImageList[i],
               fit: BoxFit.scaleDown,
             ),
           ),
@@ -113,16 +116,14 @@ class _ImagesToPDFScaffoldState extends State<ImagesToPDFScaffold> {
               'Page Rotations List': listOfRotation,
               'Deleted Page List': listOfDeletedImages,
               'Reordered Page List': reorderedList,
-              'PDF File Name': "Image to pdf ${currentDateTimeInString()}.pdf",
-              'Is Same Width Enabled': _isSameSizeEnabled,
+              'PDF File Name': '${widget.arguments!.pdfFile.name}'
             },
             processType: widget.arguments!.processType,
-            // filesPaths: widget.arguments!.filePaths,
-            filesPaths: widget.arguments!.compressedFilesPaths,
+            filePath: widget.arguments!.pdfFile.path!,
             shouldDataBeProcessed: shouldDataBeProcessed);
 
         Map map = Map();
-        map['_pdfFileName'] = "Image to pdf ${currentDateTimeInString()}.pdf";
+        map['_pdfFileName'] = widget.arguments!.pdfFile.name;
         map['_extraBetweenNameAndExtension'] = '';
         map['_document'] = document;
 
@@ -159,7 +160,7 @@ class _ImagesToPDFScaffoldState extends State<ImagesToPDFScaffold> {
                 document: document!,
                 //pdfPagesSelectedImages: selectedImages,
                 pdfFilePath: value,
-                pdfFileName: "Image to pdf ${currentDateTimeInString()}.pdf",
+                pdfFileName: widget.arguments!.pdfFile.name,
                 mapOfSubFunctionDetails:
                     widget.arguments!.mapOfSubFunctionDetails,
               ),
@@ -211,14 +212,47 @@ class _ImagesToPDFScaffoldState extends State<ImagesToPDFScaffold> {
   bool deleteStatus = false;
 
   bool proceedButton() {
-    return true;
+    List<int> defaultReorderedList =
+        List<int>.generate(widget.arguments!.pdfPagesImages!.length, (i) {
+      return i + 1;
+    });
+
+    List<int> defaultListOfRotations =
+        List<int>.generate(widget.arguments!.pdfPagesImages!.length, (i) {
+      return 0;
+    });
+
+    List<bool> defaultListOfDeletedPages =
+        new List<bool>.generate(widget.arguments!.pdfPagesImages!.length, (i) {
+      return true;
+    });
+
+    reorderStatus =
+        listEquals(reorderedList, defaultReorderedList) == true ? false : true;
+
+    rotationStatus = listEquals(listOfRotation, defaultListOfRotations) == true
+        ? false
+        : true;
+
+    deleteStatus =
+        listEquals(listOfDeletedImages, defaultListOfDeletedPages) == true
+            ? false
+            : true;
+
+    if (reorderStatus == false &&
+        rotationStatus == false &&
+        deleteStatus == false) {
+      return false;
+    } else {
+      return true;
+    }
   }
 
   int currentIndex = 0;
 
   Widget carouselList() {
     return CarouselList(
-      color: widget.arguments!.mapOfSubFunctionDetails['Button Color'] ??
+      color: widget.arguments!.mapOfSubFunctionDetails!['Button Color'] ??
           Colors.amber,
       onIndex: (int value) {
         setState(() {
@@ -226,7 +260,7 @@ class _ImagesToPDFScaffoldState extends State<ImagesToPDFScaffold> {
         });
       },
       listOfRotation: listOfRotation,
-      listOfImages: tempImageFilesList,
+      listOfImages: tempImageList,
       listOfDeletedImages: listOfDeletedImages,
       controllerValueList: controllerValueList,
       onControllerValueList: (List<double> value) {
@@ -236,8 +270,6 @@ class _ImagesToPDFScaffoldState extends State<ImagesToPDFScaffold> {
       },
     );
   }
-
-  bool _isSameSizeEnabled = false;
 
   @override
   Widget build(BuildContext context) {
@@ -250,7 +282,7 @@ class _ImagesToPDFScaffoldState extends State<ImagesToPDFScaffold> {
           children: [
             Scaffold(
               appBar: ReusableSilverAppBar(
-                title: 'Convert To PDF',
+                title: 'Modify Pages',
                 titleColor: Colors.black,
                 leftButtonColor: Colors.red,
                 appBarIconLeft: appBarIconLeft,
@@ -264,19 +296,6 @@ class _ImagesToPDFScaffoldState extends State<ImagesToPDFScaffold> {
               ),
               body: Column(
                 children: [
-                  CheckboxListTile(
-                    title: const Text('Create same width(960px) document'),
-                    value: _isSameSizeEnabled,
-                    onChanged: tempImageFilesList.length < 2
-                        ? null
-                        : (bool? newValue) {
-                            FocusManager.instance.primaryFocus?.unfocus();
-                            setState(() {
-                              _isSameSizeEnabled = newValue!;
-                              print("_isSameSizeEnabled: $_isSameSizeEnabled");
-                            });
-                          },
-                  ),
                   Expanded(
                     child: carouselList(),
                   ),
@@ -293,39 +312,39 @@ class _ImagesToPDFScaffoldState extends State<ImagesToPDFScaffold> {
                       onTapAction: () {
                         print('working');
                         setState(() {
-                          decorationImageListForReorder[
-                              currentIndex] = listOfDeletedImages[
-                                      currentIndex] ==
-                                  false
-                              ? RotatedBox(
-                                  quarterTurns:
-                                      listOfRotation[currentIndex] == 3
-                                          ? 0
-                                          : listOfRotation[currentIndex] + 1,
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                        image: tempImageFilesList[currentIndex],
-                                        fit: BoxFit.scaleDown,
-                                        colorFilter: ColorFilter.mode(
-                                            Colors.red.withOpacity(0.6),
-                                            BlendMode.srcATop),
-                                      ),
-                                    ),
-                                  ))
-                              : RotatedBox(
-                                  quarterTurns:
-                                      listOfRotation[currentIndex] == 3
-                                          ? 0
-                                          : listOfRotation[currentIndex] + 1,
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                        image: tempImageFilesList[currentIndex],
-                                        fit: BoxFit.scaleDown,
-                                      ),
-                                    ),
-                                  ));
+                          decorationImageListForReorder[currentIndex] =
+                              listOfDeletedImages[currentIndex] == false
+                                  ? RotatedBox(
+                                      quarterTurns:
+                                          listOfRotation[currentIndex] == 3
+                                              ? 0
+                                              : listOfRotation[currentIndex] +
+                                                  1,
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          image: DecorationImage(
+                                            image: tempImageList[currentIndex],
+                                            fit: BoxFit.scaleDown,
+                                            colorFilter: ColorFilter.mode(
+                                                Colors.red.withOpacity(0.6),
+                                                BlendMode.srcATop),
+                                          ),
+                                        ),
+                                      ))
+                                  : RotatedBox(
+                                      quarterTurns:
+                                          listOfRotation[currentIndex] == 3
+                                              ? 0
+                                              : listOfRotation[currentIndex] +
+                                                  1,
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          image: DecorationImage(
+                                            image: tempImageList[currentIndex],
+                                            fit: BoxFit.scaleDown,
+                                          ),
+                                        ),
+                                      ));
 
                           listOfRotation[currentIndex] =
                               listOfRotation[currentIndex] == 3
@@ -341,7 +360,7 @@ class _ImagesToPDFScaffoldState extends State<ImagesToPDFScaffold> {
                       buttonTitle: listOfDeletedImages[currentIndex] == true
                           ? 'Delete'
                           : 'Restore',
-                      onTapAction: widget.arguments!.files.length != 1
+                      onTapAction: widget.arguments!.pdfPagesImages!.length != 1
                           ? () {
                               setState(() {
                                 decorationImageListForReorder[
@@ -371,8 +390,8 @@ class _ImagesToPDFScaffoldState extends State<ImagesToPDFScaffold> {
                                         child: Container(
                                           decoration: BoxDecoration(
                                             image: DecorationImage(
-                                              image: tempImageFilesList[
-                                                  currentIndex],
+                                              image:
+                                                  tempImageList[currentIndex],
                                               fit: BoxFit.scaleDown,
                                               colorFilter: ColorFilter.mode(
                                                   Colors.red.withOpacity(0.6),
@@ -403,8 +422,8 @@ class _ImagesToPDFScaffoldState extends State<ImagesToPDFScaffold> {
                                         child: Container(
                                           decoration: BoxDecoration(
                                             image: DecorationImage(
-                                              image: tempImageFilesList[
-                                                  currentIndex],
+                                              image:
+                                                  tempImageList[currentIndex],
                                               fit: BoxFit.scaleDown,
                                             ),
                                           ),
@@ -423,17 +442,17 @@ class _ImagesToPDFScaffoldState extends State<ImagesToPDFScaffold> {
                     bottomNavBarButtonsForFileModifications(
                       buttonIcon: Icon(Icons.reorder),
                       buttonTitle: 'Reorder',
-                      onTapAction: widget.arguments!.files.length != 1
+                      onTapAction: widget.arguments!.pdfPagesImages!.length != 1
                           ? () {
                               Navigator.pushNamed(
                                 context,
                                 PageRoutes.reorderPDFPagesScaffold,
                                 arguments: ReorderPDFPagesScaffoldArguments(
-                                  pdfPagesImages: tempImageFilesList,
-                                  //pdfFile: widget.arguments!.pdfFile,
+                                  pdfPagesImages: tempImageList,
+                                  pdfFile: widget.arguments!.pdfFile,
                                   onPDFPagesImages: (List value) {
                                     setState(() {
-                                      tempImageFilesList = value;
+                                      tempImageList = value;
                                     });
                                   },
                                   listOfRotationOfImages: listOfRotation,
@@ -489,26 +508,15 @@ class _ImagesToPDFScaffoldState extends State<ImagesToPDFScaffold> {
   }
 }
 
-class ImagesToPDFScaffoldArguments {
-  //List imagesList;
-  List<File> files;
-  List<File> compressedFiles;
-  List<String> filePaths;
-  List<String> compressedFilesPaths;
-  List<String> fileNames;
-  List<int> fileSizes;
+class PDFPagesModificationScaffoldArguments {
+  List? pdfPagesImages;
+  PlatformFile pdfFile;
   String processType;
-  Map<String, dynamic> mapOfSubFunctionDetails;
+  Map<String, dynamic>? mapOfSubFunctionDetails;
 
-  ImagesToPDFScaffoldArguments({
-    //required this.imagesList,
-    required this.files,
-    required this.compressedFiles,
-    required this.filePaths,
-    required this.compressedFilesPaths,
-    required this.processType,
-    required this.fileNames,
-    required this.fileSizes,
-    required this.mapOfSubFunctionDetails,
-  });
+  PDFPagesModificationScaffoldArguments(
+      {this.pdfPagesImages,
+      required this.pdfFile,
+      required this.processType,
+      this.mapOfSubFunctionDetails});
 }

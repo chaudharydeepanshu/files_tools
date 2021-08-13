@@ -1,7 +1,7 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:files_tools/ads/banner_ad.dart';
-import 'package:files_tools/widgets/pdfFunctionsMainWidgets/directPop.dart';
-import 'package:files_tools/widgets/pdfFunctionsMainWidgets/onWillPopDialog.dart';
+import 'package:files_tools/widgets/functionsMainWidgets/directPop.dart';
+import 'package:files_tools/widgets/functionsMainWidgets/onWillPopDialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -11,14 +11,14 @@ import 'package:files_tools/basicFunctionalityFunctions/lifecycleEventHandler.da
 import 'package:files_tools/basicFunctionalityFunctions/sizeCalculator.dart';
 import 'package:files_tools/navigation/page_routes_model.dart';
 import 'package:native_pdf_renderer/native_pdf_renderer.dart' as pdfRenderer;
-import 'package:files_tools/widgets/pdfFunctionsMainWidgets/permissionDialogBox.dart';
+import 'package:files_tools/widgets/functionsMainWidgets/permissionDialogBox.dart';
 import 'package:open_file/open_file.dart';
 import 'package:permission_handler/permission_handler.dart';
 import '../../../app_theme/app_theme.dart';
 import '../../../basicFunctionalityFunctions/getSizeFromBytes.dart';
 import 'package:files_tools/ui/pdfViewerScaffold/pdfscaffold.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:files_tools/widgets/pdfFunctionsMainWidgets/pdfFunctionsButtons.dart';
+import 'package:files_tools/widgets/functionsMainWidgets/functionsButtons.dart';
 
 class PDFFunctionBody extends StatefulWidget {
   const PDFFunctionBody(

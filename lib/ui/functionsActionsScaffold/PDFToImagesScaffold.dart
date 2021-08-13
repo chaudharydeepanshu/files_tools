@@ -10,41 +10,51 @@ import 'package:flutter/services.dart';
 import 'package:files_tools/basicFunctionalityFunctions/creatingAndSavingZipFileTemporarily.dart';
 import 'package:files_tools/navigation/page_routes_model.dart';
 import 'package:files_tools/basicFunctionalityFunctions/processSelectedDataFromUser.dart';
-import 'package:files_tools/ui/pdfFunctionsResultsScaffold/resultZipScaffold.dart';
-import 'package:files_tools/widgets/pdfFunctionsActionWidgets/reusableUIActionWidgets/progressFakeDialogBox.dart';
+import 'package:files_tools/ui/functionsResultsScaffold/resultZipScaffold.dart';
+import 'package:files_tools/widgets/functionsActionWidgets/reusableUIActionWidgets/progressFakeDialogBox.dart';
 import 'package:files_tools/widgets/reusableUIWidgets/ReusableTopAppBar.dart';
+import 'package:native_pdf_renderer/native_pdf_renderer.dart' as pdfRenderer;
 import 'package:provider/provider.dart';
 
-class FixedRangePDFPagesScaffold extends StatefulWidget {
-  static const String routeName = '/fixedRangePDFPagesScaffold';
+class PDFToImagesScaffold extends StatefulWidget {
+  static const String routeName = '/pdfToImagesScaffold';
 
-  const FixedRangePDFPagesScaffold({Key? key, this.arguments})
-      : super(key: key);
+  const PDFToImagesScaffold({Key? key, this.arguments}) : super(key: key);
 
-  final FixedRangePDFPagesScaffoldArguments? arguments;
+  final PDFToImagesScaffoldArguments? arguments;
 
   @override
-  _FixedRangePDFPagesScaffoldState createState() =>
-      _FixedRangePDFPagesScaffoldState();
+  _PDFToImagesScaffoldState createState() => _PDFToImagesScaffoldState();
 }
 
-class _FixedRangePDFPagesScaffoldState extends State<FixedRangePDFPagesScaffold>
+class _PDFToImagesScaffoldState extends State<PDFToImagesScaffold>
     with TickerProviderStateMixin {
   late List<bool> selectedImages;
   List<TextInputFormatter>? listTextInputFormatter;
-  TextEditingController textEditingController = TextEditingController();
-  late int pdfPagesCount;
+  // TextEditingController textEditingController = TextEditingController();
+  int pdfPagesCount = 0;
   int numberOfPDFCreated = 0;
+  Future<void> pdfsPageCount() async {
+    String? filePath = widget.arguments!.pdfFile.path;
+    final newDocument = await pdfRenderer.PdfDocument.openFile(filePath!);
+    pdfPagesCount = newDocument.pagesCount;
+    newDocument.close();
+  }
+
   @override
   void initState() {
     super.initState();
+    pdfsPageCount().whenComplete(() {
+      setState(() {});
+      return null;
+    });
+
     listTextInputFormatter = [
       FilteringTextInputFormatter.allow(RegExp('[0-9]')),
     ];
-    pdfPagesCount = widget.arguments!.pdfPagesImages!.length;
-    textEditingController.addListener(() {
-      setState(() {});
-    });
+    // textEditingController.addListener(() {
+    //   setState(() {});
+    // });
     // [
     //   FilteringTextInputFormatter.allow(RegExp('[a-zA-Z0-9 \"‘\'‘,-]')),
     // ];
@@ -77,8 +87,8 @@ class _FixedRangePDFPagesScaffoldState extends State<FixedRangePDFPagesScaffold>
       Future.delayed(const Duration(milliseconds: 500), () async {
         rangesPdfsFilePaths = await processSelectedDataFromUser(
             pdfChangesDataMap: {
-              'TextEditingController': textEditingController,
-              'Number Of PDFs': numberOfPDFCreated,
+              //'TextEditingController': textEditingController,
+              //'Number Of PDFs': numberOfPDFCreated,
               'PDF File Name': '${widget.arguments!.pdfFile.name}'
             },
             processType: "${widget.arguments!.processType}",
@@ -131,7 +141,7 @@ class _FixedRangePDFPagesScaffoldState extends State<FixedRangePDFPagesScaffold>
 
   @override
   void dispose() {
-    textEditingController.dispose();
+    // textEditingController.dispose();
     super.dispose();
   }
 
@@ -141,6 +151,7 @@ class _FixedRangePDFPagesScaffoldState extends State<FixedRangePDFPagesScaffold>
 
   late IconData appBarIconRight;
   late String appBarIconRightToolTip;
+  late dynamic Function()? appBarIconRightActionForSingleDocument;
   late dynamic Function()? appBarIconRightActionForSeparateDocuments;
 
   bool selectedDataProcessed = false;
@@ -305,23 +316,6 @@ class _FixedRangePDFPagesScaffoldState extends State<FixedRangePDFPagesScaffold>
     );
   }
 
-  int pdfsCreatedCalc() {
-    int currentValue = int.parse(textEditingController.text);
-    numberOfPDFCreated = pdfPagesCount ~/
-        currentValue; //this will give us the int value of division
-
-    //here we are checking if the double value of division is equal to the double value but with decimal digits set to 0
-    //if this condition passes than we can say that this is a perfect division otherwise not
-    //for more info check https://stackoverflow.com/a/58012722
-    if ((pdfPagesCount / currentValue) ==
-        (pdfPagesCount / currentValue).roundToDouble()) {
-      return numberOfPDFCreated;
-    } else {
-      //if not perfect division then add 1 to the number of pdf created
-      return ++numberOfPDFCreated;
-    }
-  }
-
   var bannerAdSize = Size.zero;
 
   @override
@@ -337,7 +331,7 @@ class _FixedRangePDFPagesScaffoldState extends State<FixedRangePDFPagesScaffold>
                 key: _formKey,
                 child: Scaffold(
                   appBar: ReusableSilverAppBar(
-                    title: 'Specify Split Range',
+                    title: 'Convert To Images',
                     titleColor: Colors.black,
                     leftButtonColor: Colors.red,
                     appBarIconLeft: appBarIconLeft,
@@ -346,11 +340,8 @@ class _FixedRangePDFPagesScaffoldState extends State<FixedRangePDFPagesScaffold>
                     rightButtonColor: Colors.blue,
                     appBarIconRight: appBarIconRight,
                     appBarIconRightToolTip: appBarIconRightToolTip,
-                    appBarIconRightAction: _formKey.currentState != null
-                        ? _formKey.currentState!.validate()
-                            ? appBarIconRightActionForSeparateDocuments
-                            : null
-                        : null,
+                    appBarIconRightAction:
+                        appBarIconRightActionForSeparateDocuments,
                   ),
                   body: Stack(
                     children: [
@@ -360,6 +351,7 @@ class _FixedRangePDFPagesScaffoldState extends State<FixedRangePDFPagesScaffold>
                           child: Column(
                             children: <Widget>[
                               Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Container(
                                     child: Text(
@@ -375,72 +367,18 @@ class _FixedRangePDFPagesScaffoldState extends State<FixedRangePDFPagesScaffold>
                                 height: 10,
                               ),
                               Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Text('Split PDF in page ranges of:'),
+                                  Container(
+                                    child: Text(
+                                      'Number of Images will be created: $pdfPagesCount',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    decoration: BoxDecoration(),
+                                  ),
                                 ],
                               ),
-                              SizedBox(
-                                height: 5,
-                              ),
-                              TextFormField(
-                                controller: textEditingController,
-                                keyboardType: TextInputType.number,
-                                inputFormatters: listTextInputFormatter,
-                                onChanged: (String value) {
-                                  if (value.isNotEmpty) {
-                                    if (int.parse(value.substring(0, 1)) == 0) {
-                                      String newValue = value.substring(0, 0) +
-                                          '' +
-                                          value.substring(0 + 1);
-                                      textEditingController.value =
-                                          TextEditingValue(
-                                        text: newValue,
-                                        selection: TextSelection.fromPosition(
-                                          TextPosition(offset: newValue.length),
-                                        ),
-                                      );
-                                    }
-                                  }
-                                },
-                                decoration: InputDecoration(
-                                  labelText: 'Type a number',
-                                  helperText: ' ',
-                                  hintText: 'Ex: ${pdfPagesCount - 1}',
-                                  border: OutlineInputBorder(),
-                                ),
-                                //autofocus: true,
-                                showCursor: true,
-                                autovalidateMode:
-                                    AutovalidateMode.onUserInteraction,
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Empty Field';
-                                  } else if (int.parse(value) == pdfPagesCount)
-                                  //RegExp('[a-zA-Z0-9 \"‘\'‘,-]')
-                                  {
-                                    return 'Type a shorter number than total number of pages';
-                                  } else if (int.parse(value) > pdfPagesCount)
-                                  //RegExp('[a-zA-Z0-9 \"‘\'‘,-]')
-                                  {
-                                    return 'Out of range';
-                                  }
-                                  return null;
-                                },
-                              ),
-                              _formKey.currentState != null
-                                  ? _formKey.currentState!.validate()
-                                      ? Row(
-                                          children: [
-                                            Container(
-                                              child: Text(
-                                                'Number of PDFs will be created: ${pdfsCreatedCalc()}',
-                                              ),
-                                              decoration: BoxDecoration(),
-                                            ),
-                                          ],
-                                        )
-                                      : Container()
-                                  : Container(),
                               Provider.of<AdState>(context).bannerAdUnitId != null ? SizedBox(
                                 height: bannerAdSize.height.toDouble(),
                               ) : Container(),
@@ -472,15 +410,16 @@ class _FixedRangePDFPagesScaffoldState extends State<FixedRangePDFPagesScaffold>
   }
 }
 
-class FixedRangePDFPagesScaffoldArguments {
+class PDFToImagesScaffoldArguments {
   List? pdfPagesImages;
   PlatformFile pdfFile;
   String processType;
   Map<String, dynamic>? mapOfSubFunctionDetails;
 
-  FixedRangePDFPagesScaffoldArguments(
-      {this.pdfPagesImages,
-      required this.pdfFile,
-      required this.processType,
-      this.mapOfSubFunctionDetails});
+  PDFToImagesScaffoldArguments({
+    this.pdfPagesImages,
+    required this.pdfFile,
+    required this.processType,
+    this.mapOfSubFunctionDetails,
+  });
 }
