@@ -92,10 +92,6 @@ class _BannerADState extends State<BannerAD> with WidgetsBindingObserver {
     initConnectivity();
     _connectivitySubscription =
         _connectivity.onConnectivityChanged.listen(_updateConnectionStatus);
-    // WidgetsBinding.instance!.addObserver(
-    //     lifecycleEventHandler.LifecycleEventHandler(resumeCallBack: () async {
-    //   print('resumeCallBack');
-    // }));
   }
 
   // Platform messages are asynchronous, so we initialize in an async method.
@@ -119,7 +115,7 @@ class _BannerADState extends State<BannerAD> with WidgetsBindingObserver {
     return _updateConnectionStatus(result);
   }
 
-  Future<void> _updateConnectionStatus(ConnectivityResult result) async {
+  void _updateConnectionStatus(ConnectivityResult result) {
     setState(() {
       _connectionStatus = result;
       if (banner != null) {
@@ -132,11 +128,8 @@ class _BannerADState extends State<BannerAD> with WidgetsBindingObserver {
   void didChangeDependencies() {
     super.didChangeDependencies();
     final adState = Provider.of<AdState>(context);
-    // size = AnchoredAdaptiveBannerAdSize(Orientation.portrait,height: 50, width: 150);
     adState.initialization.then((value) async {
-      // if (size == null) {
       size = await createAnchoredBanner(context);
-      // }
       setState(() {
         if (adState.bannerAdUnitId != null) {
           banner = BannerAd(
@@ -155,74 +148,59 @@ class _BannerADState extends State<BannerAD> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     print('Connection Status: ${_connectionStatus.toString()}');
     return banner == null
-        ? Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Container(
-                height: AdSize.banner.height.toDouble() + 10,
-              ),
-            ],
-          )
+        ? SizedBox()
         : _connectionStatus == ConnectivityResult.none
-            ? Column(
-                mainAxisAlignment: MainAxisAlignment.end,
+            ? Container(
+              height: size!.height.toDouble(),
+              width: size!.width.toDouble(),
+              color: Colors.grey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Container(
-                    height: AdSize.banner.height.toDouble() + 10,
-                    width: size!.width.toDouble(),
-                    color: Colors.grey,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              'Please connect to internet.\nTo support the app',
-                              style: TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.bold),
-                              textAlign: TextAlign.center,
-                            ),
-                          ],
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          'To support the app please connect to internet.',
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                          textAlign: TextAlign.center,
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ],
-              )
-            : Column(
-                mainAxisAlignment: MainAxisAlignment.end,
+              ),
+            )
+            : Container(
+              color: Colors.grey,
+              width: size!.width.toDouble(),
+              height: size!.height.toDouble(),
+              child: Stack(
                 children: [
-                  Container(
-                    color: Colors.grey,
-                    width: size!.width.toDouble(),
-                    height: size!.height.toDouble(),
-                    child: Stack(
-                      children: [
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  'Thanks for supporting\nAd loading...',
-                                  style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                        AdWidget(
-                          ad: banner!,
-                        ),
-                      ],
-                    ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Ad loading...\nThanks for your support',
+                            style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold),
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  AdWidget(
+                    ad: banner!,
                   ),
                 ],
-              );
+              ),
+            );
   }
 }

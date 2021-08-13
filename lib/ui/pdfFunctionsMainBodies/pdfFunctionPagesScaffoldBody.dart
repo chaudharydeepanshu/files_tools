@@ -244,6 +244,8 @@ class _PDFFunctionBodyState extends State<PDFFunctionBody>
 
   var _openResult = 'Unknown';
 
+  var bannerAdSize = Size.zero;
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -1053,7 +1055,7 @@ class _PDFFunctionBodyState extends State<PDFFunctionBody>
                                                           'Sublist Functions']
                                                       .length -
                                                   1
-                                          ? AdSize.banner.height.toDouble() + 20
+                                          ? bannerAdSize.height.toDouble() +10
                                           : 20,
                                     ),
                                   ],
@@ -1097,7 +1099,17 @@ class _PDFFunctionBodyState extends State<PDFFunctionBody>
             ),
           ),
         ),
-        BannerAD(),
+        Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            MeasureSize(onChange: (Size size) {
+              setState(() {
+                bannerAdSize = size;
+              });
+            },
+              child: BannerAD(),),
+          ],
+        ),
       ],
     );
   }

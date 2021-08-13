@@ -1,6 +1,8 @@
 import 'dart:ui';
 import 'package:file_picker/file_picker.dart';
+import 'package:files_tools/ads_state/ad_state.dart';
 import 'package:files_tools/ads_state/banner_ad.dart';
+import 'package:files_tools/basicFunctionalityFunctions/sizeCalculator.dart';
 import 'package:files_tools/widgets/annotatedRegion.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +14,7 @@ import 'package:files_tools/ui/pdfFunctionsResultsScaffold/resultZipScaffold.dar
 import 'package:files_tools/widgets/pdfFunctionsActionWidgets/reusableUIActionWidgets/progressFakeDialogBox.dart';
 import 'package:files_tools/widgets/reusableUIWidgets/ReusableTopAppBar.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:provider/provider.dart';
 
 class FixedRangePDFPagesScaffold extends StatefulWidget {
   static const String routeName = '/fixedRangePDFPagesScaffold';
@@ -320,6 +323,8 @@ class _FixedRangePDFPagesScaffoldState extends State<FixedRangePDFPagesScaffold>
     }
   }
 
+  var bannerAdSize = Size.zero;
+
   @override
   Widget build(BuildContext context) {
     return ReusableAnnotatedRegion(
@@ -437,14 +442,24 @@ class _FixedRangePDFPagesScaffoldState extends State<FixedRangePDFPagesScaffold>
                                         )
                                       : Container()
                                   : Container(),
-                              SizedBox(
-                                height: AdSize.banner.height.toDouble() + 20,
-                              ),
+                              Provider.of<AdState>(context).bannerAdUnitId != null ? SizedBox(
+                                height: bannerAdSize.height.toDouble(),
+                              ) : Container(),
                             ],
                           ),
                         ),
                       ),
-                      BannerAD(),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          MeasureSize(onChange: (Size size) {
+                            setState(() {
+                              bannerAdSize = size;
+                            });
+                          },
+                            child: BannerAD(),),
+                        ],
+                      ),
                     ],
                   ),
                 ),

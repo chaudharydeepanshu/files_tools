@@ -313,7 +313,7 @@ packages:
       name: get
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.3.6"
+    version: "4.3.7"
   google_mobile_ads:
     dependency: "direct main"
     description:

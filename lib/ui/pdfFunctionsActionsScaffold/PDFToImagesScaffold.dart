@@ -1,6 +1,8 @@
 import 'dart:ui';
 import 'package:file_picker/file_picker.dart';
+import 'package:files_tools/ads_state/ad_state.dart';
 import 'package:files_tools/ads_state/banner_ad.dart';
+import 'package:files_tools/basicFunctionalityFunctions/sizeCalculator.dart';
 import 'package:files_tools/widgets/annotatedRegion.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +14,7 @@ import 'package:files_tools/ui/pdfFunctionsResultsScaffold/resultZipScaffold.dar
 import 'package:files_tools/widgets/pdfFunctionsActionWidgets/reusableUIActionWidgets/progressFakeDialogBox.dart';
 import 'package:files_tools/widgets/reusableUIWidgets/ReusableTopAppBar.dart';
 import 'package:native_pdf_renderer/native_pdf_renderer.dart' as pdfRenderer;
+import 'package:provider/provider.dart';
 
 class PDFToImagesScaffold extends StatefulWidget {
   static const String routeName = '/pdfToImagesScaffold';
@@ -313,6 +316,8 @@ class _PDFToImagesScaffoldState extends State<PDFToImagesScaffold>
     );
   }
 
+  var bannerAdSize = Size.zero;
+
   @override
   Widget build(BuildContext context) {
     return ReusableAnnotatedRegion(
@@ -374,11 +379,24 @@ class _PDFToImagesScaffoldState extends State<PDFToImagesScaffold>
                                   ),
                                 ],
                               ),
+                              Provider.of<AdState>(context).bannerAdUnitId != null ? SizedBox(
+                                height: bannerAdSize.height.toDouble(),
+                              ) : Container(),
                             ],
                           ),
                         ),
                       ),
-                      BannerAD(),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          MeasureSize(onChange: (Size size) {
+                            setState(() {
+                              bannerAdSize = size;
+                            });
+                          },
+                            child: BannerAD(),),
+                        ],
+                      ),
                     ],
                   ),
                 ),

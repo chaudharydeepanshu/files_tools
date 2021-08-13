@@ -734,12 +734,15 @@
 // //Note: things are not getting replaced on drag and drop they are all somewhat getting rearranging
 
 import 'package:file_picker/file_picker.dart';
+import 'package:files_tools/ads_state/ad_state.dart';
 import 'package:files_tools/ads_state/banner_ad.dart';
+import 'package:files_tools/basicFunctionalityFunctions/sizeCalculator.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:files_tools/widgets/reusableUIWidgets/ReusableTopAppBar.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:provider/provider.dart';
 import 'package:reorderable_grid_view/reorderable_grid_view.dart';
 
 class ReorderPDFPagesScaffold extends StatefulWidget {
@@ -960,10 +963,7 @@ class _ReorderPDFPagesScaffoldState extends State<ReorderPDFPagesScaffold>
           ),
           Text('${index + 1}'),
           SizedBox(
-            height: index == widget.arguments!.pdfPagesImages!.length - 1 ||
-                    index == widget.arguments!.pdfPagesImages!.length - 2
-                ? AdSize.banner.height.toDouble() + 20
-                : 5,
+            height: 5,
           ),
         ],
       ),
@@ -1025,6 +1025,8 @@ class _ReorderPDFPagesScaffoldState extends State<ReorderPDFPagesScaffold>
   }
 
   double scrollSpeedVariable = 5;
+
+  var bannerAdSize = Size.zero;
 
   @override
   Widget build(BuildContext context) {
@@ -1242,9 +1244,9 @@ class _ReorderPDFPagesScaffoldState extends State<ReorderPDFPagesScaffold>
                           },
                         ),
                       ),
-                      // SizedBox(
-                      //   height: AdSize.banner.height.toDouble(),
-                      // ),
+                      Provider.of<AdState>(context).bannerAdUnitId != null ? SizedBox(
+                        height: bannerAdSize.height.toDouble(),
+                      ) : Container(),
                     ],
                   ),
                   // DragAndDropGridView(
@@ -1589,7 +1591,17 @@ class _ReorderPDFPagesScaffoldState extends State<ReorderPDFPagesScaffold>
                   //   itemCount: widget.arguments!.pdfPagesImages!.length,
                   // ),
                 ),
-                BannerAD(),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    MeasureSize(onChange: (Size size) {
+                      setState(() {
+                        bannerAdSize = size;
+                      });
+                    },
+                      child: BannerAD(),),
+                  ],
+                ),
               ],
             ),
           ),

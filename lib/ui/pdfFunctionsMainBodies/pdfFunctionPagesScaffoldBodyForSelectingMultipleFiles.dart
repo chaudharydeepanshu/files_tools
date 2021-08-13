@@ -312,6 +312,8 @@ class _PDFFunctionBodyForMultipleFilesState
 
   ScrollController scrollController = ScrollController();
 
+  var bannerAdSize = Size.zero;
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -1178,7 +1180,7 @@ class _PDFFunctionBodyForMultipleFilesState
                                                           'Sublist Functions']
                                                       .length -
                                                   1
-                                          ? AdSize.banner.height.toDouble() + 20
+                                          ? bannerAdSize.height.toDouble() + 10
                                           : 20,
                                     ),
                                   ],
@@ -1222,7 +1224,17 @@ class _PDFFunctionBodyForMultipleFilesState
             ),
           ),
         ),
-        BannerAD(),
+        Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            MeasureSize(onChange: (Size size) {
+              setState(() {
+                bannerAdSize = size;
+              });
+            },
+              child: BannerAD(),),
+          ],
+        ),
       ],
     );
   }

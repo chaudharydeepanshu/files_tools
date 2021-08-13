@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:files_tools/ads_state/ad_state.dart';
 import 'package:files_tools/ads_state/banner_ad.dart';
 import 'package:files_tools/widgets/annotatedRegion.dart';
 import 'package:flutter/foundation.dart';
@@ -16,6 +17,7 @@ import 'package:files_tools/widgets/pdfFunctionsActionWidgets/reusableUIActionWi
 import 'package:files_tools/widgets/reusableUIWidgets/ReusableTopAppBar.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:open_file/open_file.dart';
+import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
 import 'package:uuid/uuid.dart';
 import 'package:native_pdf_renderer/native_pdf_renderer.dart' as pdfRenderer;
@@ -347,6 +349,8 @@ class _MergePDFPagesScaffoldState extends State<MergePDFPagesScaffold>
     return true;
   }
 
+  var bannerAdSize = Size.zero;
+
   @override
   Widget build(BuildContext context) {
     return ReusableAnnotatedRegion(
@@ -401,13 +405,23 @@ class _MergePDFPagesScaffoldState extends State<MergePDFPagesScaffold>
                             });
                           },
                         ),
-                        SizedBox(
-                          height: AdSize.banner.height.toDouble() + 20,
-                        ),
+                        Provider.of<AdState>(context).bannerAdUnitId != null ? SizedBox(
+                          height: bannerAdSize.height.toDouble(),
+                        ) : Container(),
                       ],
                     ),
                   ),
-                  BannerAD(),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      MeasureSize(onChange: (Size size) {
+                        setState(() {
+                          bannerAdSize = size;
+                        });
+                      },
+                        child: BannerAD(),),
+                    ],
+                  ),
                 ],
               ),
             ),

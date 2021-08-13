@@ -84,6 +84,8 @@ class _HomeBodyState extends State<HomeBody> with WidgetsBindingObserver {
     super.dispose();
   }
 
+  var bannerAdSize = Size.zero;
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -156,13 +158,23 @@ class _HomeBodyState extends State<HomeBody> with WidgetsBindingObserver {
                   ],
                 ),
               ),
-              SizedBox(
-                height: AdSize.banner.height.toDouble() + 10,
-              ),
+              Provider.of<AdState>(context).bannerAdUnitId != null ? SizedBox(
+                height: bannerAdSize.height.toDouble() + 10,
+              ) : Container(),
             ],
           ),
         ),
-        BannerAD(),
+        Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            MeasureSize(onChange: (Size size) {
+              setState(() {
+                bannerAdSize = size;
+              });
+            },
+              child: BannerAD(),),
+          ],
+        ),
       ],
     );
   }
