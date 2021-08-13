@@ -9,7 +9,15 @@
 <!--            android:gravity="center"-->
 <!--            android:src="@mipmap/ic_launcher" />-->
 <!--    </item>-->
-        <item
-            android:drawable="@mipmap/ic_launcher"
-            android:gravity="center"/>
+
+<!--        <item-->
+<!--            android:drawable="@mipmap/ic_launcher"-->
+<!--            android:gravity="center"/>-->
+        <item>
+                <bitmap android:gravity="center" android:src="@drawable/splash"/>
+        </item>
+<!--        use for background to set a specific colour image stretched-->
+<!--        <item>-->
+<!--                <bitmap android:gravity="fill" android:src="@drawable/background"/>-->
+<!--        </item>-->
 </layer-list>
