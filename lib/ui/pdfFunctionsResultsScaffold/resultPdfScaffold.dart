@@ -1,4 +1,6 @@
-import 'package:files_tools/ads_state/banner_ad.dart';
+import 'package:files_tools/ads/ad_state.dart';
+import 'package:files_tools/ads/banner_ad.dart';
+import 'package:files_tools/basicFunctionalityFunctions/sizeCalculator.dart';
 import 'package:files_tools/ui/pdfViewerScaffold/pdfscaffold.dart';
 import 'package:files_tools/widgets/annotatedRegion.dart';
 import 'package:files_tools/widgets/resultPageWidgets/viewFileBanner.dart';
@@ -6,12 +8,12 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_file_dialog/flutter_file_dialog.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:open_file/open_file.dart';
 import 'package:files_tools/basicFunctionalityFunctions/fileNameManager.dart';
 import 'package:files_tools/navigation/page_routes_model.dart';
 import 'package:files_tools/ui/topLevelPagesScaffold/mainPageScaffold.dart';
 import 'package:files_tools/widgets/resultPageWidgets/ResultPageButtons.dart';
+import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
 import 'package:files_tools/widgets/reusableUIWidgets/ReusableTopAppBar.dart';
@@ -111,6 +113,8 @@ class _ResultPDFScaffoldState extends State<ResultPDFScaffold> {
   }
 
   var _openResult = 'Unknown';
+
+  var bannerAdSize = Size.zero;
 
   @override
   Widget build(BuildContext context) {
@@ -279,14 +283,24 @@ class _ResultPDFScaffoldState extends State<ResultPDFScaffold> {
                           mapOfSubFunctionDetails:
                               widget.arguments!.mapOfSubFunctionDetails,
                         ),
-                        SizedBox(
-                          height: AdSize.banner.height.toDouble() + 20,
-                        ),
+                        Provider.of<AdState>(context).bannerAdUnitId != null ? SizedBox(
+                          height: bannerAdSize.height.toDouble(),
+                        ) : Container(),
                       ],
                     ),
                   ),
                 ),
-                BannerAD(),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    MeasureSize(onChange: (Size size) {
+                      setState(() {
+                        bannerAdSize = size;
+                      });
+                    },
+                      child: BannerAD(),),
+                  ],
+                ),
                 viewPDFBannerStatus
                     ? NoFileOpenerAvailableNotifierBanner(
                         onViewZipBannerStatus: (bool value) {

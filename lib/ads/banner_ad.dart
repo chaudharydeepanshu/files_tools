@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'package:files_tools/basicFunctionalityFunctions/lifecycleEventHandler.dart'
-    as lifecycleEventHandler;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -71,7 +69,7 @@ class BannerAD extends StatefulWidget {
   _BannerADState createState() => _BannerADState();
 }
 
-class _BannerADState extends State<BannerAD> with WidgetsBindingObserver {
+class _BannerADState extends State<BannerAD> {
   ConnectivityResult _connectionStatus = ConnectivityResult.none;
   final Connectivity _connectivity = Connectivity();
   late StreamSubscription<ConnectivityResult> _connectivitySubscription;
@@ -185,12 +183,14 @@ class _BannerADState extends State<BannerAD> with WidgetsBindingObserver {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text(
-                            'Ad loading...\nThanks for your support',
-                            style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold),
-                            textAlign: TextAlign.center,
+                          Expanded(
+                            child: Text(
+                              'Ad loading...\nThanks for your support',
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold),
+                              textAlign: TextAlign.center,
+                            ),
                           ),
                         ],
                       ),

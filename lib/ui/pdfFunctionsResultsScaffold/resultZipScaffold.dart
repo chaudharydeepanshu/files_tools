@@ -1,8 +1,10 @@
 import 'dart:typed_data';
 
 import 'package:file_picker/file_picker.dart';
-import 'package:files_tools/ads_state/banner_ad.dart';
+import 'package:files_tools/ads/ad_state.dart';
+import 'package:files_tools/ads/banner_ad.dart';
 import 'package:files_tools/basicFunctionalityFunctions/currentDateTimeInString.dart';
+import 'package:files_tools/basicFunctionalityFunctions/sizeCalculator.dart';
 import 'package:files_tools/widgets/annotatedRegion.dart';
 import 'package:files_tools/widgets/resultPageWidgets/savingDialog.dart';
 import 'package:files_tools/widgets/resultPageWidgets/viewFileBanner.dart';
@@ -12,7 +14,6 @@ import 'package:flutter_archive/flutter_archive.dart';
 import 'package:flutter_file_dialog/flutter_file_dialog.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gallery_saver/gallery_saver.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:open_file/open_file.dart';
 import 'package:files_tools/basicFunctionalityFunctions/fileNameManager.dart';
 import 'package:files_tools/navigation/page_routes_model.dart';
@@ -23,6 +24,7 @@ import 'dart:io';
 import 'dart:async';
 import 'package:files_tools/basicFunctionalityFunctions/manageAppDirectoryAndCache.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 import '../../app_theme/app_theme.dart';
 import '../../basicFunctionalityFunctions/getSizeFromBytes.dart';
@@ -193,6 +195,8 @@ class _ResultZipScaffoldState extends State<ResultZipScaffold> {
   }
 
   var _openResult = 'Unknown';
+
+  var bannerAdSize = Size.zero;
 
   @override
   Widget build(BuildContext context) {
@@ -517,14 +521,24 @@ class _ResultZipScaffoldState extends State<ResultZipScaffold> {
                           mapOfSubFunctionDetails:
                               widget.arguments!.mapOfSubFunctionDetails,
                         ),
-                        SizedBox(
-                          height: AdSize.banner.height.toDouble() + 20,
-                        ),
+                        Provider.of<AdState>(context).bannerAdUnitId != null ? SizedBox(
+                          height: bannerAdSize.height.toDouble(),
+                        ) : Container(),
                       ],
                     ),
                   ),
                 ),
-                BannerAD(),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    MeasureSize(onChange: (Size size) {
+                      setState(() {
+                        bannerAdSize = size;
+                      });
+                    },
+                      child: BannerAD(),),
+                  ],
+                ),
                 viewZipBannerStatus
                     ? NoFileOpenerAvailableNotifierBanner(
                         onViewZipBannerStatus: (bool value) {

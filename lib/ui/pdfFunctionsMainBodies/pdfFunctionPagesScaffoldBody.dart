@@ -1,5 +1,5 @@
 import 'package:file_picker/file_picker.dart';
-import 'package:files_tools/ads_state/banner_ad.dart';
+import 'package:files_tools/ads/banner_ad.dart';
 import 'package:files_tools/widgets/pdfFunctionsMainWidgets/directPop.dart';
 import 'package:files_tools/widgets/pdfFunctionsMainWidgets/onWillPopDialog.dart';
 import 'package:flutter/cupertino.dart';
@@ -10,7 +10,6 @@ import 'package:files_tools/basicFunctionalityFunctions/checkEncryptedDocument.d
 import 'package:files_tools/basicFunctionalityFunctions/lifecycleEventHandler.dart';
 import 'package:files_tools/basicFunctionalityFunctions/sizeCalculator.dart';
 import 'package:files_tools/navigation/page_routes_model.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:native_pdf_renderer/native_pdf_renderer.dart' as pdfRenderer;
 import 'package:files_tools/widgets/pdfFunctionsMainWidgets/permissionDialogBox.dart';
 import 'package:open_file/open_file.dart';
