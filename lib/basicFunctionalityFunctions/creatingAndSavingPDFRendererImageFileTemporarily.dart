@@ -2,7 +2,7 @@ import 'dart:io';
 import 'getExternalStorageFilePathFromFileName.dart';
 import 'package:native_pdf_renderer/native_pdf_renderer.dart' as pdfRenderer;
 
-Future<String> creatingAndSavingImageFileTemporarily(map) async {
+Future<String> creatingAndSavingPDFRendererImageFileTemporarily(map) async {
   String _pdfPageImageName = map['_pdfPageImageName'];
   pdfRenderer.PdfPageImage _pdfPageImage = map['_pdfPageImage'];
   String filePathFromFileName =

@@ -4,12 +4,13 @@ import 'package:files_tools/basic_pdf_functions/Protect/EncryptPDF.dart';
 import 'package:files_tools/basic_pdf_functions/convertPDF/PDFToImages.dart';
 import 'package:files_tools/basic_pdf_functions/imagesToPdf/imagesToPdf.dart';
 import 'package:files_tools/basic_pdf_functions/merge/mergePDFPagesAsSingleDocument.dart';
+import 'package:files_tools/basic_pdf_functions/modify_image/modify_image.dart';
 import 'package:files_tools/basic_pdf_functions/split/customRanges/customRangePDFPagesAsSeparateDocument.dart';
 import 'package:files_tools/basic_pdf_functions/split/customRanges/customRangePDFPagesAsSingleDocument.dart';
 import 'package:files_tools/basic_pdf_functions/split/extractAllPages/extractAllPages.dart';
 import 'package:files_tools/basic_pdf_functions/split/extractSelectedPages/extractSelectedPages.dart';
 import 'package:files_tools/basic_pdf_functions/split/fixedRange/fixedRangePDFPages.dart';
-import '../basic_pdf_functions/modify/modifying_PDF.dart';
+import '../basic_pdf_functions/modify_pdf/modifying_PDF.dart';
 
 Future<dynamic> processSelectedDataFromUser(
     {List<bool>? selectedData, //for selection type processes
@@ -81,6 +82,11 @@ Future<dynamic> processSelectedDataFromUser(
     dataFromFunctions =
         await pdfToImages(filePath!, pdfChangesDataMap!, shouldDataBeProcessed);
     print('waiting for pdfToImages');
+    return dataFromFunctions;
+  } else if (processType == 'Modify Image') {
+    dataFromFunctions =
+        await modifyImage(filePath!, pdfChangesDataMap!, shouldDataBeProcessed);
+    print('waiting for modifyImage');
     return dataFromFunctions;
   } else {
     print(

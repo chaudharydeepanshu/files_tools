@@ -69,7 +69,10 @@ dependencies:
       ref: master
   package_info_plus: ^1.0.4
   connectivity_plus: ^1.0.6
-  image_cropper: ^1.4.1
+  crop_your_image: ^0.6.0
+  extended_image: ^4.1.0
+  #extended_image_library: ^3.1.0
+  image_editor: any
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -98,14 +101,15 @@ flutter:
   assets:
     #App General Assets
     - assets/images/logos/files_tools_app_logo.svg
-    #pdf functions icons
-    - assets/images/pdf_functions_icons/compress_icon.svg
-    - assets/images/pdf_functions_icons/encrypt_decrypt_icon.svg
-    - assets/images/pdf_functions_icons/merge_icon.svg
-    - assets/images/pdf_functions_icons/split_icon.svg
-    - assets/images/pdf_functions_icons/modify_pdf_icon.svg
-    - assets/images/pdf_functions_icons/convert_pdf_icon.svg
-    - assets/images/pdf_functions_icons/images_to_pdf_icon.svg
+    #functions icons
+    - assets/images/functions_icons/compress_icon.svg
+    - assets/images/functions_icons/encrypt_decrypt_icon.svg
+    - assets/images/functions_icons/merge_icon.svg
+    - assets/images/functions_icons/split_icon.svg
+    - assets/images/functions_icons/modify_pdf_icon.svg
+    - assets/images/functions_icons/convert_pdf_icon.svg
+    - assets/images/functions_icons/images_to_pdf_icon.svg
+    - assets/images/functions_icons/modify_image_icon.svg
     #tools icons
     - assets/images/tools_icons/pdf_tools_icon.svg
     - assets/images/tools_icons/image_tools_icon.svg

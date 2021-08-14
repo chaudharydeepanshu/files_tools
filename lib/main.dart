@@ -4,6 +4,7 @@ import 'package:files_tools/ui/functionsActionsScaffold/DecryptPDFScaffold.dart'
 import 'package:files_tools/ui/functionsActionsScaffold/EncryptPDFScaffold.dart';
 import 'package:files_tools/ui/functionsActionsScaffold/ExtractAllPDFPagesScaffold.dart';
 import 'package:files_tools/ui/functionsActionsScaffold/FixedRangePDFPagesScaffold.dart';
+import 'package:files_tools/ui/functionsActionsScaffold/ModifyImageScaffold.dart';
 import 'package:files_tools/ui/functionsActionsScaffold/PDFToImagesScaffold.dart';
 import 'package:files_tools/ui/functionsActionsScaffold/customRangePDFPagesScaffold.dart';
 import 'package:files_tools/ui/functionsActionsScaffold/imagesToPDFScaffold.dart';
@@ -11,6 +12,7 @@ import 'package:files_tools/ui/functionsActionsScaffold/mergePDFPagesScaffold.da
 import 'package:files_tools/ui/functionsActionsScaffold/pdfPagesModificationScaffold.dart';
 import 'package:files_tools/ui/functionsActionsScaffold/pdfPagesSelectionScaffold.dart';
 import 'package:files_tools/ui/functionsMainScaffold/pdfFunctionPagesScaffold.dart';
+import 'package:files_tools/ui/functionsResultsScaffold/resultImageScaffold.dart';
 import 'package:files_tools/ui/functionsResultsScaffold/resultPdfScaffold.dart';
 import 'package:files_tools/ui/functionsResultsScaffold/resultZipScaffold.dart';
 import 'package:files_tools/ui/pdfViewerScaffold/pdfscaffold.dart';
@@ -144,6 +146,12 @@ class MyApp extends StatelessWidget {
           PageRoutes.pdfToImagesScaffold: (context) => PDFToImagesScaffold(
               arguments: ModalRoute.of(context)!.settings.arguments
                   as PDFToImagesScaffoldArguments?),
+          PageRoutes.modifyImageScaffold: (context) => ModifyImageScaffold(
+              arguments: ModalRoute.of(context)!.settings.arguments
+                  as ModifyImageScaffoldArguments?),
+          PageRoutes.resultImageScaffold: (context) => ResultImageScaffold(
+              arguments: ModalRoute.of(context)!.settings.arguments
+                  as ResultImageScaffoldArguments?),
         },
       ),
     );

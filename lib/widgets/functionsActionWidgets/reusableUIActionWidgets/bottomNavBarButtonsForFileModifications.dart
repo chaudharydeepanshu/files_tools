@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
 Widget bottomNavBarButtonsForFileModifications(
-    {buttonIcon, buttonTitle, onTapAction, mapOfSubFunctionDetails}) {
+    {buttonIcon,
+    required Widget buttonLabel,
+    onTapAction,
+    mapOfSubFunctionDetails}) {
   return Padding(
     padding: const EdgeInsets.all(6.0),
     child: Container(
@@ -52,7 +55,7 @@ Widget bottomNavBarButtonsForFileModifications(
                       fontWeight: FontWeight.w600,
                       fontSize: 11,
                     ),
-                    child: Text(buttonTitle ?? 'Reorder'),
+                    child: buttonLabel,
                   ),
                 ),
               ),

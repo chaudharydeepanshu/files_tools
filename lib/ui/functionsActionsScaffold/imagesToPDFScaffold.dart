@@ -289,7 +289,7 @@ class _ImagesToPDFScaffoldState extends State<ImagesToPDFScaffold> {
                   children: [
                     bottomNavBarButtonsForFileModifications(
                       buttonIcon: Icon(Icons.rotate_right),
-                      buttonTitle: 'Rotate',
+                      buttonLabel: Text('Rotate'),
                       onTapAction: () {
                         print('working');
                         setState(() {
@@ -338,9 +338,9 @@ class _ImagesToPDFScaffoldState extends State<ImagesToPDFScaffold> {
                     ),
                     bottomNavBarButtonsForFileModifications(
                       buttonIcon: Icon(Icons.delete),
-                      buttonTitle: listOfDeletedImages[currentIndex] == true
-                          ? 'Delete'
-                          : 'Restore',
+                      buttonLabel: listOfDeletedImages[currentIndex] == true
+                          ? Text('Delete')
+                          : Text('Restore'),
                       onTapAction: widget.arguments!.files.length != 1
                           ? () {
                               setState(() {
@@ -422,7 +422,7 @@ class _ImagesToPDFScaffoldState extends State<ImagesToPDFScaffold> {
                     ),
                     bottomNavBarButtonsForFileModifications(
                       buttonIcon: Icon(Icons.reorder),
-                      buttonTitle: 'Reorder',
+                      buttonLabel: Text('Reorder'),
                       onTapAction: widget.arguments!.files.length != 1
                           ? () {
                               Navigator.pushNamed(

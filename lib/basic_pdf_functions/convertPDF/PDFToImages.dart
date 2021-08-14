@@ -1,5 +1,5 @@
 import 'package:flutter/services.dart';
-import 'package:files_tools/basicFunctionalityFunctions/creatingAndSavingImageFileTemporarily.dart';
+import 'package:files_tools/basicFunctionalityFunctions/creatingAndSavingPDFRendererImageFileTemporarily.dart';
 import 'package:files_tools/basicFunctionalityFunctions/fileNameManager.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
 import 'dart:io';
@@ -78,7 +78,8 @@ Future<List<String>?> pdfToImages(String pdfFilePath,
       map['_pdfPageImageName'] = newFileName;
       map['_extraBetweenNameAndExtension'] = '';
       map['_pdfPageImage'] = pdfPagesImages[i];
-      filesPaths.add(await creatingAndSavingImageFileTemporarily(map));
+      filesPaths
+          .add(await creatingAndSavingPDFRendererImageFileTemporarily(map));
     }
 
     rangesPdfsFilePaths = List.from(filesPaths);

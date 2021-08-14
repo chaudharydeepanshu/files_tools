@@ -1,3 +1,4 @@
+import 'package:files_tools/ui/functionsActionsScaffold/ModifyImageScaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:files_tools/ui/functionsActionsScaffold/CompressPDFScaffold.dart';
 import 'package:files_tools/ui/functionsActionsScaffold/DecryptPDFScaffold.dart';
@@ -16,7 +17,7 @@ import '../navigation/page_routes_model.dart';
 Map<String, dynamic>? mapOfMergeFunctionDetailsForPDFTools = {
   'Title': 'Merge PDF',
   'Subtitle': 'Easily merge pages from PDF file',
-  'Icon Asset': 'assets/images/pdf_functions_icons/merge_icon.svg',
+  'Icon Asset': 'assets/images/functions_icons/merge_icon.svg',
   'Icon And Text Color': Colors.red,
   'BG Color': Colors.red.shade100,
   'Select File Icon Asset': 'assets/images/tools_icons/pdf_tools_icon.svg',
@@ -60,7 +61,7 @@ Map<String, dynamic>? mapOfMergeFunctionDetailsForPDFTools = {
 Map<String, dynamic>? mapOfSplitFunctionDetailsForPDFTools = {
   'Title': 'Split PDF',
   'Subtitle': 'Easily extract pages from PDF file',
-  'Icon Asset': 'assets/images/pdf_functions_icons/split_icon.svg',
+  'Icon Asset': 'assets/images/functions_icons/split_icon.svg',
   'Icon And Text Color': Colors.red,
   'BG Color': Colors.red.shade100,
   'Select File Icon Asset': 'assets/images/tools_icons/pdf_tools_icon.svg',
@@ -168,8 +169,8 @@ Map<String, dynamic>? mapOfSplitFunctionDetailsForPDFTools = {
 
 Map<String, dynamic>? mapOfModifyFunctionDetailsForPDFTools = {
   'Title': 'Modify PDF',
-  'Subtitle': 'Easily modify pages from PDF file',
-  'Icon Asset': 'assets/images/pdf_functions_icons/modify_pdf_icon.svg',
+  'Subtitle': 'Easily modify pdf pages from PDF file',
+  'Icon Asset': 'assets/images/functions_icons/modify_pdf_icon.svg',
   'Icon And Text Color': Colors.red,
   'BG Color': Colors.red.shade100,
   'Select File Icon Asset': 'assets/images/tools_icons/pdf_tools_icon.svg',
@@ -209,7 +210,7 @@ Map<String, dynamic>? mapOfModifyFunctionDetailsForPDFTools = {
 Map<String, dynamic>? mapOfCompressFunctionDetailsForPDFTools = {
   'Title': 'Compress PDF',
   'Subtitle': 'Easily decrease PDF file size by compressing',
-  'Icon Asset': 'assets/images/pdf_functions_icons/compress_icon.svg',
+  'Icon Asset': 'assets/images/functions_icons/compress_icon.svg',
   'Icon And Text Color': Colors.red,
   'BG Color': Colors.red.shade100,
   'Select File Icon Asset': 'assets/images/tools_icons/pdf_tools_icon.svg',
@@ -249,7 +250,7 @@ Map<String, dynamic>? mapOfCompressFunctionDetailsForPDFTools = {
 Map<String, dynamic>? mapOfProtectFunctionDetailsForPDFTools = {
   'Title': 'Encrypt & Decrypt PDF',
   'Subtitle': 'Easily protect & unlock PDF file',
-  'Icon Asset': 'assets/images/pdf_functions_icons/encrypt_decrypt_icon.svg',
+  'Icon Asset': 'assets/images/functions_icons/encrypt_decrypt_icon.svg',
   'Icon And Text Color': Colors.red,
   'BG Color': Colors.red.shade100,
   'Select File Icon Asset': 'assets/images/tools_icons/pdf_tools_icon.svg',
@@ -335,7 +336,7 @@ Map<String, dynamic>? mapOfProtectFunctionDetailsForPDFTools = {
 Map<String, dynamic>? mapOfConvertFunctionDetailsForPDFTools = {
   'Title': 'Convert PDF',
   'Subtitle': 'Easily convert PDF file to other formats',
-  'Icon Asset': 'assets/images/pdf_functions_icons/convert_pdf_icon.svg',
+  'Icon Asset': 'assets/images/functions_icons/convert_pdf_icon.svg',
   'Icon And Text Color': Colors.red,
   'BG Color': Colors.red.shade100,
   'Select File Icon Asset': 'assets/images/tools_icons/pdf_tools_icon.svg',
@@ -375,7 +376,7 @@ Map<String, dynamic>? mapOfConvertFunctionDetailsForPDFTools = {
 Map<String, dynamic>? mapOfImageToPDFFunctionDetailsForPDFTools = {
   'Title': 'Images To PDF',
   'Subtitle': 'Easily convert images to PDF file',
-  'Icon Asset': 'assets/images/pdf_functions_icons/images_to_pdf_icon.svg',
+  'Icon Asset': 'assets/images/functions_icons/images_to_pdf_icon.svg',
   'Icon And Text Color': Colors.red,
   'BG Color': Colors.red.shade100,
   'Select File Icon Asset': 'assets/images/tools_icons/image_tools_icon.svg',
@@ -387,15 +388,14 @@ Map<String, dynamic>? mapOfImageToPDFFunctionDetailsForPDFTools = {
   'Encrypted Files Allowed': false,
   'Sublist Functions': <Map<String, dynamic>>[
     {
-      'File Icon Asset':
-          'assets/images/pdf_functions_icons/image_tools_icon.svg',
+      'File Icon Asset': 'assets/images/functions_icons/image_tools_icon.svg',
       'File Icon Color': null,
       'Main Color': Colors.red,
       'Button Color': Colors.red.shade100,
       'Button Effects Color': Colors.red.withOpacity(0.1),
       'Button Text Color': Colors.black,
       'Title': 'Images to PDF',
-      'Subtitle': 'Reorder, rotate images & convert to PDF',
+      'Subtitle': 'Reorder, rotate images & then convert to PDF',
       'File Loading Required': true,
       'Action': (files, compressedFiles, filePaths, compressedFilesPaths,
           fileNames, fileSizes, mapOfSubFunctionDetails, context) {
@@ -421,9 +421,9 @@ Map<String, dynamic>? mapOfImageToPDFFunctionDetailsForPDFTools = {
 
 //For Images
 Map<String, dynamic>? mapOfImageToPDFFunctionDetailsForImageTools = {
-  'Title': 'Images To PDF',
-  'Subtitle': 'Easily convert images to PDF file',
-  'Icon Asset': 'assets/images/pdf_functions_icons/images_to_pdf_icon.svg',
+  'Title': 'Convert Images',
+  'Subtitle': 'Easily convert images to another file',
+  'Icon Asset': 'assets/images/functions_icons/convert_pdf_icon.svg',
   'Icon And Text Color': Colors.blue,
   'BG Color': Colors.blue.shade100,
   'Select File Icon Asset': 'assets/images/tools_icons/image_tools_icon.svg',
@@ -434,15 +434,14 @@ Map<String, dynamic>? mapOfImageToPDFFunctionDetailsForImageTools = {
   'Function Body Type': 'Single And Multiple Images Body',
   'Sublist Functions': <Map<String, dynamic>>[
     {
-      'File Icon Asset':
-          'assets/images/pdf_functions_icons/image_tools_icon.svg',
+      'File Icon Asset': 'assets/images/functions_icons/image_tools_icon.svg',
       'File Icon Color': null,
       'Main Color': Colors.blue,
       'Button Color': Colors.blue.shade100,
       'Button Effects Color': Colors.blue.withOpacity(0.1),
       'Button Text Color': Colors.black,
       'Title': 'Images to PDF',
-      'Subtitle': 'Reorder, rotate images & convert to PDF',
+      'Subtitle': 'Reorder, rotate images & then convert to PDF',
       'File Loading Required': true,
       'Action': (files, compressedFiles, filePaths, compressedFilesPaths,
           fileNames, fileSizes, mapOfSubFunctionDetails, context) {
@@ -458,6 +457,51 @@ Map<String, dynamic>? mapOfImageToPDFFunctionDetailsForImageTools = {
             compressedFilesPaths: compressedFilesPaths,
             fileNames: fileNames,
             fileSizes: fileSizes,
+            mapOfSubFunctionDetails: mapOfSubFunctionDetails,
+          ),
+        );
+      },
+    },
+  ],
+};
+
+Map<String, dynamic>? mapOfModifyImageFunctionDetailsForImageTools = {
+  'Title': 'Modify Image',
+  'Subtitle': 'Crop, rotate, flip or set a fixed aspect ratio',
+  'Icon Asset': 'assets/images/functions_icons/modify_image_icon.svg',
+  'Icon And Text Color': Colors.blue,
+  'BG Color': Colors.blue.shade100,
+  'Select File Icon Asset': 'assets/images/tools_icons/image_tools_icon.svg',
+  'Select File Icon Color': null,
+  'Select File Button Color': Colors.lightBlue.shade50,
+  'Select File Button Effects Color': Colors.lightBlue.withOpacity(0.1),
+  'Select File Type': 'Select Single File',
+  'Function Body Type': 'Single Image Body',
+  'Sublist Functions': <Map<String, dynamic>>[
+    {
+      'File Icon Asset': 'assets/images/functions_icons/image_tools_icon.svg',
+      'File Icon Color': null,
+      'Main Color': Colors.blue,
+      'Button Color': Colors.blue.shade100,
+      'Button Effects Color': Colors.blue.withOpacity(0.1),
+      'Button Text Color': Colors.black,
+      'Title': 'Modify Image',
+      'Subtitle': 'Crop, rotate, flip or set a fixed aspect ratio',
+      'File Loading Required': true,
+      'Action': (file, compressedFile, filePath, compressedFilesPath, fileName,
+          fileSize, mapOfSubFunctionDetails, context) {
+        Navigator.pushNamed(
+          context,
+          PageRoutes.modifyImageScaffold,
+          arguments: ModifyImageScaffoldArguments(
+            //imagesList: imagesList,
+            file: file,
+            compressedFile: compressedFile,
+            processType: 'Modify Image',
+            filePath: filePath,
+            compressedFilesPath: compressedFilesPath,
+            fileName: fileName,
+            fileSize: fileSize,
             mapOfSubFunctionDetails: mapOfSubFunctionDetails,
           ),
         );

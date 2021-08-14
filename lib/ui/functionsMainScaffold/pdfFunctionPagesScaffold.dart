@@ -1,3 +1,4 @@
+import 'package:files_tools/ui/functionsMainBodies/pdfFunctionPagesScaffoldBodyForSelectingSingleImage.dart';
 import 'package:files_tools/widgets/annotatedRegion.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -63,7 +64,20 @@ class _PDFFunctionsPageScaffoldState extends State<PDFFunctionsPageScaffold> {
         },
         mapOfFunctionDetails: mapOfFunctionDetails,
       );
-    } else {
+    }
+    else if (mapOfFunctionDetails!['Function Body Type'] ==
+        'Single Image Body') {
+      body = PDFFunctionBodyForSelectingSingleImage(
+        notifyBodyPoppingSplitPDFFunctionScaffold:
+        notifyBodyPoppingSplitPDFFunctionScaffold,
+        onNotifyAppbarFileStatus: (bool value) {
+          setState(() {
+            notifyAppbarFileStatus = value;
+          });
+        },
+        mapOfFunctionDetails: mapOfFunctionDetails,
+      );
+    }else {
       print('empty body provided');
       body = Container();
     }

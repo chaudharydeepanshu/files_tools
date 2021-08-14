@@ -18,7 +18,7 @@ Map<String, dynamic>? mapOfCardDetailsForPDF = {
   'Functions Details': <Map<String, dynamic>>[
     {
       'Function': 'Merge PDF',
-      'Icon Asset': 'assets/images/pdf_functions_icons/merge_icon.svg',
+      'Icon Asset': 'assets/images/functions_icons/merge_icon.svg',
       'Icon And Text Color': Colors.red.shade100,
       'Button Color': Colors.red,
       'Action': (context) {
@@ -35,7 +35,7 @@ Map<String, dynamic>? mapOfCardDetailsForPDF = {
     },
     {
       'Function': 'Split PDF',
-      'Icon Asset': 'assets/images/pdf_functions_icons/split_icon.svg',
+      'Icon Asset': 'assets/images/functions_icons/split_icon.svg',
       'Icon And Text Color': Colors.red.shade100,
       'Button Color': Colors.red,
       'Action': (context) {
@@ -52,7 +52,7 @@ Map<String, dynamic>? mapOfCardDetailsForPDF = {
     },
     {
       'Function': 'Modify PDF',
-      'Icon Asset': 'assets/images/pdf_functions_icons/modify_pdf_icon.svg',
+      'Icon Asset': 'assets/images/functions_icons/modify_pdf_icon.svg',
       'Icon And Text Color': Colors.red.shade100,
       'Button Color': Colors.red,
       'Action': (context) {
@@ -69,7 +69,7 @@ Map<String, dynamic>? mapOfCardDetailsForPDF = {
     },
     {
       'Function': 'Compress PDF',
-      'Icon Asset': 'assets/images/pdf_functions_icons/compress_icon.svg',
+      'Icon Asset': 'assets/images/functions_icons/compress_icon.svg',
       'Icon And Text Color': Colors.red.shade100,
       'Button Color': Colors.red,
       'Action': (context) {
@@ -86,8 +86,7 @@ Map<String, dynamic>? mapOfCardDetailsForPDF = {
     },
     {
       'Function': 'Protect PDF',
-      'Icon Asset':
-          'assets/images/pdf_functions_icons/encrypt_decrypt_icon.svg',
+      'Icon Asset': 'assets/images/functions_icons/encrypt_decrypt_icon.svg',
       'Icon And Text Color': Colors.red.shade100,
       'Button Color': Colors.red,
       'Action': (context) {
@@ -104,7 +103,7 @@ Map<String, dynamic>? mapOfCardDetailsForPDF = {
     },
     {
       'Function': 'Convert PDF',
-      'Icon Asset': 'assets/images/pdf_functions_icons/convert_pdf_icon.svg',
+      'Icon Asset': 'assets/images/functions_icons/convert_pdf_icon.svg',
       'Icon And Text Color': Colors.red.shade100,
       'Button Color': Colors.red,
       'Action': (context) {
@@ -121,7 +120,7 @@ Map<String, dynamic>? mapOfCardDetailsForPDF = {
     },
     {
       'Function': 'Images to PDF',
-      'Icon Asset': 'assets/images/pdf_functions_icons/images_to_pdf_icon.svg',
+      'Icon Asset': 'assets/images/functions_icons/images_to_pdf_icon.svg',
       'Icon And Text Color': Colors.red.shade100,
       'Button Color': Colors.red,
       'Action': (context) {
@@ -143,7 +142,7 @@ Map<String, dynamic>? mapOfCardDetailsForPDF = {
 Map<String, dynamic>? mapOfCardDetailsForImages = {
   'Card Title': 'Image Tools',
   'Card Title Color': Colors.black,
-  'Card Subtitle': 'Convert image',
+  'Card Subtitle': 'Convert & modify Image',
   'Card Subtitle Color': Colors.black,
   'Card Asset': 'assets/images/tools_icons/image_tools_icon.svg',
   'Card Asset Color': null,
@@ -155,7 +154,7 @@ Map<String, dynamic>? mapOfCardDetailsForImages = {
   'Functions Details': <Map<String, dynamic>>[
     {
       'Function': 'Convert Images',
-      'Icon Asset': 'assets/images/pdf_functions_icons/convert_pdf_icon.svg',
+      'Icon Asset': 'assets/images/functions_icons/convert_pdf_icon.svg',
       'Icon And Text Color': Colors.blue.shade100,
       'Button Color': Colors.blue,
       'Action': (context) {
@@ -170,6 +169,23 @@ Map<String, dynamic>? mapOfCardDetailsForImages = {
         print('Split PDF opened');
       },
     },
+    {
+      'Function': 'Modify Image',
+      'Icon Asset': 'assets/images/functions_icons/modify_image_icon.svg',
+      'Icon And Text Color': Colors.blue.shade100,
+      'Button Color': Colors.blue,
+      'Action': (context) {
+        Navigator.pushNamed(
+          context,
+          PageRoutes.pdfFunctionsPageScaffold,
+          arguments: PDFFunctionsPageScaffoldArguments(
+            pdfFunctionCurrentIndex: 1,
+            mapOfFunctionDetails: mapOfModifyImageFunctionDetailsForImageTools,
+          ),
+        );
+        print('Split PDF opened');
+      },
+    },
   ],
 };
 
@@ -177,7 +193,7 @@ Map<String, dynamic>? mapOfCardDetailsForImages = {
 Map<String, dynamic>? mapOfCardDetailsForImagesForDarkMode = {
   'Card Title': 'Image Tools',
   'Card Title Color': Colors.black,
-  'Card Subtitle': 'Convert image',
+  'Card Subtitle': 'Convert & modify Image',
   'Card Subtitle Color': Colors.black,
   'Card Asset': 'assets/images/tools_icons/image_tools_icon.svg',
   'Card Asset Color': null,
@@ -189,7 +205,7 @@ Map<String, dynamic>? mapOfCardDetailsForImagesForDarkMode = {
   'Functions Details': <Map<String, dynamic>>[
     {
       'Function': 'Convert Images',
-      'Icon Asset': 'assets/images/pdf_functions_icons/convert_pdf_icon.svg',
+      'Icon Asset': 'assets/images/functions_icons/convert_pdf_icon.svg',
       'Icon And Text Color': Colors.blue.shade100,
       'Button Color': Colors.blue,
       'Action': (context) {
@@ -199,6 +215,23 @@ Map<String, dynamic>? mapOfCardDetailsForImagesForDarkMode = {
           arguments: PDFFunctionsPageScaffoldArguments(
             pdfFunctionCurrentIndex: 1,
             mapOfFunctionDetails: mapOfImageToPDFFunctionDetailsForImageTools,
+          ),
+        );
+        print('Split PDF opened');
+      },
+    },
+    {
+      'Function': 'Modify Image',
+      'Icon Asset': 'assets/images/functions_icons/modify_image_icon.svg',
+      'Icon And Text Color': Colors.blue.shade100,
+      'Button Color': Colors.blue,
+      'Action': (context) {
+        Navigator.pushNamed(
+          context,
+          PageRoutes.pdfFunctionsPageScaffold,
+          arguments: PDFFunctionsPageScaffoldArguments(
+            pdfFunctionCurrentIndex: 1,
+            mapOfFunctionDetails: mapOfModifyImageFunctionDetailsForImageTools,
           ),
         );
         print('Split PDF opened');

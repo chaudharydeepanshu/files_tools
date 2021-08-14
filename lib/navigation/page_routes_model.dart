@@ -3,10 +3,12 @@ import 'package:files_tools/ui/functionsActionsScaffold/DecryptPDFScaffold.dart'
 import 'package:files_tools/ui/functionsActionsScaffold/EncryptPDFScaffold.dart';
 import 'package:files_tools/ui/functionsActionsScaffold/ExtractAllPDFPagesScaffold.dart';
 import 'package:files_tools/ui/functionsActionsScaffold/FixedRangePDFPagesScaffold.dart';
+import 'package:files_tools/ui/functionsActionsScaffold/ModifyImageScaffold.dart';
 import 'package:files_tools/ui/functionsActionsScaffold/PDFToImagesScaffold.dart';
 import 'package:files_tools/ui/functionsActionsScaffold/customRangePDFPagesScaffold.dart';
 import 'package:files_tools/ui/functionsActionsScaffold/imagesToPDFScaffold.dart';
 import 'package:files_tools/ui/functionsActionsScaffold/mergePDFPagesScaffold.dart';
+import 'package:files_tools/ui/functionsResultsScaffold/resultImageScaffold.dart';
 import 'package:files_tools/ui/topLevelPagesScaffold/mainPageScaffold.dart';
 import 'package:files_tools/ui/functionsMainScaffold/pdfFunctionPagesScaffold.dart';
 import 'package:files_tools/ui/functionsActionsScaffold/pdfPagesModificationScaffold.dart';
@@ -38,6 +40,8 @@ class PageRoutes {
   static String decryptPDFScaffold = DecryptPDFScaffold.routeName;
   static String imagesToPDFScaffold = ImagesToPDFScaffold.routeName;
   static String pdfToImagesScaffold = PDFToImagesScaffold.routeName;
+  static String modifyImageScaffold = ModifyImageScaffold.routeName;
+  static String resultImageScaffold = ResultImageScaffold.routeName;
   // static String recent = Recent.routeName;
   // static String favourite = Favourite.routeName;
   // static String tools = Tools.routeName;
