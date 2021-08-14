@@ -22,6 +22,7 @@ It offers various features such as:-
 
 **For Image:-**
 -  Convert Images - Images To PDF.
+-  Modify Image - This allows you to crop, flip and rotate any image. In crop, there are various options such as 'custom',  'specific' (which allows you to crop in any aspect ratio), and some predefined common aspect ratios ('1*1', '4*3', '3*4', '16*9').
 
 | Document Tools | Merge PDF | Split PDF | Modify PDF |
 | ---- | ---- | ---- | ---- |
@@ -35,7 +36,6 @@ It offers various features such as:-
 
 - [ ] Image features
     - [ ] Image compression
-    - [ ] Image cropping
 - [ ] PDF features
     - [ ] PDF to Word
     - [ ] PDF to Excel
