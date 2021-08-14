@@ -12,7 +12,6 @@ import 'package:files_tools/basicFunctionalityFunctions/getCacheFilePathFromFile
 import 'package:files_tools/basicFunctionalityFunctions/lifecycleEventHandler.dart';
 import 'package:files_tools/basicFunctionalityFunctions/sizeCalculator.dart';
 import 'package:native_pdf_renderer/native_pdf_renderer.dart' as pdfRenderer;
-import 'package:files_tools/widgets/functionsMainWidgets/dialogActionBodyOfButtonForSelectedMultipleImages.dart';
 import 'package:files_tools/widgets/functionsMainWidgets/permissionDialogBox.dart';
 import 'package:open_file/open_file.dart';
 import 'package:permission_handler/permission_handler.dart';

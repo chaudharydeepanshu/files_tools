@@ -1,25 +1,18 @@
 import 'dart:typed_data';
 import 'dart:ui';
 import 'package:extended_image/extended_image.dart';
-import 'package:files_tools/ads/banner_ad.dart';
 import 'package:files_tools/basicFunctionalityFunctions/creatingAndSavingImageFileUsingBytesTemporarily.dart';
-import 'package:files_tools/basicFunctionalityFunctions/creatingAndSavingPDFRendererImageFileTemporarily.dart';
 import 'package:files_tools/ui/functionsResultsScaffold/resultImageScaffold.dart';
 import 'package:files_tools/widgets/annotatedRegion.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:files_tools/basicFunctionalityFunctions/creatingAndSavingPDFFileTemporarily.dart';
 import 'package:files_tools/basicFunctionalityFunctions/currentDateTimeInString.dart';
 import 'package:files_tools/basicFunctionalityFunctions/processSelectedDataFromUser.dart';
 import 'package:files_tools/navigation/page_routes_model.dart';
 import 'package:files_tools/widgets/functionsActionWidgets/reusableUIActionWidgets/bottomNavBarButtonsForFileModifications.dart';
-import 'package:files_tools/widgets/functionsActionWidgets/reusableUIActionWidgets/card_carousel.dart';
 import 'package:files_tools/widgets/functionsActionWidgets/reusableUIActionWidgets/progressFakeDialogBox.dart';
-import 'package:files_tools/widgets/functionsActionWidgets/reusableUIActionWidgets/reorder_pages_scaffold.dart';
-import 'package:files_tools/ui/functionsResultsScaffold/resultPdfScaffold.dart';
 import 'package:files_tools/widgets/reusableUIWidgets/ReusableTopAppBar.dart';
-import 'package:syncfusion_flutter_pdf/pdf.dart';
 import 'dart:io';
 
 class CustomEditorCropLayerPainter extends EditorCropLayerPainter {
@@ -390,7 +383,6 @@ class _ModifyImageScaffoldState extends State<ModifyImageScaffold> {
   ];
 
   AspectRatioItem? _aspectRatio;
-  bool _cropping = false;
 
   EditorCropLayerPainter? _cropLayerPainter;
 

@@ -1,18 +1,14 @@
 import 'dart:typed_data';
 
 import 'package:extended_image/extended_image.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:files_tools/ads/ad_state.dart';
 import 'package:files_tools/ads/banner_ad.dart';
-import 'package:files_tools/basicFunctionalityFunctions/currentDateTimeInString.dart';
 import 'package:files_tools/basicFunctionalityFunctions/sizeCalculator.dart';
-import 'package:files_tools/ui/pdfViewerScaffold/pdfscaffold.dart';
 import 'package:files_tools/widgets/annotatedRegion.dart';
 import 'package:files_tools/widgets/resultPageWidgets/savingDialog.dart';
 import 'package:files_tools/widgets/resultPageWidgets/viewFileBanner.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_archive/flutter_archive.dart';
 import 'package:flutter_file_dialog/flutter_file_dialog.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gallery_saver/gallery_saver.dart';
@@ -25,14 +21,10 @@ import 'package:files_tools/widgets/reusableUIWidgets/ReusableTopAppBar.dart';
 import 'dart:io';
 import 'dart:async';
 import 'package:files_tools/basicFunctionalityFunctions/manageAppDirectoryAndCache.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 import '../../app_theme/app_theme.dart';
 import '../../basicFunctionalityFunctions/getSizeFromBytes.dart';
-import 'package:path/path.dart' as PathLibrary;
-import 'package:device_info_plus/device_info_plus.dart';
-import 'package:document_file_save/document_file_save.dart';
 
 class ResultImageScaffold extends StatefulWidget {
   static const String routeName = '/resultImageScaffold';
