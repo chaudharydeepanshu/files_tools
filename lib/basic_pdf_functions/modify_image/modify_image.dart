@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 
 Future<dynamic> modifyImage(String imageFilePath,
     Map<String, dynamic> pdfChangesDataMap, bool shouldDataBeProcessed) async {
-
   Future<Uint8List?> cropImageDataWithNativeLibrary(
       {required ExtendedImageEditorState state}) async {
     print('native library start cropping');
