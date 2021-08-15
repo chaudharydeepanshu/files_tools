@@ -366,7 +366,11 @@ class _ResultZipScaffoldState extends State<ResultZipScaffold> {
                                 : Container()
                             : Container(),
                         extensionOfSingleFileFromZip == '.jpg' ||
-                                extensionOfSingleFileFromZip == '.jpeg'
+                                extensionOfSingleFileFromZip == '.jpeg' ||
+                                extensionOfSingleFileFromZip == '.png' ||
+                                extensionOfSingleFileFromZip == '.heic' ||
+                                extensionOfSingleFileFromZip == '.heif' ||
+                                extensionOfSingleFileFromZip == '.webp'
                             ? ResultPageButtons(
                                 buttonTitle: 'Save To Gallery',
                                 onTapAction: () async {
@@ -521,9 +525,11 @@ class _ResultZipScaffoldState extends State<ResultZipScaffold> {
                           mapOfSubFunctionDetails:
                               widget.arguments!.mapOfSubFunctionDetails,
                         ),
-                        Provider.of<AdState>(context).bannerAdUnitId != null ? SizedBox(
-                          height: bannerAdSize.height.toDouble(),
-                        ) : Container(),
+                        Provider.of<AdState>(context).bannerAdUnitId != null
+                            ? SizedBox(
+                                height: bannerAdSize.height.toDouble(),
+                              )
+                            : Container(),
                       ],
                     ),
                   ),
@@ -531,12 +537,14 @@ class _ResultZipScaffoldState extends State<ResultZipScaffold> {
                 Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    MeasureSize(onChange: (Size size) {
-                      setState(() {
-                        bannerAdSize = size;
-                      });
-                    },
-                      child: BannerAD(),),
+                    MeasureSize(
+                      onChange: (Size size) {
+                        setState(() {
+                          bannerAdSize = size;
+                        });
+                      },
+                      child: BannerAD(),
+                    ),
                   ],
                 ),
                 viewZipBannerStatus

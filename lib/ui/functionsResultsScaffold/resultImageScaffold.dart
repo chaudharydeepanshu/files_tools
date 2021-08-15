@@ -237,8 +237,7 @@ class _ResultImageScaffoldState extends State<ResultImageScaffold> {
                           decoration: InputDecoration(
                             hintText: "File Name",
                             suffixText: extensionOfFileName,
-                            icon: Icon(Icons.drive_file_rename_outline,
-                                color: Colors.black),
+                            icon: Icon(Icons.drive_file_rename_outline),
                             border: OutlineInputBorder(),
                           ),
                         ),
@@ -364,13 +363,13 @@ class _ResultImageScaffoldState extends State<ResultImageScaffold> {
 }
 
 class ResultImageScaffoldArguments {
-  Uint8List fileData;
+  Uint8List? fileData;
   String filePath;
   String pdfFileName;
   Map<String, dynamic>? mapOfSubFunctionDetails;
 
   ResultImageScaffoldArguments({
-    required this.fileData,
+    this.fileData,
     required this.filePath,
     required this.pdfFileName,
     required this.mapOfSubFunctionDetails,

@@ -1,4 +1,5 @@
 import 'package:files_tools/ui/functionsActionsScaffold/ModifyImageScaffold.dart';
+import 'package:files_tools/ui/functionsActionsScaffold/compressImage.dart';
 import 'package:flutter/material.dart';
 import 'package:files_tools/ui/functionsActionsScaffold/CompressPDFScaffold.dart';
 import 'package:files_tools/ui/functionsActionsScaffold/DecryptPDFScaffold.dart';
@@ -502,6 +503,51 @@ Map<String, dynamic>? mapOfModifyImageFunctionDetailsForImageTools = {
             compressedFilesPath: compressedFilesPath,
             fileName: fileName,
             fileSize: fileSize,
+            mapOfSubFunctionDetails: mapOfSubFunctionDetails,
+          ),
+        );
+      },
+    },
+  ],
+};
+
+Map<String, dynamic>? mapOfCompressImagesFunctionDetailsForImageTools = {
+  'Title': 'Compress Images',
+  'Subtitle': 'Reduce any image size by compressing it',
+  'Icon Asset': 'assets/images/functions_icons/compress_icon.svg',
+  'Icon And Text Color': Colors.blue,
+  'BG Color': Colors.blue.shade100,
+  'Select File Icon Asset': 'assets/images/tools_icons/image_tools_icon.svg',
+  'Select File Icon Color': null,
+  'Select File Button Color': Colors.lightBlue.shade50,
+  'Select File Button Effects Color': Colors.lightBlue.withOpacity(0.1),
+  'Select File Type': 'Select Single And Multiple File',
+  'Function Body Type': 'Single And Multiple Images Body',
+  'Sublist Functions': <Map<String, dynamic>>[
+    {
+      'File Icon Asset': 'assets/images/functions_icons/image_tools_icon.svg',
+      'File Icon Color': null,
+      'Main Color': Colors.blue,
+      'Button Color': Colors.blue.shade100,
+      'Button Effects Color': Colors.blue.withOpacity(0.1),
+      'Button Text Color': Colors.black,
+      'Title': 'Compress Images',
+      'Subtitle': 'Reduce any image size by compressing it',
+      'File Loading Required': true,
+      'Action': (files, compressedFiles, filePaths, compressedFilesPaths,
+          fileNames, fileSizes, mapOfSubFunctionDetails, context) {
+        Navigator.pushNamed(
+          context,
+          PageRoutes.compressImagesScaffold,
+          arguments: CompressImagesScaffoldArguments(
+            //imagesList: imagesList,
+            files: files,
+            compressedFiles: compressedFiles,
+            processType: 'Compress Images',
+            filePaths: filePaths,
+            compressedFilesPaths: compressedFilesPaths,
+            fileNames: fileNames,
+            fileSizes: fileSizes,
             mapOfSubFunctionDetails: mapOfSubFunctionDetails,
           ),
         );

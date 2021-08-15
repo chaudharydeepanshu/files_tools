@@ -6,6 +6,7 @@ import 'package:files_tools/ui/functionsActionsScaffold/ExtractAllPDFPagesScaffo
 import 'package:files_tools/ui/functionsActionsScaffold/FixedRangePDFPagesScaffold.dart';
 import 'package:files_tools/ui/functionsActionsScaffold/ModifyImageScaffold.dart';
 import 'package:files_tools/ui/functionsActionsScaffold/PDFToImagesScaffold.dart';
+import 'package:files_tools/ui/functionsActionsScaffold/compressImage.dart';
 import 'package:files_tools/ui/functionsActionsScaffold/customRangePDFPagesScaffold.dart';
 import 'package:files_tools/ui/functionsActionsScaffold/imagesToPDFScaffold.dart';
 import 'package:files_tools/ui/functionsActionsScaffold/mergePDFPagesScaffold.dart';
@@ -152,6 +153,10 @@ class MyApp extends StatelessWidget {
           PageRoutes.resultImageScaffold: (context) => ResultImageScaffold(
               arguments: ModalRoute.of(context)!.settings.arguments
                   as ResultImageScaffoldArguments?),
+          PageRoutes.compressImagesScaffold: (context) =>
+              CompressImagesScaffold(
+                  arguments: ModalRoute.of(context)!.settings.arguments
+                      as CompressImagesScaffoldArguments?),
         },
       ),
     );

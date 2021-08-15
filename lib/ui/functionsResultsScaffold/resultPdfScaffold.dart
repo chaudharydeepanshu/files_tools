@@ -229,8 +229,7 @@ class _ResultPDFScaffoldState extends State<ResultPDFScaffold> {
                           decoration: InputDecoration(
                             hintText: "File Name",
                             suffixText: extensionOfFileName,
-                            icon: Icon(Icons.drive_file_rename_outline,
-                                color: Colors.black),
+                            icon: Icon(Icons.drive_file_rename_outline),
                             border: OutlineInputBorder(),
                           ),
                         ),
@@ -283,9 +282,11 @@ class _ResultPDFScaffoldState extends State<ResultPDFScaffold> {
                           mapOfSubFunctionDetails:
                               widget.arguments!.mapOfSubFunctionDetails,
                         ),
-                        Provider.of<AdState>(context).bannerAdUnitId != null ? SizedBox(
-                          height: bannerAdSize.height.toDouble(),
-                        ) : Container(),
+                        Provider.of<AdState>(context).bannerAdUnitId != null
+                            ? SizedBox(
+                                height: bannerAdSize.height.toDouble(),
+                              )
+                            : Container(),
                       ],
                     ),
                   ),
@@ -293,12 +294,14 @@ class _ResultPDFScaffoldState extends State<ResultPDFScaffold> {
                 Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    MeasureSize(onChange: (Size size) {
-                      setState(() {
-                        bannerAdSize = size;
-                      });
-                    },
-                      child: BannerAD(),),
+                    MeasureSize(
+                      onChange: (Size size) {
+                        setState(() {
+                          bannerAdSize = size;
+                        });
+                      },
+                      child: BannerAD(),
+                    ),
                   ],
                 ),
                 viewPDFBannerStatus

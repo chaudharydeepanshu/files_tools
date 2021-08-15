@@ -186,6 +186,24 @@ Map<String, dynamic>? mapOfCardDetailsForImages = {
         print('Split PDF opened');
       },
     },
+    {
+      'Function': 'Compress Images',
+      'Icon Asset': 'assets/images/functions_icons/compress_icon.svg',
+      'Icon And Text Color': Colors.blue.shade100,
+      'Button Color': Colors.blue,
+      'Action': (context) {
+        Navigator.pushNamed(
+          context,
+          PageRoutes.pdfFunctionsPageScaffold,
+          arguments: PDFFunctionsPageScaffoldArguments(
+            pdfFunctionCurrentIndex: 1,
+            mapOfFunctionDetails:
+                mapOfCompressImagesFunctionDetailsForImageTools,
+          ),
+        );
+        print('Split PDF opened');
+      },
+    },
   ],
 };
 
@@ -232,6 +250,24 @@ Map<String, dynamic>? mapOfCardDetailsForImagesForDarkMode = {
           arguments: PDFFunctionsPageScaffoldArguments(
             pdfFunctionCurrentIndex: 1,
             mapOfFunctionDetails: mapOfModifyImageFunctionDetailsForImageTools,
+          ),
+        );
+        print('Split PDF opened');
+      },
+    },
+    {
+      'Function': 'Compress Images',
+      'Icon Asset': 'assets/images/functions_icons/compress_icon.svg',
+      'Icon And Text Color': Colors.blue.shade100,
+      'Button Color': Colors.blue,
+      'Action': (context) {
+        Navigator.pushNamed(
+          context,
+          PageRoutes.pdfFunctionsPageScaffold,
+          arguments: PDFFunctionsPageScaffoldArguments(
+            pdfFunctionCurrentIndex: 1,
+            mapOfFunctionDetails:
+                mapOfCompressImagesFunctionDetailsForImageTools,
           ),
         );
         print('Split PDF opened');

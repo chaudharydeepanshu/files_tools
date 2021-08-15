@@ -1,4 +1,5 @@
 import 'package:files_tools/main_functions/Compress/CompressPDF.dart';
+import 'package:files_tools/main_functions/Compress_images/compress_images.dart';
 import 'package:files_tools/main_functions/Protect/DecryptPDF.dart';
 import 'package:files_tools/main_functions/Protect/EncryptPDF.dart';
 import 'package:files_tools/main_functions/convertPDF/PDFToImages.dart';
@@ -87,6 +88,11 @@ Future<dynamic> processSelectedDataFromUser(
     dataFromFunctions =
         await modifyImage(filePath!, pdfChangesDataMap!, shouldDataBeProcessed);
     print('waiting for modifyImage');
+    return dataFromFunctions;
+  } else if (processType == 'Compress Images') {
+    dataFromFunctions = await compressImages(
+        filesPaths!, pdfChangesDataMap!, shouldDataBeProcessed);
+    print('waiting for compressImages');
     return dataFromFunctions;
   } else {
     print(

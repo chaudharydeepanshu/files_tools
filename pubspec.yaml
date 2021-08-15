@@ -71,6 +71,7 @@ dependencies:
   connectivity_plus: ^1.0.6
   extended_image: ^4.1.0
   image_editor: ^1.0.0
+  image_compression: ^1.0.3
 
 
   # The following adds the Cupertino Icons font to your application.

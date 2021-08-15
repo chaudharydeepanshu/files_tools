@@ -338,6 +338,7 @@ class _PDFFunctionBodyForSelectingSingleMultipleImagesState
                                                                   null) {
                                                                 fileBytes = [];
                                                                 filePaths = [];
+                                                                fileNames = [];
                                                                 compressedFilesPaths =
                                                                     [];
                                                                 files = [];
@@ -371,7 +372,7 @@ class _PDFFunctionBodyForSelectingSingleMultipleImagesState
                                                                           extensionOfFileName);
 
                                                                   Future<File>
-                                                                      testCompressAndGetFile(
+                                                                      compressAndGetFile(
                                                                           File
                                                                               file,
                                                                           String
@@ -443,7 +444,7 @@ class _PDFFunctionBodyForSelectingSingleMultipleImagesState
                                                                       targetPath =
                                                                       "${await getCacheFilePathFromFileName(fileNameWithoutExtension + ' ' + 'compressed' + ' ' + i.toString() + extensionOfFileName)}";
                                                                   print(
-                                                                      targetPath);
+                                                                      "targetPath $targetPath");
                                                                   if (extensionOfFileName == '.png' ||
                                                                       extensionOfFileName ==
                                                                           '.jpg' ||
@@ -456,7 +457,7 @@ class _PDFFunctionBodyForSelectingSingleMultipleImagesState
                                                                       extensionOfFileName ==
                                                                           '.webp') {
                                                                     compressedFiles.add(
-                                                                        await testCompressAndGetFile(
+                                                                        await compressAndGetFile(
                                                                             file,
                                                                             targetPath));
                                                                     compressedFilesPaths
@@ -479,6 +480,9 @@ class _PDFFunctionBodyForSelectingSingleMultipleImagesState
                                                                           fileBytes[
                                                                               i];
                                                                 }
+
+                                                                print(
+                                                                    "fileNames $fileNames");
 
                                                                 setState(() {
                                                                   isFilePicked =
@@ -1036,7 +1040,7 @@ class _PDFFunctionBodyForSelectingSingleMultipleImagesState
                                                           'Sublist Functions']
                                                       .length -
                                                   1
-                                          ? bannerAdSize.height.toDouble() +10
+                                          ? bannerAdSize.height.toDouble() + 10
                                           : 20,
                                     ),
                                   ],
@@ -1083,12 +1087,14 @@ class _PDFFunctionBodyForSelectingSingleMultipleImagesState
         Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            MeasureSize(onChange: (Size size) {
-              setState(() {
-                bannerAdSize = size;
-              });
-            },
-              child: BannerAD(),),
+            MeasureSize(
+              onChange: (Size size) {
+                setState(() {
+                  bannerAdSize = size;
+                });
+              },
+              child: BannerAD(),
+            ),
           ],
         ),
       ],
