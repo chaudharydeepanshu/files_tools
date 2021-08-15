@@ -1,16 +1,16 @@
-import 'package:files_tools/basic_pdf_functions/Compress/CompressPDF.dart';
-import 'package:files_tools/basic_pdf_functions/Protect/DecryptPDF.dart';
-import 'package:files_tools/basic_pdf_functions/Protect/EncryptPDF.dart';
-import 'package:files_tools/basic_pdf_functions/convertPDF/PDFToImages.dart';
-import 'package:files_tools/basic_pdf_functions/imagesToPdf/imagesToPdf.dart';
-import 'package:files_tools/basic_pdf_functions/merge/mergePDFPagesAsSingleDocument.dart';
-import 'package:files_tools/basic_pdf_functions/modify_image/modify_image.dart';
-import 'package:files_tools/basic_pdf_functions/split/customRanges/customRangePDFPagesAsSeparateDocument.dart';
-import 'package:files_tools/basic_pdf_functions/split/customRanges/customRangePDFPagesAsSingleDocument.dart';
-import 'package:files_tools/basic_pdf_functions/split/extractAllPages/extractAllPages.dart';
-import 'package:files_tools/basic_pdf_functions/split/extractSelectedPages/extractSelectedPages.dart';
-import 'package:files_tools/basic_pdf_functions/split/fixedRange/fixedRangePDFPages.dart';
-import '../basic_pdf_functions/modify_pdf/modifying_PDF.dart';
+import 'package:files_tools/main_functions/Compress/CompressPDF.dart';
+import 'package:files_tools/main_functions/Protect/DecryptPDF.dart';
+import 'package:files_tools/main_functions/Protect/EncryptPDF.dart';
+import 'package:files_tools/main_functions/convertPDF/PDFToImages.dart';
+import 'package:files_tools/main_functions/imagesToPdf/imagesToPdf.dart';
+import 'package:files_tools/main_functions/merge/mergePDFPagesAsSingleDocument.dart';
+import 'package:files_tools/main_functions/modify_image/modify_image.dart';
+import 'package:files_tools/main_functions/modify_pdf/modifying_PDF.dart';
+import 'package:files_tools/main_functions/split/customRanges/customRangePDFPagesAsSeparateDocument.dart';
+import 'package:files_tools/main_functions/split/customRanges/customRangePDFPagesAsSingleDocument.dart';
+import 'package:files_tools/main_functions/split/extractAllPages/extractAllPages.dart';
+import 'package:files_tools/main_functions/split/extractSelectedPages/extractSelectedPages.dart';
+import 'package:files_tools/main_functions/split/fixedRange/fixedRangePDFPages.dart';
 
 Future<dynamic> processSelectedDataFromUser(
     {List<bool>? selectedData, //for selection type processes
