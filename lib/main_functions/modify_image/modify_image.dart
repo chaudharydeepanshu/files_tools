@@ -1,11 +1,15 @@
 import 'dart:typed_data';
 import 'package:extended_image/extended_image.dart';
+import 'package:files_tools/basicFunctionalityFunctions/fileNameManager.dart';
 import 'package:image_editor/image_editor.dart';
 import 'dart:async';
 import 'package:flutter/material.dart';
 
 Future<dynamic> modifyImage(String imageFilePath,
     Map<String, dynamic> pdfChangesDataMap, bool shouldDataBeProcessed) async {
+  String extensionOfFileName =
+      extensionOfString(fileName: pdfChangesDataMap['File Name']);
+
   Future<Uint8List?> cropImageDataWithNativeLibrary(
       {required ExtendedImageEditorState state}) async {
     print('native library start cropping');
@@ -31,6 +35,13 @@ Future<dynamic> modifyImage(String imageFilePath,
 
     if (action.hasRotateAngle) {
       option.addOption(RotateOption(rotateAngle));
+    }
+
+    if (extensionOfFileName.toLowerCase() == '.jpg' ||
+        extensionOfFileName.toLowerCase() == '.jpeg') {
+      option.outputFormat = const OutputFormat.jpeg(100);
+    } else if (extensionOfFileName.toLowerCase() == '.png') {
+      option.outputFormat = const OutputFormat.png(100);
     }
 
     final DateTime start = DateTime.now();

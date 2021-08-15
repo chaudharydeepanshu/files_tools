@@ -2,6 +2,7 @@ import 'dart:typed_data';
 import 'dart:ui';
 import 'package:extended_image/extended_image.dart';
 import 'package:files_tools/basicFunctionalityFunctions/creatingAndSavingImageFileUsingBytesTemporarily.dart';
+import 'package:files_tools/basicFunctionalityFunctions/fileNameManager.dart';
 import 'package:files_tools/ui/functionsResultsScaffold/resultImageScaffold.dart';
 import 'package:files_tools/widgets/annotatedRegion.dart';
 import 'package:flutter/cupertino.dart';
@@ -386,8 +387,13 @@ class _ModifyImageScaffoldState extends State<ModifyImageScaffold> {
 
   EditorCropLayerPainter? _cropLayerPainter;
 
+  String? extensionOfFileName;
+
   @override
   void initState() {
+    extensionOfFileName =
+        extensionOfString(fileName: widget.arguments!.fileName);
+
     _aspectRatio = _aspectRatios.first;
     _cropLayerPainter = const EditorCropLayerPainter();
     tempImageFile = widget.arguments!.compressedFile;
@@ -412,7 +418,7 @@ class _ModifyImageScaffoldState extends State<ModifyImageScaffold> {
       Future.delayed(const Duration(milliseconds: 500), () async {
         fileData = await processSelectedDataFromUser(
             pdfChangesDataMap: {
-              'PDF File Name': "Image to pdf ${currentDateTimeInString()}.pdf",
+              'File Name': widget.arguments!.fileName,
               'State': editorKey.currentState!,
             },
             processType: widget.arguments!.processType,
@@ -421,7 +427,8 @@ class _ModifyImageScaffoldState extends State<ModifyImageScaffold> {
             shouldDataBeProcessed: shouldDataBeProcessed);
 
         Map map = Map();
-        map['_imageName'] = "Modified Image ${currentDateTimeInString()}.jpg";
+        map['_imageName'] =
+            "Modified Image ${currentDateTimeInString() + extensionOfFileName!}";
         map['_extraBetweenNameAndExtension'] = '';
         map['_imageBytes'] = fileData;
 
@@ -457,7 +464,8 @@ class _ModifyImageScaffoldState extends State<ModifyImageScaffold> {
               arguments: ResultImageScaffoldArguments(
                 fileData: fileData!,
                 filePath: value,
-                pdfFileName: "Modified Image ${currentDateTimeInString()}.jpg",
+                pdfFileName:
+                    "Modified Image ${currentDateTimeInString() + extensionOfFileName!}",
                 mapOfSubFunctionDetails:
                     widget.arguments!.mapOfSubFunctionDetails,
               ),

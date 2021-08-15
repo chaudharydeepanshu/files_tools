@@ -1,5 +1,4 @@
 import 'dart:typed_data';
-
 import 'package:extended_image/extended_image.dart';
 import 'package:files_tools/ads/ad_state.dart';
 import 'package:files_tools/ads/banner_ad.dart';
