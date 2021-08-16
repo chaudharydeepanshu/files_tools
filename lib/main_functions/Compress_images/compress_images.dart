@@ -1,9 +1,7 @@
 import 'dart:typed_data';
 import 'package:extended_image/extended_image.dart';
 import 'package:files_tools/basicFunctionalityFunctions/creatingAndSavingImageFileUsingBytesTemporarily.dart';
-import 'package:files_tools/basicFunctionalityFunctions/currentDateTimeInString.dart';
 import 'package:files_tools/basicFunctionalityFunctions/fileNameManager.dart';
-import 'package:files_tools/basicFunctionalityFunctions/getCacheFilePathFromFileName.dart';
 import 'package:files_tools/basicFunctionalityFunctions/getExternalStorageFilePathFromFileName.dart';
 import 'package:files_tools/basicFunctionalityFunctions/getFileNameFromFilePath.dart';
 import 'package:files_tools/basicFunctionalityFunctions/readFileByteFromFilePath.dart';
