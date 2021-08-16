@@ -148,9 +148,9 @@ class ButtonsOfDocFunctions extends StatelessWidget {
           children: [
             Container(
               height: 48,
-              width: 160,
+              width: 165,
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   SvgPicture.asset(
                       mapOfFunctionIconAndAction!['Icon Asset'] ??
@@ -164,8 +164,8 @@ class ButtonsOfDocFunctions extends StatelessWidget {
                   SizedBox(
                     width: 10,
                   ),
-                  Container(
-                    width: 105,
+                  Expanded(
+                    //width: 115,
                     child: Text(
                       mapOfFunctionIconAndAction!['Function'] ?? 'Merge PDF',
                       style: TextStyle(
