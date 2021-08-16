@@ -6,12 +6,10 @@ import 'package:files_tools/basicFunctionalityFunctions/fileNameManager.dart';
 import 'package:files_tools/basicFunctionalityFunctions/getCacheFilePathFromFileName.dart';
 import 'package:files_tools/basicFunctionalityFunctions/getExternalStorageFilePathFromFileName.dart';
 import 'package:files_tools/basicFunctionalityFunctions/getFileNameFromFilePath.dart';
+import 'package:files_tools/basicFunctionalityFunctions/readFileByteFromFilePath.dart';
 import 'package:files_tools/ui/functionsActionsScaffold/compressImage.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
-import 'package:image_compression/image_compression.dart';
-import 'dart:async';
-import 'package:image_compression/image_compression_html.dart'
-    as image_compression_html;
+import 'package:flutter_native_image/flutter_native_image.dart';
 
 Future<dynamic> compressImages(List<String> imageFilePaths,
     Map<String, dynamic> pdfChangesDataMap, bool shouldDataBeProcessed) async {
@@ -33,34 +31,32 @@ Future<dynamic> compressImages(List<String> imageFilePaths,
 
     Future<File> compressAndGetFile(
         File file, String targetPath, int quality) async {
-      var imageCompressResult;
+      File? imageCompressResult;
       if (extensionOfFileName == '.png') {
-        // print('png compressed');
-        // final tempFile = File(file.absolute.path);
-        //
-        // final input = ImageFile(
-        //   rawBytes: tempFile.readAsBytesSync(),
-        //   filePath: tempFile.path,
-        // );
-        // final output = await image_compression_html.compressInQueue(
-        //     ImageFileConfiguration(
-        //         input: input,
-        //         config: Configuration(
-        //             pngCompression: PngCompression.defaultCompression)));
-        // print('Input size = ${file.lengthSync()}');
-        // print('Output size = ${output.sizeInBytes}');
-        // print("output.rawBytes : ${output.rawBytes}");
-        // Map map = Map();
-        // map['_imageName'] = getFileNameFromFilePath(targetPath);
-        // map['_extraBetweenNameAndExtension'] = '';
-        // map['_imageBytes'] = output.rawBytes;
-        // final outputFile =
-        //     File(await creatingAndSavingImageFileUsingBytesTemporarily(map));
-        //imageCompressResult = outputFile;
-
-        imageCompressResult = await FlutterImageCompress.compressAndGetFile(
-            file.absolute.path, targetPath,
-            quality: quality, rotate: 0, format: CompressFormat.png);
+        //facing issue with png images compression so using another plugin for that
+        // imageCompressResult = await FlutterImageCompress.compressAndGetFile(
+        //     file.absolute.path, targetPath,
+        //     quality: quality, rotate: 0, format: CompressFormat.png);
+        imageCompressResult = await FlutterNativeImage.compressImage(
+            file.absolute.path,
+            quality: quality,
+            percentage: 100);
+        try {
+          Uint8List fileByte;
+          String myPath = imageCompressResult.path;
+          readFileByteFromFilePath(myPath).then((bytesData) async {
+            fileByte = bytesData!;
+            //do your task here
+            Map map = Map();
+            map['_imageName'] = getFileNameFromFilePath(targetPath);
+            map['_extraBetweenNameAndExtension'] = '';
+            map['_imageBytes'] = fileByte;
+            await creatingAndSavingImageFileUsingBytesTemporarily(map);
+          });
+        } catch (e) {
+          // if path invalid or not able to read
+          print(e);
+        }
       } else if (extensionOfFileName == '.jpg' ||
           extensionOfFileName == '.jpeg') {
         imageCompressResult = await FlutterImageCompress.compressAndGetFile(

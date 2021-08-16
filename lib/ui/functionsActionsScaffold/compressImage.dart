@@ -233,7 +233,7 @@ class _CompressImagesScaffoldState extends State<CompressImagesScaffold>
                               RadioListTile<Qualities>(
                                 controlAffinity:
                                     ListTileControlAffinity.trailing,
-                                title: const Text('Less Compression'),
+                                title: const Text('Less Compression (88%)'),
                                 subtitle: const Text(
                                     'High quality, less compression'),
                                 value: Qualities.high,
@@ -248,7 +248,8 @@ class _CompressImagesScaffoldState extends State<CompressImagesScaffold>
                               RadioListTile<Qualities>(
                                 controlAffinity:
                                     ListTileControlAffinity.trailing,
-                                title: const Text('Recommended Compression'),
+                                title:
+                                    const Text('Recommended Compression (50%)'),
                                 subtitle: const Text(
                                     'Good quality, good compression'),
                                 value: Qualities.medium,
@@ -263,7 +264,7 @@ class _CompressImagesScaffoldState extends State<CompressImagesScaffold>
                               RadioListTile<Qualities>(
                                 controlAffinity:
                                     ListTileControlAffinity.trailing,
-                                title: const Text('Extreme Compression'),
+                                title: const Text('Extreme Compression (20%)'),
                                 subtitle: const Text(
                                     'less quality, High compression'),
                                 value: Qualities.low,

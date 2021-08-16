@@ -281,6 +281,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.0"
+  flutter_native_image:
+    dependency: "direct main"
+    description:
+      name: flutter_native_image
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.6+1"
   flutter_pdf_split:
     dependency: "direct main"
     description:
@@ -363,13 +370,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.0.2"
-  image_compression:
-    dependency: "direct main"
-    description:
-      name: image_compression
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.3"
   image_editor:
     dependency: "direct main"
     description:
