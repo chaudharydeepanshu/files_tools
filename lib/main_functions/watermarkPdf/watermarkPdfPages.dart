@@ -1,23 +1,17 @@
 import 'dart:ui';
-
-import 'package:files_tools/basicFunctionalityFunctions/fileNameManager.dart';
-import 'package:files_tools/basicFunctionalityFunctions/getExternalStorageFilePathFromFileName.dart';
 import 'package:files_tools/basicFunctionalityFunctions/hexToDecimal.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
 import 'dart:io';
-import 'package:flutter_pdf_split/flutter_pdf_split.dart';
 
 Future<PdfDocument?> watermarkPDFPages(String pdfFilePath,
     Map<String, dynamic> pdfChangesDataMap, bool shouldDataBeProcessed) async {
   late PdfDocument? document;
-  List<String>? rangesPdfsFilePaths = [];
 
   bool isEncryptedDocument() {
     bool isEncrypted = false;
     try {
       //Load the encrypted PDF document.
       document = PdfDocument(inputBytes: File(pdfFilePath).readAsBytesSync());
-      //PdfDocument(inputBytes: File(pdfFilePath).readAsBytesSync());
     } catch (exception) {
       if (exception.toString().contains('Cannot open an encrypted document.')) {
         isEncrypted = true;
@@ -27,12 +21,6 @@ Future<PdfDocument?> watermarkPDFPages(String pdfFilePath,
   }
 
   if (!isEncryptedDocument()) {
-    // generating extensionOfFileName and fileNameWithoutExtension
-    String extensionOfFileName =
-        extensionOfString(fileName: pdfChangesDataMap['PDF File Name']);
-    String fileNameWithoutExtension = stringWithoutExtension(
-        fileName: pdfChangesDataMap['PDF File Name'],
-        extensionOfString: extensionOfFileName);
     //Converting hex color to RGB
     var hexColor = pdfChangesDataMap['Color Of Watermark'].substring(4);
     var red = hexToDecimal(hexColor[0].toString() + hexColor[1].toString())!;
@@ -52,26 +40,54 @@ Future<PdfDocument?> watermarkPDFPages(String pdfFilePath,
         //Set a standard font
         PdfFont font = PdfStandardFont(PdfFontFamily.helvetica,
             pdfChangesDataMap['FontSize TextEditingController']);
+        //Create PDF graphics for the page
+        PdfGraphics graphics = page.graphics;
+        //Save the graphics state for the watermark text
+        graphics.save();
+        // //Translate the page graphics to be in center.
+        // graphics.translateTransform(
+        //     page.getClientSize().width / 2, page.getClientSize().height / 2);
         //Measure the text
         Size size = font.measureString(
             pdfChangesDataMap['Watermark TextEditingController']);
-        //Create PDF graphics for the page
-        PdfGraphics graphics = page.graphics;
+        //calculate the x and y points
         double x = pageSize.width / 2 - size.width / 2;
         double y = pageSize.height / 2;
-        //Save the graphics state for the watermark text
-        graphics.save();
         //Set transparency level for the text
         graphics.setTransparency(pdfChangesDataMap['Watermark Transparency']);
-        //Rotate the text to x Degree
-        graphics.rotateTransform(pdfChangesDataMap['Watermark Rotation Angle']);
+        // //Rotate the text to x Degree
+        // graphics.rotateTransform(pdfChangesDataMap['Watermark Rotation Angle']);
+        //get bounds according to position
+        Rect? bounds;
+        if (pdfChangesDataMap['List Of Positions Status'][0] == true) {
+          bounds = Rect.fromLTWH(0, 0, size.width, size.height);
+        } else if (pdfChangesDataMap['List Of Positions Status'][1] == true) {
+          bounds = Rect.fromLTWH(x, 0, size.width, size.height);
+        } else if (pdfChangesDataMap['List Of Positions Status'][2] == true) {
+          bounds = Rect.fromLTWH(x + x, 0, size.width, size.height);
+        } else if (pdfChangesDataMap['List Of Positions Status'][3] == true) {
+          bounds = Rect.fromLTWH(0, y, size.width, size.height);
+        } else if (pdfChangesDataMap['List Of Positions Status'][4] == true) {
+          bounds = Rect.fromLTWH(x, y, size.width, size.height);
+        } else if (pdfChangesDataMap['List Of Positions Status'][5] == true) {
+          bounds = Rect.fromLTWH(x + x, y, size.width, size.height);
+        } else if (pdfChangesDataMap['List Of Positions Status'][6] == true) {
+          bounds =
+              Rect.fromLTWH(0, y + y - size.height, size.width, size.height);
+        } else if (pdfChangesDataMap['List Of Positions Status'][7] == true) {
+          bounds =
+              Rect.fromLTWH(x, y + y - size.height, size.width, size.height);
+        } else if (pdfChangesDataMap['List Of Positions Status'][8] == true) {
+          bounds = Rect.fromLTWH(
+              x + x, y + y - size.height, size.width, size.height);
+        }
         //Draw the watermark text to the desired position over the PDF page with red color
         graphics.drawString(
           pdfChangesDataMap['Watermark TextEditingController'], font,
           pen: PdfPen(PdfColor(red, green, blue)),
           brush: PdfSolidBrush(PdfColor(red, green, blue)),
           // brush: PdfBrushes.red,
-          bounds: Rect.fromLTWH(x, y, size.width, size.height),
+          bounds: bounds,
         );
         //Restore the graphics
         graphics.restore();
@@ -140,9 +156,9 @@ Future<PdfDocument?> watermarkPDFPages(String pdfFilePath,
         PdfGraphics graphics = newPage.graphics;
         //Save the graphics state for the watermark text
         graphics.save();
-        //Translate the page graphics to be in center.
-        graphics.translateTransform(
-            page.getClientSize().width / 2, page.getClientSize().height / 2);
+        // //Translate the page graphics to be in center.
+        // graphics.translateTransform(
+        //     page.getClientSize().width / 2, page.getClientSize().height / 2);
         //Measure the text
         Size size = font.measureString(
             pdfChangesDataMap['Watermark TextEditingController']);
@@ -151,15 +167,40 @@ Future<PdfDocument?> watermarkPDFPages(String pdfFilePath,
         double y = pageSize.height / 2;
         //Set transparency level for the text
         graphics.setTransparency(pdfChangesDataMap['Watermark Transparency']);
-        //Rotate the text to x Degree
-        graphics.rotateTransform(pdfChangesDataMap['Watermark Rotation Angle']);
+        // //Rotate the text to x Degree
+        // graphics.rotateTransform(pdfChangesDataMap['Watermark Rotation Angle']);
+        //get bounds according to position
+        Rect? bounds;
+        if (pdfChangesDataMap['List Of Positions Status'][0] == true) {
+          bounds = Rect.fromLTWH(0, 0, size.width, size.height);
+        } else if (pdfChangesDataMap['List Of Positions Status'][1] == true) {
+          bounds = Rect.fromLTWH(x, 0, size.width, size.height);
+        } else if (pdfChangesDataMap['List Of Positions Status'][2] == true) {
+          bounds = Rect.fromLTWH(x + x, 0, size.width, size.height);
+        } else if (pdfChangesDataMap['List Of Positions Status'][3] == true) {
+          bounds = Rect.fromLTWH(0, y, size.width, size.height);
+        } else if (pdfChangesDataMap['List Of Positions Status'][4] == true) {
+          bounds = Rect.fromLTWH(x, y, size.width, size.height);
+        } else if (pdfChangesDataMap['List Of Positions Status'][5] == true) {
+          bounds = Rect.fromLTWH(x + x, y, size.width, size.height);
+        } else if (pdfChangesDataMap['List Of Positions Status'][6] == true) {
+          bounds =
+              Rect.fromLTWH(0, y + y - size.height, size.width, size.height);
+        } else if (pdfChangesDataMap['List Of Positions Status'][7] == true) {
+          bounds =
+              Rect.fromLTWH(x, y + y - size.height, size.width, size.height);
+        } else if (pdfChangesDataMap['List Of Positions Status'][8] == true) {
+          bounds = Rect.fromLTWH(
+              x + x, y + y - size.height, size.width, size.height);
+        }
         //Draw the watermark text to the desired position over the PDF page with red color
         graphics.drawString(
-            pdfChangesDataMap['Watermark TextEditingController'], font,
-            pen: PdfPen(PdfColor(red, green, blue)),
-            brush: PdfSolidBrush(PdfColor(red, green, blue)),
-            // brush: PdfBrushes.red,
-            bounds: Rect.fromLTWH(x, y, size.width, size.height));
+          pdfChangesDataMap['Watermark TextEditingController'], font,
+          pen: PdfPen(PdfColor(red, green, blue)),
+          brush: PdfSolidBrush(PdfColor(red, green, blue)),
+          // brush: PdfBrushes.red,
+          bounds: bounds,
+        );
         //Restore the graphics
         graphics.restore();
         //--------------------adding watermark -------------------------------//
@@ -169,17 +210,8 @@ Future<PdfDocument?> watermarkPDFPages(String pdfFilePath,
       }
       document = newDocument;
     }
-    // //creating and saving pdf as single page documents
-    // String? path = await getExternalStorageDirectoryPath();
-    // FlutterPdfSplitResult splitResult = await FlutterPdfSplit.split(
-    //   FlutterPdfSplitArgs(pdfFilePath, path,
-    //       outFilePrefix: "$fileNameWithoutExtension "),
-    // );
-
-    // rangesPdfsFilePaths = List.from(splitResult.pagePaths);
-
   } else {
-    //rangesPdfsFilePaths = null;
+    document = null;
   }
 
   //return Future.delayed(const Duration(milliseconds: 500), () {
