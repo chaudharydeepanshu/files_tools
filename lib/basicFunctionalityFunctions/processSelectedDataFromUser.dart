@@ -12,6 +12,7 @@ import 'package:files_tools/main_functions/split/customRanges/customRangePDFPage
 import 'package:files_tools/main_functions/split/extractAllPages/extractAllPages.dart';
 import 'package:files_tools/main_functions/split/extractSelectedPages/extractSelectedPages.dart';
 import 'package:files_tools/main_functions/split/fixedRange/fixedRangePDFPages.dart';
+import 'package:files_tools/main_functions/watermarkPdf/watermarkPdfPages.dart';
 
 Future<dynamic> processSelectedDataFromUser(
     {List<bool>? selectedData, //for selection type processes
@@ -93,6 +94,11 @@ Future<dynamic> processSelectedDataFromUser(
     dataFromFunctions = await compressImages(
         filesPaths!, pdfChangesDataMap!, shouldDataBeProcessed);
     print('waiting for compressImages');
+    return dataFromFunctions;
+  } else if (processType == 'Watermark PDF') {
+    dataFromFunctions = await watermarkPDFPages(
+        filePath!, pdfChangesDataMap!, shouldDataBeProcessed);
+    print('waiting for watermarkPDFPages');
     return dataFromFunctions;
   } else {
     print(

@@ -72,6 +72,7 @@ dependencies:
   extended_image: ^4.1.0
   image_editor: ^1.0.0
   flutter_native_image: ^0.0.6+1
+  flex_color_picker: ^2.1.2
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -100,6 +101,7 @@ flutter:
   assets:
     #App General Assets
     - assets/images/logos/files_tools_app_logo.svg
+
     #functions icons
     - assets/images/functions_icons/compress_icon.svg
     - assets/images/functions_icons/encrypt_decrypt_icon.svg
@@ -109,6 +111,12 @@ flutter:
     - assets/images/functions_icons/convert_pdf_icon.svg
     - assets/images/functions_icons/images_to_pdf_icon.svg
     - assets/images/functions_icons/modify_image_icon.svg
+    - assets/images/functions_icons/watermark_icon.svg
+
+    #functions internal icons
+    - assets/images/functions_internal_icons/over_the_content_watermark_icon.svg
+    - assets/images/functions_internal_icons/below_the_content_watermark_icon.svg
+
     #tools icons
     - assets/images/tools_icons/pdf_tools_icon.svg
     - assets/images/tools_icons/image_tools_icon.svg

@@ -6,6 +6,8 @@ import 'package:provider/provider.dart';
 import 'ad_state.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 
+import 'customAdWidget.dart';
+
 // class BannerAD extends StatefulWidget {
 //   const BannerAD({Key? key}) : super(key: key);
 //
@@ -149,58 +151,60 @@ class _BannerADState extends State<BannerAD> {
         ? SizedBox()
         : _connectionStatus == ConnectivityResult.none
             ? Container(
-              height: size!.height.toDouble(),
-              width: size!.width.toDouble(),
-              color: Colors.grey,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Expanded(
-                        child: Text(
-                          'To support the app please connect to internet.',
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            )
-            : Container(
-              color: Colors.grey,
-              width: size!.width.toDouble(),
-              height: size!.height.toDouble(),
-              child: Stack(
-                children: [
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Expanded(
-                            child: Text(
-                              'Ad loading...\nThanks for your support',
-                              style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold),
-                              textAlign: TextAlign.center,
-                            ),
+                height: size!.height.toDouble(),
+                width: size!.width.toDouble(),
+                color: Colors.grey,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Expanded(
+                          child: Text(
+                            'To support the app please connect to internet.',
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold),
+                            textAlign: TextAlign.center,
                           ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  AdWidget(
-                    ad: banner!,
-                  ),
-                ],
-              ),
-            );
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              )
+            : Container(
+                color: Colors.grey,
+                width: size!.width.toDouble(),
+                height: size!.height.toDouble(),
+                child: Stack(
+                  children: [
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Expanded(
+                              child: Text(
+                                'Ad loading...\nThanks for your support',
+                                style: TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.bold),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    CustomAdWidget(
+                      ad: banner!,
+                    ),
+                    // AdWidget(
+                    //   ad: banner!,
+                    // ),
+                  ],
+                ),
+              );
   }
 }

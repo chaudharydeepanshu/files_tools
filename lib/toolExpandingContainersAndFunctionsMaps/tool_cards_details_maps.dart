@@ -135,6 +135,23 @@ Map<String, dynamic>? mapOfCardDetailsForPDF = {
         print('Split PDF opened');
       },
     },
+    {
+      'Function': 'Watermark PDF',
+      'Icon Asset': 'assets/images/functions_icons/watermark_icon.svg',
+      'Icon And Text Color': Colors.red.shade100,
+      'Button Color': Colors.red,
+      'Action': (context) {
+        Navigator.pushNamed(
+          context,
+          PageRoutes.pdfFunctionsPageScaffold,
+          arguments: PDFFunctionsPageScaffoldArguments(
+            pdfFunctionCurrentIndex: 1,
+            mapOfFunctionDetails: mapOfWatermarkPDFFunctionDetailsForPDFTools,
+          ),
+        );
+        print('Split PDF opened');
+      },
+    },
   ], //<Map<String, dynamic>> denotes a list of literals of type <Map<String, dynamic>>
 };
 

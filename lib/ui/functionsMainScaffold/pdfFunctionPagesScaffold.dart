@@ -2,7 +2,7 @@ import 'package:files_tools/ui/functionsMainBodies/pdfFunctionPagesScaffoldBodyF
 import 'package:files_tools/widgets/annotatedRegion.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:files_tools/ui/functionsMainBodies/pdfFunctionPagesScaffoldBody.dart';
+import 'package:files_tools/ui/functionsMainBodies/pdfFunctionPagesScaffoldBodyForSelectingSingleFile.dart';
 import 'package:files_tools/ui/functionsMainBodies/pdfFunctionPagesScaffoldBodyForSelectingMultipleFiles.dart';
 import 'package:files_tools/ui/functionsMainBodies/pdfFunctionPagesScaffoldBodyForSelectingSingle&MultipleImages.dart';
 import 'package:files_tools/widgets/functionsMainWidgets/functionsAppBar.dart';
@@ -64,12 +64,11 @@ class _PDFFunctionsPageScaffoldState extends State<PDFFunctionsPageScaffold> {
         },
         mapOfFunctionDetails: mapOfFunctionDetails,
       );
-    }
-    else if (mapOfFunctionDetails!['Function Body Type'] ==
+    } else if (mapOfFunctionDetails!['Function Body Type'] ==
         'Single Image Body') {
       body = PDFFunctionBodyForSelectingSingleImage(
         notifyBodyPoppingSplitPDFFunctionScaffold:
-        notifyBodyPoppingSplitPDFFunctionScaffold,
+            notifyBodyPoppingSplitPDFFunctionScaffold,
         onNotifyAppbarFileStatus: (bool value) {
           setState(() {
             notifyAppbarFileStatus = value;
@@ -77,7 +76,7 @@ class _PDFFunctionsPageScaffoldState extends State<PDFFunctionsPageScaffold> {
         },
         mapOfFunctionDetails: mapOfFunctionDetails,
       );
-    }else {
+    } else {
       print('empty body provided');
       body = Container();
     }

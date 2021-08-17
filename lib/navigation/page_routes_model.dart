@@ -9,6 +9,7 @@ import 'package:files_tools/ui/functionsActionsScaffold/compressImage.dart';
 import 'package:files_tools/ui/functionsActionsScaffold/customRangePDFPagesScaffold.dart';
 import 'package:files_tools/ui/functionsActionsScaffold/imagesToPDFScaffold.dart';
 import 'package:files_tools/ui/functionsActionsScaffold/mergePDFPagesScaffold.dart';
+import 'package:files_tools/ui/functionsActionsScaffold/watermarkPDF.dart';
 import 'package:files_tools/ui/functionsResultsScaffold/resultImageScaffold.dart';
 import 'package:files_tools/ui/topLevelPagesScaffold/mainPageScaffold.dart';
 import 'package:files_tools/ui/functionsMainScaffold/pdfFunctionPagesScaffold.dart';
@@ -44,6 +45,7 @@ class PageRoutes {
   static String modifyImageScaffold = ModifyImageScaffold.routeName;
   static String resultImageScaffold = ResultImageScaffold.routeName;
   static String compressImagesScaffold = CompressImagesScaffold.routeName;
+  static String watermarkPDFPagesScaffold = WatermarkPDFPagesScaffold.routeName;
   // static String recent = Recent.routeName;
   // static String favourite = Favourite.routeName;
   // static String tools = Tools.routeName;

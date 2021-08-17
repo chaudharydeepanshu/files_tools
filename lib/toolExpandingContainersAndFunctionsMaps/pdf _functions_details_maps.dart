@@ -1,5 +1,6 @@
 import 'package:files_tools/ui/functionsActionsScaffold/ModifyImageScaffold.dart';
 import 'package:files_tools/ui/functionsActionsScaffold/compressImage.dart';
+import 'package:files_tools/ui/functionsActionsScaffold/watermarkPDF.dart';
 import 'package:flutter/material.dart';
 import 'package:files_tools/ui/functionsActionsScaffold/CompressPDFScaffold.dart';
 import 'package:files_tools/ui/functionsActionsScaffold/DecryptPDFScaffold.dart';
@@ -412,6 +413,46 @@ Map<String, dynamic>? mapOfImageToPDFFunctionDetailsForPDFTools = {
             compressedFilesPaths: compressedFilesPaths,
             fileNames: fileNames,
             fileSizes: fileSizes,
+            mapOfSubFunctionDetails: mapOfSubFunctionDetails,
+          ),
+        );
+      },
+    },
+  ],
+};
+
+Map<String, dynamic>? mapOfWatermarkPDFFunctionDetailsForPDFTools = {
+  'Title': 'Watermark PDF',
+  'Subtitle': 'Easily add watermark to PDF file',
+  'Icon Asset': 'assets/images/functions_icons/watermark_icon.svg',
+  'Icon And Text Color': Colors.red,
+  'BG Color': Colors.red.shade100,
+  'Select File Icon Asset': 'assets/images/tools_icons/pdf_tools_icon.svg',
+  'Select File Icon Color': null,
+  'Select File Button Color': Colors.lightBlue.shade50,
+  'Select File Button Effects Color': Colors.lightBlue.withOpacity(0.1),
+  'Select File Type': 'Select Single File',
+  'Function Body Type': 'Single File Body',
+  'Encrypted Files Allowed': false,
+  'Sublist Functions': <Map<String, dynamic>>[
+    {
+      'File Icon Asset': 'assets/images/tools_icons/pdf_tools_icon.svg',
+      'File Icon Color': null,
+      'Main Color': Colors.red,
+      'Button Color': Colors.red.shade100,
+      'Button Effects Color': Colors.red.withOpacity(0.1),
+      'Button Text Color': Colors.black,
+      'Title': 'Watermark PDF',
+      'Subtitle': 'Easily add watermark to PDF file',
+      'File Loading Required': true,
+      'Action': (file, pdfPagesImages, mapOfSubFunctionDetails, context) {
+        Navigator.pushNamed(
+          context,
+          PageRoutes.watermarkPDFPagesScaffold,
+          arguments: WatermarkPDFPagesScaffoldArguments(
+            pdfPagesImages: pdfPagesImages,
+            pdfFile: file,
+            processType: 'Watermark PDF',
             mapOfSubFunctionDetails: mapOfSubFunctionDetails,
           ),
         );

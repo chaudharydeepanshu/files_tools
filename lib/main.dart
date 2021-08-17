@@ -12,6 +12,7 @@ import 'package:files_tools/ui/functionsActionsScaffold/imagesToPDFScaffold.dart
 import 'package:files_tools/ui/functionsActionsScaffold/mergePDFPagesScaffold.dart';
 import 'package:files_tools/ui/functionsActionsScaffold/pdfPagesModificationScaffold.dart';
 import 'package:files_tools/ui/functionsActionsScaffold/pdfPagesSelectionScaffold.dart';
+import 'package:files_tools/ui/functionsActionsScaffold/watermarkPDF.dart';
 import 'package:files_tools/ui/functionsMainScaffold/pdfFunctionPagesScaffold.dart';
 import 'package:files_tools/ui/functionsResultsScaffold/resultImageScaffold.dart';
 import 'package:files_tools/ui/functionsResultsScaffold/resultPdfScaffold.dart';
@@ -157,6 +158,10 @@ class MyApp extends StatelessWidget {
               CompressImagesScaffold(
                   arguments: ModalRoute.of(context)!.settings.arguments
                       as CompressImagesScaffoldArguments?),
+          PageRoutes.watermarkPDFPagesScaffold: (context) =>
+              WatermarkPDFPagesScaffold(
+                  arguments: ModalRoute.of(context)!.settings.arguments
+                      as WatermarkPDFPagesScaffoldArguments?),
         },
       ),
     );
