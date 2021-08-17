@@ -50,7 +50,8 @@ Future<PdfDocument?> watermarkPDFPages(String pdfFilePath,
         //Get page size
         final Size pageSize = page.getClientSize();
         //Set a standard font
-        PdfFont font = PdfStandardFont(PdfFontFamily.helvetica, 40);
+        PdfFont font = PdfStandardFont(PdfFontFamily.helvetica,
+            pdfChangesDataMap['FontSize TextEditingController']);
         //Measure the text
         Size size = font.measureString(
             pdfChangesDataMap['Watermark TextEditingController']);
@@ -66,13 +67,12 @@ Future<PdfDocument?> watermarkPDFPages(String pdfFilePath,
         graphics.rotateTransform(pdfChangesDataMap['Watermark Rotation Angle']);
         //Draw the watermark text to the desired position over the PDF page with red color
         graphics.drawString(
-            pdfChangesDataMap['Watermark TextEditingController'],
-            PdfStandardFont(PdfFontFamily.helvetica,
-                pdfChangesDataMap['FontSize TextEditingController']),
-            pen: PdfPen(PdfColor(red, green, blue)),
-            brush: PdfSolidBrush(PdfColor(red, green, blue)),
-            // brush: PdfBrushes.red,
-            bounds: Rect.fromLTWH(x, y, size.width, size.height));
+          pdfChangesDataMap['Watermark TextEditingController'], font,
+          pen: PdfPen(PdfColor(red, green, blue)),
+          brush: PdfSolidBrush(PdfColor(red, green, blue)),
+          // brush: PdfBrushes.red,
+          bounds: Rect.fromLTWH(x, y, size.width, size.height),
+        );
         //Restore the graphics
         graphics.restore();
       }
@@ -134,25 +134,28 @@ Future<PdfDocument?> watermarkPDFPages(String pdfFilePath,
         //Get page size
         final Size pageSize = page.getClientSize();
         //Set a standard font
-        PdfFont font = PdfStandardFont(PdfFontFamily.helvetica, 40);
+        PdfFont font = PdfStandardFont(PdfFontFamily.helvetica,
+            pdfChangesDataMap['FontSize TextEditingController']);
+        //Create PDF graphics for the page
+        PdfGraphics graphics = newPage.graphics;
+        //Save the graphics state for the watermark text
+        graphics.save();
+        //Translate the page graphics to be in center.
+        graphics.translateTransform(
+            page.getClientSize().width / 2, page.getClientSize().height / 2);
         //Measure the text
         Size size = font.measureString(
             pdfChangesDataMap['Watermark TextEditingController']);
-        //Create PDF graphics for the page
-        PdfGraphics graphics = newPage.graphics;
+        //calculate the x and y points
         double x = pageSize.width / 2 - size.width / 2;
         double y = pageSize.height / 2;
-        //Save the graphics state for the watermark text
-        graphics.save();
         //Set transparency level for the text
         graphics.setTransparency(pdfChangesDataMap['Watermark Transparency']);
         //Rotate the text to x Degree
         graphics.rotateTransform(pdfChangesDataMap['Watermark Rotation Angle']);
         //Draw the watermark text to the desired position over the PDF page with red color
         graphics.drawString(
-            pdfChangesDataMap['Watermark TextEditingController'],
-            PdfStandardFont(PdfFontFamily.helvetica,
-                pdfChangesDataMap['FontSize TextEditingController']),
+            pdfChangesDataMap['Watermark TextEditingController'], font,
             pen: PdfPen(PdfColor(red, green, blue)),
             brush: PdfSolidBrush(PdfColor(red, green, blue)),
             // brush: PdfBrushes.red,

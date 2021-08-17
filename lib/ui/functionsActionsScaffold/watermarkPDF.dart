@@ -349,7 +349,9 @@ class _WatermarkPDFPagesScaffoldState extends State<WatermarkPDFPagesScaffold>
                                     controller: watermarkTextEditingController,
                                     //keyboardType: TextInputType.number,
                                     //inputFormatters: listTextInputFormatter,
-                                    onChanged: (String value) {},
+                                    onChanged: (String value) {
+                                      setState(() {});
+                                    },
                                     decoration: InputDecoration(
                                       labelText: 'Enter your watermark',
                                       helperText: ' ',
@@ -383,24 +385,27 @@ class _WatermarkPDFPagesScaffoldState extends State<WatermarkPDFPagesScaffold>
                                     keyboardType: TextInputType.number,
                                     inputFormatters: fontSizeTextInputFormatter,
                                     onChanged: (String value) {
-                                      if (value.isNotEmpty) {
-                                        if (int.parse(value.substring(0, 1)) ==
-                                            0) {
-                                          String newValue =
-                                              value.substring(0, 0) +
-                                                  '' +
-                                                  value.substring(0 + 1);
-                                          fontSizeTextEditingController.value =
-                                              TextEditingValue(
-                                            text: newValue,
-                                            selection:
-                                                TextSelection.fromPosition(
-                                              TextPosition(
-                                                  offset: newValue.length),
-                                            ),
-                                          );
+                                      setState(() {
+                                        if (value.isNotEmpty) {
+                                          if (int.parse(
+                                                  value.substring(0, 1)) ==
+                                              0) {
+                                            String newValue =
+                                                value.substring(0, 0) +
+                                                    '' +
+                                                    value.substring(0 + 1);
+                                            fontSizeTextEditingController
+                                                .value = TextEditingValue(
+                                              text: newValue,
+                                              selection:
+                                                  TextSelection.fromPosition(
+                                                TextPosition(
+                                                    offset: newValue.length),
+                                              ),
+                                            );
+                                          }
                                         }
-                                      }
+                                      });
                                     },
                                     decoration: InputDecoration(
                                       labelText: 'Enter watermark font size',
@@ -607,7 +612,9 @@ class _WatermarkPDFPagesScaffoldState extends State<WatermarkPDFPagesScaffold>
                                 controller: transparencyTextEditingController,
                                 keyboardType: TextInputType.number,
                                 inputFormatters: transparencyTextInputFormatter,
-                                onChanged: (String value) {},
+                                onChanged: (String value) {
+                                  setState(() {});
+                                },
                                 decoration: InputDecoration(
                                   labelText: 'Enter transparency',
                                   helperText: ' ',
@@ -642,42 +649,45 @@ class _WatermarkPDFPagesScaffoldState extends State<WatermarkPDFPagesScaffold>
                                 inputFormatters:
                                     rotationAngleTextInputFormatter,
                                 onChanged: (String value) {
-                                  if (value.isNotEmpty) {
-                                    if (double.tryParse(
-                                            value.substring(0, 1)) !=
-                                        null) {
-                                      if (double.parse(value.substring(0, 1)) ==
-                                          0) {
-                                        String newValue =
-                                            value.substring(0, 0) +
-                                                '' +
-                                                value.substring(0 + 1);
-                                        rotationAngleTextEditingController
-                                            .value = TextEditingValue(
-                                          text: newValue,
-                                          selection: TextSelection.fromPosition(
-                                            TextPosition(
-                                                offset: newValue.length),
-                                          ),
-                                        );
+                                  setState(() {
+                                    if (value.isNotEmpty) {
+                                      if (double.tryParse(
+                                              value.substring(0, 1)) !=
+                                          null) {
+                                        // if (double.parse(value.substring(0, 1)) ==
+                                        //     0) {
+                                        //   String newValue =
+                                        //       value.substring(0, 0) +
+                                        //           '' +
+                                        //           value.substring(0 + 1);
+                                        //   rotationAngleTextEditingController
+                                        //       .value = TextEditingValue(
+                                        //     text: newValue,
+                                        //     selection: TextSelection.fromPosition(
+                                        //       TextPosition(
+                                        //           offset: newValue.length),
+                                        //     ),
+                                        //   );
+                                        // }
+                                      }
+                                      if (value.length > 1) {
+                                        if (value.substring(value.length - 1) ==
+                                            '-') {
+                                          String newValue = value.substring(
+                                              0, value.length - 1);
+                                          rotationAngleTextEditingController
+                                              .value = TextEditingValue(
+                                            text: newValue,
+                                            selection:
+                                                TextSelection.fromPosition(
+                                              TextPosition(
+                                                  offset: newValue.length),
+                                            ),
+                                          );
+                                        }
                                       }
                                     }
-                                    if (value.length > 1) {
-                                      if (value.substring(value.length - 1) ==
-                                          '-') {
-                                        String newValue = value.substring(
-                                            0, value.length - 1);
-                                        rotationAngleTextEditingController
-                                            .value = TextEditingValue(
-                                          text: newValue,
-                                          selection: TextSelection.fromPosition(
-                                            TextPosition(
-                                                offset: newValue.length),
-                                          ),
-                                        );
-                                      }
-                                    }
-                                  }
+                                  });
                                 },
                                 decoration: InputDecoration(
                                   labelText: 'Enter rotation angle',
