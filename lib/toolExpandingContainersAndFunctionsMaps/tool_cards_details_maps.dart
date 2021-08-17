@@ -7,7 +7,7 @@ import '../navigation/page_routes_model.dart';
 Map<String, dynamic>? mapOfCardDetailsForPDF = {
   'Card Title': 'PDF Tools',
   'Card Subtitle':
-      'Merge, split, compress, encrypt, decrypt, convert, modify PDF',
+      'Merge, split, compress, encrypt, decrypt, convert, modify & watermark PDFs',
   'Card Asset': 'assets/images/tools_icons/pdf_tools_icon.svg',
   'Card Asset Color': null,
   'Card Asset BG Color': Colors.red.shade100,
@@ -159,7 +159,7 @@ Map<String, dynamic>? mapOfCardDetailsForPDF = {
 Map<String, dynamic>? mapOfCardDetailsForImages = {
   'Card Title': 'Image Tools',
   'Card Title Color': Colors.black,
-  'Card Subtitle': 'Convert & modify Image',
+  'Card Subtitle': 'Convert, modify & compress Images',
   'Card Subtitle Color': Colors.black,
   'Card Asset': 'assets/images/tools_icons/image_tools_icon.svg',
   'Card Asset Color': null,
@@ -228,7 +228,7 @@ Map<String, dynamic>? mapOfCardDetailsForImages = {
 Map<String, dynamic>? mapOfCardDetailsForImagesForDarkMode = {
   'Card Title': 'Image Tools',
   'Card Title Color': Colors.black,
-  'Card Subtitle': 'Convert & modify Image',
+  'Card Subtitle': 'Convert, modify & compress Images',
   'Card Subtitle Color': Colors.black,
   'Card Asset': 'assets/images/tools_icons/image_tools_icon.svg',
   'Card Asset Color': null,
