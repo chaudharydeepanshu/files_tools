@@ -38,7 +38,7 @@ class _WatermarkPDFPagesScaffoldState extends State<WatermarkPDFPagesScaffold>
   List<TextInputFormatter>? transparencyTextInputFormatter;
   List<TextInputFormatter>? rotationAngleTextInputFormatter;
   TextEditingController watermarkTextEditingController =
-      TextEditingController(text: 'My Watermark');
+      TextEditingController(text: 'Watermark');
   TextEditingController fontSizeTextEditingController =
       TextEditingController(text: '40');
   TextEditingController transparencyTextEditingController =
@@ -335,8 +335,25 @@ class _WatermarkPDFPagesScaffoldState extends State<WatermarkPDFPagesScaffold>
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
-                                      Text('Text:'),
+                                      Text(
+                                        'Note: ',
+                                        style: TextStyle(color: Colors.red),
+                                      ),
+                                      Expanded(
+                                        child: Text(
+                                            'For best results try to keep watermark text short and font size below 100.'),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  Row(
+                                    children: [
+                                      Text('Watermark Text:'),
                                     ],
                                   ),
                                   SizedBox(
