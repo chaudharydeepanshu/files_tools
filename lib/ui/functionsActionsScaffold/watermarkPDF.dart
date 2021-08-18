@@ -624,7 +624,8 @@ class _WatermarkPDFPagesScaffoldState extends State<WatermarkPDFPagesScaffold>
                               ),
                               TextFormField(
                                 controller: transparencyTextEditingController,
-                                keyboardType: TextInputType.number,
+                                keyboardType: TextInputType.numberWithOptions(
+                                    decimal: true),
                                 inputFormatters: transparencyTextInputFormatter,
                                 onChanged: (String value) {
                                   setState(() {});
@@ -642,6 +643,8 @@ class _WatermarkPDFPagesScaffoldState extends State<WatermarkPDFPagesScaffold>
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
                                     return 'Empty Field';
+                                  } else if (double.tryParse(value) == null) {
+                                    return 'Please enter a value less than 1';
                                   } else if (double.parse(value) > 1) {
                                     return 'Please enter a value less than 1';
                                   }
