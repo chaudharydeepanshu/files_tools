@@ -648,83 +648,83 @@ class _WatermarkPDFPagesScaffoldState extends State<WatermarkPDFPagesScaffold>
                                   return null;
                                 },
                               ),
-                              // Row(
-                              //   children: [
-                              //     Text('Set rotation angle:'),
-                              //   ],
-                              // ),
-                              // SizedBox(
-                              //   height: 5,
-                              // ),
-                              // TextFormField(
-                              //   controller: rotationAngleTextEditingController,
-                              //   keyboardType: TextInputType.numberWithOptions(
-                              //       decimal: true),
-                              //   inputFormatters:
-                              //       rotationAngleTextInputFormatter,
-                              //   onChanged: (String value) {
-                              //     setState(() {
-                              //       if (value.isNotEmpty) {
-                              //         if (double.tryParse(
-                              //                 value.substring(0, 1)) !=
-                              //             null) {
-                              //           // if (double.parse(value.substring(0, 1)) ==
-                              //           //     0) {
-                              //           //   String newValue =
-                              //           //       value.substring(0, 0) +
-                              //           //           '' +
-                              //           //           value.substring(0 + 1);
-                              //           //   rotationAngleTextEditingController
-                              //           //       .value = TextEditingValue(
-                              //           //     text: newValue,
-                              //           //     selection: TextSelection.fromPosition(
-                              //           //       TextPosition(
-                              //           //           offset: newValue.length),
-                              //           //     ),
-                              //           //   );
-                              //           // }
-                              //         }
-                              //         if (value.length > 1) {
-                              //           if (value.substring(value.length - 1) ==
-                              //               '-') {
-                              //             String newValue = value.substring(
-                              //                 0, value.length - 1);
-                              //             rotationAngleTextEditingController
-                              //                 .value = TextEditingValue(
-                              //               text: newValue,
-                              //               selection:
-                              //                   TextSelection.fromPosition(
-                              //                 TextPosition(
-                              //                     offset: newValue.length),
-                              //               ),
-                              //             );
-                              //           }
-                              //         }
-                              //       }
-                              //     });
-                              //   },
-                              //   decoration: InputDecoration(
-                              //     labelText: 'Enter rotation angle',
-                              //     helperText: ' ',
-                              //     hintText: 'Ex: -40',
-                              //     border: OutlineInputBorder(),
-                              //   ),
-                              //   //autofocus: true,
-                              //   showCursor: true,
-                              //   autovalidateMode:
-                              //       AutovalidateMode.onUserInteraction,
-                              //   validator: (value) {
-                              //     if (value == null || value.isEmpty) {
-                              //       return 'Empty Field';
-                              //     } else if (double.tryParse(value) == null) {
-                              //       return 'Please enter a valid value between -360 to 360';
-                              //     } else if (double.parse(value) < -360 ||
-                              //         double.parse(value) > 360) {
-                              //       return 'Please enter a valid value between -360 to 360';
-                              //     }
-                              //     return null;
-                              //   },
-                              // ),
+                              Row(
+                                children: [
+                                  Text('Set rotation angle:'),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              TextFormField(
+                                controller: rotationAngleTextEditingController,
+                                keyboardType: TextInputType.numberWithOptions(
+                                    decimal: true),
+                                inputFormatters:
+                                    rotationAngleTextInputFormatter,
+                                onChanged: (String value) {
+                                  setState(() {
+                                    if (value.isNotEmpty) {
+                                      if (double.tryParse(
+                                              value.substring(0, 1)) !=
+                                          null) {
+                                        // if (double.parse(value.substring(0, 1)) ==
+                                        //     0) {
+                                        //   String newValue =
+                                        //       value.substring(0, 0) +
+                                        //           '' +
+                                        //           value.substring(0 + 1);
+                                        //   rotationAngleTextEditingController
+                                        //       .value = TextEditingValue(
+                                        //     text: newValue,
+                                        //     selection: TextSelection.fromPosition(
+                                        //       TextPosition(
+                                        //           offset: newValue.length),
+                                        //     ),
+                                        //   );
+                                        // }
+                                      }
+                                      if (value.length > 1) {
+                                        if (value.substring(value.length - 1) ==
+                                            '-') {
+                                          String newValue = value.substring(
+                                              0, value.length - 1);
+                                          rotationAngleTextEditingController
+                                              .value = TextEditingValue(
+                                            text: newValue,
+                                            selection:
+                                                TextSelection.fromPosition(
+                                              TextPosition(
+                                                  offset: newValue.length),
+                                            ),
+                                          );
+                                        }
+                                      }
+                                    }
+                                  });
+                                },
+                                decoration: InputDecoration(
+                                  labelText: 'Enter rotation angle',
+                                  helperText: ' ',
+                                  hintText: 'Ex: -40',
+                                  border: OutlineInputBorder(),
+                                ),
+                                //autofocus: true,
+                                showCursor: true,
+                                autovalidateMode:
+                                    AutovalidateMode.onUserInteraction,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Empty Field';
+                                  } else if (double.tryParse(value) == null) {
+                                    return 'Please enter a valid value between -360 to 360';
+                                  } else if (double.parse(value) < -360 ||
+                                      double.parse(value) > 360) {
+                                    return 'Please enter a valid value between -360 to 360';
+                                  }
+                                  return null;
+                                },
+                              ),
                               Provider.of<AdState>(context).bannerAdUnitId !=
                                       null
                                   ? SizedBox(
