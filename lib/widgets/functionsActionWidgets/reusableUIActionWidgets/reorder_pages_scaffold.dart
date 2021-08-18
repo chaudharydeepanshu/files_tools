@@ -1038,7 +1038,7 @@ class _ReorderPDFPagesScaffoldState extends State<ReorderPDFPagesScaffold>
         children: [
           Scaffold(
             appBar: ReusableSilverAppBar(
-              title: 'Reorder Pages',
+              title: widget.arguments!.appBarTitle ?? 'Reorder Pages',
               titleColor: Colors.black,
               leftButtonColor: Colors.red,
               appBarIconLeft: appBarIconLeft,
@@ -1243,9 +1243,11 @@ class _ReorderPDFPagesScaffoldState extends State<ReorderPDFPagesScaffold>
                           },
                         ),
                       ),
-                      Provider.of<AdState>(context).bannerAdUnitId != null ? SizedBox(
-                        height: bannerAdSize.height.toDouble(),
-                      ) : Container(),
+                      Provider.of<AdState>(context).bannerAdUnitId != null
+                          ? SizedBox(
+                              height: bannerAdSize.height.toDouble(),
+                            )
+                          : Container(),
                     ],
                   ),
                   // DragAndDropGridView(
@@ -1593,12 +1595,14 @@ class _ReorderPDFPagesScaffoldState extends State<ReorderPDFPagesScaffold>
                 Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    MeasureSize(onChange: (Size size) {
-                      setState(() {
-                        bannerAdSize = size;
-                      });
-                    },
-                      child: BannerAD(),),
+                    MeasureSize(
+                      onChange: (Size size) {
+                        setState(() {
+                          bannerAdSize = size;
+                        });
+                      },
+                      child: BannerAD(),
+                    ),
                   ],
                 ),
               ],
@@ -1652,6 +1656,7 @@ class ReorderPDFPagesScaffoldArguments {
   ValueChanged<List<int>>? onReorderedList;
   List<double>? controllerValueList;
   ValueChanged<List<double>>? onControllerValueList;
+  String? appBarTitle;
 
   ReorderPDFPagesScaffoldArguments(
       {this.pdfPagesImages,
@@ -1666,7 +1671,8 @@ class ReorderPDFPagesScaffoldArguments {
       this.reorderedList,
       this.onReorderedList,
       this.controllerValueList,
-      this.onControllerValueList});
+      this.onControllerValueList,
+      required this.appBarTitle});
 }
 
 //Note: things are not getting replaced on drag and drop they are all somewhat getting rearranging

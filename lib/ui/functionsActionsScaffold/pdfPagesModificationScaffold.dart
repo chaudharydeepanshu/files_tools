@@ -489,6 +489,7 @@ class _PDFPagesModificationScaffoldState
                                       controllerValueList = value;
                                     });
                                   },
+                                  appBarTitle: 'Reorder Pages',
                                 ),
                               );
                             }

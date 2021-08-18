@@ -470,6 +470,7 @@ class _ImagesToPDFScaffoldState extends State<ImagesToPDFScaffold> {
                                       controllerValueList = value;
                                     });
                                   },
+                                  appBarTitle: 'Reorder Images',
                                 ),
                               );
                             }
