@@ -15,6 +15,7 @@ import 'package:files_tools/navigation/page_routes_model.dart';
 import 'package:files_tools/basicFunctionalityFunctions/processSelectedDataFromUser.dart';
 import 'package:files_tools/widgets/functionsActionWidgets/reusableUIActionWidgets/progressFakeDialogBox.dart';
 import 'package:files_tools/widgets/reusableUIWidgets/ReusableTopAppBar.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 class CompressImagesScaffold extends StatefulWidget {
@@ -33,10 +34,17 @@ enum Qualities { low, medium, high, custom }
 class _CompressImagesScaffoldState extends State<CompressImagesScaffold>
     with TickerProviderStateMixin {
   String? extensionOfFileName;
+  List<TextInputFormatter>? listTextInputFormatter;
 
   @override
   void initState() {
     super.initState();
+
+    listTextInputFormatter = [
+      FilteringTextInputFormatter.allow(RegExp('[0-9]')),
+      LengthLimitingTextInputFormatter(
+          18), //as 9999...19 times throws following exception "Positive input exceeds the limit of integer 9999999999999999999"
+    ];
 
     customQualityTextEditingController.text = 88.toString();
 
@@ -287,6 +295,7 @@ class _CompressImagesScaffoldState extends State<CompressImagesScaffold>
                                       child: TextFormField(
                                         controller:
                                             customQualityTextEditingController,
+                                        inputFormatters: listTextInputFormatter,
                                         decoration: const InputDecoration(
                                           hintText: '88',
                                           labelText: 'Quality % *',

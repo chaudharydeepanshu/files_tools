@@ -40,6 +40,8 @@ class _FixedRangePDFPagesScaffoldState extends State<FixedRangePDFPagesScaffold>
     super.initState();
     listTextInputFormatter = [
       FilteringTextInputFormatter.allow(RegExp('[0-9]')),
+      LengthLimitingTextInputFormatter(
+          18), //as 9999...19 times throws following exception "Positive input exceeds the limit of integer 9999999999999999999"
     ];
     pdfPagesCount = widget.arguments!.pdfPagesImages!.length;
     textEditingController.addListener(() {
@@ -441,9 +443,12 @@ class _FixedRangePDFPagesScaffoldState extends State<FixedRangePDFPagesScaffold>
                                         )
                                       : Container()
                                   : Container(),
-                              Provider.of<AdState>(context).bannerAdUnitId != null ? SizedBox(
-                                height: bannerAdSize.height.toDouble(),
-                              ) : Container(),
+                              Provider.of<AdState>(context).bannerAdUnitId !=
+                                      null
+                                  ? SizedBox(
+                                      height: bannerAdSize.height.toDouble(),
+                                    )
+                                  : Container(),
                             ],
                           ),
                         ),
@@ -451,12 +456,14 @@ class _FixedRangePDFPagesScaffoldState extends State<FixedRangePDFPagesScaffold>
                       Column(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          MeasureSize(onChange: (Size size) {
-                            setState(() {
-                              bannerAdSize = size;
-                            });
-                          },
-                            child: BannerAD(),),
+                          MeasureSize(
+                            onChange: (Size size) {
+                              setState(() {
+                                bannerAdSize = size;
+                              });
+                            },
+                            child: BannerAD(),
+                          ),
                         ],
                       ),
                     ],

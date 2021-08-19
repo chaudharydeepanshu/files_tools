@@ -64,12 +64,18 @@ class _WatermarkPDFPagesScaffoldState extends State<WatermarkPDFPagesScaffold>
 
     fontSizeTextInputFormatter = [
       FilteringTextInputFormatter.allow(RegExp('[0-9]')),
+      LengthLimitingTextInputFormatter(
+          18), //as 9999...19 times throws following exception "Positive input exceeds the limit of integer 9999999999999999999"
     ];
     transparencyTextInputFormatter = [
       FilteringTextInputFormatter.allow(RegExp('[0-9.]')),
+      LengthLimitingTextInputFormatter(
+          18), //as 9999...19 times throws following exception "Positive input exceeds the limit of integer 9999999999999999999"
     ];
     rotationAngleTextInputFormatter = [
       FilteringTextInputFormatter.allow(RegExp('[0-9.-]')),
+      LengthLimitingTextInputFormatter(
+          18), //as 9999...19 times throws following exception "Positive input exceeds the limit of integer 9999999999999999999"
     ];
 
     pdfsPageCount().whenComplete(() {
