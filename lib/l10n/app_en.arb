@@ -1,0 +1,22 @@
+{
+    "@Drawer": {
+    },
+    "themeMode": "Theme Mode",
+    "lightMode" : "Light",
+    "darkMode" : "Dark",
+    "systemMode" : "System",
+    "@Tools Page": {
+    },
+    "toolsScreenAppBarTitle": "Tools",
+    "toolsScreenAppBarLeftIconToolTip": "Open navigation menu",
+    "@Document Tools": {
+    },
+    "documentTools":"Document Tools",
+    "pdfCardTitle": "PDF Tools",
+    "pdfCardSubtitle": "Merge, split, compress, encrypt, decrypt, convert, modify & watermark PDFs",
+    "@Media Tools": {
+    },
+    "mediaTools": "Media Tools",
+    "imageCardTitle": "Image Tools",
+    "imageCardSubtitle": "Convert, modify & compress Images"
+}

@@ -1,0 +1,22 @@
+{
+  "@Drawer": {
+  },
+  "themeMode": "थीम प्रकार",
+  "lightMode" : "हल्का रंग",
+  "darkMode" : "गहरा रंग",
+  "systemMode" : "सिस्टम",
+  "@Tools Page": {
+  },
+  "toolsScreenAppBarTitle": "टूल्स",
+  "toolsScreenAppBarLeftIconToolTip": "नेविगेशन मेनू खोलें",
+  "@Document Tools": {
+  },
+  "documentTools":"डॉक्यूमेंट टूल्स",
+  "pdfCardTitle": "पीडीएफ़ टूल्स",
+  "pdfCardSubtitle": "मर्ज, स्प्लीट, कम्प्रेस, इन्क्रिप्ट, डेक्रीपट, कन्वर्ट, माडफाइ और वोर्टमर्क पीडीएफ़",
+  "@Media Tools": {
+  },
+  "mediaTools": "मीडिया टूल्स",
+  "imageCardTitle": "इमेज टूल्स",
+  "imageCardSubtitle": "कन्वर्ट, माडफाइ & कम्प्रेस इमेज"
+}

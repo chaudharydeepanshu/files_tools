@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'dailog_box_for_leaving_app.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CustomDrawer extends StatefulWidget {
   const CustomDrawer({Key? key, this.savedThemeMode}) : super(key: key);
@@ -22,15 +23,15 @@ class _CustomDrawerState extends State<CustomDrawer> {
   buttonTextCalc() async {
     if (AdaptiveTheme.of(context).mode.isLight) {
       setState(() {
-        themeButtonText = 'Light';
+        themeButtonText = AppLocalizations.of(context)!.lightMode;
       });
     } else if (AdaptiveTheme.of(context).mode.isDark) {
       setState(() {
-        themeButtonText = 'Dark';
+        themeButtonText = AppLocalizations.of(context)!.darkMode;
       });
     } else if (AdaptiveTheme.of(context).mode.isSystem) {
       setState(() {
-        themeButtonText = 'System';
+        themeButtonText = AppLocalizations.of(context)!.systemMode;
       });
     }
   }
@@ -55,7 +56,6 @@ class _CustomDrawerState extends State<CustomDrawer> {
 
   @override
   void initState() {
-    buttonTextCalc();
     packageInfoCalc();
 
     dialogActionButtonsListForLeavingApp = [
@@ -77,6 +77,12 @@ class _CustomDrawerState extends State<CustomDrawer> {
         'You are leaving the app to open the privacy policy url. So, please confirm that do you want to leave the app?';
 
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    buttonTextCalc(); // calling here as buttonTextCalc need context for localization of app
+    super.didChangeDependencies();
   }
 
   @override
@@ -124,7 +130,8 @@ class _CustomDrawerState extends State<CustomDrawer> {
                   ),
                 ),
                 ListTile(
-                  title: Text('Theme Mode - $themeButtonText'),
+                  title: Text(
+                      '${AppLocalizations.of(context)!.themeMode} - $themeButtonText'),
                   onTap: () {
                     // Update the state of the app
                     AdaptiveTheme.of(context).toggleThemeMode();

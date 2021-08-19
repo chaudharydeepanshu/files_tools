@@ -23,6 +23,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  intl: ^0.17.0
   #  salomon_bottom_bar: ^3.1.0
   file_picker: ^4.0.0
   syncfusion_flutter_pdf: ^19.2.56-beta.1
@@ -67,8 +70,8 @@ dependencies:
     git:
       url: https://github.com/brightseagit/document_file_save.git
       ref: master
-  package_info_plus: ^1.0.4
-  connectivity_plus: ^1.0.6
+  package_info_plus: ^1.0.5
+  connectivity_plus: ^1.0.7
   extended_image: ^4.1.0
   image_editor: ^1.0.0
   flutter_native_image: ^0.0.6+1
@@ -88,6 +91,7 @@ dev_dependencies:
 
 # The following section is specific to Flutter.
 flutter:
+  generate: true
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

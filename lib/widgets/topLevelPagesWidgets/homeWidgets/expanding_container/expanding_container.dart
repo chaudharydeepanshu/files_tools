@@ -76,20 +76,21 @@ class ExpandingContainer extends StatelessWidget {
                   height: 45,
                   color: mapOfCardDetails!['Card Asset Color'] ?? null,
                   alignment: Alignment.center,
-                  semanticsLabel: '${mapOfCardDetails!['Card Title']} Icon'),
+                  semanticsLabel:
+                      '${mapOfCardDetails!['Card Title'](context)} Icon'),
             ),
           ),
         ],
       ),
       title: Text(
-        mapOfCardDetails!['Card Title'] ?? 'PDF',
+        mapOfCardDetails!['Card Title'](context) ?? 'PDF',
         style: TextStyle(
           fontWeight: FontWeight.w500,
           color: mapOfCardDetails!['Card Title Color'] ?? Colors.black,
         ),
       ),
       subtitle: Text(
-        mapOfCardDetails!['Card Subtitle'] ??
+        mapOfCardDetails!['Card Subtitle'](context) ??
             'Perform actions like merge, split and etc on PDF',
         style: TextStyle(
           color: mapOfCardDetails!['Card Subtitle Color'] ?? Colors.black,

@@ -6,6 +6,7 @@ import 'package:files_tools/widgets/topLevelPagesWidgets/homeWidgets/expanding_c
 import 'package:provider/provider.dart';
 import '../../ads/ad_state.dart';
 import '../../toolExpandingContainersAndFunctionsMaps/tool_cards_details_maps.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HomeBody extends StatefulWidget {
   const HomeBody({Key? key}) : super(key: key);
@@ -99,7 +100,7 @@ class _HomeBodyState extends State<HomeBody> with WidgetsBindingObserver {
                     Row(
                       children: [
                         Text(
-                          'Document Tools',
+                          AppLocalizations.of(context)!.documentTools,
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 16,
@@ -128,7 +129,7 @@ class _HomeBodyState extends State<HomeBody> with WidgetsBindingObserver {
                     Row(
                       children: [
                         Text(
-                          'Media Tools',
+                          AppLocalizations.of(context)!.mediaTools,
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 16,
@@ -157,21 +158,25 @@ class _HomeBodyState extends State<HomeBody> with WidgetsBindingObserver {
                   ],
                 ),
               ),
-              Provider.of<AdState>(context).bannerAdUnitId != null ? SizedBox(
-                height: bannerAdSize.height.toDouble() + 10,
-              ) : Container(),
+              Provider.of<AdState>(context).bannerAdUnitId != null
+                  ? SizedBox(
+                      height: bannerAdSize.height.toDouble() + 10,
+                    )
+                  : Container(),
             ],
           ),
         ),
         Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            MeasureSize(onChange: (Size size) {
-              setState(() {
-                bannerAdSize = size;
-              });
-            },
-              child: BannerAD(),),
+            MeasureSize(
+              onChange: (Size size) {
+                setState(() {
+                  bannerAdSize = size;
+                });
+              },
+              child: BannerAD(),
+            ),
           ],
         ),
       ],

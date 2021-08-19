@@ -6,6 +6,7 @@ import 'package:files_tools/ui/topLevelPagesBodies/home.dart';
 import 'package:files_tools/ui/topLevelPagesBodies/tools.dart';
 import '../../basicFunctionalityFunctions/manageAppDirectoryAndCache.dart';
 import '../../widgets/reusableUIWidgets/ReusableTopAppBar.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MainPagesScaffold extends StatefulWidget {
   static const String routeName = '/mainPagesScaffold';
@@ -98,9 +99,10 @@ class _MainPagesScaffoldState extends State<MainPagesScaffold>
       key: _scaffoldKey,
       appBar: currentIndex == 0
           ? ReusableSilverAppBar(
-              title: 'Tools',
+              title: AppLocalizations.of(context)!.toolsScreenAppBarTitle,
               appBarIconLeft: Icons.menu,
-              appBarIconLeftToolTip: 'Open navigation menu',
+              appBarIconLeftToolTip: AppLocalizations.of(context)!
+                  .toolsScreenAppBarLeftIconToolTip,
               appBarIconLeftAction: () {
                 _scaffoldKey.currentState!.openDrawer();
               },

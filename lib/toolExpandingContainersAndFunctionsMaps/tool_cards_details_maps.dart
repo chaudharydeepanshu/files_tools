@@ -2,12 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:files_tools/toolExpandingContainersAndFunctionsMaps/pdf%20_functions_details_maps.dart';
 import 'package:files_tools/ui/functionsMainScaffold/pdfFunctionPagesScaffold.dart';
 import '../navigation/page_routes_model.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 //For PDF
 Map<String, dynamic>? mapOfCardDetailsForPDF = {
-  'Card Title': 'PDF Tools',
-  'Card Subtitle':
-      'Merge, split, compress, encrypt, decrypt, convert, modify & watermark PDFs',
+  'Card Title': (context) {
+    return AppLocalizations.of(context)!.pdfCardTitle;
+  },
+  'Card Subtitle': (context) {
+    return AppLocalizations.of(context)!.pdfCardSubtitle;
+  },
   'Card Asset': 'assets/images/tools_icons/pdf_tools_icon.svg',
   'Card Asset Color': null,
   'Card Asset BG Color': Colors.red.shade100,
@@ -157,9 +161,13 @@ Map<String, dynamic>? mapOfCardDetailsForPDF = {
 
 //For Images
 Map<String, dynamic>? mapOfCardDetailsForImages = {
-  'Card Title': 'Image Tools',
+  'Card Title': (context) {
+    return AppLocalizations.of(context)!.imageCardTitle;
+  },
   'Card Title Color': Colors.black,
-  'Card Subtitle': 'Convert, modify & compress Images',
+  'Card Subtitle': (context) {
+    return AppLocalizations.of(context)!.imageCardSubtitle;
+  },
   'Card Subtitle Color': Colors.black,
   'Card Asset': 'assets/images/tools_icons/image_tools_icon.svg',
   'Card Asset Color': null,
@@ -226,9 +234,13 @@ Map<String, dynamic>? mapOfCardDetailsForImages = {
 
 //for darkMode //same for now but could be changed //see home initState & didChangePlatformBrightness to see how to change according to dark mode
 Map<String, dynamic>? mapOfCardDetailsForImagesForDarkMode = {
-  'Card Title': 'Image Tools',
+  'Card Title': (context) {
+    return AppLocalizations.of(context)!.imageCardTitle;
+  },
   'Card Title Color': Colors.black,
-  'Card Subtitle': 'Convert, modify & compress Images',
+  'Card Subtitle': (context) {
+    return AppLocalizations.of(context)!.imageCardSubtitle;
+  },
   'Card Subtitle Color': Colors.black,
   'Card Asset': 'assets/images/tools_icons/image_tools_icon.svg',
   'Card Asset Color': null,
