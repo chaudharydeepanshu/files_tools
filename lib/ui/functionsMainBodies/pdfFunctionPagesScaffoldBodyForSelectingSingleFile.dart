@@ -19,6 +19,7 @@ import '../../../basicFunctionalityFunctions/getSizeFromBytes.dart';
 import 'package:files_tools/ui/pdfViewerScaffold/pdfscaffold.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:files_tools/widgets/functionsMainWidgets/functionsButtons.dart';
+import 'dart:io';
 
 class PDFFunctionBody extends StatefulWidget {
   const PDFFunctionBody(
@@ -350,10 +351,14 @@ class _PDFFunctionBodyState extends State<PDFFunctionBody>
                                                                 false &&
                                                             isFilePickingInitiated ==
                                                                 false) {
-                                                          final status =
-                                                              await Permission
+                                                          final status = Platform
+                                                                      .isAndroid ||
+                                                                  Platform.isIOS
+                                                              ? await Permission
                                                                   .storage
-                                                                  .request();
+                                                                  .request()
+                                                              : PermissionStatus
+                                                                  .granted;
                                                           if (status ==
                                                               PermissionStatus
                                                                   .granted) {
@@ -1054,7 +1059,7 @@ class _PDFFunctionBodyState extends State<PDFFunctionBody>
                                                           'Sublist Functions']
                                                       .length -
                                                   1
-                                          ? bannerAdSize.height.toDouble() +10
+                                          ? bannerAdSize.height.toDouble() + 10
                                           : 20,
                                     ),
                                   ],
@@ -1101,12 +1106,14 @@ class _PDFFunctionBodyState extends State<PDFFunctionBody>
         Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            MeasureSize(onChange: (Size size) {
-              setState(() {
-                bannerAdSize = size;
-              });
-            },
-              child: BannerAD(),),
+            MeasureSize(
+              onChange: (Size size) {
+                setState(() {
+                  bannerAdSize = size;
+                });
+              },
+              child: BannerAD(),
+            ),
           ],
         ),
       ],

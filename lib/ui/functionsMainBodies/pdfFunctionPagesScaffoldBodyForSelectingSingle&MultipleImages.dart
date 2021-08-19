@@ -313,10 +313,14 @@ class _PDFFunctionBodyForSelectingSingleMultipleImagesState
                                                     ? () async {
                                                         if (isFilePicked ==
                                                             false) {
-                                                          final status =
-                                                              await Permission
+                                                          final status = Platform
+                                                                      .isAndroid ||
+                                                                  Platform.isIOS
+                                                              ? await Permission
                                                                   .storage
-                                                                  .request();
+                                                                  .request()
+                                                              : PermissionStatus
+                                                                  .granted;
                                                           if (status ==
                                                               PermissionStatus
                                                                   .granted) {

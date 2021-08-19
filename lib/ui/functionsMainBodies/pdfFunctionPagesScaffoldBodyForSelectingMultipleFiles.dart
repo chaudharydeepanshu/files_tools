@@ -409,10 +409,14 @@ class _PDFFunctionBodyForMultipleFilesState
                                                                 false &&
                                                             isFilePickingInitiated ==
                                                                 false) {
-                                                          final status =
-                                                              await Permission
+                                                          final status = Platform
+                                                                      .isAndroid ||
+                                                                  Platform.isIOS
+                                                              ? await Permission
                                                                   .storage
-                                                                  .request();
+                                                                  .request()
+                                                              : PermissionStatus
+                                                                  .granted;
                                                           if (status ==
                                                               PermissionStatus
                                                                   .granted) {
@@ -1226,12 +1230,14 @@ class _PDFFunctionBodyForMultipleFilesState
         Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            MeasureSize(onChange: (Size size) {
-              setState(() {
-                bannerAdSize = size;
-              });
-            },
-              child: BannerAD(),),
+            MeasureSize(
+              onChange: (Size size) {
+                setState(() {
+                  bannerAdSize = size;
+                });
+              },
+              child: BannerAD(),
+            ),
           ],
         ),
       ],
