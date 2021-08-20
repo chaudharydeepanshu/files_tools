@@ -692,22 +692,22 @@ class _ModifyImageScaffoldState extends State<ModifyImageScaffold> {
                                 ),
                                 value: const CustomEditorCropLayerPainter(),
                               ),
-                              const PopupMenuDivider(),
-                              PopupMenuItem<EditorCropLayerPainter>(
-                                child: Row(
-                                  children: const <Widget>[
-                                    Icon(
-                                      CupertinoIcons.circle,
-                                      color: Colors.blue,
-                                    ),
-                                    SizedBox(
-                                      width: 5,
-                                    ),
-                                    Text('Circle'),
-                                  ],
-                                ),
-                                value: const CircleEditorCropLayerPainter(),
-                              ),
+                              // const PopupMenuDivider(),
+                              // PopupMenuItem<EditorCropLayerPainter>(
+                              //   child: Row(
+                              //     children: const <Widget>[
+                              //       Icon(
+                              //         CupertinoIcons.circle,
+                              //         color: Colors.blue,
+                              //       ),
+                              //       SizedBox(
+                              //         width: 5,
+                              //       ),
+                              //       Text('Circle'),
+                              //     ],
+                              //   ),
+                              //   value: const CircleEditorCropLayerPainter(),
+                              //),
                             ];
                           },
                           onSelected: (EditorCropLayerPainter value) {
