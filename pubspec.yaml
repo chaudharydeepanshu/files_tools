@@ -71,7 +71,7 @@ dependencies:
       url: https://github.com/brightseagit/document_file_save.git
       ref: master
   package_info_plus: ^1.0.5
-  connectivity_plus: ^1.0.8
+  connectivity_plus: ^1.1.0
   extended_image: ^4.1.0
   image_editor: ^1.0.0
   flutter_native_image: ^0.0.6+1
