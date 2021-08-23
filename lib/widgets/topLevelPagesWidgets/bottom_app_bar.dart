@@ -1,4 +1,4 @@
-//uncommented as not using a bottom app bar for now. If  use in future then add salomon_bottom_bar in pubspec.yaml and uncomment this and bottom appbar in main scaffold
+// //uncommented as not using a bottom app bar for now. If  use in future then add salomon_bottom_bar in pubspec.yaml and uncomment this and bottom appbar in main scaffold
 // import 'package:flutter/material.dart';
 // import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 //

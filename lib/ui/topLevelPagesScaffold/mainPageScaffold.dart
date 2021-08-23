@@ -1,5 +1,6 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:files_tools/widgets/reusableUIWidgets/drawer.dart';
+import 'package:files_tools/widgets/topLevelPagesWidgets/bottom_app_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:files_tools/ui/topLevelPagesBodies/home.dart';
@@ -112,7 +113,6 @@ class _MainPagesScaffoldState extends State<MainPagesScaffold>
                   title: 'Recent Docs',
                 )
               : null,
-
       body: currentIndex == 0
           ? HomeBody()
           : currentIndex == 1
@@ -121,6 +121,14 @@ class _MainPagesScaffoldState extends State<MainPagesScaffold>
       drawer: CustomDrawer(
         savedThemeMode: widget.savedThemeMode,
       ),
+      // floatingActionButton: Padding(
+      //   padding: const EdgeInsets.only(bottom: 8.0),
+      //   child: FloatingActionButton(
+      //     onPressed: () async {},
+      //     child: const Icon(Icons.navigation),
+      //     backgroundColor: Colors.green,
+      //   ),
+      // ),
       // bottomNavigationBar: ReusableBottomAppBar(
       //   onCurrentIndex: (value) => setState(() {
       //     currentIndex = value;
