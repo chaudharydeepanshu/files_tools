@@ -9,6 +9,7 @@
 
    <application
         android:requestLegacyExternalStorage="true"
+        android:largeHeap="true"
         android:label="Files Tools"
         android:icon="@mipmap/ic_launcher">
         <activity
