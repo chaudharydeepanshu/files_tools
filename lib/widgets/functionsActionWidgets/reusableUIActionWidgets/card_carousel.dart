@@ -199,16 +199,14 @@ class _CarouselListState extends State<CarouselList>
                   pageRotationNumber: widget.listOfRotation![index],
                   controller: controllerList[index],
                   pageImage: widget.listOfImages![index],
-                  markImageDeleted:
-                      widget.listOfDeletedImages![index] == false
-                          ? true
-                          : false,
+                  markImageDeleted: widget.listOfDeletedImages![index] == false
+                      ? true
+                      : false,
                 ),
               );
             },
             itemCount: widget.listOfImages!.length,
-            controller:
-                PageController(initialPage: 0, viewportFraction: 0.69),
+            controller: PageController(initialPage: 0, viewportFraction: 0.69),
             onPageChanged: (index) {
               setState(() {
                 currentPage = index;

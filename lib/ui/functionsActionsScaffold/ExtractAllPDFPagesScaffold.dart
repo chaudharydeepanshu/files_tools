@@ -295,9 +295,11 @@ class _ExtractAllPDFPagesScaffoldState extends State<ExtractAllPDFPagesScaffold>
                                       ),
                                     ],
                                   ),
-                            Provider.of<AdState>(context).bannerAdUnitId != null ? SizedBox(
-                              height: bannerAdSize.height.toDouble(),
-                            ) : Container(),
+                            Provider.of<AdState>(context).bannerAdUnitId != null
+                                ? SizedBox(
+                                    height: bannerAdSize.height.toDouble(),
+                                  )
+                                : Container(),
                           ],
                         ),
                       ),
@@ -305,12 +307,14 @@ class _ExtractAllPDFPagesScaffoldState extends State<ExtractAllPDFPagesScaffold>
                     Column(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        MeasureSize(onChange: (Size size) {
-                          setState(() {
-                            bannerAdSize = size;
-                          });
-                        },
-                          child: BannerAD(),),
+                        MeasureSize(
+                          onChange: (Size size) {
+                            setState(() {
+                              bannerAdSize = size;
+                            });
+                          },
+                          child: BannerAD(),
+                        ),
                       ],
                     ),
                   ],
