@@ -59,58 +59,19 @@ Future<PdfDocument?> compressPDF(String pdfFilePath,
                 "${fileNameWithoutExtension + ' ' + 'compressed' + extensionOfFileName}"),
             CompressQuality.HIGH);
       }
+
+      //passing final document to document variable
+      document = PdfDocument(
+          inputBytes: File(await getExternalStorageFilePathFromFileName(
+                  "${fileNameWithoutExtension + ' ' + 'compressed' + extensionOfFileName}"))
+              .readAsBytesSync());
+
+      //removing unnecessary documents from getExternalStorageDirectory
+      deletingTempPDFFiles(
+          "${fileNameWithoutExtension + ' ' + 'compressed' + extensionOfFileName}");
     } catch (e) {
       print(e);
     }
-
-    //passing final document to document variable
-    document = PdfDocument(
-        inputBytes: File(await getExternalStorageFilePathFromFileName(
-                "${fileNameWithoutExtension + ' ' + 'compressed' + extensionOfFileName}"))
-            .readAsBytesSync());
-
-    //removing unnecessary documents from getExternalStorageDirectory
-    deletingTempPDFFiles(
-        "${fileNameWithoutExtension + ' ' + 'compressed' + extensionOfFileName}");
-
-    // //creating and saving single documents from list called finalListOfDocument temporarily
-    // List<String> tempPdfFilePaths = [];
-    // for (var i = 0;
-    //     i < finalListOfDocument.length && shouldDataBeProcessed == true;
-    //     i++) {
-    //   String newFileName =
-    //       "${fileNameWithoutExtension + ' ' + 'range separated' + ' ' + i.toString() + extensionOfFileName}";
-    //   Map map = Map();
-    //   map['_pdfFileName'] = newFileName;
-    //   map['_extraBetweenNameAndExtension'] = '';
-    //   map['_document'] = finalListOfDocument[i];
-    //   tempPdfFilePaths.add(await creatingAndSavingPDFFileTemporarily(map));
-    // }
-    // print("tempPdfFilePaths : $tempPdfFilePaths");
-    //
-    // //merge the documents
-    // MergeMultiplePDFResponse response = await PdfMerger.mergeMultiplePDF(
-    //     paths: tempPdfFilePaths,
-    //     outputDirPath: await getPDFFilePathFromFileName(
-    //         "${fileNameWithoutExtension + ' ' + 'final' + ' ' + 'merged' + extensionOfFileName}"));
-    //
-    // if (response.status == "success") {
-    //   print(response.response); //for output path  in String
-    //   print(response.message); // for success message  in String
-    // }
-    //
-    // //passing final document to document variable
-    // document = PdfDocument(
-    //     inputBytes: File(await getPDFFilePathFromFileName(
-    //             "${fileNameWithoutExtension + ' ' + 'final' + ' ' + 'merged' + extensionOfFileName}"))
-    //         .readAsBytesSync());
-    //
-    // //removing unnecessary documents from getExternalStorageDirectory
-    // for (int i = 0; i < tempPdfFilePaths.length; i++) {
-    //   deletingTempPDFFiles("${getFileNameFromFilePath(tempPdfFilePaths[i])}");
-    // }
-    // deletingTempPDFFiles(
-    //     "${fileNameWithoutExtension + ' ' + 'final' + ' ' + 'merged' + extensionOfFileName}");
   } else {
     document = null;
   }

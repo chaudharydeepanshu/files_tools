@@ -94,6 +94,20 @@ class _CompressPDFScaffoldState extends State<CompressPDFScaffold>
                     widget.arguments!.mapOfSubFunctionDetails,
               ),
             );
+          } else {
+            selectedDataProcessed = false;
+            shouldWePopScaffold = true;
+            final functionFailedSnackBar = SnackBar(
+              content:
+                  const Text('Sorry, we failed to compress this specific file'),
+              action: SnackBarAction(
+                label: 'Ok',
+                onPressed: () {
+                  // Some code to undo the change.
+                },
+              ),
+            );
+            ScaffoldMessenger.of(context).showSnackBar(functionFailedSnackBar);
           }
         }).whenComplete(() {
           // setState(() {
