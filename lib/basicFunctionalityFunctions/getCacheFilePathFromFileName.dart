@@ -1,4 +1,5 @@
 import 'package:path_provider/path_provider.dart';
+import 'dart:io';
 
 Future<String> getTemporaryDirectoryPath() async {
   // final directory = await getExternalStorageDirectory();
@@ -9,6 +10,6 @@ Future<String> getTemporaryDirectoryPath() async {
 
 Future<String> getCacheFilePathFromFileName(String fileName) async {
   String? path = await getTemporaryDirectoryPath();
-  String filePath = '$path/$fileName';
+  String filePath = Platform.isWindows ? '$path\\$fileName' : '$path/$fileName';
   return filePath;
 }

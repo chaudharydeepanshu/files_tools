@@ -2,8 +2,8 @@ import 'package:files_tools/ui/functionsMainBodies/pdfFunctionPagesScaffoldBodyF
 import 'package:files_tools/widgets/annotatedRegion.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:files_tools/ui/functionsMainBodies/pdfFunctionPagesScaffoldBodyForSelectingSingleFile.dart';
-import 'package:files_tools/ui/functionsMainBodies/pdfFunctionPagesScaffoldBodyForSelectingMultipleFiles.dart';
+import 'package:files_tools/ui/functionsMainBodies/pdfFunctionPagesScaffoldBodyForSelectingSinglePDFFile.dart';
+import 'package:files_tools/ui/functionsMainBodies/pdfFunctionPagesScaffoldBodyForSelectingMultiplePDFFiles.dart';
 import 'package:files_tools/ui/functionsMainBodies/pdfFunctionPagesScaffoldBodyForSelectingSingle&MultipleImages.dart';
 import 'package:files_tools/widgets/functionsMainWidgets/functionsAppBar.dart';
 

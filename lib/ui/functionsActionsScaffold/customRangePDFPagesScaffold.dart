@@ -19,6 +19,7 @@ import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
 import '../../basicFunctionalityFunctions/creatingAndSavingPDFFileTemporarily.dart';
 import 'package:uuid/uuid.dart';
+import 'dart:io';
 
 var uuid = Uuid();
 
@@ -605,27 +606,33 @@ class _CustomRangePDFPagesScaffoldState
                                       });
                                     },
                             ),
-                            Provider.of<AdState>(context).bannerAdUnitId != null
-                                ? SizedBox(
-                                    height: bannerAdSize.height.toDouble(),
-                                  )
+                            Platform.isAndroid
+                                ? Provider.of<AdState>(context)
+                                            .bannerAdUnitId !=
+                                        null
+                                    ? SizedBox(
+                                        height: bannerAdSize.height.toDouble(),
+                                      )
+                                    : Container()
                                 : Container(),
                           ],
                         ),
                       ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          MeasureSize(
-                            onChange: (Size size) {
-                              setState(() {
-                                bannerAdSize = size;
-                              });
-                            },
-                            child: BannerAD(),
-                          ),
-                        ],
-                      ),
+                      Platform.isAndroid
+                          ? Column(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                MeasureSize(
+                                  onChange: (Size size) {
+                                    setState(() {
+                                      bannerAdSize = size;
+                                    });
+                                  },
+                                  child: BannerAD(),
+                                ),
+                              ],
+                            )
+                          : Container(),
                     ],
                   ),
                 ),

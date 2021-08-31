@@ -1,6 +1,6 @@
-import 'dart:async';
 import 'package:file_picker/file_picker.dart';
 import 'package:files_tools/ads/banner_ad.dart';
+import 'package:files_tools/basicFunctionalityFunctions/fileNameManager.dart';
 import 'package:files_tools/widgets/functionsMainWidgets/directPop.dart';
 import 'package:files_tools/widgets/functionsMainWidgets/onWillPopDialog.dart';
 import 'package:flutter/cupertino.dart';
@@ -10,18 +10,20 @@ import 'package:flutter_svg/svg.dart';
 import 'package:files_tools/basicFunctionalityFunctions/checkEncryptedDocument.dart';
 import 'package:files_tools/basicFunctionalityFunctions/lifecycleEventHandler.dart';
 import 'package:files_tools/basicFunctionalityFunctions/sizeCalculator.dart';
+import 'package:files_tools/navigation/page_routes_model.dart';
 import 'package:native_pdf_renderer/native_pdf_renderer.dart' as pdfRenderer;
 import 'package:files_tools/widgets/functionsMainWidgets/permissionDialogBox.dart';
-import 'package:files_tools/widgets/functionsMainWidgets/dialogActionBodyOfButtonForSelectedMultiplePdfs.dart';
+import 'package:open_file/open_file.dart';
 import 'package:permission_handler/permission_handler.dart';
 import '../../../app_theme/app_theme.dart';
 import '../../../basicFunctionalityFunctions/getSizeFromBytes.dart';
+import 'package:files_tools/ui/pdfViewerScaffold/pdfscaffold.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:io';
 import 'package:files_tools/widgets/functionsMainWidgets/functionsButtons.dart';
+import 'dart:io';
 
-class PDFFunctionBodyForMultipleFiles extends StatefulWidget {
-  const PDFFunctionBodyForMultipleFiles(
+class PDFFunctionBody extends StatefulWidget {
+  const PDFFunctionBody(
       {Key? key,
       this.notifyBodyPoppingSplitPDFFunctionScaffold,
       this.onNotifyAppbarFileStatus,
@@ -33,12 +35,10 @@ class PDFFunctionBodyForMultipleFiles extends StatefulWidget {
   final Map<String, dynamic>? mapOfFunctionDetails;
 
   @override
-  _PDFFunctionBodyForMultipleFilesState createState() =>
-      _PDFFunctionBodyForMultipleFilesState();
+  _PDFFunctionBodyState createState() => _PDFFunctionBodyState();
 }
 
-class _PDFFunctionBodyForMultipleFilesState
-    extends State<PDFFunctionBodyForMultipleFiles>
+class _PDFFunctionBodyState extends State<PDFFunctionBody>
     with TickerProviderStateMixin {
   late AnimationController controller;
 
@@ -173,33 +173,15 @@ class _PDFFunctionBodyForMultipleFilesState
   }
 
   bool isFilePicked = false;
-  List<bool> listOfFilesLoadedStatus = [];
-  bool isFilesLoaded = false;
+  bool isFileLoaded = false;
   bool isFilePickingInitiated = false;
-  late List<File> files;
-  late List<String> filePaths;
-  late List<String> fileNames;
-  late List<int> fileBytes;
-  int filesSize = 0;
+  late PlatformFile file;
   bool shouldRenderingImagesLoopBeDisabled = false;
 
-  List<pdfRenderer.PdfPageImage?> listPDFPagesImages = [];
-  List<List<pdfRenderer.PdfPageImage?>> listOfListPDFPagesImages = [];
+  List<pdfRenderer.PdfPageImage?> pdfPagesImages = [];
 
   var myChildSize = Size.zero;
   bool storagePermissionPermanentlyDenied = false;
-
-  bool filesLoadingStatusCalc() {
-    bool ifEveryTrue = listOfFilesLoadedStatus.every((element) {
-      return (element == true);
-    });
-
-    if (ifEveryTrue == true && listOfFilesLoadedStatus.length >= 2) {
-      return true;
-    } else {
-      return false;
-    }
-  }
 
   double defaultButtonElevation = 3;
   double onTapDownButtonElevation = 0;
@@ -207,54 +189,22 @@ class _PDFFunctionBodyForMultipleFilesState
 
   int _count = 0;
 
-  List<Widget> widgetListForDialogActionOfButtonForSelectedMultipleFiles = [];
+  int filesEncryptedCount = 0;
 
-  Future<void> multipleFilesSelectedActionDialog() async {
-    await showDialog<bool>(
-      barrierDismissible: true,
-      context: context,
-      builder: (BuildContext context) {
-        widgetListForDialogActionOfButtonForSelectedMultipleFiles =
-            List<Widget>.generate(filePaths.length, (int index) {
-          String fileName = fileNames[index];
-          String filePath = filePaths[index];
-          int fileByte = fileBytes[index];
-          return DialogActionBodyOfButtonForSelectedMultipleFiles(
-            fileByte: fileByte,
-            filePath: filePath,
-            fileName: fileName,
-            mapOfFunctionDetails: widget.mapOfFunctionDetails,
-          );
-        });
-        return SimpleDialog(
-          title: Center(
-            child: Column(
-              children: [
-                const Text('Selected Files'),
-                const Text('Click to view'),
-              ],
-            ),
-          ),
-          children: widgetListForDialogActionOfButtonForSelectedMultipleFiles,
-        );
-      },
-    );
-  }
-
-  Future<List<pdfRenderer.PdfPageImage?>> nativePDFRendererToImg(
-      String filePath, int x) async {
+  void nativePDFRendererToImg(String filePath) async {
     try {
       final newDocument = await pdfRenderer.PdfDocument.openFile(filePath);
       final pagesCount = newDocument.pagesCount;
-
       double indicatorSteps = 1 / pagesCount;
+      //pages = [];
 
-      listPDFPagesImages = [];
+      pdfPagesImages = [];
       for (var i = 1;
           i <= pagesCount &&
               shouldRenderingImagesLoopBeDisabled == false &&
               widget.notifyBodyPoppingSplitPDFFunctionScaffold == false;
           i++) {
+        //Text('Item $i');
         pdfRenderer.PdfPage page =
             await newDocument.getPage(i); //always start from 1
         //pages.add(page);
@@ -273,43 +223,27 @@ class _PDFFunctionBodyForMultipleFilesState
           format: pdfRenderer.PdfPageFormat.JPEG,
         );
 
-        listPDFPagesImages.add(pageImage);
+        pdfPagesImages.add(pageImage);
         await page.close();
         print(i);
         controller.value += indicatorSteps;
 
         if (i == pagesCount) {
-          setState(() {
-            listOfFilesLoadedStatus.removeAt(x);
-            listOfFilesLoadedStatus.insert(x, true);
-            isFilesLoaded = filesLoadingStatusCalc();
-          });
-        } else {
-          setState(() {
-            listOfFilesLoadedStatus.removeAt(x);
-            listOfFilesLoadedStatus.insert(x, false);
-            isFilesLoaded = filesLoadingStatusCalc();
-          });
+          isFileLoaded = true;
         }
       }
 
       controller.value = 0;
 
-      // listOfListPDFPagesImages
-      //     .add(
-      //         listPDFPagesImages);
-
       newDocument.close();
-      return listPDFPagesImages;
     } on PlatformException catch (error) {
       print(error);
-      return [];
     }
   }
 
-  int filesEncryptedCount = 0;
-
   ScrollController scrollController = ScrollController();
+
+  var _openResult = 'Unknown';
 
   var bannerAdSize = Size.zero;
 
@@ -336,13 +270,22 @@ class _PDFFunctionBodyForMultipleFilesState
                   children: [
                     Container(
                       height: 15,
-                      color: widget.mapOfFunctionDetails!['BG Color'] ?? null,
+                      decoration: BoxDecoration(
+                        color: widget.mapOfFunctionDetails!['BG Color'] ?? null,
+                        border: Border(
+                          top: BorderSide(
+                            width: 2,
+                            color: widget.mapOfFunctionDetails!['BG Color'] ??
+                                null,
+                          ),
+                        ),
+                      ),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(top: 15),
                       child: Container(
                         decoration: BoxDecoration(
-                          //color: Color(0xFFFFAFAFA),
+                          // color: Color(0xFFFFAFAFA),
                           borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(10),
                             topRight: Radius.circular(10),
@@ -433,224 +376,167 @@ class _PDFFunctionBodyForMultipleFilesState
                                                               type: FileType
                                                                   .custom,
                                                               allowMultiple:
-                                                                  true,
+                                                                  false,
                                                               allowedExtensions: [
                                                                 'pdf',
                                                               ],
                                                             );
                                                             if (result !=
-                                                                    null &&
-                                                                !result
-                                                                    .isSinglePick) {
-                                                              files = result
-                                                                  .paths
-                                                                  .map((path) =>
-                                                                      File(
-                                                                          path!))
-                                                                  .toList();
+                                                                null) {
+                                                              if (extensionOfString(
+                                                                      fileName: result
+                                                                          .files
+                                                                          .first
+                                                                          .name) ==
+                                                                  '.pdf') {
+                                                                file = result
+                                                                    .files
+                                                                    .first;
 
-                                                              filePaths = result
-                                                                  .paths
-                                                                  .map((path) =>
-                                                                      path!)
-                                                                  .toList();
+                                                                bool
+                                                                    isEncryptedDocument =
+                                                                    checkEncryptedDocument(
+                                                                        file.path!);
 
-                                                              fileNames = result
-                                                                  .names
-                                                                  .map((names) =>
-                                                                      names!)
-                                                                  .toList();
+                                                                bool
+                                                                    shouldEncryptedDocumentsAllowed =
+                                                                    widget.mapOfFunctionDetails![
+                                                                        'Encrypted Files Allowed'];
 
-                                                              fileBytes = result
-                                                                  .paths
-                                                                  .map((path) =>
-                                                                      File(path!)
-                                                                          .lengthSync())
-                                                                  .toList();
+                                                                filesEncryptedCount =
+                                                                    0;
 
-                                                              filesSize = 0;
-                                                              for (int y = 0;
-                                                                  y <
-                                                                      files
-                                                                          .length;
-                                                                  y++) {
-                                                                filesSize =
-                                                                    filesSize +
-                                                                        fileBytes[
-                                                                            y];
-                                                              }
-
-                                                              setState(() {
-                                                                isFilePicked =
-                                                                    true;
-                                                                isFilePickingInitiated =
-                                                                    false;
-                                                                widget
-                                                                    .onNotifyAppbarFileStatus
-                                                                    ?.call(
-                                                                        true);
-                                                              });
-
-                                                              shouldRenderingImagesLoopBeDisabled =
-                                                                  false;
-
-                                                              listOfListPDFPagesImages =
-                                                                  [];
-                                                              listOfFilesLoadedStatus =
-                                                                  [];
-                                                              filesEncryptedCount =
-                                                                  0;
-
-                                                              bool
-                                                                  shouldEncryptedDocumentsAllowed =
-                                                                  widget.mapOfFunctionDetails![
-                                                                      'Encrypted Files Allowed'];
-
-                                                              if (shouldEncryptedDocumentsAllowed ==
-                                                                  false) {
-                                                                for (int x = 0;
-                                                                    x < files.length &&
-                                                                        shouldRenderingImagesLoopBeDisabled ==
-                                                                            false &&
-                                                                        filesEncryptedCount ==
-                                                                            0;
-                                                                    x++) {
-                                                                  setState(() {
-                                                                    listOfFilesLoadedStatus
-                                                                        .insert(
-                                                                            x,
-                                                                            false);
-                                                                  });
-
-                                                                  bool
-                                                                      isEncryptedDocument =
-                                                                      checkEncryptedDocument(
-                                                                          files[x]
-                                                                              .path);
-
+                                                                if (shouldEncryptedDocumentsAllowed ==
+                                                                    false) {
                                                                   if (isEncryptedDocument ==
-                                                                      true) {
-                                                                    filesEncryptedCount++;
-                                                                  }
+                                                                      false) {
+                                                                    print(file
+                                                                        .name);
+                                                                    print(file
+                                                                        .bytes);
+                                                                    print(file
+                                                                        .size);
+                                                                    print(file
+                                                                        .extension);
+                                                                    print(file
+                                                                        .path);
+                                                                    print(
+                                                                        'Document not encrypted & encrypted documents are not allowed');
 
-                                                                  if (isFileLoadingRequired ==
-                                                                      true) {
-                                                                    if (isEncryptedDocument ==
-                                                                        false) {
-                                                                      listOfListPDFPagesImages.add(await nativePDFRendererToImg(
-                                                                          files[x]
-                                                                              .path,
-                                                                          x));
-                                                                      print(
-                                                                          "hello: ${listOfListPDFPagesImages[x].length}");
-                                                                    }
-                                                                  } else {
-                                                                    isFilePickingInitiated =
+                                                                    setState(
+                                                                        () {
+                                                                      isFilePickingInitiated =
+                                                                          false;
+                                                                      isFilePicked =
+                                                                          true;
+                                                                      widget
+                                                                          .onNotifyAppbarFileStatus
+                                                                          ?.call(
+                                                                              true);
+                                                                    });
+
+                                                                    shouldRenderingImagesLoopBeDisabled =
                                                                         false;
-                                                                    isFilesLoaded =
-                                                                        true;
-                                                                  }
-                                                                }
-                                                                if (filesEncryptedCount !=
-                                                                    0) {
-                                                                  print(
-                                                                      'Document encrypted & encrypted documents are not allowed');
+
+                                                                    if (isFileLoadingRequired ==
+                                                                        true) {
+                                                                      nativePDFRendererToImg(
+                                                                          file.path!);
+                                                                    } else {
+                                                                      isFileLoaded =
+                                                                          true;
+                                                                    }
+
+                                                                    isFilePickingInitiated =
+                                                                        false; //as the file should be picked and loaded in the app cache & here loaded doesn't mean converting to images
+                                                                  } else {
+                                                                    print(
+                                                                        'Document encrypted & encrypted documents are not allowed');
+
+                                                                    filesEncryptedCount++;
+                                                                    setState(
+                                                                        () {
+                                                                      isFilePickingInitiated =
+                                                                          false;
+                                                                    });
+                                                                    final encryptedFileWarningSnackBar =
+                                                                        SnackBar(
+                                                                      content:
+                                                                          const Text(
+                                                                              'Encrypted File is not allowed!\nDecrypt it using the decrypt function.'),
+                                                                      action:
+                                                                          SnackBarAction(
+                                                                        label:
+                                                                            'Ok',
+                                                                        onPressed:
+                                                                            () {
+                                                                          // Some code to undo the change.
+                                                                        },
+                                                                      ),
+                                                                    );
+                                                                    ScaffoldMessenger.of(
+                                                                            context)
+                                                                        .showSnackBar(
+                                                                            encryptedFileWarningSnackBar);
+                                                                  } //show snackbar for document encrypted here as not allowed through above condition
+                                                                } else {
+                                                                  //document not encrypted but allowed encrypted
+                                                                  print(file
+                                                                      .name);
+                                                                  print(file
+                                                                      .bytes);
+                                                                  print(file
+                                                                      .size);
+                                                                  print(file
+                                                                      .extension);
+                                                                  print(file
+                                                                      .path);
+
                                                                   setState(() {
                                                                     isFilePickingInitiated =
                                                                         false;
                                                                     isFilePicked =
-                                                                        false;
+                                                                        true;
                                                                     widget
                                                                         .onNotifyAppbarFileStatus
                                                                         ?.call(
-                                                                            false);
-                                                                  });
-                                                                  final encryptedFileWarningSnackBar =
-                                                                      SnackBar(
-                                                                    content: Text(
-                                                                        '${filesEncryptedCount.toString()} file was encrypted & encrypted File are not allowed!\nDecrypt it using the decrypt function.'),
-                                                                    action:
-                                                                        SnackBarAction(
-                                                                      label:
-                                                                          'Ok',
-                                                                      onPressed:
-                                                                          () {
-                                                                        // Some code to undo the change.
-                                                                      },
-                                                                    ),
-                                                                  );
-                                                                  ScaffoldMessenger.of(
-                                                                          context)
-                                                                      .showSnackBar(
-                                                                          encryptedFileWarningSnackBar);
-                                                                } else {
-                                                                  print(
-                                                                      'Document not encrypted & encrypted documents are not allowed');
-                                                                }
-                                                              } else {
-                                                                for (int x = 0;
-                                                                    x < files.length &&
-                                                                        shouldRenderingImagesLoopBeDisabled ==
-                                                                            false;
-                                                                    x++) {
-                                                                  setState(() {
-                                                                    listOfFilesLoadedStatus
-                                                                        .insert(
-                                                                            x,
-                                                                            false);
+                                                                            true);
                                                                   });
 
-                                                                  bool
-                                                                      isEncryptedDocument =
-                                                                      checkEncryptedDocument(
-                                                                          files[x]
-                                                                              .path);
-
-                                                                  if (isEncryptedDocument ==
-                                                                      true) {
-                                                                    filesEncryptedCount++;
-                                                                  }
+                                                                  shouldRenderingImagesLoopBeDisabled =
+                                                                      false;
 
                                                                   if (isFileLoadingRequired ==
                                                                       true) {
                                                                     if (isEncryptedDocument ==
                                                                         false) {
-                                                                      listOfListPDFPagesImages.add(await nativePDFRendererToImg(
-                                                                          files[x]
-                                                                              .path,
-                                                                          x));
+                                                                      nativePDFRendererToImg(
+                                                                          file.path!);
                                                                       print(
                                                                           'Document not encrypted & encrypted documents are allowed');
                                                                     } else {
                                                                       print(
                                                                           'Document encrypted & encrypted documents are allowed');
+                                                                      filesEncryptedCount++;
                                                                     }
                                                                   } else {
-                                                                    isFilePickingInitiated =
-                                                                        false;
-                                                                    isFilesLoaded =
+                                                                    isFileLoaded =
                                                                         true;
                                                                   }
+
+                                                                  isFilePickingInitiated =
+                                                                      false; //as the file should be picked and loaded in the app cache & here loaded doesn't mean converting to images
                                                                 }
-                                                              }
-                                                            } else {
-                                                              setState(() {
-                                                                isFilePickingInitiated =
-                                                                    false;
-                                                                isFilePicked =
-                                                                    false;
-                                                                widget
-                                                                    .onNotifyAppbarFileStatus
-                                                                    ?.call(
-                                                                        false);
-                                                              }); // User canceled the picker or pick 1 file
-                                                              if (result !=
-                                                                  null) {
-                                                                final fileNumberWarningSnackBar =
+                                                              } else {
+                                                                setState(() {
+                                                                  isFilePickingInitiated =
+                                                                      false;
+                                                                });
+                                                                final pdfFileTypeWarning =
                                                                     SnackBar(
                                                                   content:
                                                                       const Text(
-                                                                          'Please choose more than one file.'),
+                                                                          'Non PDF File is not allowed!\nPick only PDF file.'),
                                                                   action:
                                                                       SnackBarAction(
                                                                     label: 'Ok',
@@ -663,8 +549,23 @@ class _PDFFunctionBodyForMultipleFilesState
                                                                 ScaffoldMessenger.of(
                                                                         context)
                                                                     .showSnackBar(
-                                                                        fileNumberWarningSnackBar);
-                                                              } // User picked 1 file
+                                                                        pdfFileTypeWarning);
+                                                                //show snackbar for wrong file type as not allowed through above condition
+                                                              }
+                                                            } else {
+                                                              setState(() {
+                                                                print(
+                                                                    'User canceled the picker');
+                                                                isFilePickingInitiated =
+                                                                    false;
+                                                                isFilePicked =
+                                                                    false;
+                                                                widget
+                                                                    .onNotifyAppbarFileStatus
+                                                                    ?.call(
+                                                                        false);
+                                                              });
+                                                              // User canceled the picker
                                                             }
                                                           } else if (status ==
                                                               PermissionStatus
@@ -708,20 +609,33 @@ class _PDFFunctionBodyForMultipleFilesState
                                                           }
                                                         } else if (isFilePicked ==
                                                             true) {
-                                                          //todo names filesy or filesKit by usabl, shyny apps
-                                                          ////todo Add more touch and ui improvement to the result page
-                                                          //todo fix sematiclabels in svgpicture asset
-                                                          //////todo hard and would lead to confusion //add conditions to disable buttons in functions on the basis of conditions such as 1 page image file in extraction or encrypt function in encrypted file
-                                                          //todo Catch exceptions in processing functions.
-                                                          ////todo Update dialog when taking too long
-                                                          ////todo Update permission dialogbox color and appname text(get dynamically)
-                                                          //////todo done in most cases. add color theme from parents color from parents
-                                                          ////todo Add indicator notification for marked delete in modify that it will not be visible in real output file
-                                                          //todo also setup encrypt add permissions. check if doc encrypted if it is then ask decrypt first and then setup permissions
-                                                          //todo allow to set different type of encryption
-                                                          //todo set a logo and name
-                                                          //todo ready for beta release
-                                                          multipleFilesSelectedActionDialog();
+                                                          final _result =
+                                                              await OpenFile
+                                                                  .open(file
+                                                                      .path);
+                                                          print(
+                                                              _result.message);
+
+                                                          setState(() {
+                                                            _openResult =
+                                                                "type=${_result.type}  message=${_result.message}";
+                                                          });
+                                                          if (_result.type ==
+                                                              ResultType
+                                                                  .noAppToOpen) {
+                                                            print(_openResult);
+                                                            //Using default app pdf viewer instead of suggesting downloading others
+                                                            Navigator.pushNamed(
+                                                              context,
+                                                              PageRoutes
+                                                                  .pdfScaffold,
+                                                              arguments:
+                                                                  PDFScaffoldArguments(
+                                                                pdfPath:
+                                                                    file.path,
+                                                              ),
+                                                            );
+                                                          }
                                                         }
                                                       }
                                                     : () async {
@@ -828,7 +742,7 @@ class _PDFFunctionBodyForMultipleFilesState
                                                                         .start,
                                                                 children: [
                                                                   Text(
-                                                                    "${files.length.toString() + ' ' + 'files selected'}",
+                                                                    file.name,
                                                                     overflow:
                                                                         TextOverflow
                                                                             .ellipsis,
@@ -845,7 +759,7 @@ class _PDFFunctionBodyForMultipleFilesState
                                                                   Row(
                                                                     children: [
                                                                       Text(
-                                                                        '${formatBytes(filesSize, 2)}',
+                                                                        '${formatBytes(file.size, 2)}',
                                                                         style: TextStyle(
                                                                             fontSize:
                                                                                 12,
@@ -891,7 +805,7 @@ class _PDFFunctionBodyForMultipleFilesState
                                                                               10),
                                                                       bottomRight: shouldRenderingImagesLoopBeDisabled ==
                                                                                   false &&
-                                                                              isFilesLoaded ==
+                                                                              isFileLoaded ==
                                                                                   false
                                                                           ? Radius.circular(
                                                                               0)
@@ -906,7 +820,7 @@ class _PDFFunctionBodyForMultipleFilesState
                                                                           () {
                                                                         shouldRenderingImagesLoopBeDisabled =
                                                                             true;
-                                                                        isFilesLoaded =
+                                                                        isFileLoaded =
                                                                             false;
                                                                         isFilePicked =
                                                                             false;
@@ -929,7 +843,7 @@ class _PDFFunctionBodyForMultipleFilesState
                                                                               10),
                                                                       bottomRight: shouldRenderingImagesLoopBeDisabled ==
                                                                                   false &&
-                                                                              isFilesLoaded ==
+                                                                              isFileLoaded ==
                                                                                   false
                                                                           ? Radius.circular(
                                                                               0)
@@ -979,7 +893,7 @@ class _PDFFunctionBodyForMultipleFilesState
                                                         ),
                                                         shouldRenderingImagesLoopBeDisabled ==
                                                                     false &&
-                                                                isFilesLoaded ==
+                                                                isFileLoaded ==
                                                                     false //this condition means that the loading bar will only show when shouldRenderingImagesLoopBeDisabled & isFileLoaded is false. shouldRenderingImagesLoopBeDisabled false means that we have not disabled loading images and isFileLoaded false means file has not loaded until now.
                                                             ? Stack(
                                                                 children: [
@@ -1043,7 +957,7 @@ class _PDFFunctionBodyForMultipleFilesState
                                                                   .center,
                                                           children: [
                                                             Text(
-                                                              'Select Multiple Files',
+                                                              'Select File',
                                                               textAlign:
                                                                   TextAlign
                                                                       .center,
@@ -1067,8 +981,8 @@ class _PDFFunctionBodyForMultipleFilesState
                                                             Icon(
                                                               Icons.add,
                                                               size: 30,
-                                                              color:
-                                                                  Colors.black,
+                                                              color: AppTheme
+                                                                  .darkText,
                                                             ),
                                                           ],
                                                         )
@@ -1159,16 +1073,13 @@ class _PDFFunctionBodyForMultipleFilesState
                                   children: [
                                     PDFFunctions(
                                       filePickedStatus: isFilePicked,
-                                      fileLoadingStatus: isFilesLoaded,
+                                      fileLoadingStatus: isFileLoaded,
                                       onTapAction: () => widget
                                                       .mapOfFunctionDetails![
                                                   'Sublist Functions'][index]
                                               ['Action'](
-                                          files,
-                                          listOfListPDFPagesImages,
-                                          filePaths,
-                                          fileNames,
-                                          fileBytes,
+                                          file,
+                                          pdfPagesImages,
                                           widget.mapOfFunctionDetails![
                                               'Sublist Functions'][index],
                                           context),

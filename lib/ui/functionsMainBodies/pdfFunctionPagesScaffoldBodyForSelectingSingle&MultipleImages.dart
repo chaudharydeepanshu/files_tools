@@ -11,6 +11,7 @@ import 'package:files_tools/basicFunctionalityFunctions/fileNameManager.dart';
 import 'package:files_tools/basicFunctionalityFunctions/getCacheFilePathFromFileName.dart';
 import 'package:files_tools/basicFunctionalityFunctions/lifecycleEventHandler.dart';
 import 'package:files_tools/basicFunctionalityFunctions/sizeCalculator.dart';
+import 'package:image_compression_flutter/image_compression_flutter.dart';
 import 'package:native_pdf_renderer/native_pdf_renderer.dart' as pdfRenderer;
 import 'package:files_tools/widgets/functionsMainWidgets/dialogActionBodyOfButtonForSelectedMultipleImages.dart';
 import 'package:files_tools/widgets/functionsMainWidgets/permissionDialogBox.dart';
@@ -324,22 +325,248 @@ class _PDFFunctionBodyForSelectingSingleMultipleImagesState
                                                           if (status ==
                                                               PermissionStatus
                                                                   .granted) {
-                                                            isFilePickingInitiated =
-                                                                true;
+                                                            setState(() {
+                                                              isFilePickingInitiated =
+                                                                  true;
+                                                            });
 
                                                             print(
                                                                 'Permission granted');
-                                                            final ImagePicker?
-                                                                result =
-                                                                ImagePicker();
+                                                            if (Platform
+                                                                    .isAndroid ||
+                                                                Platform
+                                                                    .isIOS) {
+                                                              final ImagePicker?
+                                                                  result =
+                                                                  ImagePicker();
 
-                                                            if (result !=
-                                                                null) {
-                                                              // Pick multiple images
-                                                              images = await result
-                                                                  .pickMultiImage();
-                                                              if (images !=
+                                                              if (result !=
                                                                   null) {
+                                                                // Pick multiple images
+                                                                images =
+                                                                    await result
+                                                                        .pickMultiImage();
+                                                                if (images !=
+                                                                    null) {
+                                                                  fileBytes =
+                                                                      [];
+                                                                  filePaths =
+                                                                      [];
+                                                                  fileNames =
+                                                                      [];
+                                                                  compressedFilesPaths =
+                                                                      [];
+                                                                  files = [];
+                                                                  compressedFiles =
+                                                                      [];
+                                                                  filesSize = 0;
+                                                                  for (int i =
+                                                                          0;
+                                                                      i <
+                                                                          images!
+                                                                              .length;
+                                                                      i++) {
+                                                                    XFile
+                                                                        xFile =
+                                                                        images![
+                                                                            i];
+                                                                    File file =
+                                                                        File(xFile
+                                                                            .path);
+                                                                    files.add(
+                                                                        file);
+
+                                                                    String
+                                                                        extensionOfFileName =
+                                                                        extensionOfString(fileName: xFile.name)
+                                                                            .toLowerCase();
+                                                                    String fileNameWithoutExtension = stringWithoutExtension(
+                                                                        fileName:
+                                                                            xFile
+                                                                                .name,
+                                                                        extensionOfString:
+                                                                            extensionOfFileName);
+
+                                                                    Future<File> compressAndGetFile(
+                                                                        File
+                                                                            file,
+                                                                        String
+                                                                            targetPath) async {
+                                                                      var imageCompressResult;
+                                                                      if (extensionOfFileName ==
+                                                                          '.png') {
+                                                                        imageCompressResult = await FlutterImageCompress.compressAndGetFile(
+                                                                            file
+                                                                                .absolute.path,
+                                                                            targetPath,
+                                                                            quality:
+                                                                                88,
+                                                                            rotate:
+                                                                                0,
+                                                                            format:
+                                                                                CompressFormat.png);
+                                                                      } else if (extensionOfFileName ==
+                                                                              '.jpg' ||
+                                                                          extensionOfFileName ==
+                                                                              '.jpeg') {
+                                                                        imageCompressResult = await FlutterImageCompress.compressAndGetFile(
+                                                                            file
+                                                                                .absolute.path,
+                                                                            targetPath,
+                                                                            quality:
+                                                                                88,
+                                                                            rotate:
+                                                                                0,
+                                                                            format:
+                                                                                CompressFormat.jpeg);
+                                                                      } else if (extensionOfFileName ==
+                                                                          '.webp') {
+                                                                        imageCompressResult = await FlutterImageCompress.compressAndGetFile(
+                                                                            file
+                                                                                .absolute.path,
+                                                                            targetPath,
+                                                                            quality:
+                                                                                88,
+                                                                            rotate:
+                                                                                0,
+                                                                            format:
+                                                                                CompressFormat.webp);
+                                                                      } else if (extensionOfFileName ==
+                                                                              '.heic' ||
+                                                                          extensionOfFileName ==
+                                                                              '.heif') {
+                                                                        imageCompressResult = await FlutterImageCompress.compressAndGetFile(
+                                                                            file
+                                                                                .absolute.path,
+                                                                            targetPath,
+                                                                            quality:
+                                                                                88,
+                                                                            rotate:
+                                                                                0,
+                                                                            format:
+                                                                                CompressFormat.heic);
+                                                                      }
+
+                                                                      print(file
+                                                                          .lengthSync());
+                                                                      print(imageCompressResult!
+                                                                          .lengthSync());
+
+                                                                      return imageCompressResult;
+                                                                    }
+
+                                                                    String
+                                                                        targetPath =
+                                                                        "${await getCacheFilePathFromFileName(fileNameWithoutExtension + ' ' + 'compressed' + ' ' + i.toString() + extensionOfFileName)}";
+                                                                    print(
+                                                                        "targetPath $targetPath");
+                                                                    if (extensionOfFileName == '.png' ||
+                                                                        extensionOfFileName ==
+                                                                            '.jpg' ||
+                                                                        extensionOfFileName ==
+                                                                            '.jpeg' ||
+                                                                        extensionOfFileName ==
+                                                                            '.heic' ||
+                                                                        extensionOfFileName ==
+                                                                            '.heif' ||
+                                                                        extensionOfFileName ==
+                                                                            '.webp') {
+                                                                      compressedFiles.add(await compressAndGetFile(
+                                                                          file,
+                                                                          targetPath));
+                                                                      compressedFilesPaths
+                                                                          .add(
+                                                                              targetPath);
+                                                                    }
+                                                                    filePaths.add(
+                                                                        xFile
+                                                                            .path);
+                                                                    print(
+                                                                        "xFile.path : ${xFile.path}");
+
+                                                                    fileBytes
+                                                                        .add(file
+                                                                            .lengthSync());
+                                                                    fileNames.add(
+                                                                        xFile
+                                                                            .name);
+                                                                    filesSize =
+                                                                        filesSize +
+                                                                            fileBytes[i];
+                                                                  }
+
+                                                                  print(
+                                                                      "fileNames $fileNames");
+
+                                                                  setState(() {
+                                                                    isFilePicked =
+                                                                        true;
+                                                                    widget
+                                                                        .onNotifyAppbarFileStatus
+                                                                        ?.call(
+                                                                            true);
+                                                                  });
+
+                                                                  shouldRenderingImagesLoopBeDisabled =
+                                                                      false;
+
+                                                                  isFileLoaded =
+                                                                      true;
+
+                                                                  isFilePickingInitiated =
+                                                                      false; //as the file should be picked and loaded in the app cache & images are compressed at this point
+                                                                } else {
+                                                                  setState(() {
+                                                                    print(
+                                                                        'User canceled the picker');
+                                                                    isFilePickingInitiated =
+                                                                        false;
+                                                                    isFilePicked =
+                                                                        false;
+                                                                    widget
+                                                                        .onNotifyAppbarFileStatus
+                                                                        ?.call(
+                                                                            false);
+                                                                  });
+                                                                  // User canceled the picker
+                                                                }
+                                                              } else {
+                                                                //result was null
+                                                                setState(() {
+                                                                  print(
+                                                                      'ImagePicker() result was null');
+                                                                  isFilePickingInitiated =
+                                                                      false;
+                                                                  isFilePicked =
+                                                                      false;
+                                                                  widget
+                                                                      .onNotifyAppbarFileStatus
+                                                                      ?.call(
+                                                                          false);
+                                                                });
+                                                              }
+                                                            } else if (Platform
+                                                                .isWindows) {
+                                                              final FilePickerResult?
+                                                                  result =
+                                                                  await FilePicker
+                                                                      .platform
+                                                                      .pickFiles(
+                                                                type: FileType
+                                                                    .custom,
+                                                                allowMultiple:
+                                                                    true,
+                                                                allowedExtensions: [
+                                                                  'jpg',
+                                                                  'jpeg',
+                                                                  'png',
+                                                                  'webp'
+                                                                ],
+                                                              );
+
+                                                              if (result !=
+                                                                  null) {
+                                                                // Pick multiple images
                                                                 fileBytes = [];
                                                                 filePaths = [];
                                                                 fileNames = [];
@@ -349,29 +576,57 @@ class _PDFFunctionBodyForSelectingSingleMultipleImagesState
                                                                 compressedFiles =
                                                                     [];
                                                                 filesSize = 0;
+                                                                files = result
+                                                                    .paths
+                                                                    .map((path) =>
+                                                                        File(
+                                                                            path!))
+                                                                    .toList();
+
+                                                                filePaths = result
+                                                                    .paths
+                                                                    .map((path) =>
+                                                                        path!)
+                                                                    .toList();
+
+                                                                fileNames = result
+                                                                    .names
+                                                                    .map((names) =>
+                                                                        names!)
+                                                                    .toList();
+
+                                                                fileBytes = result
+                                                                    .paths
+                                                                    .map((path) =>
+                                                                        File(path!)
+                                                                            .lengthSync())
+                                                                    .toList();
+
+                                                                for (int y = 0;
+                                                                    y <
+                                                                        files
+                                                                            .length;
+                                                                    y++) {
+                                                                  filesSize =
+                                                                      filesSize +
+                                                                          fileBytes[
+                                                                              y];
+                                                                }
+
                                                                 for (int i = 0;
                                                                     i <
-                                                                        images!
+                                                                        files
                                                                             .length;
                                                                     i++) {
-                                                                  XFile xFile =
-                                                                      images![
-                                                                          i];
-                                                                  File file =
-                                                                      File(xFile
-                                                                          .path);
-                                                                  files.add(
-                                                                      file);
-
                                                                   String
                                                                       extensionOfFileName =
                                                                       extensionOfString(
-                                                                              fileName: xFile.name)
+                                                                              fileName: fileNames[i])
                                                                           .toLowerCase();
                                                                   String fileNameWithoutExtension = stringWithoutExtension(
                                                                       fileName:
-                                                                          xFile
-                                                                              .name,
+                                                                          fileNames[
+                                                                              i],
                                                                       extensionOfString:
                                                                           extensionOfFileName);
 
@@ -384,62 +639,156 @@ class _PDFFunctionBodyForSelectingSingleMultipleImagesState
                                                                     var imageCompressResult;
                                                                     if (extensionOfFileName ==
                                                                         '.png') {
-                                                                      imageCompressResult = await FlutterImageCompress.compressAndGetFile(
-                                                                          file.absolute
-                                                                              .path,
-                                                                          targetPath,
-                                                                          quality:
-                                                                              88,
-                                                                          rotate:
-                                                                              0,
-                                                                          format:
-                                                                              CompressFormat.png);
+                                                                      ImageFile
+                                                                          input =
+                                                                          ImageFile(
+                                                                        rawBytes:
+                                                                            file.readAsBytesSync(),
+                                                                        filePath:
+                                                                            file.path,
+                                                                      ); // set the input image file
+                                                                      Configuration
+                                                                          config =
+                                                                          Configuration(
+                                                                        outputType:
+                                                                            ImageOutputType.png,
+                                                                        // can only be true for Android and iOS while using ImageOutputType.jpg or ImageOutputType.pngÏ
+                                                                        useJpgPngNativeCompressor:
+                                                                            false,
+                                                                        // set quality between 0-100
+                                                                        quality:
+                                                                            88,
+                                                                      );
+
+                                                                      final param = ImageFileConfiguration(
+                                                                          input:
+                                                                              input,
+                                                                          config:
+                                                                              config);
+                                                                      final output =
+                                                                          await compressor
+                                                                              .compress(param);
+
+                                                                      final bytes =
+                                                                          output
+                                                                              .rawBytes;
+                                                                      imageCompressResult =
+                                                                          File(
+                                                                              targetPath);
+                                                                      await imageCompressResult.writeAsBytes(bytes
+                                                                          .buffer
+                                                                          .asUint8List(
+                                                                              bytes.offsetInBytes,
+                                                                              bytes.lengthInBytes));
                                                                     } else if (extensionOfFileName ==
                                                                             '.jpg' ||
                                                                         extensionOfFileName ==
                                                                             '.jpeg') {
-                                                                      imageCompressResult = await FlutterImageCompress.compressAndGetFile(
-                                                                          file.absolute
-                                                                              .path,
-                                                                          targetPath,
-                                                                          quality:
-                                                                              88,
-                                                                          rotate:
-                                                                              0,
-                                                                          format:
-                                                                              CompressFormat.jpeg);
+                                                                      ImageFile
+                                                                          input =
+                                                                          ImageFile(
+                                                                        rawBytes:
+                                                                            file.readAsBytesSync(),
+                                                                        filePath:
+                                                                            file.path,
+                                                                      ); // set the input image file
+                                                                      Configuration
+                                                                          config =
+                                                                          Configuration(
+                                                                        outputType:
+                                                                            ImageOutputType.jpg,
+                                                                        // can only be true for Android and iOS while using ImageOutputType.jpg or ImageOutputType.pngÏ
+                                                                        useJpgPngNativeCompressor:
+                                                                            false,
+                                                                        // set quality between 0-100
+                                                                        quality:
+                                                                            88,
+                                                                      );
+
+                                                                      final param = ImageFileConfiguration(
+                                                                          input:
+                                                                              input,
+                                                                          config:
+                                                                              config);
+                                                                      final output =
+                                                                          await compressor
+                                                                              .compress(param);
+
+                                                                      final bytes =
+                                                                          output
+                                                                              .rawBytes;
+                                                                      imageCompressResult =
+                                                                          File(
+                                                                              targetPath);
+                                                                      await imageCompressResult.writeAsBytes(bytes
+                                                                          .buffer
+                                                                          .asUint8List(
+                                                                              bytes.offsetInBytes,
+                                                                              bytes.lengthInBytes));
                                                                     } else if (extensionOfFileName ==
                                                                         '.webp') {
-                                                                      imageCompressResult = await FlutterImageCompress.compressAndGetFile(
-                                                                          file.absolute
-                                                                              .path,
-                                                                          targetPath,
-                                                                          quality:
-                                                                              88,
-                                                                          rotate:
-                                                                              0,
-                                                                          format:
-                                                                              CompressFormat.webp);
-                                                                    } else if (extensionOfFileName ==
-                                                                            '.heic' ||
-                                                                        extensionOfFileName ==
-                                                                            '.heif') {
-                                                                      imageCompressResult = await FlutterImageCompress.compressAndGetFile(
-                                                                          file.absolute
-                                                                              .path,
-                                                                          targetPath,
-                                                                          quality:
-                                                                              88,
-                                                                          rotate:
-                                                                              0,
-                                                                          format:
-                                                                              CompressFormat.heic);
-                                                                    }
+                                                                      ImageFile
+                                                                          input =
+                                                                          ImageFile(
+                                                                        rawBytes:
+                                                                            file.readAsBytesSync(),
+                                                                        filePath:
+                                                                            file.path,
+                                                                      ); // set the input image file
+                                                                      Configuration
+                                                                          config =
+                                                                          Configuration(
+                                                                        outputType:
+                                                                            ImageOutputType.webpThenPng,
+                                                                        // can only be true for Android and iOS while using ImageOutputType.jpg or ImageOutputType.pngÏ
+                                                                        useJpgPngNativeCompressor:
+                                                                            false,
+                                                                        // set quality between 0-100
+                                                                        quality:
+                                                                            88,
+                                                                      );
 
-                                                                    print(file
-                                                                        .lengthSync());
-                                                                    print(imageCompressResult!
-                                                                        .lengthSync());
+                                                                      final param = ImageFileConfiguration(
+                                                                          input:
+                                                                              input,
+                                                                          config:
+                                                                              config);
+                                                                      final output =
+                                                                          await compressor
+                                                                              .compress(param);
+
+                                                                      final bytes =
+                                                                          output
+                                                                              .rawBytes;
+                                                                      imageCompressResult =
+                                                                          File(
+                                                                              targetPath);
+                                                                      await imageCompressResult.writeAsBytes(bytes
+                                                                          .buffer
+                                                                          .asUint8List(
+                                                                              bytes.offsetInBytes,
+                                                                              bytes.lengthInBytes));
+                                                                    }
+                                                                    // else if (extensionOfFileName ==
+                                                                    //         '.heic' ||
+                                                                    //     extensionOfFileName ==
+                                                                    //         '.heif') {
+                                                                    //   imageCompressResult = await FlutterImageCompress.compressAndGetFile(
+                                                                    //       file.absolute
+                                                                    //           .path,
+                                                                    //       targetPath,
+                                                                    //       quality:
+                                                                    //           88,
+                                                                    //       rotate:
+                                                                    //           0,
+                                                                    //       format:
+                                                                    //           CompressFormat.heic);
+                                                                    // }
+
+                                                                    // print(file
+                                                                    //     .lengthSync());
+                                                                    // print(imageCompressResult!
+                                                                    //     .lengthSync());
 
                                                                     return imageCompressResult;
                                                                   }
@@ -449,40 +798,26 @@ class _PDFFunctionBodyForSelectingSingleMultipleImagesState
                                                                       "${await getCacheFilePathFromFileName(fileNameWithoutExtension + ' ' + 'compressed' + ' ' + i.toString() + extensionOfFileName)}";
                                                                   print(
                                                                       "targetPath $targetPath");
-                                                                  if (extensionOfFileName == '.png' ||
+                                                                  if (extensionOfFileName ==
+                                                                          '.png' ||
                                                                       extensionOfFileName ==
                                                                           '.jpg' ||
                                                                       extensionOfFileName ==
                                                                           '.jpeg' ||
-                                                                      extensionOfFileName ==
-                                                                          '.heic' ||
-                                                                      extensionOfFileName ==
-                                                                          '.heif' ||
+                                                                      // extensionOfFileName ==
+                                                                      //     '.heic' ||
+                                                                      // extensionOfFileName ==
+                                                                      //     '.heif' ||
                                                                       extensionOfFileName ==
                                                                           '.webp') {
-                                                                    compressedFiles.add(
-                                                                        await compressAndGetFile(
-                                                                            file,
-                                                                            targetPath));
+                                                                    compressedFiles.add(await compressAndGetFile(
+                                                                        files[
+                                                                            i],
+                                                                        targetPath));
                                                                     compressedFilesPaths
                                                                         .add(
                                                                             targetPath);
                                                                   }
-                                                                  filePaths.add(
-                                                                      xFile
-                                                                          .path);
-                                                                  print(
-                                                                      "xFile.path : ${xFile.path}");
-
-                                                                  fileBytes.add(
-                                                                      file.lengthSync());
-                                                                  fileNames.add(
-                                                                      xFile
-                                                                          .name);
-                                                                  filesSize =
-                                                                      filesSize +
-                                                                          fileBytes[
-                                                                              i];
                                                                 }
 
                                                                 print(
@@ -505,10 +840,12 @@ class _PDFFunctionBodyForSelectingSingleMultipleImagesState
 
                                                                 isFilePickingInitiated =
                                                                     false; //as the file should be picked and loaded in the app cache & images are compressed at this point
+
                                                               } else {
+                                                                //result was null
                                                                 setState(() {
                                                                   print(
-                                                                      'User canceled the picker');
+                                                                      'ImagePicker() result was null');
                                                                   isFilePickingInitiated =
                                                                       false;
                                                                   isFilePicked =
@@ -518,22 +855,7 @@ class _PDFFunctionBodyForSelectingSingleMultipleImagesState
                                                                       ?.call(
                                                                           false);
                                                                 });
-                                                                // User canceled the picker
                                                               }
-                                                            } else {
-                                                              //result was null
-                                                              setState(() {
-                                                                print(
-                                                                    'ImagePicker() result was null');
-                                                                isFilePickingInitiated =
-                                                                    false;
-                                                                isFilePicked =
-                                                                    false;
-                                                                widget
-                                                                    .onNotifyAppbarFileStatus
-                                                                    ?.call(
-                                                                        false);
-                                                              });
                                                             }
                                                           } else if (status ==
                                                               PermissionStatus
@@ -684,7 +1006,7 @@ class _PDFFunctionBodyForSelectingSingleMultipleImagesState
                                                                         .start,
                                                                 children: [
                                                                   Text(
-                                                                    "${images!.length.toString() + ' ' + 'Images Selected'}",
+                                                                    "${files.length.toString() + ' ' + 'Images Selected'}",
                                                                     overflow:
                                                                         TextOverflow
                                                                             .ellipsis,
@@ -769,10 +1091,12 @@ class _PDFFunctionBodyForSelectingSingleMultipleImagesState
                                                                         widget
                                                                             .onNotifyAppbarFileStatus
                                                                             ?.call(false);
-                                                                        FilePicker
-                                                                            .platform
-                                                                            .clearTemporaryFiles();
-
+                                                                        if (Platform.isAndroid ||
+                                                                            Platform.isIOS) {
+                                                                          FilePicker
+                                                                              .platform
+                                                                              .clearTemporaryFiles();
+                                                                        }
                                                                         // This is the trick to reset whole page! Required to reset step-2 button warnings
                                                                         ++_count; //the count would change the key of this widget forcing it to reset
                                                                       });
@@ -1016,23 +1340,26 @@ class _PDFFunctionBodyForSelectingSingleMultipleImagesState
                                     PDFFunctions(
                                       filePickedStatus: isFilePicked,
                                       fileLoadingStatus: isFileLoaded,
-                                      onTapAction: () => widget
-                                                      .mapOfFunctionDetails![
-                                                  'Sublist Functions'][index][
-                                              'Action'](
-                                          files,
-                                          compressedFiles.isNotEmpty
-                                              ? compressedFiles
-                                              : files,
-                                          filePaths,
-                                          compressedFilesPaths.isNotEmpty
-                                              ? compressedFilesPaths
-                                              : filePaths,
-                                          fileNames,
-                                          fileBytes,
+                                      onTapAction: () =>
                                           widget.mapOfFunctionDetails![
-                                              'Sublist Functions'][index],
-                                          context),
+                                                          'Sublist Functions']
+                                                      [index]
+                                                  ['Action'](
+                                              files,
+                                              compressedFiles.length ==
+                                                      files.length
+                                                  ? compressedFiles
+                                                  : files,
+                                              filePaths,
+                                              compressedFilesPaths.length ==
+                                                      filePaths.length
+                                                  ? compressedFilesPaths
+                                                  : filePaths,
+                                              fileNames,
+                                              fileBytes,
+                                              widget.mapOfFunctionDetails![
+                                                  'Sublist Functions'][index],
+                                              context),
                                       subFunctionDetailMap:
                                           widget.mapOfFunctionDetails![
                                               'Sublist Functions'][index],
@@ -1105,3 +1432,5 @@ class _PDFFunctionBodyForSelectingSingleMultipleImagesState
     );
   }
 }
+
+//todo check filetype and show a snack bar for wrong filetype

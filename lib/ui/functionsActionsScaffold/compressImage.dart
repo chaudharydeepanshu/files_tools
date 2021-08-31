@@ -367,22 +367,24 @@ class _CompressImagesScaffoldState extends State<CompressImagesScaffold>
                   ),
                 ),
               ),
-              Material(
-                type: MaterialType.transparency,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    MeasureSize(
-                      onChange: (Size size) {
-                        setState(() {
-                          bannerAdSize = size;
-                        });
-                      },
-                      child: BannerAD(),
-                    ),
-                  ],
-                ),
-              ),
+              Platform.isWindows
+                  ? Material(
+                      type: MaterialType.transparency,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          MeasureSize(
+                            onChange: (Size size) {
+                              setState(() {
+                                bannerAdSize = size;
+                              });
+                            },
+                            child: BannerAD(),
+                          ),
+                        ],
+                      ),
+                    )
+                  : Container(),
               // selectedDataProcessed == true ? progressFakeDialogBox : Container(),
             ],
           ),
