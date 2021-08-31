@@ -28,8 +28,8 @@ dependencies:
   intl: ^0.17.0
   #  salomon_bottom_bar: ^3.1.0
   file_picker: ^4.0.0
-  syncfusion_flutter_pdf: ^19.2.57-beta
-  syncfusion_flutter_pdfviewer: ^19.2.57-beta
+  syncfusion_flutter_pdf: ^19.2.59-beta
+  syncfusion_flutter_pdfviewer: ^19.2.59-beta
   open_file: ^3.2.1
   path_provider: ^2.0.2
   native_pdf_renderer: ^3.1.0
@@ -56,8 +56,9 @@ dependencies:
   pdf_compressor: ^0.2.0
   image_picker: ^0.8.3+3
   flutter_image_compress: ^1.1.0
+  image_compression_flutter: ^1.0.2
   share_plus: ^2.1.4
-  google_mobile_ads: ^0.13.3
+  google_mobile_ads: ^0.13.4
 #  google_mobile_ads:
 #    git:
 #      url: https://github.com/SuaMusica/googleads-mobile-flutter.git
