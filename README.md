@@ -4,9 +4,9 @@ This is a project repository for Files Tools application.
 
 ### Files Tools application
 
-| App Icon | Download Link |
-| ------------- | ------------- |
-| ![ic_launcher](https://user-images.githubusercontent.com/85361211/128973496-365b0ea2-d777-4423-b86b-416814b586a8.png) | <a href='https://play.google.com/store/apps/details?id=com.pureinfoapps.android.apps.filestools'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' height='80px'/></a> |
+| App Icon | Download Link | Feature Image |
+| ------------- | ------------- | ------------- |
+| ![ic_launcher](https://user-images.githubusercontent.com/85361211/128973496-365b0ea2-d777-4423-b86b-416814b586a8.png) | <a href='https://play.google.com/store/apps/details?id=com.pureinfoapps.android.apps.filestools'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' width='300px'/></a> | ![Feature Image](https://user-images.githubusercontent.com/85361211/131718930-111acd41-29ee-443a-93c9-4709dadc2ee7.png) |
 
 Files Tools is an application based on tools, it provides tools to perform various operations on files (documents and media), which helps everyone in their everyday life.
 
@@ -22,20 +22,34 @@ It offers various features such as:-
 
 **For Image:-**
 -  Convert Images - Images To PDF.
--  Modify Image - This allows you to crop, flip and rotate any image. In crop, there are various options such as 'custom',  'specific' (which allows you to crop in any aspect ratio), and some predefined common aspect ratios ('1*1', '4*3', '3*4', '16*9').
+-  Modify Image - This allows you to crop, flip and rotate any image. In crop, there are various options such as 'custom', 'specific' (which allows you to crop in any aspect ratio), and some predefined common aspect ratios ('11', '43', '34', '169').
+-  Compress Images.
 
-| Document Tools | Merge PDF | Split PDF | Modify PDF |
-| ---- | ---- | ---- | ---- |
-| ![Document Tools](https://user-images.githubusercontent.com/85361211/128974714-e40a5026-81cb-4243-8394-1de97b4db2d5.png) | ![Merge PDF](https://user-images.githubusercontent.com/85361211/128974750-5e9b00ed-6528-455e-87c3-88c67fe33454.png) | ![Split PDF](https://user-images.githubusercontent.com/85361211/128974775-650b1f37-6ae4-4d39-96e7-73022b8e2445.png) | ![Modify PDF](https://user-images.githubusercontent.com/85361211/128974795-8ad6d856-9344-4fa4-a124-25300f4feba2.png) |
+| Document Tools |
+| :----: |
+|![Document And Media Tools](https://user-images.githubusercontent.com/85361211/131717968-480e56e1-f54c-4ab5-b75e-85be7d9c6e9d.png)|
 
-| Convert PDF | Compress PDF | Secure PDF | Images To PDF |
-| ---- | ---- | ---- | ---- |
-| ![Convert PDF](https://user-images.githubusercontent.com/85361211/128974809-a4dc16cb-962b-45d8-a1d5-4b3edd46e3b9.png) | ![Compress PDF](https://user-images.githubusercontent.com/85361211/128974824-e0b3297f-2a43-49be-a510-ffbbd1b56c61.png) | ![Secure PDF](https://user-images.githubusercontent.com/85361211/128974838-af3ec03f-03f9-4f90-93e6-d7f9151fb204.png) | ![Images To PDF](https://user-images.githubusercontent.com/85361211/128974848-66f7f068-16d7-4895-9b0d-5873e30c35a0.png) |
+| Merge, Split And Compress |
+| :----: |
+|![Merge, Split And Compress](https://user-images.githubusercontent.com/85361211/131718188-967f24e7-f161-4237-94b7-345f6082b046.png)|
+
+| Modify And Protect |
+| :----: |
+|![Modify And Protect](https://user-images.githubusercontent.com/85361211/131718213-fb8468d0-c3c7-41a7-9c50-e18b888cfb8a.png)|
+
+| PDF To Images And Watermark |
+| :----: |
+|![PDF To Images And Watermark](https://user-images.githubusercontent.com/85361211/131718276-892c7f68-cc26-468e-ab96-6bb27990da21.png)|
+
+| Images To PDF And Compress Images |
+| :----: |
+|![Images To PDF And Compress Images](https://user-images.githubusercontent.com/85361211/131718069-8226f365-5930-4686-8797-1353912cab37.png)|
+
+| Modify Images |
+| :----: |
+|![Modify Images](https://user-images.githubusercontent.com/85361211/131718245-808cf627-54e8-4a50-bd15-428ea748f661.png)|
 
 **Features that I could implement in near future:-**
-
-- [ ] Image features
-    - [ ] Image compression
 - [ ] PDF features
     - [ ] PDF to Word
     - [ ] PDF to Excel
