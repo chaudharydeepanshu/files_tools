@@ -17,7 +17,7 @@ import 'package:files_tools/ui/functionsMainScaffold/pdfFunctionPagesScaffold.da
 import 'package:files_tools/ui/functionsResultsScaffold/resultImageScaffold.dart';
 import 'package:files_tools/ui/functionsResultsScaffold/resultPdfScaffold.dart';
 import 'package:files_tools/ui/functionsResultsScaffold/resultZipScaffold.dart';
-import 'package:files_tools/ui/pdfViewerScaffold/pdfscaffold.dart';
+import 'package:files_tools/ui/pdfViewerScaffold/pdfScaffold.dart';
 import 'package:files_tools/ui/topLevelPagesScaffold/mainPageScaffold.dart';
 import 'package:files_tools/widgets/functionsActionWidgets/reusableUIActionWidgets/reorder_pages_scaffold.dart';
 import 'package:flutter/material.dart';

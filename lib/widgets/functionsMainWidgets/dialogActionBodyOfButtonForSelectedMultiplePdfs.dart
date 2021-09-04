@@ -3,7 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:files_tools/basicFunctionalityFunctions/getSizeFromBytes.dart';
 import 'package:files_tools/basicFunctionalityFunctions/sizeCalculator.dart';
 import 'package:files_tools/navigation/page_routes_model.dart';
-import 'package:files_tools/ui/pdfViewerScaffold/pdfscaffold.dart';
+import 'package:files_tools/ui/pdfViewerScaffold/pdfScaffold.dart';
 import 'package:open_file/open_file.dart';
 
 class DialogActionBodyOfButtonForSelectedMultipleFiles extends StatefulWidget {

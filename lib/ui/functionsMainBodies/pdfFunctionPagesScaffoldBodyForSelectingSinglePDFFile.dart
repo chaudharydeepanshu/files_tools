@@ -17,7 +17,7 @@ import 'package:open_file/open_file.dart';
 import 'package:permission_handler/permission_handler.dart';
 import '../../../app_theme/app_theme.dart';
 import '../../../basicFunctionalityFunctions/getSizeFromBytes.dart';
-import 'package:files_tools/ui/pdfViewerScaffold/pdfscaffold.dart';
+import 'package:files_tools/ui/pdfViewerScaffold/pdfScaffold.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:files_tools/widgets/functionsMainWidgets/functionsButtons.dart';
 import 'dart:io';

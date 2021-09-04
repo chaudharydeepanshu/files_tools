@@ -12,7 +12,7 @@ import 'package:files_tools/basicFunctionalityFunctions/sizeCalculator.dart';
 import 'package:files_tools/navigation/page_routes_model.dart';
 import 'package:files_tools/basicFunctionalityFunctions/processSelectedDataFromUser.dart';
 import 'package:files_tools/ui/functionsResultsScaffold/resultPdfScaffold.dart';
-import 'package:files_tools/ui/pdfViewerScaffold/pdfscaffold.dart';
+import 'package:files_tools/ui/pdfViewerScaffold/pdfScaffold.dart';
 import 'package:files_tools/widgets/functionsActionWidgets/reusableUIActionWidgets/progressFakeDialogBox.dart';
 import 'package:files_tools/widgets/reusableUIWidgets/ReusableTopAppBar.dart';
 import 'package:open_file/open_file.dart';
