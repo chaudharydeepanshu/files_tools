@@ -588,9 +588,11 @@ packages:
   pdf_compressor:
     dependency: "direct main"
     description:
-      name: pdf_compressor
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "."
+      ref: master
+      resolved-ref: "9bce79de909b54582e275cd709b8f721606a3484"
+      url: "https://github.com/brightseagit/flutter_pdf_compressor.git"
+    source: git
     version: "0.2.0"
   pdf_merger:
     dependency: "direct main"
