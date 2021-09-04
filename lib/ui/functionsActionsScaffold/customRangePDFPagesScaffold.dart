@@ -140,7 +140,7 @@ class _CustomRangePDFPagesScaffoldState
             },
             processType:
                 "${widget.arguments!.processType + " As Single Document"}",
-            filePath: widget.arguments!.pdfFile.path!,
+            filePath: widget.arguments!.pdfFile.path,
             shouldDataBeProcessed: shouldDataBeProcessed);
 
         Map map = Map();
@@ -208,7 +208,7 @@ class _CustomRangePDFPagesScaffoldState
             },
             processType:
                 "${widget.arguments!.processType + " As Separate Documents"}",
-            filePath: widget.arguments!.pdfFile.path!,
+            filePath: widget.arguments!.pdfFile.path,
             shouldDataBeProcessed: shouldDataBeProcessed);
 
         Map map = Map();

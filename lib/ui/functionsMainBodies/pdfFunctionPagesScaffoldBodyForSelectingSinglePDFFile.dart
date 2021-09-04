@@ -396,7 +396,7 @@ class _PDFFunctionBodyState extends State<PDFFunctionBody>
                                                                 bool
                                                                     isEncryptedDocument =
                                                                     checkEncryptedDocument(
-                                                                        file.path!);
+                                                                        file.path);
 
                                                                 bool
                                                                     shouldEncryptedDocumentsAllowed =
@@ -441,7 +441,7 @@ class _PDFFunctionBodyState extends State<PDFFunctionBody>
                                                                     if (isFileLoadingRequired ==
                                                                         true) {
                                                                       nativePDFRendererToImg(
-                                                                          file.path!);
+                                                                          file.path);
                                                                     } else {
                                                                       isFileLoaded =
                                                                           true;
@@ -511,7 +511,7 @@ class _PDFFunctionBodyState extends State<PDFFunctionBody>
                                                                     if (isEncryptedDocument ==
                                                                         false) {
                                                                       nativePDFRendererToImg(
-                                                                          file.path!);
+                                                                          file.path);
                                                                       print(
                                                                           'Document not encrypted & encrypted documents are allowed');
                                                                     } else {

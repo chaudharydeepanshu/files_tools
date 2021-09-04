@@ -38,7 +38,7 @@ class _ExtractAllPDFPagesScaffoldState extends State<ExtractAllPDFPagesScaffold>
   int numberOfPDFCreated = 0;
   Future<void> pdfsPageCount() async {
     String? filePath = widget.arguments!.pdfFile.path;
-    final newDocument = await pdfRenderer.PdfDocument.openFile(filePath!);
+    final newDocument = await pdfRenderer.PdfDocument.openFile(filePath);
     pdfPagesCount = newDocument.pagesCount;
     newDocument.close();
   }
@@ -95,7 +95,7 @@ class _ExtractAllPDFPagesScaffoldState extends State<ExtractAllPDFPagesScaffold>
               'PDF File Name': '${widget.arguments!.pdfFile.name}'
             },
             processType: "${widget.arguments!.processType}",
-            filePath: widget.arguments!.pdfFile.path!,
+            filePath: widget.arguments!.pdfFile.path,
             shouldDataBeProcessed: shouldDataBeProcessed);
 
         Map map = Map();

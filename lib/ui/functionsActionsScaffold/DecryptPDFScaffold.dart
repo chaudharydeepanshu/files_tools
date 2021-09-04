@@ -88,7 +88,7 @@ class _DecryptPDFScaffoldState extends State<DecryptPDFScaffold>
                   textEditingControllerUserPassword,
             },
             processType: widget.arguments!.processType,
-            filePath: widget.arguments!.pdfFile.path!,
+            filePath: widget.arguments!.pdfFile.path,
             shouldDataBeProcessed: shouldDataBeProcessed);
         if (document == 'BothPasswordFailed') {
           _onWillPop();

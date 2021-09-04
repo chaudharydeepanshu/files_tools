@@ -84,7 +84,7 @@ class _FixedRangePDFPagesScaffoldState extends State<FixedRangePDFPagesScaffold>
               'PDF File Name': '${widget.arguments!.pdfFile.name}'
             },
             processType: "${widget.arguments!.processType}",
-            filePath: widget.arguments!.pdfFile.path!,
+            filePath: widget.arguments!.pdfFile.path,
             shouldDataBeProcessed: shouldDataBeProcessed);
 
         Map map = Map();

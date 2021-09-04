@@ -58,7 +58,7 @@ class _CompressPDFScaffoldState extends State<CompressPDFScaffold>
               'PDF Compress Quality': _method.toString(),
             },
             processType: widget.arguments!.processType,
-            filePath: widget.arguments!.pdfFile.path!,
+            filePath: widget.arguments!.pdfFile.path,
             shouldDataBeProcessed: shouldDataBeProcessed);
 
         Map map = Map();
