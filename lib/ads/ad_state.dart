@@ -11,16 +11,22 @@ class AdState {
       //? null
       : 'ca-app-pub-3940256099942544/2934735716';
 
+  static bool adStatus = true;
+
   AdManagerBannerAdListener get adListener => _adListener;
 
   AdManagerBannerAdListener _adListener = AdManagerBannerAdListener(
     // Called when an ad is successfully received.
-    onAdLoaded: (Ad ad) => print('Ad loaded.'),
+    onAdLoaded: (Ad ad) {
+      print('Ad loaded.');
+      adStatus = true;
+    },
     // Called when an ad request failed.
     onAdFailedToLoad: (Ad ad, LoadAdError error) {
       // Dispose the ad here to free resources.
       ad.dispose();
       print('Ad failed to load: $error');
+      adStatus = false;
     },
     // Called when an ad opens an overlay that covers the screen.
     onAdOpened: (Ad ad) => print('Ad opened.'),

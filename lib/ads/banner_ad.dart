@@ -86,12 +86,29 @@ class _BannerADState extends State<BannerAD> {
 
   AnchoredAdaptiveBannerAdSize? size;
 
+  String? now;
+  Timer? everySecond;
+
   @override
   void initState() {
     super.initState();
     initConnectivity();
     _connectivitySubscription =
         _connectivity.onConnectivityChanged.listen(_updateConnectionStatus);
+
+    // sets first value
+    now = DateTime.now().second.toString();
+
+    // defines a timer to update ad ui according to latest adStatus value from AdState class
+    // this timer is set to setState every 5 seconds
+    // we are using it to hide ad loading status if ad fails to load due to any case other than internet
+    everySecond = Timer.periodic(Duration(seconds: 5), (Timer t) {
+      if (mounted) {
+        setState(() {
+          now = DateTime.now().second.toString();
+        });
+      }
+    });
   }
 
   // Platform messages are asynchronous, so we initialize in an async method.
@@ -174,9 +191,9 @@ class _BannerADState extends State<BannerAD> {
                 ),
               )
             : Container(
-                color: Colors.grey,
-                width: size!.width.toDouble(),
-                height: size!.height.toDouble(),
+                color: AdState.adStatus ? Colors.grey : Colors.transparent,
+                width: AdState.adStatus ? size!.width.toDouble() : 0,
+                height: AdState.adStatus ? size!.height.toDouble() : 0,
                 child: Stack(
                   children: [
                     Column(
@@ -185,21 +202,26 @@ class _BannerADState extends State<BannerAD> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Expanded(
-                              child: Text(
-                                'Ad loading...\nThanks for your support',
-                                style: TextStyle(
-                                    fontSize: 20, fontWeight: FontWeight.bold),
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
+                            AdState.adStatus
+                                ? Expanded(
+                                    child: Text(
+                                      'Ad loading...\nThanks for your support',
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  )
+                                : Container(),
                           ],
                         ),
                       ],
                     ),
-                    CustomAdWidget(
-                      ad: banner!,
-                    ),
+                    AdState.adStatus
+                        ? CustomAdWidget(
+                            ad: banner!,
+                          )
+                        : Container(),
                     // AdWidget(
                     //   ad: banner!,
                     // ),
