@@ -1,7 +1,7 @@
-import 'package:pdf_compressor/pdf_compressor.dart';
 import 'package:files_tools/basicFunctionalityFunctions/deletingTempPDFFiles.dart';
 import 'package:files_tools/basicFunctionalityFunctions/fileNameManager.dart';
 import 'package:files_tools/basicFunctionalityFunctions/getExternalStorageFilePathFromFileName.dart';
+import 'package:pdf_compressor/pdf_compressor.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
 import 'dart:io';
 
@@ -41,23 +41,35 @@ Future<PdfDocument?> compressPDF(String pdfFilePath,
     try {
       if (pdfChangesDataMap['PDF Compress Quality'] == "Qualities.medium") {
         await PdfCompressor.compressPdfFile(
-            pdfFilePath,
-            await getExternalStorageFilePathFromFileName(
-                "${fileNameWithoutExtension + ' ' + 'compressed' + extensionOfFileName}"),
-            CompressQuality.MEDIUM);
+          inputPath: pdfFilePath,
+          outputPath: await getExternalStorageFilePathFromFileName(
+              "${fileNameWithoutExtension + ' ' + 'compressed' + extensionOfFileName}"),
+          quality: CompressQuality.MEDIUM,
+        );
       } else if (pdfChangesDataMap['PDF Compress Quality'] == "Qualities.low") {
         await PdfCompressor.compressPdfFile(
-            pdfFilePath,
-            await getExternalStorageFilePathFromFileName(
-                "${fileNameWithoutExtension + ' ' + 'compressed' + extensionOfFileName}"),
-            CompressQuality.LOW);
+          inputPath: pdfFilePath,
+          outputPath: await getExternalStorageFilePathFromFileName(
+              "${fileNameWithoutExtension + ' ' + 'compressed' + extensionOfFileName}"),
+          quality: CompressQuality.LOW,
+        );
       } else if (pdfChangesDataMap['PDF Compress Quality'] ==
           "Qualities.high") {
         await PdfCompressor.compressPdfFile(
-            pdfFilePath,
-            await getExternalStorageFilePathFromFileName(
-                "${fileNameWithoutExtension + ' ' + 'compressed' + extensionOfFileName}"),
-            CompressQuality.HIGH);
+          inputPath: pdfFilePath,
+          outputPath: await getExternalStorageFilePathFromFileName(
+              "${fileNameWithoutExtension + ' ' + 'compressed' + extensionOfFileName}"),
+          quality: CompressQuality.HIGH,
+        );
+      } else if (pdfChangesDataMap['PDF Compress Quality'] ==
+          "Qualities.custom") {
+        await PdfCompressor.compressPdfFile(
+          inputPath: pdfFilePath,
+          outputPath: await getExternalStorageFilePathFromFileName(
+              "${fileNameWithoutExtension + ' ' + 'compressed' + extensionOfFileName}"),
+          quality: CompressQuality.CUSTOM,
+          customQuality: pdfChangesDataMap['Quality Custom Value'],
+        );
       }
 
       //passing final document to document variable
