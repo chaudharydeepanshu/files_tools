@@ -927,34 +927,34 @@ class _ReorderPDFPagesScaffoldState extends State<ReorderPDFPagesScaffold>
           : 1,
       child: Column(
         children: <Widget>[
-          Expanded(
-            child: Container(
-              decoration: BoxDecoration(
-                border: Border.all(
-                  width: 1, //selectedImages[index] == true ? 2 : 1,
-                  color:
-                      selectedImages[index] == true ? Colors.blue : Colors.grey,
-                ),
+          Container(
+            height: 270,
+            width: 165,
+            decoration: BoxDecoration(
+              border: Border.all(
+                width: 1, //selectedImages[index] == true ? 2 : 1,
+                color:
+                    selectedImages[index] == true ? Colors.blue : Colors.grey,
               ),
-              child: ConstrainedBox(
-                constraints: BoxConstraints(
-                  maxHeight: 234,
-                  maxWidth: 165,
-                ),
-                child: ClipRRect(
-                  child: Container(
-                    height: 234,
-                    width: 165,
-                    decoration: BoxDecoration(
-                      color: selectedImages[index] == true
-                          ? Colors.lightBlue[100]
-                          : Colors.transparent,
-                    ),
-                    child: Stack(
-                      children: [
-                        rotatedBoxImage,
-                      ],
-                    ),
+            ),
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                maxHeight: 234,
+                maxWidth: 165,
+              ),
+              child: ClipRRect(
+                child: Container(
+                  height: 234,
+                  width: 165,
+                  decoration: BoxDecoration(
+                    color: selectedImages[index] == true
+                        ? Colors.lightBlue[100]
+                        : Colors.transparent,
+                  ),
+                  child: Stack(
+                    children: [
+                      rotatedBoxImage,
+                    ],
                   ),
                 ),
               ),
@@ -982,6 +982,8 @@ class _ReorderPDFPagesScaffoldState extends State<ReorderPDFPagesScaffold>
       child: Column(
         children: <Widget>[
           Container(
+            height: 270,
+            width: 165,
             decoration: BoxDecoration(
               border: Border.all(
                 width: 1, //selectedImages[index] == true ? 2 : 1,
