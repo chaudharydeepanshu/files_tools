@@ -13,6 +13,7 @@ Files Tools is an application based on tools, it provides tools to perform vario
 It offers various features such as:-
 
 **For PDF:-**
+
 -  Merge multiple PDFs.
 -  Split PDF - Extract select pages, custom ranges, fixed range, extract all pages.
 -  Modify PDF - Rotate, delete, reorder PDF pages.
@@ -21,6 +22,7 @@ It offers various features such as:-
 -  Convert PDF - PDF To Images.
 
 **For Image:-**
+
 -  Convert Images - Images To PDF.
 -  Modify Image - This allows you to crop, flip and rotate any image. In crop, there are various options such as 'custom', 'specific' (which allows you to crop in any aspect ratio), and some predefined common aspect ratios ('11', '43', '34', '169').
 -  Compress Images.
@@ -50,6 +52,7 @@ It offers various features such as:-
 |![Modify Images](https://user-images.githubusercontent.com/85361211/131718245-808cf627-54e8-4a50-bd15-428ea748f661.png)|
 
 **Features that I could implement in near future:-**
+
 - [ ] PDF features
     - [ ] PDF to Word
     - [ ] PDF to Excel
@@ -66,3 +69,7 @@ It offers various features such as:-
 - [ ] Powerpoint features
     - [ ] Powerpoint to PDF
     - [ ] Powerpoint to Image
+
+### Contributing
+
+To contribute in this project you can reach to me at [Discord](https://discordapp.com/users/546260843902271515/) and we will discuss how you can contribute.
