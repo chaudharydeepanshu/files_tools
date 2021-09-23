@@ -36,7 +36,7 @@ class _PDFToImagesScaffoldState extends State<PDFToImagesScaffold>
   int numberOfPDFCreated = 0;
   Future<void> pdfsPageCount() async {
     String? filePath = widget.arguments!.pdfFile.path;
-    final newDocument = await pdfRenderer.PdfDocument.openFile(filePath);
+    final newDocument = await pdfRenderer.PdfDocument.openFile(filePath!);
     pdfPagesCount = newDocument.pagesCount;
     newDocument.close();
   }
