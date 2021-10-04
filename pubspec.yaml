@@ -70,13 +70,13 @@ dependencies:
 #      ref: feature/suamusica
   provider: ^6.0.1
   adaptive_theme: ^2.2.0
-  gallery_saver: ^2.3.0
+  gallery_saver: ^2.3.1
   document_file_save:
     git:
       url: https://github.com/brightseagit/document_file_save.git
       ref: master
-  package_info_plus: ^1.1.0
-  connectivity_plus: ^1.2.0
+  package_info_plus: ^1.2.1
+  connectivity_plus: ^1.4.0
   extended_image: ^5.1.2
   image_editor: ^1.0.1
   flutter_native_image: ^0.0.6+1
