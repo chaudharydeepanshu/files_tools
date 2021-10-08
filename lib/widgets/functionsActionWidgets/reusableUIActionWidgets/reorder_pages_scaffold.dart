@@ -1059,7 +1059,7 @@ class _ReorderPDFPagesScaffoldState extends State<ReorderPDFPagesScaffold>
                   child: Column(
                     children: [
                       Expanded(
-                        child: ReorderableGridView(
+                        child: ReorderableGridView.count(
                           crossAxisSpacing: 10,
                           mainAxisSpacing: 0,
                           crossAxisCount: 2,
