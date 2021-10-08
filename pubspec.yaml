@@ -36,7 +36,7 @@ dependencies:
   pdf_merger: ^0.0.6
   flutter_file_dialog: ^2.1.1
   flutter_svg: ^0.22.0
-  reorderable_grid_view: ^1.1.0
+  reorderable_grid_view: ^2.0.0-alpha.1
   #  reorderable_grid_view:
   #    git:
   #      url: https://github.com/brightseagit/reorderable_grid_view.git
