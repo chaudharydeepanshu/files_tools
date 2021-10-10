@@ -71,8 +71,9 @@ class _CompressImagesScaffoldState extends State<CompressImagesScaffold>
             pdfChangesDataMap: {
               'File Names': widget.arguments!.fileNames,
               'Qualities Method': _method,
-              'Quality Custom Value':
-                  int.parse(customQualityTextEditingController.text),
+              'Quality Custom Value': _method == Qualities.custom
+                  ? int.parse(customQualityTextEditingController.text)
+                  : 0,
               //'State': editorKey.currentState!,
             },
             processType: widget.arguments!.processType,
@@ -203,6 +204,7 @@ class _CompressImagesScaffoldState extends State<CompressImagesScaffold>
 
   @override
   Widget build(BuildContext context) {
+    print(_method);
     return ReusableAnnotatedRegion(
       child: GestureDetector(
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
