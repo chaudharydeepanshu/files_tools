@@ -227,7 +227,7 @@ class _CompressImagesScaffoldState extends State<CompressImagesScaffold>
                         ? _formKey.currentState!.validate()
                             ? appBarIconRightAction
                             : null
-                        : null,
+                        : appBarIconRightAction,
                   ),
                   body: Stack(
                     children: [
