@@ -67,8 +67,9 @@ class _CompressPDFScaffoldState extends State<CompressPDFScaffold>
             pdfChangesDataMap: {
               'PDF File Name': '${widget.arguments!.pdfFile.name}',
               'PDF Compress Quality': _method.toString(),
-              'Quality Custom Value':
-                  int.parse(customQualityTextEditingController.text),
+              'Quality Custom Value': _method == Qualities.custom
+                  ? int.parse(customQualityTextEditingController.text)
+                  : 0,
             },
             processType: widget.arguments!.processType,
             filePath: widget.arguments!.pdfFile.path,
@@ -193,7 +194,11 @@ class _CompressPDFScaffoldState extends State<CompressPDFScaffold>
                     rightButtonColor: Colors.blue,
                     appBarIconRight: appBarIconRight,
                     appBarIconRightToolTip: appBarIconRightToolTip,
-                    appBarIconRightAction: appBarIconRightAction,
+                    appBarIconRightAction: _formKey.currentState != null
+                        ? _formKey.currentState!.validate()
+                            ? appBarIconRightAction
+                            : null
+                        : appBarIconRightAction,
                   ),
                   body: Stack(
                     children: [
