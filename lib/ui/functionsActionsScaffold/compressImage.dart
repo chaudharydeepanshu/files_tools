@@ -9,7 +9,6 @@ import 'package:files_tools/basicFunctionalityFunctions/sizeCalculator.dart';
 import 'package:files_tools/ui/functionsResultsScaffold/resultImageScaffold.dart';
 import 'package:files_tools/ui/functionsResultsScaffold/resultZipScaffold.dart';
 import 'package:files_tools/widgets/annotatedRegion.dart';
-import 'package:files_tools/widgets/functionsMainWidgets/directPop.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:files_tools/navigation/page_routes_model.dart';
