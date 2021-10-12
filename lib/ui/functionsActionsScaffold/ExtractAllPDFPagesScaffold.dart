@@ -11,7 +11,7 @@ import 'package:files_tools/basicFunctionalityFunctions/creatingAndSavingZipFile
 import 'package:files_tools/navigation/page_routes_model.dart';
 import 'package:files_tools/basicFunctionalityFunctions/processSelectedDataFromUser.dart';
 import 'package:files_tools/ui/functionsResultsScaffold/resultZipScaffold.dart';
-import 'package:files_tools/widgets/functionsActionWidgets/reusableUIActionWidgets/progressFakeDialogBox.dart';
+import 'package:files_tools/widgets/functionsActionWidgets/reusableUIActionWidgets/processingDialog.dart';
 import 'package:files_tools/widgets/reusableUIWidgets/ReusableTopAppBar.dart';
 import 'package:native_pdf_renderer/native_pdf_renderer.dart' as pdfRenderer;
 import 'package:provider/provider.dart';
@@ -84,7 +84,15 @@ class _ExtractAllPDFPagesScaffoldState extends State<ExtractAllPDFPagesScaffold>
       setState(() {
         selectedDataProcessed = true;
       });
-      processingDialog(context); //shows the processing dialog
+      processingDialog(
+        context,
+        (bool value) {
+          setState(() {
+            shouldDataBeProcessed = value;
+          });
+          _onWillPop();
+        },
+      ); //shows the processing dialog
 
       List<String>? rangesPdfsFilePaths;
       Future.delayed(const Duration(milliseconds: 500), () async {
@@ -170,10 +178,6 @@ class _ExtractAllPDFPagesScaffoldState extends State<ExtractAllPDFPagesScaffold>
     return false;
   }
 
-  Future<bool> _directPop() async {
-    return true;
-  }
-
   var bannerAdSize = Size.zero;
 
   @override
@@ -181,8 +185,8 @@ class _ExtractAllPDFPagesScaffoldState extends State<ExtractAllPDFPagesScaffold>
     return ReusableAnnotatedRegion(
       child: GestureDetector(
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-        child: WillPopScope(
-          onWillPop: shouldWePopScaffold == true ? _directPop : _onWillPop,
+        //child: WillPopScope(
+        // onWillPop: shouldWePopScaffold == true ? _directPop : _onWillPop, // no use as we handle onWillPop on dialog box it in processingDialog and we used it before here because we were using a fake dialog box which looks like a dialog box but actually just a lookalike created using stack
           child: Stack(
             children: [
               Scaffold(
@@ -323,7 +327,7 @@ class _ExtractAllPDFPagesScaffoldState extends State<ExtractAllPDFPagesScaffold>
               // selectedDataProcessed == true ? progressFakeDialogBox : Container(),
             ],
           ),
-        ),
+       // ),
       ),
     );
   }

@@ -197,7 +197,7 @@ class _PDFFunctionBodyForSelectingSingleImageState
           key: ValueKey<int>(_count),
           child: WillPopScope(
             onWillPop: isFilePicked == true
-                ? () => onWillPop(context)
+                ? () => onWillPopForSelectedFile(context)
                 : () => directPop(),
             child: NotificationListener<OverscrollIndicatorNotification>(
               onNotification: (OverscrollIndicatorNotification overscroll) {
@@ -277,7 +277,7 @@ class _PDFFunctionBodyForSelectingSingleImageState
                                             onTap: isFilePickingInitiated ==
                                                     false
                                                 ? storagePermissionPermanentlyDenied ==
-                                                        false
+                                                        false //if this condition true then that means storage Permission is not Permanently Denied
                                                     ? () async {
                                                         if (isFilePicked ==
                                                             false) {
@@ -1054,3 +1054,5 @@ class _PDFFunctionBodyForSelectingSingleImageState
     );
   }
 }
+
+//todo: stop picking of svg files and limit to png and jpg as some operations like image to pdf can't be performed on svgs

@@ -70,7 +70,8 @@ class _PdfFunctionsAppBarState extends State<PdfFunctionsAppBar> {
                                       Navigator.of(context).pop();
                                     } else if (widget.notifyAppbarFileStatus ==
                                         true) {
-                                      onWillPop(context).then((value) {
+                                      onWillPopForSelectedFile(context)
+                                          .then((value) {
                                         if (value == true) {
                                           widget
                                               .onNotifyBodyPoppingSplitPDFFunctionScaffold

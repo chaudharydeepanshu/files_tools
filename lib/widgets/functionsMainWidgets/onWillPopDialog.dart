@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-Future<bool> onWillPop(BuildContext context) async {
+Future<bool> onWillPopForSelectedFile(BuildContext context) async {
   bool dialogAction;
   dialogAction = await showDialog<bool>(
     barrierDismissible: false,

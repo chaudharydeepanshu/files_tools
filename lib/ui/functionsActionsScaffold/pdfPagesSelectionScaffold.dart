@@ -131,7 +131,7 @@ import 'package:flutter/material.dart';
 import 'package:files_tools/navigation/page_routes_model.dart';
 import 'package:files_tools/basicFunctionalityFunctions/processSelectedDataFromUser.dart';
 import 'package:files_tools/ui/functionsResultsScaffold/resultPdfScaffold.dart';
-import 'package:files_tools/widgets/functionsActionWidgets/reusableUIActionWidgets/progressFakeDialogBox.dart';
+import 'package:files_tools/widgets/functionsActionWidgets/reusableUIActionWidgets/processingDialog.dart';
 import 'package:files_tools/widgets/reusableUIWidgets/ReusableTopAppBar.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
@@ -184,7 +184,15 @@ class _PDFPagesSelectionScaffoldState extends State<PDFPagesSelectionScaffold>
       setState(() {
         selectedDataProcessed = true;
       });
-      processingDialog(context); //shows the processing dialog
+      processingDialog(
+        context,
+        (bool value) {
+          setState(() {
+            shouldDataBeProcessed = value;
+          });
+          _onWillPop();
+        },
+      ); //shows the processing dialog
 
       PdfDocument? document;
       Future.delayed(const Duration(milliseconds: 500), () async {
@@ -278,10 +286,6 @@ class _PDFPagesSelectionScaffoldState extends State<PDFPagesSelectionScaffold>
     return false;
   }
 
-  Future<bool> _directPop() async {
-    return true;
-  }
-
   bool proceedButton() {
     bool ifEveryFalse = selectedImages.every((element) {
       return (element == false);
@@ -305,8 +309,8 @@ class _PDFPagesSelectionScaffoldState extends State<PDFPagesSelectionScaffold>
     print('setState Ran');
     print(bannerAdSize.height);
     return ReusableAnnotatedRegion(
-      child: WillPopScope(
-        onWillPop: shouldWePopScaffold == true ? _directPop : _onWillPop,
+      //child: WillPopScope(
+      // onWillPop: shouldWePopScaffold == true ? _directPop : _onWillPop, // no use as we handle onWillPop on dialog box it in processingDialog and we used it before here because we were using a fake dialog box which looks like a dialog box but actually just a lookalike created using stack
         child: Stack(
           children: [
             Scaffold(
@@ -477,7 +481,7 @@ class _PDFPagesSelectionScaffoldState extends State<PDFPagesSelectionScaffold>
             //selectedDataProcessed == true ? progressFakeDialogBox : Container(),
           ],
         ),
-      ),
+      //),
     );
   }
 }

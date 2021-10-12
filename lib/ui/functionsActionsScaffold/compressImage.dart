@@ -9,11 +9,12 @@ import 'package:files_tools/basicFunctionalityFunctions/sizeCalculator.dart';
 import 'package:files_tools/ui/functionsResultsScaffold/resultImageScaffold.dart';
 import 'package:files_tools/ui/functionsResultsScaffold/resultZipScaffold.dart';
 import 'package:files_tools/widgets/annotatedRegion.dart';
+import 'package:files_tools/widgets/functionsMainWidgets/directPop.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:files_tools/navigation/page_routes_model.dart';
 import 'package:files_tools/basicFunctionalityFunctions/processSelectedDataFromUser.dart';
-import 'package:files_tools/widgets/functionsActionWidgets/reusableUIActionWidgets/progressFakeDialogBox.dart';
+import 'package:files_tools/widgets/functionsActionWidgets/reusableUIActionWidgets/processingDialog.dart';
 import 'package:files_tools/widgets/reusableUIWidgets/ReusableTopAppBar.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -35,6 +36,8 @@ class _CompressImagesScaffoldState extends State<CompressImagesScaffold>
     with TickerProviderStateMixin {
   String? extensionOfFileName;
   List<TextInputFormatter>? listTextInputFormatter;
+
+  bool isFileProcessingEnabled = false;
 
   @override
   void initState() {
@@ -63,7 +66,15 @@ class _CompressImagesScaffoldState extends State<CompressImagesScaffold>
       setState(() {
         selectedDataProcessed = true;
       });
-      processingDialog(context); //shows the processing dialog
+      processingDialog(
+        context,
+        (bool value) {
+          setState(() {
+            shouldDataBeProcessed = value;
+          });
+          onWillPopForResultProcessing();
+        },
+      ); //shows the processing dialog
 
       List<String>? compressedFilesPaths = [];
       Future.delayed(const Duration(milliseconds: 500), () async {
@@ -178,17 +189,13 @@ class _CompressImagesScaffoldState extends State<CompressImagesScaffold>
   bool shouldDataBeProcessed = true;
   bool shouldWePopScaffold = true;
 
-  Future<bool> _onWillPop() async {
+  Future<bool> onWillPopForResultProcessing() async {
     setState(() {
       shouldWePopScaffold = true;
       shouldDataBeProcessed = false;
       selectedDataProcessed = false;
     });
     return false;
-  }
-
-  Future<bool> _directPop() async {
-    return true;
   }
 
   Qualities? _method = Qualities.medium;
@@ -208,8 +215,8 @@ class _CompressImagesScaffoldState extends State<CompressImagesScaffold>
     return ReusableAnnotatedRegion(
       child: GestureDetector(
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-        child: WillPopScope(
-          onWillPop: shouldWePopScaffold == true ? _directPop : _onWillPop,
+        //child: WillPopScope(
+         // onWillPop: shouldWePopScaffold == true ? _directPop : _onWillPop, // no use as we handle onWillPop on dialog box it in processingDialog and we used it before here because we were using a fake dialog box which looks like a dialog box but actually just a lookalike created using stack
           child: Stack(
             children: [
               Form(
@@ -390,7 +397,7 @@ class _CompressImagesScaffoldState extends State<CompressImagesScaffold>
               // selectedDataProcessed == true ? progressFakeDialogBox : Container(),
             ],
           ),
-        ),
+        //),
       ),
     );
   }

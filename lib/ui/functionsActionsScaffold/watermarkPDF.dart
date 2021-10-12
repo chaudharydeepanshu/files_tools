@@ -12,7 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:files_tools/navigation/page_routes_model.dart';
 import 'package:files_tools/basicFunctionalityFunctions/processSelectedDataFromUser.dart';
-import 'package:files_tools/widgets/functionsActionWidgets/reusableUIActionWidgets/progressFakeDialogBox.dart';
+import 'package:files_tools/widgets/functionsActionWidgets/reusableUIActionWidgets/processingDialog.dart';
 import 'package:files_tools/widgets/reusableUIWidgets/ReusableTopAppBar.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:native_pdf_renderer/native_pdf_renderer.dart' as pdfRenderer;
@@ -115,7 +115,15 @@ class _WatermarkPDFPagesScaffoldState extends State<WatermarkPDFPagesScaffold>
       setState(() {
         selectedDataProcessed = true;
       });
-      processingDialog(context); //shows the processing dialog
+      processingDialog(
+        context,
+        (bool value) {
+          setState(() {
+            shouldDataBeProcessed = value;
+          });
+          _onWillPop();
+        },
+      ); //shows the processing dialog
 
       PdfDocument? document;
       Future.delayed(const Duration(milliseconds: 500), () async {
@@ -212,10 +220,6 @@ class _WatermarkPDFPagesScaffoldState extends State<WatermarkPDFPagesScaffold>
     return false;
   }
 
-  Future<bool> _directPop() async {
-    return true;
-  }
-
   List<bool> listOfWatermarkLayerButtonsStatus = [true, false];
 
   var bannerAdSize = Size.zero;
@@ -305,8 +309,8 @@ class _WatermarkPDFPagesScaffoldState extends State<WatermarkPDFPagesScaffold>
     return ReusableAnnotatedRegion(
       child: GestureDetector(
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-        child: WillPopScope(
-          onWillPop: shouldWePopScaffold == true ? _directPop : _onWillPop,
+        //child: WillPopScope(
+        // onWillPop: shouldWePopScaffold == true ? _directPop : _onWillPop, // no use as we handle onWillPop on dialog box it in processingDialog and we used it before here because we were using a fake dialog box which looks like a dialog box but actually just a lookalike created using stack
           child: Stack(
             children: [
               Form(
@@ -767,7 +771,7 @@ class _WatermarkPDFPagesScaffoldState extends State<WatermarkPDFPagesScaffold>
               // selectedDataProcessed == true ? progressFakeDialogBox : Container(),
             ],
           ),
-        ),
+       // ),
       ),
     );
   }

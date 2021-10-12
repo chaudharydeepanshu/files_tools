@@ -327,7 +327,7 @@ class _PDFFunctionBodyForMultipleFilesState
           key: ValueKey<int>(_count),
           child: WillPopScope(
             onWillPop: isFilePicked == true
-                ? () => onWillPop(context)
+                ? () => onWillPopForSelectedFile(context)
                 : () => directPop(),
             child: NotificationListener<OverscrollIndicatorNotification>(
               onNotification: (OverscrollIndicatorNotification overscroll) {
