@@ -297,182 +297,193 @@ class _PDFFunctionBodyForSelectingSingleImageState
 
                                                             print(
                                                                 'Permission granted');
-                                                            final ImagePicker?
+                                                            // final ImagePicker?
+                                                            //     result =
+                                                            //     ImagePicker();
+
+                                                            final FilePickerResult?
                                                                 result =
-                                                                ImagePicker();
+                                                                await FilePicker
+                                                                    .platform
+                                                                    .pickFiles(
+                                                              type: FileType
+                                                                  .custom,
+                                                              allowMultiple:
+                                                                  false,
+                                                              allowCompression:
+                                                                  true,
+                                                              allowedExtensions: [
+                                                                'jpg',
+                                                                'jpeg',
+                                                                'png',
+                                                                //'webp'
+                                                              ],
+                                                            );
+
+                                                            // if (result !=
+                                                            //     null) {
+                                                            //   // Pick single image
+                                                            //   image = await result
+                                                            //       .pickImage(
+                                                            //           source: ImageSource
+                                                            //               .gallery);
+
+                                                            // if (image != null) {
+                                                            //
+                                                            //   filesSize = 0;
+                                                            //
+                                                            //   XFile xFile =
+                                                            //       image!;
+                                                            //   file = File(
+                                                            //       xFile.path);
 
                                                             if (result !=
                                                                 null) {
-                                                              // Pick single image
-                                                              image = await result
-                                                                  .pickImage(
-                                                                      source: ImageSource
-                                                                          .gallery);
-                                                              if (image !=
-                                                                  null) {
-                                                                filesSize = 0;
+                                                              PlatformFile
+                                                                  platformFile =
+                                                                  result.files
+                                                                      .first;
 
-                                                                XFile xFile =
-                                                                    image!;
-                                                                file = File(
-                                                                    xFile.path);
+                                                              file = File(
+                                                                  platformFile
+                                                                      .path!);
 
-                                                                String
-                                                                    extensionOfFileName =
-                                                                    extensionOfString(
-                                                                            fileName:
-                                                                                xFile.name)
-                                                                        .toLowerCase();
-                                                                String
-                                                                    fileNameWithoutExtension =
-                                                                    stringWithoutExtension(
-                                                                        fileName:
-                                                                            xFile
-                                                                                .name,
-                                                                        extensionOfString:
-                                                                            extensionOfFileName);
+                                                              String
+                                                                  extensionOfFileName =
+                                                                  extensionOfString(
+                                                                          fileName:
+                                                                              platformFile.name)
+                                                                      .toLowerCase();
+                                                              String
+                                                                  fileNameWithoutExtension =
+                                                                  stringWithoutExtension(
+                                                                      fileName:
+                                                                          platformFile
+                                                                              .name,
+                                                                      extensionOfString:
+                                                                          extensionOfFileName);
 
-                                                                Future<File>
-                                                                    testCompressAndGetFile(
-                                                                        File
-                                                                            file,
-                                                                        String
-                                                                            targetPath) async {
-                                                                  var imageCompressResult;
-                                                                  if (extensionOfFileName ==
-                                                                      '.png') {
-                                                                    imageCompressResult = await FlutterImageCompress.compressAndGetFile(
-                                                                        file.absolute
-                                                                            .path,
-                                                                        targetPath,
-                                                                        quality:
-                                                                            88,
-                                                                        rotate:
-                                                                            0,
-                                                                        format:
-                                                                            CompressFormat.png);
-                                                                  } else if (extensionOfFileName ==
-                                                                          '.jpg' ||
-                                                                      extensionOfFileName ==
-                                                                          '.jpeg') {
-                                                                    imageCompressResult = await FlutterImageCompress.compressAndGetFile(
-                                                                        file.absolute
-                                                                            .path,
-                                                                        targetPath,
-                                                                        quality:
-                                                                            88,
-                                                                        rotate:
-                                                                            0,
-                                                                        format:
-                                                                            CompressFormat.jpeg);
-                                                                  } else if (extensionOfFileName ==
-                                                                      '.webp') {
-                                                                    imageCompressResult = await FlutterImageCompress.compressAndGetFile(
-                                                                        file.absolute
-                                                                            .path,
-                                                                        targetPath,
-                                                                        quality:
-                                                                            88,
-                                                                        rotate:
-                                                                            0,
-                                                                        format:
-                                                                            CompressFormat.webp);
-                                                                  } else if (extensionOfFileName ==
-                                                                          '.heic' ||
-                                                                      extensionOfFileName ==
-                                                                          '.heif') {
-                                                                    imageCompressResult = await FlutterImageCompress.compressAndGetFile(
-                                                                        file.absolute
-                                                                            .path,
-                                                                        targetPath,
-                                                                        quality:
-                                                                            88,
-                                                                        rotate:
-                                                                            0,
-                                                                        format:
-                                                                            CompressFormat.heic);
-                                                                  }
-
-                                                                  print(file
-                                                                      .lengthSync());
-                                                                  print(imageCompressResult!
-                                                                      .lengthSync());
-
-                                                                  return imageCompressResult;
-                                                                }
-
-                                                                String
-                                                                    targetPath =
-                                                                    "${await getCacheFilePathFromFileName(fileNameWithoutExtension + ' ' + 'compressed' + extensionOfFileName)}";
-                                                                print(
-                                                                    targetPath);
-                                                                if (extensionOfFileName == '.png' ||
-                                                                    extensionOfFileName ==
+                                                              Future<File>
+                                                                  testCompressAndGetFile(
+                                                                      File file,
+                                                                      String
+                                                                          targetPath) async {
+                                                                var imageCompressResult;
+                                                                if (extensionOfFileName ==
+                                                                    '.png') {
+                                                                  imageCompressResult = await FlutterImageCompress.compressAndGetFile(
+                                                                      file.absolute
+                                                                          .path,
+                                                                      targetPath,
+                                                                      quality:
+                                                                          88,
+                                                                      rotate: 0,
+                                                                      format: CompressFormat
+                                                                          .png);
+                                                                } else if (extensionOfFileName ==
                                                                         '.jpg' ||
                                                                     extensionOfFileName ==
-                                                                        '.jpeg' ||
-                                                                    extensionOfFileName ==
+                                                                        '.jpeg') {
+                                                                  imageCompressResult = await FlutterImageCompress.compressAndGetFile(
+                                                                      file.absolute
+                                                                          .path,
+                                                                      targetPath,
+                                                                      quality:
+                                                                          88,
+                                                                      rotate: 0,
+                                                                      format: CompressFormat
+                                                                          .jpeg);
+                                                                } else if (extensionOfFileName ==
+                                                                    '.webp') {
+                                                                  imageCompressResult = await FlutterImageCompress.compressAndGetFile(
+                                                                      file.absolute
+                                                                          .path,
+                                                                      targetPath,
+                                                                      quality:
+                                                                          88,
+                                                                      rotate: 0,
+                                                                      format: CompressFormat
+                                                                          .webp);
+                                                                } else if (extensionOfFileName ==
                                                                         '.heic' ||
                                                                     extensionOfFileName ==
-                                                                        '.heif' ||
-                                                                    extensionOfFileName ==
-                                                                        '.webp') {
-                                                                  compressedFile =
-                                                                      await testCompressAndGetFile(
-                                                                          file,
-                                                                          targetPath);
-                                                                  compressedFilesPath =
-                                                                      targetPath;
+                                                                        '.heif') {
+                                                                  imageCompressResult = await FlutterImageCompress.compressAndGetFile(
+                                                                      file.absolute
+                                                                          .path,
+                                                                      targetPath,
+                                                                      quality:
+                                                                          88,
+                                                                      rotate: 0,
+                                                                      format: CompressFormat
+                                                                          .heic);
                                                                 }
-                                                                filePath =
-                                                                    xFile.path;
-                                                                print(
-                                                                    "xFile.path : ${xFile.path}");
 
-                                                                fileByte = file
-                                                                    .lengthSync();
-                                                                fileName =
-                                                                    xFile.name;
-                                                                filesSize =
-                                                                    fileByte;
+                                                                print(file
+                                                                    .lengthSync());
+                                                                print(imageCompressResult!
+                                                                    .lengthSync());
 
-                                                                setState(() {
-                                                                  isFilePicked =
-                                                                      true;
-                                                                  widget
-                                                                      .onNotifyAppbarFileStatus
-                                                                      ?.call(
-                                                                          true);
-                                                                });
-
-                                                                shouldRenderingImagesLoopBeDisabled =
-                                                                    false;
-
-                                                                isFileLoaded =
-                                                                    true;
-
-                                                                isFilePickingInitiated =
-                                                                    false; //as the file should be picked and loaded in the app cache & images are compressed at this point
-                                                              } else {
-                                                                setState(() {
-                                                                  print(
-                                                                      'User canceled the picker');
-                                                                  isFilePickingInitiated =
-                                                                      false;
-                                                                  isFilePicked =
-                                                                      false;
-                                                                  widget
-                                                                      .onNotifyAppbarFileStatus
-                                                                      ?.call(
-                                                                          false);
-                                                                });
-                                                                // User canceled the picker
+                                                                return imageCompressResult;
                                                               }
+
+                                                              String
+                                                                  targetPath =
+                                                                  "${await getCacheFilePathFromFileName(fileNameWithoutExtension + ' ' + 'compressed' + extensionOfFileName)}";
+                                                              print(targetPath);
+                                                              if (extensionOfFileName == '.png' ||
+                                                                  extensionOfFileName ==
+                                                                      '.jpg' ||
+                                                                  extensionOfFileName ==
+                                                                      '.jpeg' ||
+                                                                  extensionOfFileName ==
+                                                                      '.heic' ||
+                                                                  extensionOfFileName ==
+                                                                      '.heif' ||
+                                                                  extensionOfFileName ==
+                                                                      '.webp') {
+                                                                compressedFile =
+                                                                    await testCompressAndGetFile(
+                                                                        file,
+                                                                        targetPath);
+                                                                compressedFilesPath =
+                                                                    targetPath;
+                                                              }
+                                                              filePath =
+                                                                  platformFile
+                                                                      .path!;
+                                                              print(
+                                                                  "xFile.path : ${platformFile.path}");
+
+                                                              fileByte = file
+                                                                  .lengthSync();
+                                                              fileName =
+                                                                  platformFile
+                                                                      .name;
+                                                              filesSize =
+                                                                  fileByte;
+
+                                                              setState(() {
+                                                                isFilePicked =
+                                                                    true;
+                                                                widget
+                                                                    .onNotifyAppbarFileStatus
+                                                                    ?.call(
+                                                                        true);
+                                                              });
+
+                                                              shouldRenderingImagesLoopBeDisabled =
+                                                                  false;
+
+                                                              isFileLoaded =
+                                                                  true;
+
+                                                              isFilePickingInitiated =
+                                                                  false; //as the file should be picked and loaded in the app cache & images are compressed at this point
                                                             } else {
-                                                              //result was null
                                                               setState(() {
                                                                 print(
-                                                                    'ImagePicker() result was null');
+                                                                    'User canceled the picker');
                                                                 isFilePickingInitiated =
                                                                     false;
                                                                 isFilePicked =
@@ -482,7 +493,23 @@ class _PDFFunctionBodyForSelectingSingleImageState
                                                                     ?.call(
                                                                         false);
                                                               });
+                                                              // User canceled the picker
                                                             }
+                                                            // } else {
+                                                            //   //result was null
+                                                            //   setState(() {
+                                                            //     print(
+                                                            //         'ImagePicker() result was null');
+                                                            //     isFilePickingInitiated =
+                                                            //         false;
+                                                            //     isFilePicked =
+                                                            //         false;
+                                                            //     widget
+                                                            //         .onNotifyAppbarFileStatus
+                                                            //         ?.call(
+                                                            //             false);
+                                                            //   });
+                                                            // }
                                                           } else if (status ==
                                                               PermissionStatus
                                                                   .denied) {
