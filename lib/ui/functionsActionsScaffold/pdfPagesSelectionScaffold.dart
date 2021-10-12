@@ -311,176 +311,169 @@ class _PDFPagesSelectionScaffoldState extends State<PDFPagesSelectionScaffold>
     return ReusableAnnotatedRegion(
       //child: WillPopScope(
       // onWillPop: shouldWePopScaffold == true ? _directPop : _onWillPop, // no use as we handle onWillPop on dialog box it in processingDialog and we used it before here because we were using a fake dialog box which looks like a dialog box but actually just a lookalike created using stack
-        child: Stack(
-          children: [
-            Scaffold(
-              appBar: ReusableSilverAppBar(
-                title: 'Select Pages',
-                titleColor: Colors.black,
-                leftButtonColor: Colors.red,
-                appBarIconLeft: appBarIconLeft,
-                appBarIconLeftToolTip: appBarIconLeftToolTip,
-                appBarIconLeftAction: appBarIconLeftAction,
-                rightButtonColor: Colors.blue,
-                appBarIconRight: appBarIconRight,
-                appBarIconRightToolTip: appBarIconRightToolTip,
-                appBarIconRightAction:
-                    proceedButton() ? appBarIconRightAction : null,
-              ),
-              body: Stack(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 8.0),
-                    child: Column(
-                      children: [
-                        Expanded(
-                          child: GridView(
-                            gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2,
-                              childAspectRatio:
-                                  0.69, //childAspectRatio: 3 / 4.5,
-                            ),
-                            children: List.generate(
-                              widget.arguments!.pdfPagesImages!.length,
-                              (index) {
-                                final item =
-                                    widget.arguments!.pdfPagesImages![index];
-                                return Column(
-                                  children: <Widget>[
-                                    Container(
-                                      height: 270,
-                                      width: 165,
-                                      decoration: BoxDecoration(
-                                        border: Border.all(
-                                          width: selectedImages[index] == true
-                                              ? 2
-                                              : 1,
-                                          color: selectedImages[index] == true
-                                              ? widget.arguments!
-                                                          .mapOfSubFunctionDetails![
-                                                      'Main Color'] ??
-                                                  Colors.blue
-                                              : Colors.black,
-                                        ),
+      child: Stack(
+        children: [
+          Scaffold(
+            appBar: ReusableSilverAppBar(
+              title: 'Select Pages',
+              titleColor: Colors.black,
+              leftButtonColor: Colors.red,
+              appBarIconLeft: appBarIconLeft,
+              appBarIconLeftToolTip: appBarIconLeftToolTip,
+              appBarIconLeftAction: appBarIconLeftAction,
+              rightButtonColor: Colors.blue,
+              appBarIconRight: appBarIconRight,
+              appBarIconRightToolTip: appBarIconRightToolTip,
+              appBarIconRightAction:
+                  proceedButton() ? appBarIconRightAction : null,
+            ),
+            body: Stack(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: Column(
+                    children: [
+                      Expanded(
+                        child: GridView(
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            childAspectRatio: 0.69, //childAspectRatio: 3 / 4.5,
+                          ),
+                          children: List.generate(
+                            widget.arguments!.pdfPagesImages!.length,
+                            (index) {
+                              final item =
+                                  widget.arguments!.pdfPagesImages![index];
+                              return Column(
+                                children: <Widget>[
+                                  Container(
+                                    height: 270,
+                                    width: 165,
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                        width: selectedImages[index] == true
+                                            ? 2
+                                            : 1,
+                                        color: selectedImages[index] == true
+                                            ? widget.arguments!
+                                                        .mapOfSubFunctionDetails![
+                                                    'Main Color'] ??
+                                                Colors.blue
+                                            : Colors.black,
                                       ),
-                                      child: ConstrainedBox(
-                                        constraints: BoxConstraints(
-                                          maxHeight: 234,
-                                          maxWidth: 165,
-                                        ),
-                                        child: ClipRRect(
-                                          child: Container(
-                                            height: 234,
-                                            width: 165,
-                                            decoration: BoxDecoration(
-                                              color: selectedImages[index] ==
-                                                      true
-                                                  ? widget.arguments!
+                                    ),
+                                    child: ConstrainedBox(
+                                      constraints: BoxConstraints(
+                                        maxHeight: 234,
+                                        maxWidth: 165,
+                                      ),
+                                      child: ClipRRect(
+                                        child: Container(
+                                          height: 234,
+                                          width: 165,
+                                          decoration: BoxDecoration(
+                                            color: selectedImages[index] == true
+                                                ? widget.arguments!
+                                                            .mapOfSubFunctionDetails![
+                                                        'Button Color'] ??
+                                                    Colors.lightBlue[100]
+                                                : Colors.transparent,
+                                            image: DecorationImage(
+                                                image: MemoryImage(item.bytes),
+                                                fit: BoxFit.scaleDown),
+                                          ),
+                                          child: Stack(
+                                            children: [
+                                              selectedImages[index] == true
+                                                  ? Align(
+                                                      alignment:
+                                                          Alignment.topRight,
+                                                      child: Icon(
+                                                        Icons.check_circle,
+                                                        color: widget.arguments!
+                                                                    .mapOfSubFunctionDetails![
+                                                                'Main Color'] ??
+                                                            Colors.blueAccent,
+                                                      ),
+                                                    )
+                                                  : Container(),
+                                              Material(
+                                                color: Colors.transparent,
+                                                child: InkWell(
+                                                  onTap: () {
+                                                    setState(() {
+                                                      selectedImages[index] =
+                                                          !selectedImages[
+                                                              index];
+                                                    });
+                                                  },
+                                                  focusColor: widget.arguments!
                                                               .mapOfSubFunctionDetails![
-                                                          'Button Color'] ??
-                                                      Colors.lightBlue[100]
-                                                  : Colors.transparent,
-                                              image: DecorationImage(
-                                                  image:
-                                                      MemoryImage(item.bytes),
-                                                  fit: BoxFit.scaleDown),
-                                            ),
-                                            child: Stack(
-                                              children: [
-                                                selectedImages[index] == true
-                                                    ? Align(
-                                                        alignment:
-                                                            Alignment.topRight,
-                                                        child: Icon(
-                                                          Icons.check_circle,
-                                                          color: widget
-                                                                      .arguments!
-                                                                      .mapOfSubFunctionDetails![
-                                                                  'Main Color'] ??
-                                                              Colors.blueAccent,
-                                                        ),
-                                                      )
-                                                    : Container(),
-                                                Material(
-                                                  color: Colors.transparent,
-                                                  child: InkWell(
-                                                    onTap: () {
-                                                      setState(() {
-                                                        selectedImages[index] =
-                                                            !selectedImages[
-                                                                index];
-                                                      });
-                                                    },
-                                                    focusColor: widget
-                                                                .arguments!
-                                                                .mapOfSubFunctionDetails![
-                                                            'Button Effects Color'] ??
-                                                        Colors.black
-                                                            .withOpacity(0.1),
-                                                    highlightColor: widget
-                                                                .arguments!
-                                                                .mapOfSubFunctionDetails![
-                                                            'Button Effects Color'] ??
-                                                        Colors.black
-                                                            .withOpacity(0.1),
-                                                    splashColor: widget
-                                                                .arguments!
-                                                                .mapOfSubFunctionDetails![
-                                                            'Button Effects Color'] ??
-                                                        Colors.black
-                                                            .withOpacity(0.1),
-                                                    hoverColor: widget
-                                                                .arguments!
-                                                                .mapOfSubFunctionDetails![
-                                                            'Button Effects Color'] ??
-                                                        Colors.black
-                                                            .withOpacity(0.1),
-                                                  ),
+                                                          'Button Effects Color'] ??
+                                                      Colors.black
+                                                          .withOpacity(0.1),
+                                                  highlightColor: widget
+                                                              .arguments!
+                                                              .mapOfSubFunctionDetails![
+                                                          'Button Effects Color'] ??
+                                                      Colors.black
+                                                          .withOpacity(0.1),
+                                                  splashColor: widget.arguments!
+                                                              .mapOfSubFunctionDetails![
+                                                          'Button Effects Color'] ??
+                                                      Colors.black
+                                                          .withOpacity(0.1),
+                                                  hoverColor: widget.arguments!
+                                                              .mapOfSubFunctionDetails![
+                                                          'Button Effects Color'] ??
+                                                      Colors.black
+                                                          .withOpacity(0.1),
                                                 ),
-                                              ],
-                                            ),
+                                              ),
+                                            ],
                                           ),
                                         ),
                                       ),
                                     ),
-                                    Text('${index + 1}'),
-                                    SizedBox(
-                                      height: 5,
-                                    ),
-                                  ],
-                                );
-                              },
-                            ),
+                                  ),
+                                  Text('${index + 1}'),
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+                                ],
+                              );
+                            },
                           ),
                         ),
-                        Provider.of<AdState>(context).bannerAdUnitId != null
-                            ? SizedBox(
-                                height: bannerAdSize.height.toDouble(),
-                              )
-                            : Container(),
-                      ],
-                    ),
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      MeasureSize(
-                        onChange: (Size size) {
-                          setState(() {
-                            bannerAdSize = size;
-                          });
-                        },
-                        child: BannerAD(),
                       ),
+                      Provider.of<AdState>(context).bannerAdUnitId != null
+                          ? SizedBox(
+                              height: bannerAdSize.height.toDouble(),
+                            )
+                          : Container(),
                     ],
                   ),
-                ],
-              ),
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    MeasureSize(
+                      onChange: (Size size) {
+                        setState(() {
+                          bannerAdSize = size;
+                        });
+                      },
+                      child: BannerAD(),
+                    ),
+                  ],
+                ),
+              ],
             ),
-            //selectedDataProcessed == true ? progressFakeDialogBox : Container(),
-          ],
-        ),
+          ),
+          //selectedDataProcessed == true ? progressFakeDialogBox : Container(),
+        ],
+      ),
       //),
     );
   }

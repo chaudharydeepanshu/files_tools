@@ -329,90 +329,89 @@ class _PDFToImagesScaffoldState extends State<PDFToImagesScaffold>
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
         //child: WillPopScope(
         // onWillPop: shouldWePopScaffold == true ? _directPop : _onWillPop, // no use as we handle onWillPop on dialog box it in processingDialog and we used it before here because we were using a fake dialog box which looks like a dialog box but actually just a lookalike created using stack
-          child: Stack(
-            children: [
-              Form(
-                key: _formKey,
-                child: Scaffold(
-                  appBar: ReusableSilverAppBar(
-                    title: 'Convert To Images',
-                    titleColor: Colors.black,
-                    leftButtonColor: Colors.red,
-                    appBarIconLeft: appBarIconLeft,
-                    appBarIconLeftToolTip: appBarIconLeftToolTip,
-                    appBarIconLeftAction: appBarIconLeftAction,
-                    rightButtonColor: Colors.blue,
-                    appBarIconRight: appBarIconRight,
-                    appBarIconRightToolTip: appBarIconRightToolTip,
-                    appBarIconRightAction:
-                        appBarIconRightActionForSeparateDocuments,
-                  ),
-                  body: Stack(
-                    children: [
-                      SingleChildScrollView(
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            children: <Widget>[
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Container(
-                                    child: Text(
-                                      'Total number of Pages in PDF: $pdfPagesCount',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    decoration: BoxDecoration(),
+        child: Stack(
+          children: [
+            Form(
+              key: _formKey,
+              child: Scaffold(
+                appBar: ReusableSilverAppBar(
+                  title: 'Convert To Images',
+                  titleColor: Colors.black,
+                  leftButtonColor: Colors.red,
+                  appBarIconLeft: appBarIconLeft,
+                  appBarIconLeftToolTip: appBarIconLeftToolTip,
+                  appBarIconLeftAction: appBarIconLeftAction,
+                  rightButtonColor: Colors.blue,
+                  appBarIconRight: appBarIconRight,
+                  appBarIconRightToolTip: appBarIconRightToolTip,
+                  appBarIconRightAction:
+                      appBarIconRightActionForSeparateDocuments,
+                ),
+                body: Stack(
+                  children: [
+                    SingleChildScrollView(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          children: <Widget>[
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Container(
+                                  child: Text(
+                                    'Total number of Pages in PDF: $pdfPagesCount',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
                                   ),
-                                ],
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Container(
-                                    child: Text(
-                                      'Number of Images will be created: $pdfPagesCount',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    decoration: BoxDecoration(),
+                                  decoration: BoxDecoration(),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Container(
+                                  child: Text(
+                                    'Number of Images will be created: $pdfPagesCount',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
                                   ),
-                                ],
-                              ),
-                              Provider.of<AdState>(context).bannerAdUnitId !=
-                                      null
-                                  ? SizedBox(
-                                      height: bannerAdSize.height.toDouble(),
-                                    )
-                                  : Container(),
-                            ],
-                          ),
+                                  decoration: BoxDecoration(),
+                                ),
+                              ],
+                            ),
+                            Provider.of<AdState>(context).bannerAdUnitId != null
+                                ? SizedBox(
+                                    height: bannerAdSize.height.toDouble(),
+                                  )
+                                : Container(),
+                          ],
                         ),
                       ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          MeasureSize(
-                            onChange: (Size size) {
-                              setState(() {
-                                bannerAdSize = size;
-                              });
-                            },
-                            child: BannerAD(),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        MeasureSize(
+                          onChange: (Size size) {
+                            setState(() {
+                              bannerAdSize = size;
+                            });
+                          },
+                          child: BannerAD(),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
               ),
-              // selectedDataProcessed == true ? progressFakeDialogBox : Container(),
-            ],
-          ),
+            ),
+            // selectedDataProcessed == true ? progressFakeDialogBox : Container(),
+          ],
+        ),
         //),
       ),
     );

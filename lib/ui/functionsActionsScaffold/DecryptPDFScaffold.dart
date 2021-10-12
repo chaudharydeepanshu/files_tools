@@ -204,146 +204,144 @@ class _DecryptPDFScaffoldState extends State<DecryptPDFScaffold>
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
         //child: WillPopScope(
         // onWillPop: shouldWePopScaffold == true ? _directPop : _onWillPop, // no use as we handle onWillPop on dialog box it in processingDialog and we used it before here because we were using a fake dialog box which looks like a dialog box but actually just a lookalike created using stack
-          child: Stack(
-            children: [
-              Form(
-                key: _formKey,
-                child: Scaffold(
-                  appBar: ReusableSilverAppBar(
-                    title: 'Specify Decryption Info',
-                    titleColor: Colors.black,
-                    leftButtonColor: Colors.red,
-                    appBarIconLeft: appBarIconLeft,
-                    appBarIconLeftToolTip: appBarIconLeftToolTip,
-                    appBarIconLeftAction: appBarIconLeftAction,
-                    rightButtonColor: Colors.blue,
-                    appBarIconRight: appBarIconRight,
-                    appBarIconRightToolTip: appBarIconRightToolTip,
-                    appBarIconRightAction: _formKey.currentState != null
-                        ? _formKey.currentState!.validate()
-                            ? appBarIconRightAction
-                            : null
-                        : null,
-                  ),
-                  body: Stack(
-                    children: [
-                      SingleChildScrollView(
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            children: <Widget>[
-                              TextFormFieldsForEncryptPDF(
-                                helperText:
-                                    'Owner Password will be used to remove security permissions',
-                                labelText: 'Enter Owner Password',
-                                textEditingController:
-                                    textEditingControllerOwnerPassword,
-                                validator: (value) {
-                                  return null;
-                                },
-                                listTextInputFormatter: listTextInputFormatter!,
-                                onTextEditingController:
-                                    (TextEditingController value) {
-                                  setState(() {
-                                    textEditingControllerOwnerPassword = value;
-                                  });
-                                },
-                              ),
-                              TextFormFieldsForEncryptPDF(
-                                helperText:
-                                    'User Password is used to access PDF',
-                                labelText: 'Enter User Password *',
-                                textEditingController:
-                                    textEditingControllerUserPassword,
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'User password is required';
-                                  }
-                                  return null;
-                                },
-                                listTextInputFormatter: listTextInputFormatter!,
-                                onTextEditingController:
-                                    (TextEditingController value) {
-                                  setState(() {
-                                    textEditingControllerUserPassword = value;
-                                  });
-                                },
-                              ),
-                              // TextFormField(
-                              //   controller: textEditingController,
-                              //   keyboardType: TextInputType.number,
-                              //   inputFormatters: listTextInputFormatter,
-                              //   onChanged: (String value) {
-                              //     if (value.isNotEmpty) {
-                              //       if (int.parse(value.substring(0, 1)) == 0) {
-                              //         String newValue = value.substring(0, 0) +
-                              //             '' +
-                              //             value.substring(0 + 1);
-                              //         textEditingController.value =
-                              //             TextEditingValue(
-                              //           text: newValue,
-                              //           selection: TextSelection.fromPosition(
-                              //             TextPosition(offset: newValue.length),
-                              //           ),
-                              //         );
-                              //       }
-                              //     }
-                              //   },
-                              //   decoration: InputDecoration(
-                              //     labelText: 'Type a number',
-                              //     //helperText: ' ',
-                              //     hintText: 'Ex: ${pdfPagesCount - 1}',
-                              //     border: OutlineInputBorder(),
-                              //   ),
-                              //   //autofocus: true,
-                              //   showCursor: true,
-                              //   autovalidateMode:
-                              //       AutovalidateMode.onUserInteraction,
-                              //   validator: (value) {
-                              //     if (value == null || value.isEmpty) {
-                              //       return 'Empty Field';
-                              //     } else if (int.parse(value) == pdfPagesCount)
-                              //     //RegExp('[a-zA-Z0-9 \"‘\'‘,-]')
-                              //     {
-                              //       return 'Type a shorter number than total number of pages';
-                              //     } else if (int.parse(value) > pdfPagesCount)
-                              //     //RegExp('[a-zA-Z0-9 \"‘\'‘,-]')
-                              //     {
-                              //       return 'Out of range';
-                              //     }
-                              //     return null;
-                              //   },
-                              // ),
-                              Provider.of<AdState>(context).bannerAdUnitId !=
-                                      null
-                                  ? SizedBox(
-                                      height: bannerAdSize.height.toDouble(),
-                                    )
-                                  : Container(),
-                            ],
-                          ),
+        child: Stack(
+          children: [
+            Form(
+              key: _formKey,
+              child: Scaffold(
+                appBar: ReusableSilverAppBar(
+                  title: 'Specify Decryption Info',
+                  titleColor: Colors.black,
+                  leftButtonColor: Colors.red,
+                  appBarIconLeft: appBarIconLeft,
+                  appBarIconLeftToolTip: appBarIconLeftToolTip,
+                  appBarIconLeftAction: appBarIconLeftAction,
+                  rightButtonColor: Colors.blue,
+                  appBarIconRight: appBarIconRight,
+                  appBarIconRightToolTip: appBarIconRightToolTip,
+                  appBarIconRightAction: _formKey.currentState != null
+                      ? _formKey.currentState!.validate()
+                          ? appBarIconRightAction
+                          : null
+                      : null,
+                ),
+                body: Stack(
+                  children: [
+                    SingleChildScrollView(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          children: <Widget>[
+                            TextFormFieldsForEncryptPDF(
+                              helperText:
+                                  'Owner Password will be used to remove security permissions',
+                              labelText: 'Enter Owner Password',
+                              textEditingController:
+                                  textEditingControllerOwnerPassword,
+                              validator: (value) {
+                                return null;
+                              },
+                              listTextInputFormatter: listTextInputFormatter!,
+                              onTextEditingController:
+                                  (TextEditingController value) {
+                                setState(() {
+                                  textEditingControllerOwnerPassword = value;
+                                });
+                              },
+                            ),
+                            TextFormFieldsForEncryptPDF(
+                              helperText: 'User Password is used to access PDF',
+                              labelText: 'Enter User Password *',
+                              textEditingController:
+                                  textEditingControllerUserPassword,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'User password is required';
+                                }
+                                return null;
+                              },
+                              listTextInputFormatter: listTextInputFormatter!,
+                              onTextEditingController:
+                                  (TextEditingController value) {
+                                setState(() {
+                                  textEditingControllerUserPassword = value;
+                                });
+                              },
+                            ),
+                            // TextFormField(
+                            //   controller: textEditingController,
+                            //   keyboardType: TextInputType.number,
+                            //   inputFormatters: listTextInputFormatter,
+                            //   onChanged: (String value) {
+                            //     if (value.isNotEmpty) {
+                            //       if (int.parse(value.substring(0, 1)) == 0) {
+                            //         String newValue = value.substring(0, 0) +
+                            //             '' +
+                            //             value.substring(0 + 1);
+                            //         textEditingController.value =
+                            //             TextEditingValue(
+                            //           text: newValue,
+                            //           selection: TextSelection.fromPosition(
+                            //             TextPosition(offset: newValue.length),
+                            //           ),
+                            //         );
+                            //       }
+                            //     }
+                            //   },
+                            //   decoration: InputDecoration(
+                            //     labelText: 'Type a number',
+                            //     //helperText: ' ',
+                            //     hintText: 'Ex: ${pdfPagesCount - 1}',
+                            //     border: OutlineInputBorder(),
+                            //   ),
+                            //   //autofocus: true,
+                            //   showCursor: true,
+                            //   autovalidateMode:
+                            //       AutovalidateMode.onUserInteraction,
+                            //   validator: (value) {
+                            //     if (value == null || value.isEmpty) {
+                            //       return 'Empty Field';
+                            //     } else if (int.parse(value) == pdfPagesCount)
+                            //     //RegExp('[a-zA-Z0-9 \"‘\'‘,-]')
+                            //     {
+                            //       return 'Type a shorter number than total number of pages';
+                            //     } else if (int.parse(value) > pdfPagesCount)
+                            //     //RegExp('[a-zA-Z0-9 \"‘\'‘,-]')
+                            //     {
+                            //       return 'Out of range';
+                            //     }
+                            //     return null;
+                            //   },
+                            // ),
+                            Provider.of<AdState>(context).bannerAdUnitId != null
+                                ? SizedBox(
+                                    height: bannerAdSize.height.toDouble(),
+                                  )
+                                : Container(),
+                          ],
                         ),
                       ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          MeasureSize(
-                            onChange: (Size size) {
-                              setState(() {
-                                bannerAdSize = size;
-                              });
-                            },
-                            child: BannerAD(),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        MeasureSize(
+                          onChange: (Size size) {
+                            setState(() {
+                              bannerAdSize = size;
+                            });
+                          },
+                          child: BannerAD(),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
               ),
-              //selectedDataProcessed == true ? progressFakeDialogBox : Container(),
-            ],
-          ),
+            ),
+            //selectedDataProcessed == true ? progressFakeDialogBox : Container(),
+          ],
+        ),
         //),
       ),
     );

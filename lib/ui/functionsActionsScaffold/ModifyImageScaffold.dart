@@ -528,226 +528,226 @@ class _ModifyImageScaffoldState extends State<ModifyImageScaffold> {
     return ReusableAnnotatedRegion(
       //child: WillPopScope(
       // onWillPop: shouldWePopScaffold == true ? _directPop : _onWillPop, // no use as we handle onWillPop on dialog box it in processingDialog and we used it before here because we were using a fake dialog box which looks like a dialog box but actually just a lookalike created using stack
-        child: Stack(
-          children: [
-            Scaffold(
-              appBar: ReusableSilverAppBar(
-                title: 'Modify Image',
-                titleColor: Colors.black,
-                leftButtonColor: Colors.red,
-                appBarIconLeft: appBarIconLeft,
-                appBarIconLeftToolTip: appBarIconLeftToolTip,
-                appBarIconLeftAction: appBarIconLeftAction,
-                rightButtonColor: Colors.blue,
-                appBarIconRight: appBarIconRight,
-                appBarIconRightToolTip: appBarIconRightToolTip,
-                appBarIconRightAction:
-                    proceedButton() ? appBarIconRightAction : null,
-              ),
-              body: Column(
-                children: <Widget>[
-                  Expanded(
-                      child: ExtendedImage.file(
-                    tempImageFile,
-                    fit: BoxFit.contain,
-                    mode: ExtendedImageMode.editor,
-                    enableLoadState: true,
-                    extendedImageEditorKey: editorKey,
-                    initEditorConfigHandler: (ExtendedImageState? state) {
-                      return EditorConfig(
-                        maxScale: 8.0,
-                        cropRectPadding: const EdgeInsets.all(20.0),
-                        hitTestSize: 20.0,
-                        cropLayerPainter: _cropLayerPainter!,
-                        initCropRectType: InitCropRectType.imageRect,
-                        cropAspectRatio: _aspectRatio!.value,
-                      );
-                    },
-                    cacheRawData: true,
-                  )),
-                ],
-              ),
-              bottomNavigationBar: BottomAppBar(
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      bottomNavBarButtonsForFileModifications(
-                        buttonIcon: Icon(Icons.crop),
-                        buttonLabel: Text('Crop'),
-                        onTapAction: () {
-                          showDialog<void>(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return Column(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: <Widget>[
-                                    SizedBox(
-                                      height: 100,
-                                      child: ListView.builder(
-                                        shrinkWrap: true,
-                                        scrollDirection: Axis.horizontal,
-                                        padding: const EdgeInsets.all(20.0),
-                                        itemBuilder: (_, int index) {
-                                          final AspectRatioItem item =
-                                              _aspectRatios[index];
-                                          return
-                                              //GestureDetector(child:
-                                              AspectRatioWidget(
-                                            aspectRatio: item.value,
-                                            aspectRatioS: item.text,
-                                            isSelected: item == _aspectRatio,
-                                            onTap: (value) {
-                                              if (item.text != 'specific') {
-                                                Navigator.pop(context);
-                                                setState(() {
-                                                  _aspectRatio = item;
-                                                });
-                                              } else if (item.text ==
-                                                  'specific') {
-                                                Navigator.pop(context);
-                                                setState(() {
-                                                  item.value = value;
-                                                  _aspectRatio = item;
-                                                });
-                                              }
-                                            },
-                                          );
-                                        },
-                                        itemCount: _aspectRatios.length,
-                                      ),
+      child: Stack(
+        children: [
+          Scaffold(
+            appBar: ReusableSilverAppBar(
+              title: 'Modify Image',
+              titleColor: Colors.black,
+              leftButtonColor: Colors.red,
+              appBarIconLeft: appBarIconLeft,
+              appBarIconLeftToolTip: appBarIconLeftToolTip,
+              appBarIconLeftAction: appBarIconLeftAction,
+              rightButtonColor: Colors.blue,
+              appBarIconRight: appBarIconRight,
+              appBarIconRightToolTip: appBarIconRightToolTip,
+              appBarIconRightAction:
+                  proceedButton() ? appBarIconRightAction : null,
+            ),
+            body: Column(
+              children: <Widget>[
+                Expanded(
+                    child: ExtendedImage.file(
+                  tempImageFile,
+                  fit: BoxFit.contain,
+                  mode: ExtendedImageMode.editor,
+                  enableLoadState: true,
+                  extendedImageEditorKey: editorKey,
+                  initEditorConfigHandler: (ExtendedImageState? state) {
+                    return EditorConfig(
+                      maxScale: 8.0,
+                      cropRectPadding: const EdgeInsets.all(20.0),
+                      hitTestSize: 20.0,
+                      cropLayerPainter: _cropLayerPainter!,
+                      initCropRectType: InitCropRectType.imageRect,
+                      cropAspectRatio: _aspectRatio!.value,
+                    );
+                  },
+                  cacheRawData: true,
+                )),
+              ],
+            ),
+            bottomNavigationBar: BottomAppBar(
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    bottomNavBarButtonsForFileModifications(
+                      buttonIcon: Icon(Icons.crop),
+                      buttonLabel: Text('Crop'),
+                      onTapAction: () {
+                        showDialog<void>(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return Column(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: <Widget>[
+                                  SizedBox(
+                                    height: 100,
+                                    child: ListView.builder(
+                                      shrinkWrap: true,
+                                      scrollDirection: Axis.horizontal,
+                                      padding: const EdgeInsets.all(20.0),
+                                      itemBuilder: (_, int index) {
+                                        final AspectRatioItem item =
+                                            _aspectRatios[index];
+                                        return
+                                            //GestureDetector(child:
+                                            AspectRatioWidget(
+                                          aspectRatio: item.value,
+                                          aspectRatioS: item.text,
+                                          isSelected: item == _aspectRatio,
+                                          onTap: (value) {
+                                            if (item.text != 'specific') {
+                                              Navigator.pop(context);
+                                              setState(() {
+                                                _aspectRatio = item;
+                                              });
+                                            } else if (item.text ==
+                                                'specific') {
+                                              Navigator.pop(context);
+                                              setState(() {
+                                                item.value = value;
+                                                _aspectRatio = item;
+                                              });
+                                            }
+                                          },
+                                        );
+                                      },
+                                      itemCount: _aspectRatios.length,
                                     ),
-                                  ],
-                                );
-                              });
-                        },
-                        mapOfSubFunctionDetails:
-                            widget.arguments!.mapOfSubFunctionDetails,
-                      ),
-                      bottomNavBarButtonsForFileModifications(
-                        buttonIcon: Icon(Icons.flip),
-                        buttonLabel: Text('Flip'),
-                        onTapAction: () {
-                          editorKey.currentState!.flip();
-                        },
-                        mapOfSubFunctionDetails:
-                            widget.arguments!.mapOfSubFunctionDetails,
-                      ),
-                      bottomNavBarButtonsForFileModifications(
-                        buttonIcon: Icon(Icons.rotate_left),
-                        buttonLabel: Text('Rotate Left'),
-                        onTapAction: () {
-                          editorKey.currentState!.rotate(right: false);
-                        },
-                        mapOfSubFunctionDetails:
-                            widget.arguments!.mapOfSubFunctionDetails,
-                      ),
-                      bottomNavBarButtonsForFileModifications(
-                        buttonIcon: Icon(Icons.rotate_right),
-                        buttonLabel: Text('Rotate Right'),
-                        onTapAction: () {
-                          editorKey.currentState!.rotate(right: true);
-                        },
-                        mapOfSubFunctionDetails:
-                            widget.arguments!.mapOfSubFunctionDetails,
-                      ),
-                      bottomNavBarButtonsForFileModifications(
-                        buttonIcon: Icon(Icons.rounded_corner_sharp),
-                        buttonLabel: PopupMenuButton<EditorCropLayerPainter>(
-                          key: popupMenuKey,
-                          enabled: false,
-                          offset: const Offset(100, -300),
-                          child: const Text(
-                            'Painter',
-                            style: TextStyle(fontSize: 8.0),
-                          ),
-                          initialValue: _cropLayerPainter,
-                          itemBuilder: (BuildContext context) {
-                            return <PopupMenuEntry<EditorCropLayerPainter>>[
-                              PopupMenuItem<EditorCropLayerPainter>(
-                                child: Row(
-                                  children: const <Widget>[
-                                    Icon(
-                                      Icons.rounded_corner_sharp,
-                                      color: Colors.blue,
-                                    ),
-                                    SizedBox(
-                                      width: 5,
-                                    ),
-                                    Text('Default'),
-                                  ],
-                                ),
-                                value: const EditorCropLayerPainter(),
-                              ),
-                              const PopupMenuDivider(),
-                              PopupMenuItem<EditorCropLayerPainter>(
-                                child: Row(
-                                  children: const <Widget>[
-                                    Icon(
-                                      Icons.circle,
-                                      color: Colors.blue,
-                                    ),
-                                    SizedBox(
-                                      width: 5,
-                                    ),
-                                    Text('Dot'),
-                                  ],
-                                ),
-                                value: const CustomEditorCropLayerPainter(),
-                              ),
-                              // const PopupMenuDivider(),
-                              // PopupMenuItem<EditorCropLayerPainter>(
-                              //   child: Row(
-                              //     children: const <Widget>[
-                              //       Icon(
-                              //         CupertinoIcons.circle,
-                              //         color: Colors.blue,
-                              //       ),
-                              //       SizedBox(
-                              //         width: 5,
-                              //       ),
-                              //       Text('Circle'),
-                              //     ],
-                              //   ),
-                              //   value: const CircleEditorCropLayerPainter(),
-                              //),
-                            ];
-                          },
-                          onSelected: (EditorCropLayerPainter value) {
-                            if (_cropLayerPainter != value) {
-                              setState(() {
-                                if (value is CircleEditorCropLayerPainter) {
-                                  _aspectRatio = _aspectRatios[2];
-                                }
-                                _cropLayerPainter = value;
-                              });
-                            }
-                          },
+                                  ),
+                                ],
+                              );
+                            });
+                      },
+                      mapOfSubFunctionDetails:
+                          widget.arguments!.mapOfSubFunctionDetails,
+                    ),
+                    bottomNavBarButtonsForFileModifications(
+                      buttonIcon: Icon(Icons.flip),
+                      buttonLabel: Text('Flip'),
+                      onTapAction: () {
+                        editorKey.currentState!.flip();
+                      },
+                      mapOfSubFunctionDetails:
+                          widget.arguments!.mapOfSubFunctionDetails,
+                    ),
+                    bottomNavBarButtonsForFileModifications(
+                      buttonIcon: Icon(Icons.rotate_left),
+                      buttonLabel: Text('Rotate Left'),
+                      onTapAction: () {
+                        editorKey.currentState!.rotate(right: false);
+                      },
+                      mapOfSubFunctionDetails:
+                          widget.arguments!.mapOfSubFunctionDetails,
+                    ),
+                    bottomNavBarButtonsForFileModifications(
+                      buttonIcon: Icon(Icons.rotate_right),
+                      buttonLabel: Text('Rotate Right'),
+                      onTapAction: () {
+                        editorKey.currentState!.rotate(right: true);
+                      },
+                      mapOfSubFunctionDetails:
+                          widget.arguments!.mapOfSubFunctionDetails,
+                    ),
+                    bottomNavBarButtonsForFileModifications(
+                      buttonIcon: Icon(Icons.rounded_corner_sharp),
+                      buttonLabel: PopupMenuButton<EditorCropLayerPainter>(
+                        key: popupMenuKey,
+                        enabled: false,
+                        offset: const Offset(100, -300),
+                        child: const Text(
+                          'Painter',
+                          style: TextStyle(fontSize: 8.0),
                         ),
-                        onTapAction: () {
-                          popupMenuKey.currentState!.showButtonMenu();
+                        initialValue: _cropLayerPainter,
+                        itemBuilder: (BuildContext context) {
+                          return <PopupMenuEntry<EditorCropLayerPainter>>[
+                            PopupMenuItem<EditorCropLayerPainter>(
+                              child: Row(
+                                children: const <Widget>[
+                                  Icon(
+                                    Icons.rounded_corner_sharp,
+                                    color: Colors.blue,
+                                  ),
+                                  SizedBox(
+                                    width: 5,
+                                  ),
+                                  Text('Default'),
+                                ],
+                              ),
+                              value: const EditorCropLayerPainter(),
+                            ),
+                            const PopupMenuDivider(),
+                            PopupMenuItem<EditorCropLayerPainter>(
+                              child: Row(
+                                children: const <Widget>[
+                                  Icon(
+                                    Icons.circle,
+                                    color: Colors.blue,
+                                  ),
+                                  SizedBox(
+                                    width: 5,
+                                  ),
+                                  Text('Dot'),
+                                ],
+                              ),
+                              value: const CustomEditorCropLayerPainter(),
+                            ),
+                            // const PopupMenuDivider(),
+                            // PopupMenuItem<EditorCropLayerPainter>(
+                            //   child: Row(
+                            //     children: const <Widget>[
+                            //       Icon(
+                            //         CupertinoIcons.circle,
+                            //         color: Colors.blue,
+                            //       ),
+                            //       SizedBox(
+                            //         width: 5,
+                            //       ),
+                            //       Text('Circle'),
+                            //     ],
+                            //   ),
+                            //   value: const CircleEditorCropLayerPainter(),
+                            //),
+                          ];
                         },
-                        mapOfSubFunctionDetails:
-                            widget.arguments!.mapOfSubFunctionDetails,
-                      ),
-                      bottomNavBarButtonsForFileModifications(
-                        buttonIcon: Icon(Icons.restore),
-                        buttonLabel: Text('Reset'),
-                        onTapAction: () {
-                          editorKey.currentState!.reset();
+                        onSelected: (EditorCropLayerPainter value) {
+                          if (_cropLayerPainter != value) {
+                            setState(() {
+                              if (value is CircleEditorCropLayerPainter) {
+                                _aspectRatio = _aspectRatios[2];
+                              }
+                              _cropLayerPainter = value;
+                            });
+                          }
                         },
-                        mapOfSubFunctionDetails:
-                            widget.arguments!.mapOfSubFunctionDetails,
                       ),
-                    ],
-                  ),
+                      onTapAction: () {
+                        popupMenuKey.currentState!.showButtonMenu();
+                      },
+                      mapOfSubFunctionDetails:
+                          widget.arguments!.mapOfSubFunctionDetails,
+                    ),
+                    bottomNavBarButtonsForFileModifications(
+                      buttonIcon: Icon(Icons.restore),
+                      buttonLabel: Text('Reset'),
+                      onTapAction: () {
+                        editorKey.currentState!.reset();
+                      },
+                      mapOfSubFunctionDetails:
+                          widget.arguments!.mapOfSubFunctionDetails,
+                    ),
+                  ],
                 ),
               ),
             ),
-            //selectedDataProcessed == true ? progressFakeDialogBox : Container(),
-          ],
-        ),
+          ),
+          //selectedDataProcessed == true ? progressFakeDialogBox : Container(),
+        ],
+      ),
       //),
     );
   }

@@ -359,82 +359,81 @@ class _MergePDFPagesScaffoldState extends State<MergePDFPagesScaffold>
     return ReusableAnnotatedRegion(
       //child: WillPopScope(
       // onWillPop: shouldWePopScaffold == true ? _directPop : _onWillPop, // no use as we handle onWillPop on dialog box it in processingDialog and we used it before here because we were using a fake dialog box which looks like a dialog box but actually just a lookalike created using stack
-        child: Stack(
-          children: [
-            Scaffold(
-              appBar: ReusableSilverAppBar(
-                title: 'Reorder & Merge PDFs',
-                titleColor: Colors.black,
-                leftButtonColor: Colors.red,
-                appBarIconLeft: appBarIconLeft,
-                appBarIconLeftToolTip: appBarIconLeftToolTip,
-                appBarIconLeftAction: appBarIconLeftAction,
-                rightButtonColor: Colors.blue,
-                appBarIconRight: appBarIconRight,
-                appBarIconRightToolTip: appBarIconRightToolTip,
-                appBarIconRightAction: appBarIconRightAction,
-              ),
-              body: Stack(
-                children: [
-                  SingleChildScrollView(
-                    child: Column(
-                      children: <Widget>[
-                        ReorderableListView(
-                          header: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              children: [
-                                Text('Reorder PDFs:'),
-                              ],
-                            ),
+      child: Stack(
+        children: [
+          Scaffold(
+            appBar: ReusableSilverAppBar(
+              title: 'Reorder & Merge PDFs',
+              titleColor: Colors.black,
+              leftButtonColor: Colors.red,
+              appBarIconLeft: appBarIconLeft,
+              appBarIconLeftToolTip: appBarIconLeftToolTip,
+              appBarIconLeftAction: appBarIconLeftAction,
+              rightButtonColor: Colors.blue,
+              appBarIconRight: appBarIconRight,
+              appBarIconRightToolTip: appBarIconRightToolTip,
+              appBarIconRightAction: appBarIconRightAction,
+            ),
+            body: Stack(
+              children: [
+                SingleChildScrollView(
+                  child: Column(
+                    children: <Widget>[
+                      ReorderableListView(
+                        header: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            children: [
+                              Text('Reorder PDFs:'),
+                            ],
                           ),
-                          shrinkWrap: true,
-                          physics: ClampingScrollPhysics(),
-                          children: filesListForReorderableListView,
-                          onReorder: (int oldIndex, int newIndex) {
-                            setState(() {
-                              if (oldIndex < newIndex) {
-                                newIndex -= 1;
-                              }
-                              final Widget item =
-                                  filesListForReorderableListView
-                                      .removeAt(oldIndex);
-                              filesListForReorderableListView.insert(
-                                  newIndex, item);
-
-                              final int item2 =
-                                  filesReorderRecorder.removeAt(oldIndex);
-                              filesReorderRecorder.insert(newIndex, item2);
-                            });
-                          },
                         ),
-                        Provider.of<AdState>(context).bannerAdUnitId != null
-                            ? SizedBox(
-                                height: bannerAdSize.height.toDouble(),
-                              )
-                            : Container(),
-                      ],
-                    ),
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      MeasureSize(
-                        onChange: (Size size) {
+                        shrinkWrap: true,
+                        physics: ClampingScrollPhysics(),
+                        children: filesListForReorderableListView,
+                        onReorder: (int oldIndex, int newIndex) {
                           setState(() {
-                            bannerAdSize = size;
+                            if (oldIndex < newIndex) {
+                              newIndex -= 1;
+                            }
+                            final Widget item = filesListForReorderableListView
+                                .removeAt(oldIndex);
+                            filesListForReorderableListView.insert(
+                                newIndex, item);
+
+                            final int item2 =
+                                filesReorderRecorder.removeAt(oldIndex);
+                            filesReorderRecorder.insert(newIndex, item2);
                           });
                         },
-                        child: BannerAD(),
                       ),
+                      Provider.of<AdState>(context).bannerAdUnitId != null
+                          ? SizedBox(
+                              height: bannerAdSize.height.toDouble(),
+                            )
+                          : Container(),
                     ],
                   ),
-                ],
-              ),
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    MeasureSize(
+                      onChange: (Size size) {
+                        setState(() {
+                          bannerAdSize = size;
+                        });
+                      },
+                      child: BannerAD(),
+                    ),
+                  ],
+                ),
+              ],
             ),
-            // selectedDataProcessed == true ? progressFakeDialogBox : Container(),
-          ],
-        ),
+          ),
+          // selectedDataProcessed == true ? progressFakeDialogBox : Container(),
+        ],
+      ),
       //),
     );
   }

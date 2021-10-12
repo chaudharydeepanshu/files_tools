@@ -183,162 +183,156 @@ class _CompressPDFScaffoldState extends State<CompressPDFScaffold>
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
         //child: WillPopScope(
         // onWillPop: shouldWePopScaffold == true ? _directPop : _onWillPop, // no use as we handle onWillPop on dialog box it in processingDialog and we used it before here because we were using a fake dialog box which looks like a dialog box but actually just a lookalike created using stack
-          child: Stack(
-            children: [
-              Form(
-                key: _formKey,
-                child: Scaffold(
-                  appBar: ReusableSilverAppBar(
-                    title: 'Specify Compression',
-                    titleColor: Colors.black,
-                    leftButtonColor: Colors.red,
-                    appBarIconLeft: appBarIconLeft,
-                    appBarIconLeftToolTip: appBarIconLeftToolTip,
-                    appBarIconLeftAction: appBarIconLeftAction,
-                    rightButtonColor: Colors.blue,
-                    appBarIconRight: appBarIconRight,
-                    appBarIconRightToolTip: appBarIconRightToolTip,
-                    appBarIconRightAction: _formKey.currentState != null
-                        ? _formKey.currentState!.validate()
-                            ? appBarIconRightAction
-                            : null
-                        : appBarIconRightAction,
-                  ),
-                  body: Stack(
-                    children: [
-                      SingleChildScrollView(
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            children: <Widget>[
-                              RadioListTile<Qualities>(
-                                controlAffinity:
-                                    ListTileControlAffinity.trailing,
-                                title: const Text('Less Compression'),
-                                subtitle: const Text(
-                                    'High quality, less compression'),
-                                value: Qualities.high,
-                                groupValue: _method,
-                                onChanged: (Qualities? value) {
-                                  setState(() {
-                                    _method = value;
-                                  });
-                                },
-                              ),
-                              RadioListTile<Qualities>(
-                                controlAffinity:
-                                    ListTileControlAffinity.trailing,
-                                title: const Text('Recommended Compression'),
-                                subtitle: const Text(
-                                    'Good quality, good compression'),
-                                value: Qualities.medium,
-                                groupValue: _method,
-                                onChanged: (Qualities? value) {
-                                  setState(() {
-                                    _method = value;
-                                  });
-                                },
-                              ),
-                              RadioListTile<Qualities>(
-                                controlAffinity:
-                                    ListTileControlAffinity.trailing,
-                                title: const Text('Extreme Compression'),
-                                subtitle: const Text(
-                                    'less quality, High compression'),
-                                value: Qualities.low,
-                                groupValue: _method,
-                                onChanged: (Qualities? value) {
-                                  setState(() {
-                                    _method = value;
-                                  });
-                                },
-                              ),
-                              RadioListTile<Qualities>(
-                                controlAffinity:
-                                    ListTileControlAffinity.trailing,
-                                title: Row(
-                                  children: [
-                                    const Text('Custom Compression'),
-                                    SizedBox(
-                                      width: 5,
-                                    ),
-                                    Expanded(
-                                      child: TextFormField(
-                                        controller:
-                                            customQualityTextEditingController,
-                                        inputFormatters: listTextInputFormatter,
-                                        decoration: const InputDecoration(
-                                          hintText: '88',
-                                          labelText: 'Quality % *',
-                                          helperText: ' ',
-                                        ),
-                                        keyboardType: TextInputType.number,
-                                        onChanged: (value) {
-                                          setState(() {});
-                                        },
-                                        onSaved: (String? value) {
-                                          // This optional block of code can be used to run
-                                          // code when the user saves the form.
-                                        },
-                                        autovalidateMode:
-                                            AutovalidateMode.onUserInteraction,
-                                        validator: (String? value) {
-                                          return (_method == Qualities.custom &&
-                                                  (value == null ||
-                                                      value.isEmpty))
-                                              ? 'Can\'t be Empty'
-                                              : (_method == Qualities.custom &&
-                                                      (int.parse(value!) < 1 ||
-                                                          int.parse(value) >
-                                                              100))
-                                                  ? 'Enter from 1 - 100'
-                                                  : null;
-                                        },
+        child: Stack(
+          children: [
+            Form(
+              key: _formKey,
+              child: Scaffold(
+                appBar: ReusableSilverAppBar(
+                  title: 'Specify Compression',
+                  titleColor: Colors.black,
+                  leftButtonColor: Colors.red,
+                  appBarIconLeft: appBarIconLeft,
+                  appBarIconLeftToolTip: appBarIconLeftToolTip,
+                  appBarIconLeftAction: appBarIconLeftAction,
+                  rightButtonColor: Colors.blue,
+                  appBarIconRight: appBarIconRight,
+                  appBarIconRightToolTip: appBarIconRightToolTip,
+                  appBarIconRightAction: _formKey.currentState != null
+                      ? _formKey.currentState!.validate()
+                          ? appBarIconRightAction
+                          : null
+                      : appBarIconRightAction,
+                ),
+                body: Stack(
+                  children: [
+                    SingleChildScrollView(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          children: <Widget>[
+                            RadioListTile<Qualities>(
+                              controlAffinity: ListTileControlAffinity.trailing,
+                              title: const Text('Less Compression'),
+                              subtitle:
+                                  const Text('High quality, less compression'),
+                              value: Qualities.high,
+                              groupValue: _method,
+                              onChanged: (Qualities? value) {
+                                setState(() {
+                                  _method = value;
+                                });
+                              },
+                            ),
+                            RadioListTile<Qualities>(
+                              controlAffinity: ListTileControlAffinity.trailing,
+                              title: const Text('Recommended Compression'),
+                              subtitle:
+                                  const Text('Good quality, good compression'),
+                              value: Qualities.medium,
+                              groupValue: _method,
+                              onChanged: (Qualities? value) {
+                                setState(() {
+                                  _method = value;
+                                });
+                              },
+                            ),
+                            RadioListTile<Qualities>(
+                              controlAffinity: ListTileControlAffinity.trailing,
+                              title: const Text('Extreme Compression'),
+                              subtitle:
+                                  const Text('less quality, High compression'),
+                              value: Qualities.low,
+                              groupValue: _method,
+                              onChanged: (Qualities? value) {
+                                setState(() {
+                                  _method = value;
+                                });
+                              },
+                            ),
+                            RadioListTile<Qualities>(
+                              controlAffinity: ListTileControlAffinity.trailing,
+                              title: Row(
+                                children: [
+                                  const Text('Custom Compression'),
+                                  SizedBox(
+                                    width: 5,
+                                  ),
+                                  Expanded(
+                                    child: TextFormField(
+                                      controller:
+                                          customQualityTextEditingController,
+                                      inputFormatters: listTextInputFormatter,
+                                      decoration: const InputDecoration(
+                                        hintText: '88',
+                                        labelText: 'Quality % *',
+                                        helperText: ' ',
                                       ),
+                                      keyboardType: TextInputType.number,
+                                      onChanged: (value) {
+                                        setState(() {});
+                                      },
+                                      onSaved: (String? value) {
+                                        // This optional block of code can be used to run
+                                        // code when the user saves the form.
+                                      },
+                                      autovalidateMode:
+                                          AutovalidateMode.onUserInteraction,
+                                      validator: (String? value) {
+                                        return (_method == Qualities.custom &&
+                                                (value == null ||
+                                                    value.isEmpty))
+                                            ? 'Can\'t be Empty'
+                                            : (_method == Qualities.custom &&
+                                                    (int.parse(value!) < 1 ||
+                                                        int.parse(value) > 100))
+                                                ? 'Enter from 1 - 100'
+                                                : null;
+                                      },
                                     ),
-                                  ],
-                                ),
-                                subtitle:
-                                    const Text('Enter quality from 1 to 100'),
-                                value: Qualities.custom,
-                                groupValue: _method,
-                                onChanged: (Qualities? value) {
-                                  setState(() {
-                                    _method = value;
-                                  });
-                                },
+                                  ),
+                                ],
                               ),
-                              Provider.of<AdState>(context).bannerAdUnitId !=
-                                      null
-                                  ? SizedBox(
-                                      height: bannerAdSize.height.toDouble(),
-                                    )
-                                  : Container(),
-                            ],
-                          ),
+                              subtitle:
+                                  const Text('Enter quality from 1 to 100'),
+                              value: Qualities.custom,
+                              groupValue: _method,
+                              onChanged: (Qualities? value) {
+                                setState(() {
+                                  _method = value;
+                                });
+                              },
+                            ),
+                            Provider.of<AdState>(context).bannerAdUnitId != null
+                                ? SizedBox(
+                                    height: bannerAdSize.height.toDouble(),
+                                  )
+                                : Container(),
+                          ],
                         ),
                       ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          MeasureSize(
-                            onChange: (Size size) {
-                              setState(() {
-                                bannerAdSize = size;
-                              });
-                            },
-                            child: BannerAD(),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        MeasureSize(
+                          onChange: (Size size) {
+                            setState(() {
+                              bannerAdSize = size;
+                            });
+                          },
+                          child: BannerAD(),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
               ),
-              // selectedDataProcessed == true ? progressFakeDialogBox : Container(),
-            ],
-          ),
-       // ),
+            ),
+            // selectedDataProcessed == true ? progressFakeDialogBox : Container(),
+          ],
+        ),
+        // ),
       ),
     );
   }

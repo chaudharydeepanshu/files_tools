@@ -311,399 +311,113 @@ class _WatermarkPDFPagesScaffoldState extends State<WatermarkPDFPagesScaffold>
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
         //child: WillPopScope(
         // onWillPop: shouldWePopScaffold == true ? _directPop : _onWillPop, // no use as we handle onWillPop on dialog box it in processingDialog and we used it before here because we were using a fake dialog box which looks like a dialog box but actually just a lookalike created using stack
-          child: Stack(
-            children: [
-              Form(
-                key: _formKey,
-                child: Scaffold(
-                  appBar: ReusableSilverAppBar(
-                    title: 'Watermark PDF Pages',
-                    titleColor: Colors.black,
-                    leftButtonColor: Colors.red,
-                    appBarIconLeft: appBarIconLeft,
-                    appBarIconLeftToolTip: appBarIconLeftToolTip,
-                    appBarIconLeftAction: appBarIconLeftAction,
-                    rightButtonColor: Colors.blue,
-                    appBarIconRight: appBarIconRight,
-                    appBarIconRightToolTip: appBarIconRightToolTip,
-                    appBarIconRightAction: _formKey.currentState != null
-                        ? _formKey.currentState!.validate()
-                            ? appBarIconRightAction
-                            : null
-                        : null,
-                  ),
-                  body: Stack(
-                    children: [
-                      SingleChildScrollView(
-                        controller: scrollController,
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            children: <Widget>[
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        'Note: ',
-                                        style: TextStyle(color: Colors.red),
-                                      ),
-                                      Expanded(
-                                        child: Text(
-                                            'For best results try to keep watermark text short and font size below 100.'),
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(
-                                    height: 10,
-                                  ),
-                                  Row(
-                                    children: [
-                                      Text('Watermark Text:'),
-                                    ],
-                                  ),
-                                  SizedBox(
-                                    height: 5,
-                                  ),
-                                  TextFormField(
-                                    controller: watermarkTextEditingController,
-                                    //keyboardType: TextInputType.number,
-                                    //inputFormatters: listTextInputFormatter,
-                                    onChanged: (String value) {
-                                      setState(() {});
-                                    },
-                                    decoration: InputDecoration(
-                                      labelText: 'Enter your watermark',
-                                      helperText: ' ',
-                                      hintText: 'Ex: Your Name',
-                                      border: OutlineInputBorder(),
-                                    ),
-                                    //autofocus: true,
-                                    showCursor: true,
-                                    autovalidateMode:
-                                        AutovalidateMode.onUserInteraction,
-                                    validator: (value) {
-                                      if (value == null || value.isEmpty) {
-                                        return 'Empty Field';
-                                      }
-                                      return null;
-                                    },
-                                  ),
-                                  SizedBox(
-                                    height: 5,
-                                  ),
-                                  Row(
-                                    children: [
-                                      Text('Font size:'),
-                                    ],
-                                  ),
-                                  SizedBox(
-                                    height: 5,
-                                  ),
-                                  TextFormField(
-                                    controller: fontSizeTextEditingController,
-                                    keyboardType: TextInputType.number,
-                                    inputFormatters: fontSizeTextInputFormatter,
-                                    onChanged: (String value) {
-                                      setState(() {
-                                        if (value.isNotEmpty) {
-                                          if (int.parse(
-                                                  value.substring(0, 1)) ==
-                                              0) {
-                                            String newValue =
-                                                value.substring(0, 0) +
-                                                    '' +
-                                                    value.substring(0 + 1);
-                                            fontSizeTextEditingController
-                                                .value = TextEditingValue(
-                                              text: newValue,
-                                              selection:
-                                                  TextSelection.fromPosition(
-                                                TextPosition(
-                                                    offset: newValue.length),
-                                              ),
-                                            );
-                                          }
-                                        }
-                                      });
-                                    },
-                                    decoration: InputDecoration(
-                                      labelText: 'Enter watermark font size',
-                                      helperText: ' ',
-                                      hintText: 'Ex: 40',
-                                      border: OutlineInputBorder(),
-                                    ),
-                                    //autofocus: true,
-                                    showCursor: true,
-                                    autovalidateMode:
-                                        AutovalidateMode.onUserInteraction,
-                                    validator: (value) {
-                                      if (value == null || value.isEmpty) {
-                                        return 'Empty Field';
-                                      }
-                                      return null;
-                                    },
-                                  ),
-                                ],
-                              ),
-                              SizedBox(
-                                height: 5,
-                              ),
-                              Row(
-                                children: [
-                                  Text('Position of watermark:'),
-                                ],
-                              ),
-                              SizedBox(
-                                height: 5,
-                              ),
-                              Row(
-                                children: [
-                                  Container(
-                                    height: 150,
-                                    width: 150,
-                                    child: GridView.count(
-                                      controller: scrollController,
-                                      shrinkWrap: true,
-                                      crossAxisCount: 3,
-                                      children: List.generate(
-                                          9, //this is the total number of cards
-                                          (index) {
-                                        return Container(
-                                          margin: EdgeInsets.all(5),
-                                          child: Material(
-                                            //elevation: 6,
-                                            color: listOfPositionsStatus[index]
-                                                ? Colors.lightBlue
-                                                : null,
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.all(
-                                                Radius.circular(10),
-                                              ),
-                                              side: BorderSide(
-                                                  color: Theme.of(context)
-                                                      .iconTheme
-                                                      .color!,
-                                                  width: 2),
-                                            ),
-                                            child: InkWell(
-                                              customBorder:
-                                                  RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.all(
-                                                  Radius.circular(10),
-                                                ),
-                                                side: BorderSide(
-                                                    color: Colors.lightBlue,
-                                                    width: 2),
-                                              ),
-                                              focusColor:
-                                                  Colors.black.withOpacity(0.1),
-                                              highlightColor:
-                                                  Colors.black.withOpacity(0.1),
-                                              splashColor:
-                                                  Colors.black.withOpacity(0.1),
-                                              hoverColor:
-                                                  Colors.black.withOpacity(0.1),
-                                              onTap: () {
-                                                if (listOfPositionsStatus[
-                                                        index] ==
-                                                    false) {
-                                                  List<bool> tempList =
-                                                      List<bool>.generate(9,
-                                                          (int tempIndex) {
-                                                    return tempIndex == index
-                                                        ? true
-                                                        : false;
-                                                  });
-                                                  setState(() {
-                                                    listOfPositionsStatus =
-                                                        tempList;
-                                                  });
-                                                }
-                                              },
-                                            ),
-                                          ),
-                                        );
-                                      }),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(
-                                height: 22,
-                              ),
-                              Row(
-                                children: [
-                                  Text('Color:'),
-                                ],
-                              ),
-                              SizedBox(
-                                height: 5,
-                              ),
-                              ListTile(
-                                title:
-                                    const Text('Click the color to change it'),
-                                subtitle: Text(
-                                  '${ColorTools.materialNameAndCode(dialogPickerColor, colorSwatchNameMap: colorsNameMap)} '
-                                  'aka ${ColorTools.nameThatColor(dialogPickerColor)}',
-                                ),
-                                trailing: ColorIndicator(
-                                  width: 44,
-                                  height: 44,
-                                  borderRadius: 4,
-                                  color: dialogPickerColor,
-                                  onSelectFocus: false,
-                                  onSelect: () async {
-                                    // Store current color before we open the dialog.
-                                    final Color colorBeforeDialog =
-                                        dialogPickerColor;
-                                    // Wait for the picker to close, if dialog was dismissed,
-                                    // then restore the color we had before it was opened.
-                                    if (!(await colorPickerDialog())) {
-                                      setState(() {
-                                        dialogPickerColor = colorBeforeDialog;
-                                      });
-                                    }
-                                  },
-                                ),
-                              ),
-                              SizedBox(
-                                height: 22,
-                              ),
-                              Row(
-                                children: [
-                                  Text('Layer:'),
-                                ],
-                              ),
-                              SizedBox(
-                                height: 5,
-                              ),
-                              SingleChildScrollView(
-                                scrollDirection: Axis.horizontal,
-                                child: Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
+        child: Stack(
+          children: [
+            Form(
+              key: _formKey,
+              child: Scaffold(
+                appBar: ReusableSilverAppBar(
+                  title: 'Watermark PDF Pages',
+                  titleColor: Colors.black,
+                  leftButtonColor: Colors.red,
+                  appBarIconLeft: appBarIconLeft,
+                  appBarIconLeftToolTip: appBarIconLeftToolTip,
+                  appBarIconLeftAction: appBarIconLeftAction,
+                  rightButtonColor: Colors.blue,
+                  appBarIconRight: appBarIconRight,
+                  appBarIconRightToolTip: appBarIconRightToolTip,
+                  appBarIconRightAction: _formKey.currentState != null
+                      ? _formKey.currentState!.validate()
+                          ? appBarIconRightAction
+                          : null
+                      : null,
+                ),
+                body: Stack(
+                  children: [
+                    SingleChildScrollView(
+                      controller: scrollController,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          children: <Widget>[
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    WatermarkLayerButtons(
-                                      buttonAsset:
-                                          'assets/images/functions_internal_icons/over_the_content_watermark_icon.svg',
-                                      buttonText: 'Over the PDF content',
-                                      buttonStatus:
-                                          listOfWatermarkLayerButtonsStatus[0],
-                                      onButtonStatus: (bool value) {
-                                        setState(() {
-                                          listOfWatermarkLayerButtonsStatus[0] =
-                                              value;
-                                          listOfWatermarkLayerButtonsStatus[1] =
-                                              !value;
-                                        });
-                                      },
+                                    Text(
+                                      'Note: ',
+                                      style: TextStyle(color: Colors.red),
                                     ),
-                                    WatermarkLayerButtons(
-                                      buttonAsset:
-                                          'assets/images/functions_internal_icons/below_the_content_watermark_icon.svg',
-                                      buttonText: 'Below the PDF content',
-                                      buttonStatus:
-                                          listOfWatermarkLayerButtonsStatus[1],
-                                      onButtonStatus: (bool value) {
-                                        setState(() {
-                                          listOfWatermarkLayerButtonsStatus[1] =
-                                              value;
-                                          listOfWatermarkLayerButtonsStatus[0] =
-                                              !value;
-                                        });
-                                      },
+                                    Expanded(
+                                      child: Text(
+                                          'For best results try to keep watermark text short and font size below 100.'),
                                     ),
                                   ],
                                 ),
-                              ),
-                              SizedBox(
-                                height: 22,
-                              ),
-                              Row(
-                                children: [
-                                  Text('Set transparency:'),
-                                ],
-                              ),
-                              SizedBox(
-                                height: 5,
-                              ),
-                              TextFormField(
-                                controller: transparencyTextEditingController,
-                                keyboardType: TextInputType.numberWithOptions(
-                                    decimal: true),
-                                inputFormatters: transparencyTextInputFormatter,
-                                onChanged: (String value) {
-                                  setState(() {});
-                                },
-                                decoration: InputDecoration(
-                                  labelText: 'Enter transparency',
-                                  helperText: ' ',
-                                  hintText: 'Ex: 0.50',
-                                  border: OutlineInputBorder(),
+                                SizedBox(
+                                  height: 10,
                                 ),
-                                //autofocus: true,
-                                showCursor: true,
-                                autovalidateMode:
-                                    AutovalidateMode.onUserInteraction,
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Empty Field';
-                                  } else if (double.tryParse(value) == null) {
-                                    return 'Please enter a value less than 1';
-                                  } else if (double.parse(value) > 1) {
-                                    return 'Please enter a value less than 1';
-                                  }
-                                  return null;
-                                },
-                              ),
-                              Row(
-                                children: [
-                                  Text('Set rotation angle:'),
-                                ],
-                              ),
-                              SizedBox(
-                                height: 5,
-                              ),
-                              TextFormField(
-                                controller: rotationAngleTextEditingController,
-                                keyboardType: TextInputType.numberWithOptions(
-                                    decimal: true),
-                                inputFormatters:
-                                    rotationAngleTextInputFormatter,
-                                onChanged: (String value) {
-                                  setState(() {
-                                    if (value.isNotEmpty) {
-                                      if (double.tryParse(
-                                              value.substring(0, 1)) !=
-                                          null) {
-                                        // if (double.parse(value.substring(0, 1)) ==
-                                        //     0) {
-                                        //   String newValue =
-                                        //       value.substring(0, 0) +
-                                        //           '' +
-                                        //           value.substring(0 + 1);
-                                        //   rotationAngleTextEditingController
-                                        //       .value = TextEditingValue(
-                                        //     text: newValue,
-                                        //     selection: TextSelection.fromPosition(
-                                        //       TextPosition(
-                                        //           offset: newValue.length),
-                                        //     ),
-                                        //   );
-                                        // }
-                                      }
-                                      if (value.length > 1) {
-                                        if (value.substring(value.length - 1) ==
-                                            '-') {
-                                          String newValue = value.substring(
-                                              0, value.length - 1);
-                                          rotationAngleTextEditingController
-                                              .value = TextEditingValue(
+                                Row(
+                                  children: [
+                                    Text('Watermark Text:'),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                TextFormField(
+                                  controller: watermarkTextEditingController,
+                                  //keyboardType: TextInputType.number,
+                                  //inputFormatters: listTextInputFormatter,
+                                  onChanged: (String value) {
+                                    setState(() {});
+                                  },
+                                  decoration: InputDecoration(
+                                    labelText: 'Enter your watermark',
+                                    helperText: ' ',
+                                    hintText: 'Ex: Your Name',
+                                    border: OutlineInputBorder(),
+                                  ),
+                                  //autofocus: true,
+                                  showCursor: true,
+                                  autovalidateMode:
+                                      AutovalidateMode.onUserInteraction,
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'Empty Field';
+                                    }
+                                    return null;
+                                  },
+                                ),
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                Row(
+                                  children: [
+                                    Text('Font size:'),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                TextFormField(
+                                  controller: fontSizeTextEditingController,
+                                  keyboardType: TextInputType.number,
+                                  inputFormatters: fontSizeTextInputFormatter,
+                                  onChanged: (String value) {
+                                    setState(() {
+                                      if (value.isNotEmpty) {
+                                        if (int.parse(value.substring(0, 1)) ==
+                                            0) {
+                                          String newValue =
+                                              value.substring(0, 0) +
+                                                  '' +
+                                                  value.substring(0 + 1);
+                                          fontSizeTextEditingController.value =
+                                              TextEditingValue(
                                             text: newValue,
                                             selection:
                                                 TextSelection.fromPosition(
@@ -713,65 +427,345 @@ class _WatermarkPDFPagesScaffoldState extends State<WatermarkPDFPagesScaffold>
                                           );
                                         }
                                       }
+                                    });
+                                  },
+                                  decoration: InputDecoration(
+                                    labelText: 'Enter watermark font size',
+                                    helperText: ' ',
+                                    hintText: 'Ex: 40',
+                                    border: OutlineInputBorder(),
+                                  ),
+                                  //autofocus: true,
+                                  showCursor: true,
+                                  autovalidateMode:
+                                      AutovalidateMode.onUserInteraction,
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'Empty Field';
                                     }
-                                  });
-                                },
-                                decoration: InputDecoration(
-                                  labelText: 'Enter rotation angle',
-                                  helperText: ' ',
-                                  hintText: 'Ex: -40',
-                                  border: OutlineInputBorder(),
+                                    return null;
+                                  },
                                 ),
-                                //autofocus: true,
-                                showCursor: true,
-                                autovalidateMode:
-                                    AutovalidateMode.onUserInteraction,
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Empty Field';
-                                  } else if (double.tryParse(value) == null) {
-                                    return 'Please enter a valid value between -360 to 360';
-                                  } else if (double.parse(value) < -360 ||
-                                      double.parse(value) > 360) {
-                                    return 'Please enter a valid value between -360 to 360';
+                              ],
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Row(
+                              children: [
+                                Text('Position of watermark:'),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Row(
+                              children: [
+                                Container(
+                                  height: 150,
+                                  width: 150,
+                                  child: GridView.count(
+                                    controller: scrollController,
+                                    shrinkWrap: true,
+                                    crossAxisCount: 3,
+                                    children: List.generate(
+                                        9, //this is the total number of cards
+                                        (index) {
+                                      return Container(
+                                        margin: EdgeInsets.all(5),
+                                        child: Material(
+                                          //elevation: 6,
+                                          color: listOfPositionsStatus[index]
+                                              ? Colors.lightBlue
+                                              : null,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.all(
+                                              Radius.circular(10),
+                                            ),
+                                            side: BorderSide(
+                                                color: Theme.of(context)
+                                                    .iconTheme
+                                                    .color!,
+                                                width: 2),
+                                          ),
+                                          child: InkWell(
+                                            customBorder:
+                                                RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.all(
+                                                Radius.circular(10),
+                                              ),
+                                              side: BorderSide(
+                                                  color: Colors.lightBlue,
+                                                  width: 2),
+                                            ),
+                                            focusColor:
+                                                Colors.black.withOpacity(0.1),
+                                            highlightColor:
+                                                Colors.black.withOpacity(0.1),
+                                            splashColor:
+                                                Colors.black.withOpacity(0.1),
+                                            hoverColor:
+                                                Colors.black.withOpacity(0.1),
+                                            onTap: () {
+                                              if (listOfPositionsStatus[
+                                                      index] ==
+                                                  false) {
+                                                List<bool> tempList =
+                                                    List<bool>.generate(9,
+                                                        (int tempIndex) {
+                                                  return tempIndex == index
+                                                      ? true
+                                                      : false;
+                                                });
+                                                setState(() {
+                                                  listOfPositionsStatus =
+                                                      tempList;
+                                                });
+                                              }
+                                            },
+                                          ),
+                                        ),
+                                      );
+                                    }),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 22,
+                            ),
+                            Row(
+                              children: [
+                                Text('Color:'),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            ListTile(
+                              title: const Text('Click the color to change it'),
+                              subtitle: Text(
+                                '${ColorTools.materialNameAndCode(dialogPickerColor, colorSwatchNameMap: colorsNameMap)} '
+                                'aka ${ColorTools.nameThatColor(dialogPickerColor)}',
+                              ),
+                              trailing: ColorIndicator(
+                                width: 44,
+                                height: 44,
+                                borderRadius: 4,
+                                color: dialogPickerColor,
+                                onSelectFocus: false,
+                                onSelect: () async {
+                                  // Store current color before we open the dialog.
+                                  final Color colorBeforeDialog =
+                                      dialogPickerColor;
+                                  // Wait for the picker to close, if dialog was dismissed,
+                                  // then restore the color we had before it was opened.
+                                  if (!(await colorPickerDialog())) {
+                                    setState(() {
+                                      dialogPickerColor = colorBeforeDialog;
+                                    });
                                   }
-                                  return null;
                                 },
                               ),
-                              Provider.of<AdState>(context).bannerAdUnitId !=
-                                      null
-                                  ? SizedBox(
-                                      height: bannerAdSize.height.toDouble(),
-                                    )
-                                  : Container(),
-                            ],
-                          ),
+                            ),
+                            SizedBox(
+                              height: 22,
+                            ),
+                            Row(
+                              children: [
+                                Text('Layer:'),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  WatermarkLayerButtons(
+                                    buttonAsset:
+                                        'assets/images/functions_internal_icons/over_the_content_watermark_icon.svg',
+                                    buttonText: 'Over the PDF content',
+                                    buttonStatus:
+                                        listOfWatermarkLayerButtonsStatus[0],
+                                    onButtonStatus: (bool value) {
+                                      setState(() {
+                                        listOfWatermarkLayerButtonsStatus[0] =
+                                            value;
+                                        listOfWatermarkLayerButtonsStatus[1] =
+                                            !value;
+                                      });
+                                    },
+                                  ),
+                                  WatermarkLayerButtons(
+                                    buttonAsset:
+                                        'assets/images/functions_internal_icons/below_the_content_watermark_icon.svg',
+                                    buttonText: 'Below the PDF content',
+                                    buttonStatus:
+                                        listOfWatermarkLayerButtonsStatus[1],
+                                    onButtonStatus: (bool value) {
+                                      setState(() {
+                                        listOfWatermarkLayerButtonsStatus[1] =
+                                            value;
+                                        listOfWatermarkLayerButtonsStatus[0] =
+                                            !value;
+                                      });
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ),
+                            SizedBox(
+                              height: 22,
+                            ),
+                            Row(
+                              children: [
+                                Text('Set transparency:'),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            TextFormField(
+                              controller: transparencyTextEditingController,
+                              keyboardType: TextInputType.numberWithOptions(
+                                  decimal: true),
+                              inputFormatters: transparencyTextInputFormatter,
+                              onChanged: (String value) {
+                                setState(() {});
+                              },
+                              decoration: InputDecoration(
+                                labelText: 'Enter transparency',
+                                helperText: ' ',
+                                hintText: 'Ex: 0.50',
+                                border: OutlineInputBorder(),
+                              ),
+                              //autofocus: true,
+                              showCursor: true,
+                              autovalidateMode:
+                                  AutovalidateMode.onUserInteraction,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Empty Field';
+                                } else if (double.tryParse(value) == null) {
+                                  return 'Please enter a value less than 1';
+                                } else if (double.parse(value) > 1) {
+                                  return 'Please enter a value less than 1';
+                                }
+                                return null;
+                              },
+                            ),
+                            Row(
+                              children: [
+                                Text('Set rotation angle:'),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            TextFormField(
+                              controller: rotationAngleTextEditingController,
+                              keyboardType: TextInputType.numberWithOptions(
+                                  decimal: true),
+                              inputFormatters: rotationAngleTextInputFormatter,
+                              onChanged: (String value) {
+                                setState(() {
+                                  if (value.isNotEmpty) {
+                                    if (double.tryParse(
+                                            value.substring(0, 1)) !=
+                                        null) {
+                                      // if (double.parse(value.substring(0, 1)) ==
+                                      //     0) {
+                                      //   String newValue =
+                                      //       value.substring(0, 0) +
+                                      //           '' +
+                                      //           value.substring(0 + 1);
+                                      //   rotationAngleTextEditingController
+                                      //       .value = TextEditingValue(
+                                      //     text: newValue,
+                                      //     selection: TextSelection.fromPosition(
+                                      //       TextPosition(
+                                      //           offset: newValue.length),
+                                      //     ),
+                                      //   );
+                                      // }
+                                    }
+                                    if (value.length > 1) {
+                                      if (value.substring(value.length - 1) ==
+                                          '-') {
+                                        String newValue = value.substring(
+                                            0, value.length - 1);
+                                        rotationAngleTextEditingController
+                                            .value = TextEditingValue(
+                                          text: newValue,
+                                          selection: TextSelection.fromPosition(
+                                            TextPosition(
+                                                offset: newValue.length),
+                                          ),
+                                        );
+                                      }
+                                    }
+                                  }
+                                });
+                              },
+                              decoration: InputDecoration(
+                                labelText: 'Enter rotation angle',
+                                helperText: ' ',
+                                hintText: 'Ex: -40',
+                                border: OutlineInputBorder(),
+                              ),
+                              //autofocus: true,
+                              showCursor: true,
+                              autovalidateMode:
+                                  AutovalidateMode.onUserInteraction,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Empty Field';
+                                } else if (double.tryParse(value) == null) {
+                                  return 'Please enter a valid value between -360 to 360';
+                                } else if (double.parse(value) < -360 ||
+                                    double.parse(value) > 360) {
+                                  return 'Please enter a valid value between -360 to 360';
+                                }
+                                return null;
+                              },
+                            ),
+                            Provider.of<AdState>(context).bannerAdUnitId != null
+                                ? SizedBox(
+                                    height: bannerAdSize.height.toDouble(),
+                                  )
+                                : Container(),
+                          ],
                         ),
                       ),
-                    ],
-                  ),
-                ),
-              ),
-              Material(
-                type: MaterialType.transparency,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    MeasureSize(
-                      onChange: (Size size) {
-                        setState(() {
-                          bannerAdSize = size;
-                        });
-                      },
-                      child: BannerAD(),
                     ),
                   ],
                 ),
               ),
-              // selectedDataProcessed == true ? progressFakeDialogBox : Container(),
-            ],
-          ),
-       // ),
+            ),
+            Material(
+              type: MaterialType.transparency,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  MeasureSize(
+                    onChange: (Size size) {
+                      setState(() {
+                        bannerAdSize = size;
+                      });
+                    },
+                    child: BannerAD(),
+                  ),
+                ],
+              ),
+            ),
+            // selectedDataProcessed == true ? progressFakeDialogBox : Container(),
+          ],
+        ),
+        // ),
       ),
     );
   }
