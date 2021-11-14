@@ -27,11 +27,11 @@ dependencies:
     sdk: flutter
   intl: ^0.17.0
   #  salomon_bottom_bar: ^3.1.0
-  file_picker: ^4.2.1
-  syncfusion_flutter_pdf: ^19.3.48-beta
-  syncfusion_flutter_pdfviewer: ^19.3.48-beta
+  file_picker: ^4.2.3
+  syncfusion_flutter_pdf: ^19.3.53-beta
+  syncfusion_flutter_pdfviewer: ^19.3.53-beta
   open_file: ^3.2.1
-  path_provider: ^2.0.6
+  path_provider: ^2.0.7
   native_pdf_renderer: ^4.0.1
   pdf_merger: ^0.0.6
   flutter_file_dialog: ^2.3.0
