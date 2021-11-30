@@ -260,6 +260,11 @@ class _CompressPDFScaffoldState extends State<CompressPDFScaffold>
                                   ),
                                   Expanded(
                                     child: TextFormField(
+                                      onTap: () {
+                                        setState(() {
+                                          _method = Qualities.custom;
+                                        });
+                                      },
                                       controller:
                                           customQualityTextEditingController,
                                       inputFormatters: listTextInputFormatter,
