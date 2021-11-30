@@ -27,16 +27,16 @@ dependencies:
     sdk: flutter
   intl: ^0.17.0
   #  salomon_bottom_bar: ^3.1.0
-  file_picker: ^4.2.3
-  syncfusion_flutter_pdf: ^19.3.53-beta
-  syncfusion_flutter_pdfviewer: ^19.3.53-beta
+  file_picker: ^4.2.6
+  syncfusion_flutter_pdf: ^19.3.56-beta
+  syncfusion_flutter_pdfviewer: ^19.3.56-beta
   open_file: ^3.2.1
   path_provider: ^2.0.7
   native_pdf_renderer: ^4.0.1
   pdf_merger: ^0.0.6
   flutter_file_dialog: ^2.3.0
   flutter_svg: ^0.23.0+1
-  reorderable_grid_view: ^2.0.0-alpha.1
+  reorderable_grid_view: ^2.2.1
   #  reorderable_grid_view:
   #    git:
   #      url: https://github.com/brightseagit/reorderable_grid_view.git
@@ -45,8 +45,8 @@ dependencies:
   #  pdf: ^3.4.2
   uuid: ^3.0.5
   flutter_archive: ^4.1.0
-  permission_handler: ^8.2.6
-  shared_preferences: ^2.0.8
+  permission_handler: ^8.3.0
+  shared_preferences: ^2.0.9
   store_redirect: ^2.0.0
   device_info_plus: ^3.1.1
   flutter_pdf_split:
@@ -62,12 +62,12 @@ dependencies:
   flutter_image_compress: ^1.1.0
   image_compression_flutter: ^1.0.2
   share_plus: ^3.0.4
-  google_mobile_ads: ^0.13.6
-#  google_mobile_ads:
-#    git:
-#      url: https://github.com/SuaMusica/googleads-mobile-flutter.git
-#      path: packages/google_mobile_ads
-#      ref: feature/suamusica
+#  google_mobile_ads: ^1.0.0
+  google_mobile_ads:
+    git:
+      url: https://github.com/SuaMusica/googleads-mobile-flutter.git
+      path: packages/google_mobile_ads
+      ref: feature/suamusica
   provider: ^6.0.1
   adaptive_theme: ^2.3.0
   gallery_saver: ^2.3.2
@@ -80,7 +80,7 @@ dependencies:
   extended_image: ^5.1.3
   image_editor: ^1.0.2
   flutter_native_image: ^0.0.6+1
-  flex_color_picker: ^2.1.2
+  flex_color_picker: ^2.2.0
 
 
   # The following adds the Cupertino Icons font to your application.
