@@ -47,6 +47,8 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   const MyApp({Key? key, this.savedThemeMode}) : super(key: key);
   final AdaptiveThemeMode? savedThemeMode;
+  final AdaptiveThemeMode firstRunAfterInstallThemeMode =
+      AdaptiveThemeMode.light;
 
   @override
   Widget build(BuildContext context) {
@@ -80,7 +82,7 @@ class MyApp extends StatelessWidget {
         //   ),
         // ),
       ),
-      initial: savedThemeMode ?? AdaptiveThemeMode.system,
+      initial: savedThemeMode ?? firstRunAfterInstallThemeMode,
       builder: (theme, darkTheme) => MaterialApp(
         localizationsDelegates: [
           AppLocalizations.delegate,
@@ -98,7 +100,7 @@ class MyApp extends StatelessWidget {
         theme: theme,
         themeMode: ThemeMode.system,
         home: Home(
-          savedThemeMode: savedThemeMode,
+          savedThemeMode: savedThemeMode ?? firstRunAfterInstallThemeMode,
         ),
         routes: {
           PageRoutes.mainPagesScaffold: (context) => MainPagesScaffold(
