@@ -3,7 +3,7 @@ import 'package:files_tools/ads/banner_ad.dart';
 import 'package:files_tools/basicFunctionalityFunctions/fileNameManager.dart';
 import 'package:files_tools/widgets/functionsMainWidgets/directPop.dart';
 import 'package:files_tools/widgets/functionsMainWidgets/onWillPopDialog.dart';
-import 'package:flutter/cupertino.dart';
+// import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
@@ -261,7 +261,7 @@ class _PDFFunctionBodyState extends State<PDFFunctionBody>
                 : () => directPop(),
             child: NotificationListener<OverscrollIndicatorNotification>(
               onNotification: (OverscrollIndicatorNotification overscroll) {
-                overscroll.disallowGlow();
+                overscroll.disallowIndicator();
                 return false;
               },
               child: SingleChildScrollView(

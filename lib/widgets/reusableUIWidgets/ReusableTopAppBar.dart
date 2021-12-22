@@ -43,7 +43,7 @@ class _ReusableSilverAppBarState extends State<ReusableSilverAppBar> {
   Widget build(BuildContext context) {
     return NotificationListener<OverscrollIndicatorNotification>(
       onNotification: (OverscrollIndicatorNotification overscroll) {
-        overscroll.disallowGlow();
+        overscroll.disallowIndicator();
         return false;
       },
       child: CustomScrollView(

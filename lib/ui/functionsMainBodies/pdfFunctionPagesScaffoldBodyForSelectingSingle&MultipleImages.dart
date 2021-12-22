@@ -3,7 +3,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:files_tools/ads/banner_ad.dart';
 import 'package:files_tools/widgets/functionsMainWidgets/directPop.dart';
 import 'package:files_tools/widgets/functionsMainWidgets/onWillPopDialog.dart';
-import 'package:flutter/cupertino.dart';
+// import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:flutter_svg/svg.dart';
@@ -19,7 +19,7 @@ import 'package:permission_handler/permission_handler.dart';
 import '../../../app_theme/app_theme.dart';
 import '../../../basicFunctionalityFunctions/getSizeFromBytes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:image_picker/image_picker.dart';
+// import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:files_tools/widgets/functionsMainWidgets/functionsButtons.dart';
 
@@ -234,7 +234,7 @@ class _PDFFunctionBodyForSelectingSingleMultipleImagesState
                 : () => directPop(),
             child: NotificationListener<OverscrollIndicatorNotification>(
               onNotification: (OverscrollIndicatorNotification overscroll) {
-                overscroll.disallowGlow();
+                overscroll.disallowIndicator();
                 return false;
               },
               child: SingleChildScrollView(
