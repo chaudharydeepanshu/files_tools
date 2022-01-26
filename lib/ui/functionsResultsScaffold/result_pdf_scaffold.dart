@@ -1,7 +1,7 @@
 import 'package:files_tools/ads/ad_state.dart';
 import 'package:files_tools/ads/banner_ad.dart';
 import 'package:files_tools/basicFunctionalityFunctions/size_calculator.dart';
-import 'package:files_tools/ui/pdfViewerScaffold/pdfScaffold.dart';
+import 'package:files_tools/ui/pdfViewerScaffold/pdf_scaffold.dart';
 import 'package:files_tools/widgets/annotated_region.dart';
 import 'package:files_tools/widgets/resultPageWidgets/view_file_banner.dart';
 // import 'package:flutter/foundation.dart';

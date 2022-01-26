@@ -15,7 +15,7 @@ import 'package:files_tools/ui/topLevelPagesScaffold/main_page_scaffold.dart';
 import 'package:files_tools/ui/functionsMainScaffold/pdf_function_pages_scaffold.dart';
 import 'package:files_tools/ui/functionsActionsScaffold/pdf_pages_modification_scaffold.dart';
 import 'package:files_tools/ui/functionsActionsScaffold/pdf_pages_selection_scaffold.dart';
-import 'package:files_tools/ui/pdfViewerScaffold/pdfScaffold.dart';
+import 'package:files_tools/ui/pdfViewerScaffold/pdf_scaffold.dart';
 import 'package:files_tools/widgets/functionsActionWidgets/reusableUIActionWidgets/reorder_pages_scaffold.dart';
 import 'package:files_tools/ui/functionsResultsScaffold/result_pdf_scaffold.dart';
 import 'package:files_tools/ui/functionsResultsScaffold/result_zip_scaffold.dart';
