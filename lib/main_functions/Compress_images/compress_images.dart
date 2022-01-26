@@ -1,11 +1,11 @@
 import 'dart:typed_data';
 import 'package:extended_image/extended_image.dart';
-import 'package:files_tools/basicFunctionalityFunctions/creatingAndSavingImageFileUsingBytesTemporarily.dart';
-import 'package:files_tools/basicFunctionalityFunctions/fileNameManager.dart';
-import 'package:files_tools/basicFunctionalityFunctions/getExternalStorageFilePathFromFileName.dart';
-import 'package:files_tools/basicFunctionalityFunctions/getFileNameFromFilePath.dart';
-import 'package:files_tools/basicFunctionalityFunctions/readFileByteFromFilePath.dart';
-import 'package:files_tools/ui/functionsActionsScaffold/compressImage.dart';
+import 'package:files_tools/basicFunctionalityFunctions/creating_and_saving_image_file_using_bytes_temporarily.dart';
+import 'package:files_tools/basicFunctionalityFunctions/file_name_manager.dart';
+import 'package:files_tools/basicFunctionalityFunctions/get_external_storage_file_path_from_file_name.dart';
+import 'package:files_tools/basicFunctionalityFunctions/get_file_name_from_file_path.dart';
+import 'package:files_tools/basicFunctionalityFunctions/read_file_byte_from_file_path.dart';
+import 'package:files_tools/ui/functionsActionsScaffold/compress_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:flutter_native_image/flutter_native_image.dart';
@@ -78,8 +78,13 @@ Future<dynamic> compressImages(List<String> imageFilePaths,
       return imageCompressResult;
     }
 
-    String targetPath =
-        await getExternalStorageFilePathFromFileName(fileNameWithoutExtension + ' ' + 'compressed' + ' ' + i.toString() + extensionOfFileName);
+    String targetPath = await getExternalStorageFilePathFromFileName(
+        fileNameWithoutExtension +
+            ' ' +
+            'compressed' +
+            ' ' +
+            i.toString() +
+            extensionOfFileName);
     debugPrint(targetPath);
     int quality = 0;
     if (pdfChangesDataMap['Qualities Method'] == Qualities.high) {

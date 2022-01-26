@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 import 'ad_state.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 
-// import 'customAdWidget.dart';
+// import 'custom_ad_widget.dart';
 
 // class BannerAD extends StatefulWidget {
 //   const BannerAD({Key? key}) : super(key: key);

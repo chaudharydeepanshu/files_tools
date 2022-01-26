@@ -1,4 +1,4 @@
-import 'package:files_tools/widgets/annotatedRegion.dart';
+import 'package:files_tools/widgets/annotated_region.dart';
 // import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';

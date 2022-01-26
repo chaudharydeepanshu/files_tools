@@ -1,5 +1,5 @@
 import 'package:files_tools/ads/banner_ad.dart';
-import 'package:files_tools/basicFunctionalityFunctions/sizeCalculator.dart';
+import 'package:files_tools/basicFunctionalityFunctions/size_calculator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:files_tools/widgets/topLevelPagesWidgets/homeWidgets/expanding_container/expanding_container.dart';

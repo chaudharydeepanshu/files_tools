@@ -1,6 +1,6 @@
 import 'dart:typed_data';
 import 'package:extended_image/extended_image.dart';
-import 'package:files_tools/basicFunctionalityFunctions/fileNameManager.dart';
+import 'package:files_tools/basicFunctionalityFunctions/file_name_manager.dart';
 import 'package:image_editor/image_editor.dart';
 import 'dart:async';
 import 'package:flutter/material.dart';

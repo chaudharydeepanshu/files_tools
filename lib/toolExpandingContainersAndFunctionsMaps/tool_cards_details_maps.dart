@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:files_tools/toolExpandingContainersAndFunctionsMaps/pdf%20_functions_details_maps.dart';
-import 'package:files_tools/ui/functionsMainScaffold/pdfFunctionPagesScaffold.dart';
+import 'package:files_tools/toolExpandingContainersAndFunctionsMaps/pdf_functions_details_maps.dart';
+import 'package:files_tools/ui/functionsMainScaffold/pdf_function_pages_scaffold.dart';
 import '../navigation/page_routes_model.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 

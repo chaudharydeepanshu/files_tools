@@ -2,7 +2,7 @@
 // import 'package:flutter/foundation.dart';
 // import 'package:flutter/material.dart';
 // import 'package:flutter/services.dart';
-// import 'package:files_tools/widgets/reusableUIWidgets/ReusableTopAppBar.dart';
+// import 'package:files_tools/widgets/reusableUIWidgets/reusable_top_appbar.dart';
 // import 'darg_drop_gridview/devdrag.dart';
 //
 // class ReorderPDFPagesScaffold extends StatefulWidget {
@@ -736,11 +736,11 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:files_tools/ads/ad_state.dart';
 import 'package:files_tools/ads/banner_ad.dart';
-import 'package:files_tools/basicFunctionalityFunctions/sizeCalculator.dart';
+import 'package:files_tools/basicFunctionalityFunctions/size_calculator.dart';
 // import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:files_tools/widgets/reusableUIWidgets/ReusableTopAppBar.dart';
+import 'package:files_tools/widgets/reusableUIWidgets/reusable_top_appbar.dart';
 import 'package:provider/provider.dart';
 import 'package:reorderable_grid_view/reorderable_grid_view.dart';
 
