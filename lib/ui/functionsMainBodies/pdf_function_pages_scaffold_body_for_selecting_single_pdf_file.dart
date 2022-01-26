@@ -11,7 +11,7 @@ import 'package:files_tools/basicFunctionalityFunctions/check_encrypted_document
 import 'package:files_tools/basicFunctionalityFunctions/lifecycle_event_handler.dart';
 import 'package:files_tools/basicFunctionalityFunctions/size_calculator.dart';
 import 'package:files_tools/navigation/page_routes_model.dart';
-import 'package:native_pdf_renderer/native_pdf_renderer.dart' as pdfRenderer;
+import 'package:native_pdf_renderer/native_pdf_renderer.dart' as pdf_renderer;
 import 'package:files_tools/widgets/functionsMainWidgets/permission_dialog_box.dart';
 import 'package:open_file/open_file.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -180,7 +180,7 @@ class _PDFFunctionBodyState extends State<PDFFunctionBody>
   late PlatformFile file;
   bool shouldRenderingImagesLoopBeDisabled = false;
 
-  List<pdfRenderer.PdfPageImage?> pdfPagesImages = [];
+  List<pdf_renderer.PdfPageImage?> pdfPagesImages = [];
 
   var myChildSize = Size.zero;
   bool storagePermissionPermanentlyDenied = false;
@@ -195,7 +195,7 @@ class _PDFFunctionBodyState extends State<PDFFunctionBody>
 
   void nativePDFRendererToImg(String filePath) async {
     try {
-      final newDocument = await pdfRenderer.PdfDocument.openFile(filePath);
+      final newDocument = await pdf_renderer.PdfDocument.openFile(filePath);
       final pagesCount = newDocument.pagesCount;
       double indicatorSteps = 1 / pagesCount;
       //pages = [];
@@ -207,7 +207,7 @@ class _PDFFunctionBodyState extends State<PDFFunctionBody>
               widget.notifyBodyPoppingSplitPDFFunctionScaffold == false;
           i++) {
         //Text('Item $i');
-        pdfRenderer.PdfPage page =
+        pdf_renderer.PdfPage page =
             await newDocument.getPage(i); //always start from 1
         //pages.add(page);
 
@@ -219,10 +219,10 @@ class _PDFFunctionBodyState extends State<PDFFunctionBody>
         int pageHeight = ((page.height) / 1).round();
         int pageWidth = ((page.width) / 1).round();
 
-        pdfRenderer.PdfPageImage? pageImage = await page.render(
+        pdf_renderer.PdfPageImage? pageImage = await page.render(
           width: pageWidth,
           height: pageHeight,
-          format: pdfRenderer.PdfPageFormat.JPEG,
+          format: pdf_renderer.PdfPageFormat.JPEG,
         );
 
         pdfPagesImages.add(pageImage);

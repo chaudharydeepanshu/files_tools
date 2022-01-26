@@ -19,7 +19,7 @@ import 'package:open_file/open_file.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
 import 'package:uuid/uuid.dart';
-import 'package:native_pdf_renderer/native_pdf_renderer.dart' as pdfRenderer;
+import 'package:native_pdf_renderer/native_pdf_renderer.dart' as pdf_renderer;
 import 'dart:io';
 
 var uuid = const Uuid();
@@ -481,7 +481,7 @@ class LabeledCheckbox extends StatelessWidget {
 }
 
 class MergePDFPagesScaffoldArguments {
-  List<List<pdfRenderer.PdfPageImage?>> listOfListPDFPagesImages;
+  List<List<pdf_renderer.PdfPageImage?>> listOfListPDFPagesImages;
   List<File> pdfFiles;
   List<String> pdfFilesPaths;
   List<String> pdfFilesNames;

@@ -28,7 +28,7 @@ import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 import '../../app_theme/app_theme.dart';
 import '../../basicFunctionalityFunctions/get_size_from_bytes.dart';
-import 'package:path/path.dart' as PathLibrary;
+import 'package:path/path.dart' as path_library;
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:document_file_save/document_file_save.dart';
 
@@ -96,7 +96,7 @@ class _ResultZipScaffoldState extends State<ResultZipScaffold> {
   @override
   void initState() {
     File file = File(widget.arguments!.rangesPdfsZipFilePath);
-    String fileName = PathLibrary.basename(file.path);
+    String fileName = path_library.basename(file.path);
     debugPrint("filename : $fileName");
 
     if (Platform.isAndroid) {
@@ -139,7 +139,7 @@ class _ResultZipScaffoldState extends State<ResultZipScaffold> {
 
     extensionOfSingleFileFromZip = extensionOfString(
             fileName:
-                PathLibrary.basename(widget.arguments!.rangesPdfsFilePaths[0]))
+                path_library.basename(widget.arguments!.rangesPdfsFilePaths[0]))
         .toLowerCase();
 
     _controller.text = fileNameWithoutExtension;
@@ -445,7 +445,7 @@ class _ResultZipScaffoldState extends State<ResultZipScaffold> {
                                     filesBytesList.add(File(widget
                                             .arguments!.rangesPdfsFilePaths[i])
                                         .readAsBytesSync());
-                                    String fileName = PathLibrary.basename(
+                                    String fileName = path_library.basename(
                                         widget
                                             .arguments!.rangesPdfsFilePaths[i]);
                                     String extensionOfFileName =

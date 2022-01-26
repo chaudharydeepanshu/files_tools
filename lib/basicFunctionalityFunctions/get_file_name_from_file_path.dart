@@ -1,8 +1,8 @@
 import 'dart:io';
-import 'package:path/path.dart' as PathLibrary;
+import 'package:path/path.dart' as path_library;
 
 String getFileNameFromFilePath(String filePath) {
   File file = File(filePath);
-  String fileName = PathLibrary.basename(file.path);
+  String fileName = path_library.basename(file.path);
   return fileName;
 }

@@ -13,7 +13,7 @@ import 'package:files_tools/basicFunctionalityFunctions/process_selected_data_fr
 import 'package:files_tools/ui/functionsResultsScaffold/result_zip_scaffold.dart';
 import 'package:files_tools/widgets/functionsActionWidgets/reusableUIActionWidgets/processing_dialog.dart';
 import 'package:files_tools/widgets/reusableUIWidgets/reusable_top_appbar.dart';
-import 'package:native_pdf_renderer/native_pdf_renderer.dart' as pdfRenderer;
+import 'package:native_pdf_renderer/native_pdf_renderer.dart' as pdf_renderer;
 import 'package:provider/provider.dart';
 
 class ExtractAllPDFPagesScaffold extends StatefulWidget {
@@ -38,7 +38,7 @@ class _ExtractAllPDFPagesScaffoldState extends State<ExtractAllPDFPagesScaffold>
   int numberOfPDFCreated = 0;
   Future<void> pdfsPageCount() async {
     String? filePath = widget.arguments!.pdfFile.path;
-    final newDocument = await pdfRenderer.PdfDocument.openFile(filePath!);
+    final newDocument = await pdf_renderer.PdfDocument.openFile(filePath!);
     pdfPagesCount = newDocument.pagesCount;
     newDocument.close();
   }
