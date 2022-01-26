@@ -348,8 +348,8 @@ class _PDFPagesSelectionScaffoldState extends State<PDFPagesSelectionScaffold>
                               return Column(
                                 children: <Widget>[
                                   Container(
-                                    height: 270,
-                                    width: 165,
+                                    // height: 270,
+                                    // width: 165,
                                     decoration: BoxDecoration(
                                       border: Border.all(
                                         width: selectedImages[index] == true

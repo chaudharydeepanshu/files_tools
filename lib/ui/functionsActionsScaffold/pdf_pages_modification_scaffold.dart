@@ -214,6 +214,7 @@ class _PDFPagesModificationScaffoldState
   bool reorderStatus = false;
   bool rotationStatus = false;
   bool deleteStatus = false;
+  bool isDeletingAllPages = false;
 
   bool proceedButton() {
     List<int> defaultReorderedList =
@@ -243,9 +244,21 @@ class _PDFPagesModificationScaffoldState
             ? false
             : true;
 
-    if (reorderStatus == false &&
-        rotationStatus == false &&
-        deleteStatus == false) {
+    isDeletingAllPages = listEquals(
+                List<bool>.generate(widget.arguments!.pdfPagesImages!.length,
+                    (i) {
+                  return false;
+                }),
+                listOfDeletedImages) ==
+            true
+        ? true
+        : false;
+
+    debugPrint("isDeletingAllPages: $isDeletingAllPages");
+    if ((reorderStatus == false &&
+            rotationStatus == false &&
+            deleteStatus == false) ||
+        isDeletingAllPages == true) {
       return false;
     } else {
       return true;

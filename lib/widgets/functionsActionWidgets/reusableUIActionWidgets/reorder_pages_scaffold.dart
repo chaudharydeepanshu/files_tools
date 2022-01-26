@@ -928,8 +928,8 @@ class _ReorderPDFPagesScaffoldState extends State<ReorderPDFPagesScaffold>
       child: Column(
         children: <Widget>[
           Container(
-            height: 270,
-            width: 165,
+            // height: 270,
+            // width: 165,
             decoration: BoxDecoration(
               border: Border.all(
                 width: 1, //selectedImages[index] == true ? 2 : 1,
@@ -982,8 +982,8 @@ class _ReorderPDFPagesScaffoldState extends State<ReorderPDFPagesScaffold>
       child: Column(
         children: <Widget>[
           Container(
-            height: 270,
-            width: 165,
+            // height: 270,
+            // width: 165,
             decoration: BoxDecoration(
               border: Border.all(
                 width: 1, //selectedImages[index] == true ? 2 : 1,
