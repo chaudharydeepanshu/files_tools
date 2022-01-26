@@ -4,12 +4,12 @@ import 'package:files_tools/basicFunctionalityFunctions/creating_and_saving_pdf_
 import 'package:files_tools/basicFunctionalityFunctions/file_name_manager.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
 import 'dart:io';
-import 'package:native_pdf_renderer/native_pdf_renderer.dart' as pdfRenderer;
+import 'package:native_pdf_renderer/native_pdf_renderer.dart' as pdf_renderer;
 
 Future<List<String>?> pdfToImages(String pdfFilePath,
     Map<String, dynamic> pdfChangesDataMap, bool shouldDataBeProcessed) async {
   List<String>? rangesPdfsFilePaths = [];
-  List<pdfRenderer.PdfPageImage?> pdfPagesImages = [];
+  List<pdf_renderer.PdfPageImage?> pdfPagesImages = [];
   List<String> filesPaths = [];
 
   bool isEncryptedDocument() {
@@ -36,14 +36,14 @@ Future<List<String>?> pdfToImages(String pdfFilePath,
 
     //creating and saving pdf as single page documents
     try {
-      final newDocument = await pdfRenderer.PdfDocument.openFile(pdfFilePath);
+      final newDocument = await pdf_renderer.PdfDocument.openFile(pdfFilePath);
       final pagesCount = newDocument.pagesCount;
 
       pdfPagesImages = [];
 
       for (var i = 1; i <= pagesCount && shouldDataBeProcessed == true; i++) {
         //Text('Item $i');
-        pdfRenderer.PdfPage page =
+        pdf_renderer.PdfPage page =
             await newDocument.getPage(i); //always start from 1
         //pages.add(page);
 
@@ -55,10 +55,10 @@ Future<List<String>?> pdfToImages(String pdfFilePath,
         int pageHeight = ((page.height) / 1).round();
         int pageWidth = ((page.width) / 1).round();
 
-        pdfRenderer.PdfPageImage? pageImage = await page.render(
+        pdf_renderer.PdfPageImage? pageImage = await page.render(
           width: pageWidth,
           height: pageHeight,
-          format: pdfRenderer.PdfPageFormat.JPEG,
+          format: pdf_renderer.PdfPageFormat.JPEG,
         );
 
         pdfPagesImages.add(pageImage);
