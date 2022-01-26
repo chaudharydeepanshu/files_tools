@@ -22,7 +22,7 @@ Future<dynamic> decryptPDF(String pdfFilePath,
   }
 
   if (isEncryptedDocument()) {
-    print('document is encrypted');
+    debugPrint('document is encrypted');
 
     TextEditingController textEditingControllerOwnerPassword =
         pdfChangesDataMap['Owner Password TextEditingController'];
@@ -111,8 +111,8 @@ Future<dynamic> decryptPDF(String pdfFilePath,
       //Load the encrypted PDF document.
       document = PdfDocument(
           inputBytes: File(pdfFilePath).readAsBytesSync(),
-          password: "${textEditingControllerUserPassword.text.toString()}");
-      print('user password worked');
+          password: textEditingControllerUserPassword.text.toString());
+      debugPrint('user password worked');
       //Change the user password as empty string
       document.security.userPassword = '';
 
@@ -121,8 +121,8 @@ Future<dynamic> decryptPDF(String pdfFilePath,
         //Clear the security permissions.
         document.security.permissions.clear();
       } catch (exception) {
-        print('user password failed to unlock owner password');
-        print(exception);
+        debugPrint('user password failed to unlock owner password');
+        debugPrint(exception.toString());
       }
     } catch (exception) {
       if (exception.toString().contains('Cannot open an encrypted document.')) {
@@ -132,9 +132,9 @@ Future<dynamic> decryptPDF(String pdfFilePath,
         //Load the encrypted PDF document.
         document = PdfDocument(
             inputBytes: File(pdfFilePath).readAsBytesSync(),
-            password: "${textEditingControllerOwnerPassword.text.toString()}");
+            password: textEditingControllerOwnerPassword.text.toString());
 
-        print('owner password worked');
+        debugPrint('owner password worked');
         //Change the user password as empty string
         document.security.ownerPassword = '';
 
@@ -143,8 +143,8 @@ Future<dynamic> decryptPDF(String pdfFilePath,
           //Clear the security permissions.
           document.security.permissions.clear();
         } catch (exception) {
-          print('owner password failed to unlock user password');
-          print(exception);
+          debugPrint('owner password failed to unlock user password');
+          debugPrint(exception.toString());
         }
       } catch (exception) {
         if (exception
@@ -155,7 +155,7 @@ Future<dynamic> decryptPDF(String pdfFilePath,
       }
     }
   }
-  print(document);
+  debugPrint(document);
   // if (!isEncryptedDocument()) {
   //   //Disable incremental update by set value as false. This helps decrease the size of pdf on page removal as it rewrites the whole document instead of updating the old one
   //   //document!.fileStructure.incrementalUpdate = false;

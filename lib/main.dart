@@ -57,11 +57,11 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         platform: TargetPlatform.android,
         scaffoldBackgroundColor: Colors.white,
-        primaryTextTheme: TextTheme(
+        primaryTextTheme: const TextTheme(
           headline6: TextStyle(color: Colors.black),
         ),
         //iconTheme: IconThemeData(color: Colors.black),
-        appBarTheme: AppBarTheme(
+        appBarTheme: const AppBarTheme(
           backgroundColor: Colors.white10,
           iconTheme: IconThemeData(
             color: Colors.black,
@@ -84,13 +84,13 @@ class MyApp extends StatelessWidget {
       ),
       initial: savedThemeMode ?? firstRunAfterInstallThemeMode,
       builder: (theme, darkTheme) => MaterialApp(
-        localizationsDelegates: [
+        localizationsDelegates: const [
           AppLocalizations.delegate,
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
         ],
-        supportedLocales: [
+        supportedLocales: const [
           Locale('en', ''), // English, no country code
           //Locale('hi', ''), // Hindi, no country code
         ],
@@ -212,7 +212,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
   @override
   void didChangePlatformBrightness() {
     var brightness = WidgetsBinding.instance!.window.platformBrightness;
-    print(brightness);
+    debugPrint(brightness.name);
     // > should print Brightness.light / Brightness.dark when you switch
     themeCalc();
     setState(() {
@@ -227,7 +227,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
     AdaptiveTheme.of(context).modeChangeNotifier.addListener(() {
       WidgetsBinding.instance!.addObserver(this); //most important
       var brightness = WidgetsBinding.instance!.window.platformBrightness;
-      print(brightness);
+      debugPrint(brightness.name);
       // > should print Brightness.light / Brightness.dark when you switch
       themeCalc();
       setState(() {
@@ -237,7 +237,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
     });
     WidgetsBinding.instance!.addObserver(this); //most important
     var brightness = WidgetsBinding.instance!.window.platformBrightness;
-    print(brightness);
+    debugPrint(brightness.name);
     // > should print Brightness.light / Brightness.dark when you switch
     themeCalc();
     setState(() {
@@ -255,7 +255,8 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    print('$darkModeOn, $theme, ${AdaptiveTheme.of(context).mode.isLight}');
+    debugPrint(
+        '$darkModeOn, $theme, ${AdaptiveTheme.of(context).mode.isLight}');
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle(
         // statusBarColor:

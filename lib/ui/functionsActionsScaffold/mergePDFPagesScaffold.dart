@@ -22,7 +22,7 @@ import 'package:uuid/uuid.dart';
 import 'package:native_pdf_renderer/native_pdf_renderer.dart' as pdfRenderer;
 import 'dart:io';
 
-var uuid = Uuid();
+var uuid = const Uuid();
 
 class MergePDFPagesScaffold extends StatefulWidget {
   static const String routeName = '/mergePDFPagesScaffold';
@@ -62,7 +62,7 @@ class _MergePDFPagesScaffoldState extends State<MergePDFPagesScaffold>
       var myChildSize = Size.zero;
 
       return StatefulBuilder(
-          key: Key('${uuid.v1()}'),
+          key: Key(uuid.v1()),
           builder: (context, setState) {
             //key: Key('${uuid.v1()}'),
             return Padding(
@@ -98,7 +98,7 @@ class _MergePDFPagesScaffoldState extends State<MergePDFPagesScaffold>
                           elevation: buttonElevation,
                           color: widget.arguments!
                                   .mapOfSubFunctionDetails!['Button Color'] ??
-                              Color(0xffE4EAF6),
+                              const Color(0xffE4EAF6),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10.0),
                           ),
@@ -106,14 +106,14 @@ class _MergePDFPagesScaffoldState extends State<MergePDFPagesScaffold>
                             onTap: () async {
                               final _result = await OpenFile.open(
                                   widget.arguments!.pdfFilesPaths[index]);
-                              print(_result.message);
+                              debugPrint(_result.message);
 
                               setState(() {
                                 _openResult =
                                     "type=${_result.type}  message=${_result.message}";
                               });
                               if (_result.type == ResultType.noAppToOpen) {
-                                print(_openResult);
+                                debugPrint(_openResult);
                                 //Using default app pdf viewer instead of suggesting downloading others
                                 Navigator.pushNamed(
                                   context,
@@ -144,7 +144,7 @@ class _MergePDFPagesScaffoldState extends State<MergePDFPagesScaffold>
                                         'Button Effects Color'] ??
                                     Colors.black.withOpacity(0.1),
                             child: Container(
-                              decoration: BoxDecoration(
+                              decoration: const BoxDecoration(
                                 borderRadius: BorderRadius.only(
                                   topLeft: Radius.circular(10),
                                   topRight: Radius.circular(10),
@@ -161,7 +161,7 @@ class _MergePDFPagesScaffoldState extends State<MergePDFPagesScaffold>
                                         onChange: (size) {
                                           setState(() {
                                             myChildSize = size;
-                                            print(myChildSize);
+                                            debugPrint(myChildSize.toString());
                                           });
                                         },
                                         child: Padding(
@@ -176,8 +176,7 @@ class _MergePDFPagesScaffoldState extends State<MergePDFPagesScaffold>
                                               height: 35,
                                               color: widget.arguments!
                                                           .mapOfSubFunctionDetails![
-                                                      'File Icon Color'] ??
-                                                  null,
+                                                      'File Icon Color'],
                                               alignment: Alignment.center,
                                               semanticsLabel: 'File Icon'),
                                           // Image.asset(
@@ -187,7 +186,7 @@ class _MergePDFPagesScaffoldState extends State<MergePDFPagesScaffold>
                                           // ),
                                         ),
                                       ),
-                                      SizedBox(
+                                      const SizedBox(
                                         width: 15,
                                       ),
                                       Expanded(
@@ -198,7 +197,7 @@ class _MergePDFPagesScaffoldState extends State<MergePDFPagesScaffold>
                                               CrossAxisAlignment.start,
                                           children: [
                                             Text(
-                                              "${widget.arguments!.pdfFilesNames[index]}",
+                                              widget.arguments!.pdfFilesNames[index],
                                               overflow: TextOverflow.ellipsis,
                                               style: TextStyle(
                                                 fontWeight: FontWeight.w500,
@@ -208,13 +207,13 @@ class _MergePDFPagesScaffoldState extends State<MergePDFPagesScaffold>
                                                     Colors.black,
                                               ),
                                             ),
-                                            SizedBox(
+                                            const SizedBox(
                                               height: 5,
                                             ),
                                             Row(
                                               children: [
                                                 Text(
-                                                  '${formatBytes(widget.arguments!.pdfFilesSizes[index], 2)}',
+                                                  formatBytes(widget.arguments!.pdfFilesSizes[index], 2),
                                                   style: TextStyle(
                                                     fontSize: 12,
                                                     color: widget.arguments!
@@ -278,11 +277,11 @@ class _MergePDFPagesScaffoldState extends State<MergePDFPagesScaffold>
               'PDF File Name': "Merged Pdf ${currentDateTimeInString()}.pdf",
               'Files Reorder Recorder': filesReorderRecorder,
             },
-            processType: "${widget.arguments!.processType}",
+            processType: widget.arguments!.processType,
             filesPaths: widget.arguments!.pdfFilesPaths,
             shouldDataBeProcessed: shouldDataBeProcessed);
 
-        Map map = Map();
+        Map map = {};
         map['_pdfFileName'] = "Merged Pdf ${currentDateTimeInString()}.pdf";
         map['_extraBetweenNameAndExtension'] = '';
         map['_document'] = document;
@@ -383,13 +382,13 @@ class _MergePDFPagesScaffoldState extends State<MergePDFPagesScaffold>
                         header: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Row(
-                            children: [
+                            children: const [
                               Text('Reorder PDFs:'),
                             ],
                           ),
                         ),
                         shrinkWrap: true,
-                        physics: ClampingScrollPhysics(),
+                        physics: const ClampingScrollPhysics(),
                         children: filesListForReorderableListView,
                         onReorder: (int oldIndex, int newIndex) {
                           setState(() {
@@ -424,7 +423,7 @@ class _MergePDFPagesScaffoldState extends State<MergePDFPagesScaffold>
                           bannerAdSize = size;
                         });
                       },
-                      child: BannerAD(),
+                      child: const BannerAD(),
                     ),
                   ],
                 ),

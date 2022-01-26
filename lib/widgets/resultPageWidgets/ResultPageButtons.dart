@@ -55,7 +55,7 @@ class _ResultPageButtonsState extends State<ResultPageButtons> {
             child: Material(
               elevation: buttonElevation,
               color: widget.mapOfSubFunctionDetails!['Button Color'] ??
-                  Color(0xffE4EAF6),
+                  const Color(0xffE4EAF6),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(18.0),
               ),
@@ -85,12 +85,12 @@ class _ResultPageButtonsState extends State<ResultPageButtons> {
                       size: 24,
                       color: Colors.black,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 10,
                     ),
                     Text(
                       widget.buttonTitle,
-                      style: TextStyle(color: Colors.black),
+                      style: const TextStyle(color: Colors.black),
                     )
                   ],
                 ),

@@ -28,7 +28,7 @@ Future<String?> creatingAndSavingZipFileTemporarily(map) async {
       return File(_rangesPdfsFilePaths[i]);
     });
     final zipFile = File(
-        "${sourceDirectoryPath + "/" + fileNameWithoutExtension + ' ' + 'Zip' + ' ' + 'file' + ".zip"}");
+        sourceDirectoryPath + "/" + fileNameWithoutExtension + ' ' + 'Zip' + ' ' + 'file' + ".zip");
 
     await ZipFile.createFromFiles(
             sourceDir: sourceDirectory, files: filesList, zipFile: zipFile)
@@ -36,7 +36,7 @@ Future<String?> creatingAndSavingZipFileTemporarily(map) async {
       //removingTempPDFFiles();//disables as these individual file paths are required for saving files individually in gallery and downloads instead of regenerating from zip
       //also it is not required as the automatically get removed
     });
-    return '${sourceDirectoryPath + "/" + fileNameWithoutExtension + ' ' + 'Zip' + ' ' + 'file' + ".zip"}';
+    return sourceDirectoryPath + "/" + fileNameWithoutExtension + ' ' + 'Zip' + ' ' + 'file' + ".zip";
   }
 
   return await saveFileTemporarily(_pdfFileName);

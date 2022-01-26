@@ -47,12 +47,11 @@ Future<PdfDocument?> encryptPDF(String pdfFilePath,
       //Load the existing PDF document.
       //Get the document security and set user and owner password.
       PdfSecurity security = document!.security;
-      security.userPassword =
-          '${textEditingControllerUserPassword.text.toString()}';
+      security.userPassword = textEditingControllerUserPassword.text.toString();
       if (textEditingControllerOwnerPassword.text.isNotEmpty) {
-        print('ownerPassword set');
+        debugPrint('ownerPassword set');
         security.ownerPassword =
-            '${textEditingControllerOwnerPassword.text.toString()}';
+            textEditingControllerOwnerPassword.text.toString();
       }
       //Set the encryption algorithm and permissions.
       document!.security.algorithm = PdfEncryptionAlgorithm.aesx128Bit;
@@ -61,9 +60,12 @@ Future<PdfDocument?> encryptPDF(String pdfFilePath,
       //     .addAll([PdfPermissionsFlags.print, PdfPermissionsFlags.copyContent]);
 
       //Save the document temporarily.
-      String newFileName =
-          "${fileNameWithoutExtension + ' ' + 'encrypted' + ' ' + extensionOfFileName}";
-      Map map = Map();
+      String newFileName = fileNameWithoutExtension +
+          ' ' +
+          'encrypted' +
+          ' ' +
+          extensionOfFileName;
+      Map map = {};
       map['_pdfFileName'] = newFileName;
       map['_extraBetweenNameAndExtension'] = '';
       map['_document'] = document;
@@ -74,13 +76,16 @@ Future<PdfDocument?> encryptPDF(String pdfFilePath,
     //passing final document to document variable
     document = PdfDocument(
         inputBytes: File(await securePdf()).readAsBytesSync(),
-        password: '${textEditingControllerUserPassword.text.toString()}');
+        password: textEditingControllerUserPassword.text.toString());
 
     //removing unnecessary documents from getExternalStorageDirectory
-    deletingTempPDFFiles(
-        "${fileNameWithoutExtension + ' ' + 'encrypted' + ' ' + extensionOfFileName}");
+    deletingTempPDFFiles(fileNameWithoutExtension +
+        ' ' +
+        'encrypted' +
+        ' ' +
+        extensionOfFileName);
   } else {
-    print('document is encrypted');
+    debugPrint('document is encrypted');
     document = null;
   }
 

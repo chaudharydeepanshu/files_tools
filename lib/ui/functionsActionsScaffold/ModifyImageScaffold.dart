@@ -151,7 +151,7 @@ class _AspectRatioWidgetState extends State<AspectRatioWidget> {
                               },
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 10,
                           ),
                           Expanded(
@@ -212,26 +212,26 @@ class _AspectRatioWidgetState extends State<AspectRatioWidget> {
       type: MaterialType.transparency,
       child: Padding(
         padding: const EdgeInsets.all(6.0),
-        child: Container(
+        child: SizedBox(
           height: 48,
           width: 90,
           child: Material(
             color: widget.isSelected == true ? Colors.blue : Colors.grey,
-            shape: StadiumBorder(),
+            shape: const StadiumBorder(),
             child: InkWell(
               onTap: () {
                 if (widget.aspectRatioS! != 'specific') {
                   widget.onTap.call(widget.aspectRatio);
                 } else if (widget.aspectRatioS! == 'specific') {
                   specifyDialog(context).then((value) {
-                    print('it run');
+                    debugPrint('it run');
                     if (value != null) {
                       widget.onTap.call(value);
                     }
                   });
                 }
               },
-              customBorder: StadiumBorder(),
+              customBorder: const StadiumBorder(),
               focusColor: Colors.black.withOpacity(0.1),
               highlightColor: Colors.black.withOpacity(0.1),
               splashColor: Colors.black.withOpacity(0.1),
@@ -247,7 +247,7 @@ class _AspectRatioWidgetState extends State<AspectRatioWidget> {
                           : Colors.black,
                       size: 24,
                     ),
-                    child: Icon(Icons.aspect_ratio),
+                    child: const Icon(Icons.aspect_ratio),
                   ),
                   ClipRect(
                     child: SizedBox(
@@ -434,7 +434,7 @@ class _ModifyImageScaffoldState extends State<ModifyImageScaffold> {
             filePath: widget.arguments!.compressedFilesPath,
             shouldDataBeProcessed: shouldDataBeProcessed);
 
-        Map map = Map();
+        Map map = {};
         map['_imageName'] =
             "Modified Image ${currentDateTimeInString() + extensionOfFileName!}";
         map['_extraBetweenNameAndExtension'] = '';
@@ -524,7 +524,7 @@ class _ModifyImageScaffoldState extends State<ModifyImageScaffold> {
 
   @override
   Widget build(BuildContext context) {
-    print('modify_pdf image active');
+    debugPrint('modify_pdf image active');
     return ReusableAnnotatedRegion(
       //child: WillPopScope(
       // onWillPop: shouldWePopScaffold == true ? _directPop : _onWillPop, // no use as we handle onWillPop on dialog box it in processingDialog and we used it before here because we were using a fake dialog box which looks like a dialog box but actually just a lookalike created using stack
@@ -574,8 +574,8 @@ class _ModifyImageScaffoldState extends State<ModifyImageScaffold> {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     bottomNavBarButtonsForFileModifications(
-                      buttonIcon: Icon(Icons.crop),
-                      buttonLabel: Text('Crop'),
+                      buttonIcon: const Icon(Icons.crop),
+                      buttonLabel: const Text('Crop'),
                       onTapAction: () {
                         showDialog<void>(
                             context: context,
@@ -626,8 +626,8 @@ class _ModifyImageScaffoldState extends State<ModifyImageScaffold> {
                           widget.arguments!.mapOfSubFunctionDetails,
                     ),
                     bottomNavBarButtonsForFileModifications(
-                      buttonIcon: Icon(Icons.flip),
-                      buttonLabel: Text('Flip'),
+                      buttonIcon: const Icon(Icons.flip),
+                      buttonLabel: const Text('Flip'),
                       onTapAction: () {
                         editorKey.currentState!.flip();
                       },
@@ -635,8 +635,8 @@ class _ModifyImageScaffoldState extends State<ModifyImageScaffold> {
                           widget.arguments!.mapOfSubFunctionDetails,
                     ),
                     bottomNavBarButtonsForFileModifications(
-                      buttonIcon: Icon(Icons.rotate_left),
-                      buttonLabel: Text('Rotate Left'),
+                      buttonIcon: const Icon(Icons.rotate_left),
+                      buttonLabel: const Text('Rotate Left'),
                       onTapAction: () {
                         editorKey.currentState!.rotate(right: false);
                       },
@@ -644,8 +644,8 @@ class _ModifyImageScaffoldState extends State<ModifyImageScaffold> {
                           widget.arguments!.mapOfSubFunctionDetails,
                     ),
                     bottomNavBarButtonsForFileModifications(
-                      buttonIcon: Icon(Icons.rotate_right),
-                      buttonLabel: Text('Rotate Right'),
+                      buttonIcon: const Icon(Icons.rotate_right),
+                      buttonLabel: const Text('Rotate Right'),
                       onTapAction: () {
                         editorKey.currentState!.rotate(right: true);
                       },
@@ -653,7 +653,7 @@ class _ModifyImageScaffoldState extends State<ModifyImageScaffold> {
                           widget.arguments!.mapOfSubFunctionDetails,
                     ),
                     bottomNavBarButtonsForFileModifications(
-                      buttonIcon: Icon(Icons.rounded_corner_sharp),
+                      buttonIcon: const Icon(Icons.rounded_corner_sharp),
                       buttonLabel: PopupMenuButton<EditorCropLayerPainter>(
                         key: popupMenuKey,
                         enabled: false,
@@ -732,8 +732,8 @@ class _ModifyImageScaffoldState extends State<ModifyImageScaffold> {
                           widget.arguments!.mapOfSubFunctionDetails,
                     ),
                     bottomNavBarButtonsForFileModifications(
-                      buttonIcon: Icon(Icons.restore),
-                      buttonLabel: Text('Reset'),
+                      buttonIcon: const Icon(Icons.restore),
+                      buttonLabel: const Text('Reset'),
                       onTapAction: () {
                         editorKey.currentState!.reset();
                       },

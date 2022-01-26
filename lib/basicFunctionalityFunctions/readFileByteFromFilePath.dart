@@ -1,15 +1,18 @@
 import 'dart:typed_data';
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
+
 Future<Uint8List?> readFileByteFromFilePath(String filePath) async {
   Uri myUri = Uri.parse(filePath);
-  File audioFile = new File.fromUri(myUri);
+  File audioFile = File.fromUri(myUri);
   Uint8List? bytes;
   await audioFile.readAsBytes().then((value) {
     bytes = Uint8List.fromList(value);
-    print('reading of bytes is completed');
+    debugPrint('reading of bytes is completed');
   }).catchError((onError) {
-    print('Exception Error while reading file from path:' + onError.toString());
+    debugPrint(
+        'Exception Error while reading file from path:' + onError.toString());
   });
   return bytes;
 }

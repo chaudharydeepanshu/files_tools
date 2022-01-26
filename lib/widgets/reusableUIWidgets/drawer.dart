@@ -92,7 +92,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
 
   @override
   Widget build(BuildContext context) {
-    print(themeButtonText);
+    debugPrint(themeButtonText);
     return Drawer(
       // Add a ListView to the drawer. This ensures the user can scroll
       // through the options in the drawer if there isn't enough vertical
@@ -105,7 +105,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
               padding: EdgeInsets.zero,
               children: [
                 DrawerHeader(
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                       //color: Colors.white,
                       ),
                   child: Center(
@@ -118,10 +118,10 @@ class _CustomDrawerState extends State<CustomDrawer> {
                             height: 100,
                             alignment: Alignment.center,
                             semanticsLabel: 'App Logo'),
-                        SizedBox(
+                        const SizedBox(
                           height: 10,
                         ),
-                        Text(
+                        const Text(
                           'Files Tools',
                           style: TextStyle(fontSize: 20),
                         ),
@@ -144,12 +144,12 @@ class _CustomDrawerState extends State<CustomDrawer> {
             ),
           ),
           RichText(
-            text: new TextSpan(
+            text: TextSpan(
               children: [
                 TextSpan(
                   text: 'Privacy Policy',
-                  style: new TextStyle(color: Colors.blue),
-                  recognizer: new TapGestureRecognizer()
+                  style: const TextStyle(color: Colors.blue),
+                  recognizer: TapGestureRecognizer()
                     ..onTap = () {
                       leavingAppDialogBox(
                           actionButtonsList:

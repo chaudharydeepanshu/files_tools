@@ -915,7 +915,7 @@ class _ReorderPDFPagesScaffoldState extends State<ReorderPDFPagesScaffold>
   }
 
   Widget buildItem(int index) {
-    print('itemBuilder ran');
+    debugPrint('itemBuilder ran');
     RotatedBox rotatedBoxImage =
         widget.arguments!.decorationImageListForReorder![index];
     return Opacity(
@@ -938,7 +938,7 @@ class _ReorderPDFPagesScaffoldState extends State<ReorderPDFPagesScaffold>
               ),
             ),
             child: ConstrainedBox(
-              constraints: BoxConstraints(
+              constraints: const BoxConstraints(
                 maxHeight: 234,
                 maxWidth: 165,
               ),
@@ -961,7 +961,7 @@ class _ReorderPDFPagesScaffoldState extends State<ReorderPDFPagesScaffold>
             ),
           ),
           Text('${index + 1}'),
-          SizedBox(
+          const SizedBox(
             height: 5,
           ),
         ],
@@ -970,7 +970,7 @@ class _ReorderPDFPagesScaffoldState extends State<ReorderPDFPagesScaffold>
   }
 
   Widget dragWidget(int index, Widget child) {
-    print('itemBuilder ran');
+    debugPrint('itemBuilder ran');
     RotatedBox rotatedBoxImage =
         widget.arguments!.decorationImageListForReorder![index];
     return Opacity(
@@ -989,7 +989,7 @@ class _ReorderPDFPagesScaffoldState extends State<ReorderPDFPagesScaffold>
                 width: 1, //selectedImages[index] == true ? 2 : 1,
                 color: Colors.blue,
               ),
-              borderRadius: BorderRadius.only(
+              borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(10),
                 topRight: Radius.circular(10),
                 bottomLeft: Radius.circular(10),
@@ -997,12 +997,12 @@ class _ReorderPDFPagesScaffoldState extends State<ReorderPDFPagesScaffold>
               ),
             ),
             child: ConstrainedBox(
-              constraints: BoxConstraints(
+              constraints: const BoxConstraints(
                 maxHeight: 234,
                 maxWidth: 165,
               ),
               child: ClipRRect(
-                borderRadius: BorderRadius.only(
+                borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(10.0),
                   topRight: Radius.circular(10.0),
                   bottomLeft: Radius.circular(10.0),
@@ -1031,9 +1031,9 @@ class _ReorderPDFPagesScaffoldState extends State<ReorderPDFPagesScaffold>
 
   @override
   Widget build(BuildContext context) {
-    print('tmpListOfDeletedImagesRecord: $tmpListOfDeletedImagesRecord');
-    print('reorderedList: $tmpReorderedList');
-    print('setState Ran');
+    debugPrint('tmpListOfDeletedImagesRecord: $tmpListOfDeletedImagesRecord');
+    debugPrint('reorderedList: $tmpReorderedList');
+    debugPrint('setState Ran');
     return WillPopScope(
       onWillPop: shouldWePopScaffold == true ? _directPop : _onWillPop,
       child: Stack(
@@ -1065,11 +1065,11 @@ class _ReorderPDFPagesScaffoldState extends State<ReorderPDFPagesScaffold>
                           crossAxisCount: 2,
                           childAspectRatio: 0.68,
                           children:
-                              this.data!.map((e) => buildItem(e)).toList(),
+                              data!.map((e) => buildItem(e)).toList(),
                           dragWidgetBuilder: dragWidget,
                           scrollSpeedController: (int timeInMilliSecond,
                               double overSize, double itemSize) {
-                            print(
+                            debugPrint(
                                 "timeInMilliSecond: $timeInMilliSecond, overSize: $overSize, itemSize $itemSize");
                             if (timeInMilliSecond > 1500) {
                               scrollSpeedVariable = 15;
@@ -1079,7 +1079,7 @@ class _ReorderPDFPagesScaffoldState extends State<ReorderPDFPagesScaffold>
                             return scrollSpeedVariable;
                           },
                           onReorder: (oldIndex, newIndex) {
-                            print("reorder: $oldIndex -> $newIndex");
+                            debugPrint("reorder: $oldIndex -> $newIndex");
                             HapticFeedback.lightImpact();
 
                             widget.arguments!.pdfPagesImages = [
@@ -1239,7 +1239,7 @@ class _ReorderPDFPagesScaffoldState extends State<ReorderPDFPagesScaffold>
                             setState(
                               () {
                                 pos = null;
-                                print(pos);
+                                debugPrint(pos.toString());
                               },
                             );
                           },
@@ -1603,7 +1603,7 @@ class _ReorderPDFPagesScaffoldState extends State<ReorderPDFPagesScaffold>
                           bannerAdSize = size;
                         });
                       },
-                      child: BannerAD(),
+                      child: const BannerAD(),
                     ),
                   ],
                 ),
@@ -1625,7 +1625,7 @@ class _ReorderPDFPagesScaffoldState extends State<ReorderPDFPagesScaffold>
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
+                          children: const [
                             CircularProgressIndicator(),
                             SizedBox(
                               height: 20,

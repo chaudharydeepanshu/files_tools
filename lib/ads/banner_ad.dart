@@ -105,7 +105,7 @@ class _BannerADState extends State<BannerAD> {
     // defines a timer to update ad ui according to latest adStatus value from AdState class
     // this timer is set to setState every 5 seconds
     // we are using it to hide ad loading status if ad fails to load due to any case other than internet
-    everySecond = Timer.periodic(Duration(seconds: 5), (Timer t) {
+    everySecond = Timer.periodic(const Duration(seconds: 5), (Timer t) {
       if (mounted) {
         setState(() {
           now = DateTime.now().second.toString();
@@ -121,7 +121,7 @@ class _BannerADState extends State<BannerAD> {
     try {
       result = await _connectivity.checkConnectivity();
     } on PlatformException catch (e) {
-      print(e.toString());
+      debugPrint(e.toString());
       return;
     }
 
@@ -155,7 +155,7 @@ class _BannerADState extends State<BannerAD> {
           banner = BannerAd(
             listener: adState.adListener,
             adUnitId: adState.bannerAdUnitId!,
-            request: AdRequest(),
+            request: const AdRequest(),
             size: size!,
             // AdSize.banner,
           )..load();
@@ -166,9 +166,9 @@ class _BannerADState extends State<BannerAD> {
 
   @override
   Widget build(BuildContext context) {
-    print('Connection Status: ${_connectionStatus.toString()}');
+    debugPrint('Connection Status: ${_connectionStatus.toString()}');
     return banner == null
-        ? SizedBox()
+        ? const SizedBox()
         : _connectionStatus == ConnectivityResult.none
             ? Container(
                 height: size!.height.toDouble(),
@@ -179,7 +179,7 @@ class _BannerADState extends State<BannerAD> {
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
+                      children: const [
                         Expanded(
                           child: Text(
                             'To support the app please connect to internet.',
@@ -206,7 +206,7 @@ class _BannerADState extends State<BannerAD> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             AdState.adStatus
-                                ? Expanded(
+                                ? const Expanded(
                                     child: Text(
                                       'Ad loading...\nThanks for your support',
                                       style: TextStyle(

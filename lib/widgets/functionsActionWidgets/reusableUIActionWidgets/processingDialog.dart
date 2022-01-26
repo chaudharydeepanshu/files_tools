@@ -60,11 +60,11 @@ Future<void> processingDialog(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Platform.isWindows ? CircularProgressIndicator() : Container(),
-                SizedBox(
+                Platform.isWindows ? const CircularProgressIndicator() : Container(),
+                const SizedBox(
                   height: 20,
                 ),
-                Text(
+                const Text(
                   'Processing Data\n\nPlease Wait...',
                   textAlign: TextAlign.center,
                   style: TextStyle(
@@ -80,7 +80,7 @@ Future<void> processingDialog(
                         onPressed: () {
                           Navigator.of(context).pop();
                         },
-                        child: Text(
+                        child: const Text(
                           'Cancel',
                         ),
                       )

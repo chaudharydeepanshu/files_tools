@@ -21,7 +21,7 @@ import '../../basicFunctionalityFunctions/creatingAndSavingPDFFileTemporarily.da
 import 'package:uuid/uuid.dart';
 import 'dart:io';
 
-var uuid = Uuid();
+var uuid = const Uuid();
 
 class CustomRangePDFPagesScaffold extends StatefulWidget {
   static const String routeName = '/customRangePDFPagesScaffold';
@@ -63,7 +63,7 @@ class _CustomRangePDFPagesScaffoldState
         index: 0,
         pdfPageCount: widget.arguments!.pdfPagesImages!.length,
         // key: Key('0'),
-        key: Key('${uuid.v1()}'),
+        key: Key(uuid.v1()),
         onListOfQuartetsOfButtonsOfRanges: (List<List<bool>> value) {
           setState(() {
             listOfQuartetsOfButtonsOfRanges = value;
@@ -80,12 +80,12 @@ class _CustomRangePDFPagesScaffoldState
           for (int i = 0; i < rangesReorderRecorder.length; i++) {
             if (value == rangesReorderRecorder[i]) {
               rangeToDelete = i;
-              print(i);
+              debugPrint(i.toString());
             }
           }
           setState(() {
-            print('rangeToDelete: $rangeToDelete');
-            print('value: $value');
+            debugPrint('rangeToDelete: $rangeToDelete');
+            debugPrint('value: $value');
             ranges.removeAt(rangeToDelete!);
             rangesReorderRecorder.removeAt(rangeToDelete);
             setStateLimiterForAddPostFrameCallback = ranges.length - 1;
@@ -132,7 +132,7 @@ class _CustomRangePDFPagesScaffoldState
           });
         },
       ); //shows the processing dialog
-      print("${widget.arguments!.processType + " As Single Document"}");
+      debugPrint(widget.arguments!.processType + " As Single Document");
 
       PdfDocument? document;
       Future.delayed(const Duration(milliseconds: 500), () async {
@@ -143,14 +143,14 @@ class _CustomRangePDFPagesScaffoldState
               'listOfQuartetsOfButtonsOfRanges':
                   listOfQuartetsOfButtonsOfRanges,
               'Reordered Range List': rangesReorderRecorder,
-              'PDF File Name': '${widget.arguments!.pdfFile.name}'
+              'PDF File Name': widget.arguments!.pdfFile.name
             },
             processType:
-                "${widget.arguments!.processType + " As Single Document"}",
+                widget.arguments!.processType + " As Single Document",
             filePath: widget.arguments!.pdfFile.path,
             shouldDataBeProcessed: shouldDataBeProcessed);
 
-        Map map = Map();
+        Map map = {};
         map['_pdfFileName'] = widget.arguments!.pdfFile.name;
         map['_extraBetweenNameAndExtension'] = '';
         map['_document'] = document;
@@ -219,14 +219,14 @@ class _CustomRangePDFPagesScaffoldState
               'listOfQuartetsOfButtonsOfRanges':
                   listOfQuartetsOfButtonsOfRanges,
               'Reordered Range List': rangesReorderRecorder,
-              'PDF File Name': '${widget.arguments!.pdfFile.name}'
+              'PDF File Name': widget.arguments!.pdfFile.name
             },
             processType:
-                "${widget.arguments!.processType + " As Separate Documents"}",
+                widget.arguments!.processType + " As Separate Documents",
             filePath: widget.arguments!.pdfFile.path,
             shouldDataBeProcessed: shouldDataBeProcessed);
 
-        Map map = Map();
+        Map map = {};
         map['_pdfFileName'] = widget.arguments!.pdfFile.name;
         map['_extraBetweenNameAndExtension'] = '';
         map['_rangesPdfsFilePaths'] = rangesPdfsFilePaths;
@@ -314,8 +314,8 @@ class _CustomRangePDFPagesScaffoldState
       context: context,
       builder: (BuildContext context) {
         return SimpleDialog(
-          title: Center(
-            child: const Text('Information'),
+          title: const Center(
+            child: Text('Information'),
           ),
           children: <Widget>[
             Padding(
@@ -323,14 +323,14 @@ class _CustomRangePDFPagesScaffoldState
               child: Container(
                 child: Column(
                   children: [
-                    Text.rich(
+                    const Text.rich(
                       TextSpan(
                           text:
                               'Use this option to specify individual pages and page ranges that should be added to the output document.'),
                     ),
                     Row(
                       children: [
-                        SizedBox(
+                        const SizedBox(
                           width: 15,
                         ),
                         Expanded(
@@ -338,7 +338,7 @@ class _CustomRangePDFPagesScaffoldState
                             children: [
                               Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
+                                children: const [
                                   Text(
                                     "• ",
                                     style:
@@ -357,7 +357,7 @@ class _CustomRangePDFPagesScaffoldState
                               ),
                               Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
+                                children: const [
                                   Text(
                                     "• ",
                                     style:
@@ -376,7 +376,7 @@ class _CustomRangePDFPagesScaffoldState
                               ),
                               Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
+                                children: const [
                                   Text(
                                     "• ",
                                     style:
@@ -395,7 +395,7 @@ class _CustomRangePDFPagesScaffoldState
                               ),
                               Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
+                                children: const [
                                   Text(
                                     "• ",
                                     style:
@@ -414,7 +414,7 @@ class _CustomRangePDFPagesScaffoldState
                               ),
                               Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
+                                children: const [
                                   Text(
                                     "• ",
                                     style:
@@ -425,7 +425,7 @@ class _CustomRangePDFPagesScaffoldState
                                       TextSpan(
                                         style: TextStyle(),
                                         text:
-                                            'To specify a set of pages that contain a specific word or phrase, enter your search text in double or single quotes: \"Your Search Text Here\"',
+                                            'To specify a set of pages that contain a specific word or phrase, enter your search text in double or single quotes: "Your Search Text Here"',
                                       ),
                                     ),
                                   ),
@@ -459,7 +459,7 @@ class _CustomRangePDFPagesScaffoldState
       WidgetsBinding.instance!.addPostFrameCallback((_) {
         setState(() {});
         setStateLimiterForAddPostFrameCallback++;
-        return null;
+        return;
       }); //addPostFrameCallback is important here to provide latest value of _formKey.currentState!.validate() as field widgets are formed after validation in appbar(appBarIconRightAction) so what we do is run build again through setState when build from setState of add range completes. With this the appbar has latest value of _formKey.currentState!.validate(). We also use setStateLimiterForAddPostFrameCallback to limit the stop continuous setState after _formKey.currentState!.validate() value is updated.
     }
     if (firstRun) {
@@ -467,10 +467,10 @@ class _CustomRangePDFPagesScaffoldState
     }
     _isSeparateDocumentsEnabled =
         ranges.length < 2 ? false : _isSeparateDocumentsEnabled;
-    print(
+    debugPrint(
         "listTextEditingControllerPairs: ${listTextEditingControllerPairs.length}");
-    print('rangesReorderRecorder: $rangesReorderRecorder');
-    print('rangeCountWithoutDeletion: $rangeCountWithoutDeletion');
+    debugPrint('rangesReorderRecorder: $rangesReorderRecorder');
+    debugPrint('rangeCountWithoutDeletion: $rangeCountWithoutDeletion');
     return ReusableAnnotatedRegion(
       child: GestureDetector(
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
@@ -491,7 +491,7 @@ class _CustomRangePDFPagesScaffoldState
                   rightButtonColor: Colors.blue,
                   appBarIconRight: appBarIconRight,
                   appBarIconRightToolTip: appBarIconRightToolTip,
-                  appBarIconRightAction: ranges.length != 0
+                  appBarIconRightAction: ranges.isNotEmpty
                       ? _formKey.currentState != null
                           ? _formKey.currentState!.validate()
                               ? _isSeparateDocumentsEnabled
@@ -510,13 +510,13 @@ class _CustomRangePDFPagesScaffoldState
                             header: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Row(
-                                children: [
+                                children: const [
                                   Text('Add Pages and Ranges: '),
                                 ],
                               ),
                             ),
                             shrinkWrap: true,
-                            physics: ClampingScrollPhysics(),
+                            physics: const ClampingScrollPhysics(),
                             children: ranges,
                             onReorder: (int oldIndex, int newIndex) {
                               setState(() {
@@ -532,13 +532,13 @@ class _CustomRangePDFPagesScaffoldState
                               });
                             },
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 5,
                           ),
                           OutlinedButton(
                             onPressed: () {
                               FocusManager.instance.primaryFocus?.unfocus();
-                              String temp = "${uuid.v1()}";
+                              String temp = uuid.v1();
                               setState(() {
                                 ranges.add(RangeWidget(
                                   listOfQuartetsOfButtonsOfRanges:
@@ -549,7 +549,7 @@ class _CustomRangePDFPagesScaffoldState
                                   pdfPageCount:
                                       widget.arguments!.pdfPagesImages!.length,
                                   // key: Key('${ranges.length}'),
-                                  key: Key('$temp'),
+                                  key: Key(temp),
                                   onListOfQuartetsOfButtonsOfRanges:
                                       (List<List<bool>> value) {
                                     setState(() {
@@ -570,12 +570,12 @@ class _CustomRangePDFPagesScaffoldState
                                         i++) {
                                       if (value == rangesReorderRecorder[i]) {
                                         rangeToDelete = i;
-                                        print(i);
+                                        debugPrint(i.toString());
                                       }
                                     }
                                     setState(() {
-                                      print('rangeToDelete: $rangeToDelete');
-                                      print('value: $value');
+                                      debugPrint('rangeToDelete: $rangeToDelete');
+                                      debugPrint('value: $value');
                                       ranges.removeAt(rangeToDelete!);
                                       rangesReorderRecorder
                                           .removeAt(rangeToDelete);
@@ -595,9 +595,9 @@ class _CustomRangePDFPagesScaffoldState
                               rangeCountWithoutDeletion
                                   .add(rangeCountWithoutDeletion.length + 1);
                             },
-                            child: Text('+ Add Range'),
+                            child: const Text('+ Add Range'),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 5,
                           ),
                           CheckboxListTile(
@@ -611,7 +611,7 @@ class _CustomRangePDFPagesScaffoldState
                                         ?.unfocus();
                                     setState(() {
                                       _isSeparateDocumentsEnabled = newValue!;
-                                      print(
+                                      debugPrint(
                                           "_isSeparateDocumentsEnabled: $_isSeparateDocumentsEnabled");
                                     });
                                   },
@@ -637,7 +637,7 @@ class _CustomRangePDFPagesScaffoldState
                                     bannerAdSize = size;
                                   });
                                 },
-                                child: BannerAD(),
+                                child: const BannerAD(),
                               ),
                             ],
                           )

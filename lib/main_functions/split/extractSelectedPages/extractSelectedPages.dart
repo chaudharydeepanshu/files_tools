@@ -231,6 +231,7 @@
 //   // });
 // }
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_pdf_split/flutter_pdf_split.dart';
 import 'package:pdf_merger/pdf_merger.dart';
 // import 'package:pdf_merger/pdf_merger_response.dart';
@@ -297,27 +298,29 @@ Future<PdfDocument?> extractSelectedPages(
     MergeMultiplePDFResponse response = await PdfMerger.mergeMultiplePDF(
         paths: selectedDocumentsPath,
         outputDirPath: await getExternalStorageFilePathFromFileName(
-            "${fileNameWithoutExtension + ' ' + 'merged' + extensionOfFileName}"));
+            fileNameWithoutExtension + ' ' + 'merged' + extensionOfFileName));
 
     if (response.status == "success") {
-      print(response.response); //for output path  in String
-      print(response.message); // for success message  in String
+      debugPrint(response.response); //for output path  in String
+      debugPrint(response.message); // for success message  in String
     }
 
     //removing saved single page documents as they are loaded in a list already
     for (int i = 0; i < splitResult.pagePaths.length; i++) {
-      deletingTempPDFFiles(
-          "${getFileNameFromFilePath(splitResult.pagePaths[i])}");
+      deletingTempPDFFiles(getFileNameFromFilePath(splitResult.pagePaths[i]));
     }
 
     //passing final document to document variable
     document = PdfDocument(
         inputBytes: File(await getExternalStorageFilePathFromFileName(
-                "${fileNameWithoutExtension + ' ' + 'merged' + extensionOfFileName}"))
+                fileNameWithoutExtension +
+                    ' ' +
+                    'merged' +
+                    extensionOfFileName))
             .readAsBytesSync());
 
     deletingTempPDFFiles(
-        "${fileNameWithoutExtension + ' ' + 'merged' + extensionOfFileName}");
+        fileNameWithoutExtension + ' ' + 'merged' + extensionOfFileName);
   } else {
     document = null;
   }

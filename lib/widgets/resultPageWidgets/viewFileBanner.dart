@@ -19,26 +19,26 @@ class NoFileOpenerAvailableNotifierBanner extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             border: Border(
                 //top: BorderSide(color: Colors.grey, width: 1.5),
                 ),
           ),
           child: MaterialBanner(
-            padding: EdgeInsets.all(5),
+            padding: const EdgeInsets.all(5),
             content: Text(bannerText),
-            leading: Icon(Icons.info_outline_rounded),
+            leading: const Icon(Icons.info_outline_rounded),
             //backgroundColor: Color(0xffDBF0F3),
             actions: <Widget>[
               OutlinedButton(
-                child: Text('INSTALL'),
+                child: const Text('INSTALL'),
                 onPressed: () {
                   onViewZipBannerStatus.call(false);
                   StoreRedirect.redirect(androidAppId: redirectAndroidAppId);
                 },
               ),
               OutlinedButton(
-                child: Text('DISMISS'),
+                child: const Text('DISMISS'),
                 onPressed: () {
                   onViewZipBannerStatus.call(false);
                 },

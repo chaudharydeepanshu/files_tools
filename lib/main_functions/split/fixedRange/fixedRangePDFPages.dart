@@ -239,15 +239,17 @@ Future<List<String>?> fixedRangePDFPages(String pdfFilePath,
         i++) {
       PdfDocument tempDocument = PdfDocument(
           inputBytes: File(splitResult.pagePaths[i]).readAsBytesSync());
-      print("tempDocument.pages.count: ${tempDocument.pages.count}");
+      debugPrint("tempDocument.pages.count: ${tempDocument.pages.count}");
       listOfDocuments.add(tempDocument);
     }
-    print("listOfDocuments.length : ${listOfDocuments.length}");
+    debugPrint("listOfDocuments.length : ${listOfDocuments.length}");
 
     //removing saved single page documents as they are loaded in a list already
     for (int i = 0; i < splitResult.pagePaths.length; i++) {
-      deletingTempPDFFiles(
-          "${fileNameWithoutExtension + ' ' + (i + 1).toString() + extensionOfFileName}");
+      deletingTempPDFFiles(fileNameWithoutExtension +
+          ' ' +
+          (i + 1).toString() +
+          extensionOfFileName);
     }
 
     //creating separate documents lists for each range and then add those list a list called listOfRangesDocumentsList
@@ -282,9 +284,9 @@ Future<List<String>?> fixedRangePDFPages(String pdfFilePath,
       } // for last document list as last document list could have non perfect number of documents // fox example a pdf of 4 pages split with interval 3 as then first document would have 3 pages and other will have 1. So in this we decide what and how many documents to send in the last interval
     }
 
-    print(
+    debugPrint(
         "listOfRangesDocumentsList[0].length : ${listOfRangesDocumentsList[0].length}");
-    print(
+    debugPrint(
         "listOfRangesDocumentsList.length : ${listOfRangesDocumentsList.length}");
 
     //save the pdf documents of separate documents lists in a list called finalListOfDocument //for example a range contain 3 documents then save them to a single document and add to list finalListOfDocument
@@ -297,31 +299,45 @@ Future<List<String>?> fixedRangePDFPages(String pdfFilePath,
           i < listOfRangesDocumentsList[x].length &&
               shouldDataBeProcessed == true;
           i++) {
-        String newFileName =
-            "${fileNameWithoutExtension + ' ' + x.toString() + ' ' + i.toString() + extensionOfFileName}";
-        Map map = Map();
+        String newFileName = fileNameWithoutExtension +
+            ' ' +
+            x.toString() +
+            ' ' +
+            i.toString() +
+            extensionOfFileName;
+        Map map = {};
         map['_pdfFileName'] = newFileName;
         map['_extraBetweenNameAndExtension'] = '';
         map['_document'] = listOfRangesDocumentsList[x][i];
         tempPdfFilePaths.add(await creatingAndSavingPDFFileTemporarily(map));
       }
-      print("tempPdfFilePaths : $tempPdfFilePaths");
+      debugPrint("tempPdfFilePaths : $tempPdfFilePaths");
 
       //merge the documents
       MergeMultiplePDFResponse response = await PdfMerger.mergeMultiplePDF(
           paths: tempPdfFilePaths,
           outputDirPath: await getExternalStorageFilePathFromFileName(
-              "${fileNameWithoutExtension + ' ' + x.toString() + ' ' + 'merged' + extensionOfFileName}"));
+              fileNameWithoutExtension +
+                  ' ' +
+                  x.toString() +
+                  ' ' +
+                  'merged' +
+                  extensionOfFileName));
 
       if (response.status == "success") {
-        print(response.response); //for output path  in String
-        print(response.message); // for success message  in String
+        debugPrint(response.response); //for output path  in String
+        debugPrint(response.message); // for success message  in String
       }
 
       //passing final document to tempDocument variable
       PdfDocument tempDocument = PdfDocument(
           inputBytes: File(await getExternalStorageFilePathFromFileName(
-                  "${fileNameWithoutExtension + ' ' + x.toString() + ' ' + 'merged' + extensionOfFileName}"))
+                  fileNameWithoutExtension +
+                      ' ' +
+                      x.toString() +
+                      ' ' +
+                      'merged' +
+                      extensionOfFileName))
               .readAsBytesSync());
 
       //adding the prepared final document of range to finalListOfDocument
@@ -329,10 +345,14 @@ Future<List<String>?> fixedRangePDFPages(String pdfFilePath,
 
       //removing unnecessary documents from getExternalStorageDirectory
       for (int y = 0; y < tempPdfFilePaths.length; y++) {
-        deletingTempPDFFiles("${getFileNameFromFilePath(tempPdfFilePaths[y])}");
+        deletingTempPDFFiles(getFileNameFromFilePath(tempPdfFilePaths[y]));
       }
-      deletingTempPDFFiles(
-          "${fileNameWithoutExtension + ' ' + x.toString() + ' ' + 'merged' + extensionOfFileName}");
+      deletingTempPDFFiles(fileNameWithoutExtension +
+          ' ' +
+          x.toString() +
+          ' ' +
+          'merged' +
+          extensionOfFileName);
     }
 
     //creating and saving single documents from list called finalListOfDocument
@@ -340,15 +360,19 @@ Future<List<String>?> fixedRangePDFPages(String pdfFilePath,
     for (var i = 0;
         i < finalListOfDocument.length && shouldDataBeProcessed == true;
         i++) {
-      String newFileName =
-          "${fileNameWithoutExtension + ' ' + 'range separated' + ' ' + i.toString() + extensionOfFileName}";
-      Map map = Map();
+      String newFileName = fileNameWithoutExtension +
+          ' ' +
+          'range separated' +
+          ' ' +
+          i.toString() +
+          extensionOfFileName;
+      Map map = {};
       map['_pdfFileName'] = newFileName;
       map['_extraBetweenNameAndExtension'] = '';
       map['_document'] = finalListOfDocument[i];
       tempPdfFilePaths.add(await creatingAndSavingPDFFileTemporarily(map));
     }
-    print("tempPdfFilePaths : $tempPdfFilePaths");
+    debugPrint("tempPdfFilePaths : $tempPdfFilePaths");
 
     rangesPdfsFilePaths = List.from(tempPdfFilePaths);
   } else {

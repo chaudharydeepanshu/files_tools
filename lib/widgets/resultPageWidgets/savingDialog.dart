@@ -14,7 +14,7 @@ Future<void> savingDialog(BuildContext context) async {
           Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [
+            children: const [
               CircularProgressIndicator(),
               SizedBox(
                 height: 20,

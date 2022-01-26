@@ -91,7 +91,7 @@ class _CompressImagesScaffoldState extends State<CompressImagesScaffold>
             //filesPaths: widget.arguments!.compressedFilesPaths,
             shouldDataBeProcessed: shouldDataBeProcessed);
 
-        Map map = Map();
+        Map map = {};
         if (compressedFilesPaths!.length == 1) {
           // map['_imageName'] =
           //     "Modified Image ${currentDateTimeInString() + extensionOfFileName!}";
@@ -201,7 +201,7 @@ class _CompressImagesScaffoldState extends State<CompressImagesScaffold>
 
   var bannerAdSize = Size.zero;
 
-  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   TextEditingController customQualityTextEditingController =
       TextEditingController();
@@ -210,7 +210,7 @@ class _CompressImagesScaffoldState extends State<CompressImagesScaffold>
 
   @override
   Widget build(BuildContext context) {
-    print(_method);
+    debugPrint(_method.toString());
     return ReusableAnnotatedRegion(
       child: GestureDetector(
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
@@ -292,7 +292,7 @@ class _CompressImagesScaffoldState extends State<CompressImagesScaffold>
                               title: Row(
                                 children: [
                                   const Text('Custom Compression'),
-                                  SizedBox(
+                                  const SizedBox(
                                     width: 5,
                                   ),
                                   Expanded(
@@ -340,12 +340,12 @@ class _CompressImagesScaffoldState extends State<CompressImagesScaffold>
                                 });
                               },
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 10,
                             ),
                             Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
+                              children: const [
                                 Text(
                                   'Note: ',
                                   style: TextStyle(color: Colors.red),
@@ -381,7 +381,7 @@ class _CompressImagesScaffoldState extends State<CompressImagesScaffold>
                               bannerAdSize = size;
                             });
                           },
-                          child: BannerAD(),
+                          child: const BannerAD(),
                         ),
                       ],
                     ),

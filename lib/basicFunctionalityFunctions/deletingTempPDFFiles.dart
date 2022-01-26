@@ -1,4 +1,6 @@
 import 'dart:io';
+import 'package:flutter/cupertino.dart';
+
 import 'getExternalStorageFilePathFromFileName.dart';
 
 Future<void> deletingTempPDFFiles(String fileName) async {
@@ -6,6 +8,6 @@ Future<void> deletingTempPDFFiles(String fileName) async {
     final file = File(await getExternalStorageFilePathFromFileName(fileName));
     await file.delete();
   } catch (e) {
-    print(e);
+    debugPrint(e.toString());
   }
 }

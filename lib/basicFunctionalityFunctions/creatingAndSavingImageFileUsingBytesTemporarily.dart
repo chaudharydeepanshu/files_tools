@@ -1,4 +1,6 @@
 import 'dart:io';
+import 'package:flutter/cupertino.dart';
+
 import 'getExternalStorageFilePathFromFileName.dart';
 
 Future<String> creatingAndSavingImageFileUsingBytesTemporarily(map) async {
@@ -20,6 +22,6 @@ Future<String> creatingAndSavingImageFileUsingBytesTemporarily(map) async {
 
   await savingImageFile();
 
-  print(filePathFromFileName);
+  debugPrint(filePathFromFileName);
   return filePathFromFileName;
 }

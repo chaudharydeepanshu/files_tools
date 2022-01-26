@@ -73,7 +73,7 @@ class _CompressPDFScaffoldState extends State<CompressPDFScaffold>
       Future.delayed(const Duration(milliseconds: 500), () async {
         document = await processSelectedDataFromUser(
             pdfChangesDataMap: {
-              'PDF File Name': '${widget.arguments!.pdfFile.name}',
+              'PDF File Name': widget.arguments!.pdfFile.name,
               'PDF Compress Quality': _method.toString(),
               'Quality Custom Value': _method == Qualities.custom
                   ? int.parse(customQualityTextEditingController.text)
@@ -83,7 +83,7 @@ class _CompressPDFScaffoldState extends State<CompressPDFScaffold>
             filePath: widget.arguments!.pdfFile.path,
             shouldDataBeProcessed: shouldDataBeProcessed);
 
-        Map map = Map();
+        Map map = {};
         map['_pdfFileName'] = widget.arguments!.pdfFile.name;
         map['_extraBetweenNameAndExtension'] = '';
         map['_document'] = document;
@@ -171,7 +171,7 @@ class _CompressPDFScaffoldState extends State<CompressPDFScaffold>
 
   var bannerAdSize = Size.zero;
 
-  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   TextEditingController customQualityTextEditingController =
       TextEditingController();
@@ -255,7 +255,7 @@ class _CompressPDFScaffoldState extends State<CompressPDFScaffold>
                               title: Row(
                                 children: [
                                   const Text('Custom Compression'),
-                                  SizedBox(
+                                  const SizedBox(
                                     width: 5,
                                   ),
                                   Expanded(
@@ -326,7 +326,7 @@ class _CompressPDFScaffoldState extends State<CompressPDFScaffold>
                               bannerAdSize = size;
                             });
                           },
-                          child: BannerAD(),
+                          child: const BannerAD(),
                         ),
                       ],
                     ),

@@ -7,17 +7,17 @@ Widget bottomNavBarButtonsForFileModifications(
     mapOfSubFunctionDetails}) {
   return Padding(
     padding: const EdgeInsets.all(6.0),
-    child: Container(
+    child: SizedBox(
       height: 48,
       width: 90,
       child: Material(
         color: onTapAction != null
             ? mapOfSubFunctionDetails!['Button Color'] ?? Colors.amber
             : Colors.grey,
-        shape: StadiumBorder(),
+        shape: const StadiumBorder(),
         child: InkWell(
           onTap: onTapAction ?? () {},
-          customBorder: StadiumBorder(),
+          customBorder: const StadiumBorder(),
           focusColor: onTapAction != null
               ? mapOfSubFunctionDetails!['Button Effects Color'] ??
                   Colors.black.withOpacity(0.1)
@@ -39,11 +39,11 @@ Widget bottomNavBarButtonsForFileModifications(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               IconTheme(
-                data: IconThemeData(
+                data: const IconThemeData(
                   color: Colors.black,
                   size: 24,
                 ),
-                child: buttonIcon ?? Icon(Icons.android),
+                child: buttonIcon ?? const Icon(Icons.android),
               ),
               ClipRect(
                 child: SizedBox(

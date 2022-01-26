@@ -94,7 +94,7 @@ class _MainPagesScaffoldState extends State<MainPagesScaffold>
         : AdaptiveThemeMode.light.isLight == true
             ? 'Light'
             : 'Dark';
-    print(appBarIconRightText);
+    debugPrint(appBarIconRightText);
     return Scaffold(
       key: _scaffoldKey,
       appBar: currentIndex == 0
@@ -108,14 +108,14 @@ class _MainPagesScaffoldState extends State<MainPagesScaffold>
               },
             )
           : currentIndex == 1
-              ? ReusableSilverAppBar(
+              ? const ReusableSilverAppBar(
                   title: 'Recent Docs',
                 )
               : null,
       body: currentIndex == 0
-          ? HomeBody()
+          ? const HomeBody()
           : currentIndex == 1
-              ? Recent()
+              ? const Recent()
               : null,
       drawer: CustomDrawer(
         savedThemeMode: widget.savedThemeMode,

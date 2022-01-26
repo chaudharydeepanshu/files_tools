@@ -200,7 +200,7 @@ Future<PdfDocument?> imagesToPdf(List<String> imageFilePaths,
   List<String> tempPdfFilePaths = [];
 
   // generating extensionOfFileName and fileNameWithoutExtension
-  print(pdfChangesDataMap['PDF File Name']);
+  debugPrint(pdfChangesDataMap['PDF File Name']);
   String extensionOfFileName =
       extensionOfString(fileName: pdfChangesDataMap['PDF File Name']);
   String fileNameWithoutExtension = stringWithoutExtension(
@@ -215,8 +215,8 @@ Future<PdfDocument?> imagesToPdf(List<String> imageFilePaths,
   }
 
   Future<PdfDocument> _convertImageToPDF(int index) async {
-    File image = new File(
-        imageFilePaths[index]); // Or any other way to get a File instance.
+    File image =
+        File(imageFilePaths[index]); // Or any other way to get a File instance.
 
     //for rotation
     //reassigning image variable with rotation
@@ -269,7 +269,7 @@ Future<PdfDocument?> imagesToPdf(List<String> imageFilePaths,
       section.pageSettings.orientation = PdfPageOrientation.landscape;
     }
 
-    print(
+    debugPrint(
         "Img $index - width: ${pageWidth.toString() + ', height: ' + pageHeight.toString()}");
 
     //setting section size
@@ -347,40 +347,40 @@ Future<PdfDocument?> imagesToPdf(List<String> imageFilePaths,
       i < reorderedListOfDocuments.length && shouldDataBeProcessed == true;
       i++) {
     String newFileName =
-        "${fileNameWithoutExtension + ' ' + i.toString() + extensionOfFileName}";
-    Map map = Map();
+        fileNameWithoutExtension + ' ' + i.toString() + extensionOfFileName;
+    Map map = {};
     map['_pdfFileName'] = newFileName;
     map['_extraBetweenNameAndExtension'] = '';
     map['_document'] = reorderedListOfDocuments[i];
     tempPdfFilePaths.add(await creatingAndSavingPDFFileTemporarily(map));
   }
-  print("tempPdfFilePaths : $tempPdfFilePaths");
+  debugPrint("tempPdfFilePaths : $tempPdfFilePaths");
 
   //merge the documents
   MergeMultiplePDFResponse response = await PdfMerger.mergeMultiplePDF(
       paths: tempPdfFilePaths,
       outputDirPath: await getExternalStorageFilePathFromFileName(
-          "${fileNameWithoutExtension + ' ' + 'merged' + extensionOfFileName}"));
+          fileNameWithoutExtension + ' ' + 'merged' + extensionOfFileName));
 
   if (response.status == "success") {
-    print(response.response); //for output path  in String
-    print(response.message); // for success message  in String
+    debugPrint(response.response); //for output path  in String
+    debugPrint(response.message); // for success message  in String
   }
 
   //removing unnecessary documents from getExternalStorageDirectory
   for (int i = 0; i < tempPdfFilePaths.length; i++) {
-    deletingTempPDFFiles("${getFileNameFromFilePath(tempPdfFilePaths[i])}");
+    deletingTempPDFFiles(getFileNameFromFilePath(tempPdfFilePaths[i]));
   }
 
   //passing final document to document variable
   document = PdfDocument(
       inputBytes: await File(await getExternalStorageFilePathFromFileName(
-              "${fileNameWithoutExtension + ' ' + 'merged' + extensionOfFileName}"))
+              fileNameWithoutExtension + ' ' + 'merged' + extensionOfFileName))
           .readAsBytes());
 
   //removing unnecessary documents from getExternalStorageDirectory
   deletingTempPDFFiles(
-      "${fileNameWithoutExtension + ' ' + 'merged' + extensionOfFileName}");
+      fileNameWithoutExtension + ' ' + 'merged' + extensionOfFileName);
   // return Future.delayed(const Duration(milliseconds: 500), () {
   return document;
   //});

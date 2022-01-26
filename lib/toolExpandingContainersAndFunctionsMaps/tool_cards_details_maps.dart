@@ -34,7 +34,7 @@ Map<String, dynamic>? mapOfCardDetailsForPDF = {
             mapOfFunctionDetails: mapOfMergeFunctionDetailsForPDFTools,
           ),
         );
-        print('Merge PDF opened');
+        debugPrint('Merge PDF opened');
       },
     },
     {
@@ -51,7 +51,7 @@ Map<String, dynamic>? mapOfCardDetailsForPDF = {
             mapOfFunctionDetails: mapOfSplitFunctionDetailsForPDFTools,
           ),
         );
-        print('Split PDF opened');
+        debugPrint('Split PDF opened');
       },
     },
     {
@@ -68,7 +68,7 @@ Map<String, dynamic>? mapOfCardDetailsForPDF = {
             mapOfFunctionDetails: mapOfModifyFunctionDetailsForPDFTools,
           ),
         );
-        print('Split PDF opened');
+        debugPrint('Split PDF opened');
       },
     },
     {
@@ -85,7 +85,7 @@ Map<String, dynamic>? mapOfCardDetailsForPDF = {
             mapOfFunctionDetails: mapOfCompressFunctionDetailsForPDFTools,
           ),
         );
-        print('Split PDF opened');
+        debugPrint('Split PDF opened');
       },
     },
     {
@@ -102,7 +102,7 @@ Map<String, dynamic>? mapOfCardDetailsForPDF = {
             mapOfFunctionDetails: mapOfProtectFunctionDetailsForPDFTools,
           ),
         );
-        print('Split PDF opened');
+        debugPrint('Split PDF opened');
       },
     },
     {
@@ -119,7 +119,7 @@ Map<String, dynamic>? mapOfCardDetailsForPDF = {
             mapOfFunctionDetails: mapOfConvertFunctionDetailsForPDFTools,
           ),
         );
-        print('Split PDF opened');
+        debugPrint('Split PDF opened');
       },
     },
     {
@@ -136,7 +136,7 @@ Map<String, dynamic>? mapOfCardDetailsForPDF = {
             mapOfFunctionDetails: mapOfImageToPDFFunctionDetailsForPDFTools,
           ),
         );
-        print('Split PDF opened');
+        debugPrint('Split PDF opened');
       },
     },
     {
@@ -153,7 +153,7 @@ Map<String, dynamic>? mapOfCardDetailsForPDF = {
             mapOfFunctionDetails: mapOfWatermarkPDFFunctionDetailsForPDFTools,
           ),
         );
-        print('Split PDF opened');
+        debugPrint('Split PDF opened');
       },
     },
   ], //<Map<String, dynamic>> denotes a list of literals of type <Map<String, dynamic>>
@@ -191,7 +191,7 @@ Map<String, dynamic>? mapOfCardDetailsForImages = {
             mapOfFunctionDetails: mapOfImageToPDFFunctionDetailsForImageTools,
           ),
         );
-        print('Split PDF opened');
+        debugPrint('Split PDF opened');
       },
     },
     {
@@ -208,7 +208,7 @@ Map<String, dynamic>? mapOfCardDetailsForImages = {
             mapOfFunctionDetails: mapOfModifyImageFunctionDetailsForImageTools,
           ),
         );
-        print('Split PDF opened');
+        debugPrint('Split PDF opened');
       },
     },
     {
@@ -226,7 +226,7 @@ Map<String, dynamic>? mapOfCardDetailsForImages = {
                 mapOfCompressImagesFunctionDetailsForImageTools,
           ),
         );
-        print('Split PDF opened');
+        debugPrint('Split PDF opened');
       },
     },
   ],
@@ -264,7 +264,7 @@ Map<String, dynamic>? mapOfCardDetailsForImagesForDarkMode = {
             mapOfFunctionDetails: mapOfImageToPDFFunctionDetailsForImageTools,
           ),
         );
-        print('Split PDF opened');
+        debugPrint('Split PDF opened');
       },
     },
     {
@@ -281,7 +281,7 @@ Map<String, dynamic>? mapOfCardDetailsForImagesForDarkMode = {
             mapOfFunctionDetails: mapOfModifyImageFunctionDetailsForImageTools,
           ),
         );
-        print('Split PDF opened');
+        debugPrint('Split PDF opened');
       },
     },
     {
@@ -299,7 +299,7 @@ Map<String, dynamic>? mapOfCardDetailsForImagesForDarkMode = {
                 mapOfCompressImagesFunctionDetailsForImageTools,
           ),
         );
-        print('Split PDF opened');
+        debugPrint('Split PDF opened');
       },
     },
   ],

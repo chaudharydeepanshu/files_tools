@@ -1,6 +1,7 @@
 import 'package:files_tools/basicFunctionalityFunctions/deletingTempPDFFiles.dart';
 import 'package:files_tools/basicFunctionalityFunctions/fileNameManager.dart';
 import 'package:files_tools/basicFunctionalityFunctions/getExternalStorageFilePathFromFileName.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:pdf_compressor/pdf_compressor.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
 import 'dart:io';
@@ -43,14 +44,20 @@ Future<PdfDocument?> compressPDF(String pdfFilePath,
         await PdfCompressor.compressPdfFile(
           inputPath: pdfFilePath,
           outputPath: await getExternalStorageFilePathFromFileName(
-              "${fileNameWithoutExtension + ' ' + 'compressed' + extensionOfFileName}"),
+              fileNameWithoutExtension +
+                  ' ' +
+                  'compressed' +
+                  extensionOfFileName),
           quality: CompressQuality.MEDIUM,
         );
       } else if (pdfChangesDataMap['PDF Compress Quality'] == "Qualities.low") {
         await PdfCompressor.compressPdfFile(
           inputPath: pdfFilePath,
           outputPath: await getExternalStorageFilePathFromFileName(
-              "${fileNameWithoutExtension + ' ' + 'compressed' + extensionOfFileName}"),
+              fileNameWithoutExtension +
+                  ' ' +
+                  'compressed' +
+                  extensionOfFileName),
           quality: CompressQuality.LOW,
         );
       } else if (pdfChangesDataMap['PDF Compress Quality'] ==
@@ -58,7 +65,10 @@ Future<PdfDocument?> compressPDF(String pdfFilePath,
         await PdfCompressor.compressPdfFile(
           inputPath: pdfFilePath,
           outputPath: await getExternalStorageFilePathFromFileName(
-              "${fileNameWithoutExtension + ' ' + 'compressed' + extensionOfFileName}"),
+              fileNameWithoutExtension +
+                  ' ' +
+                  'compressed' +
+                  extensionOfFileName),
           quality: CompressQuality.HIGH,
         );
       } else if (pdfChangesDataMap['PDF Compress Quality'] ==
@@ -66,7 +76,10 @@ Future<PdfDocument?> compressPDF(String pdfFilePath,
         await PdfCompressor.compressPdfFile(
           inputPath: pdfFilePath,
           outputPath: await getExternalStorageFilePathFromFileName(
-              "${fileNameWithoutExtension + ' ' + 'compressed' + extensionOfFileName}"),
+              fileNameWithoutExtension +
+                  ' ' +
+                  'compressed' +
+                  extensionOfFileName),
           quality: CompressQuality.CUSTOM,
           customQuality: pdfChangesDataMap['Quality Custom Value'],
         );
@@ -75,14 +88,17 @@ Future<PdfDocument?> compressPDF(String pdfFilePath,
       //passing final document to document variable
       document = PdfDocument(
           inputBytes: File(await getExternalStorageFilePathFromFileName(
-                  "${fileNameWithoutExtension + ' ' + 'compressed' + extensionOfFileName}"))
+                  fileNameWithoutExtension +
+                      ' ' +
+                      'compressed' +
+                      extensionOfFileName))
               .readAsBytesSync());
 
       //removing unnecessary documents from getExternalStorageDirectory
       deletingTempPDFFiles(
-          "${fileNameWithoutExtension + ' ' + 'compressed' + extensionOfFileName}");
+          fileNameWithoutExtension + ' ' + 'compressed' + extensionOfFileName);
     } catch (e) {
-      print(e);
+      debugPrint(e.toString());
     }
   } else {
     document = null;

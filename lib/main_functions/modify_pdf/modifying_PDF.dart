@@ -347,6 +347,7 @@
 // }
 
 import 'dart:ui';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_pdf_split/flutter_pdf_split.dart';
 import 'package:files_tools/basicFunctionalityFunctions/deletingTempPDFFiles.dart';
 import 'package:files_tools/basicFunctionalityFunctions/fileNameManager.dart';
@@ -401,15 +402,14 @@ Future<PdfDocument?> modifyingPDFPagesUsingModifiedPDFDataMap(
         i++) {
       PdfDocument tempDocument = PdfDocument(
           inputBytes: File(splitResult.pagePaths[i]).readAsBytesSync());
-      print("tempDocument.pages.count: ${tempDocument.pages.count}");
+      debugPrint("tempDocument.pages.count: ${tempDocument.pages.count}");
       listOfDocuments.add(tempDocument);
     }
-    print("listOfDocuments.length : ${listOfDocuments.length}");
+    debugPrint("listOfDocuments.length : ${listOfDocuments.length}");
 
     //removing saved single page documents as they are loaded in a list already
     for (int i = 0; i < splitResult.pagePaths.length; i++) {
-      deletingTempPDFFiles(
-          "${getFileNameFromFilePath(splitResult.pagePaths[i])}");
+      deletingTempPDFFiles(getFileNameFromFilePath(splitResult.pagePaths[i]));
     }
 
     //for reorder
@@ -436,7 +436,7 @@ Future<PdfDocument?> modifyingPDFPagesUsingModifiedPDFDataMap(
 
         //Get page rotation applied
         PdfPageRotateAngle rotationAngle = page.rotation;
-        print("pageRealRotationAngle : $rotationAngle");
+        debugPrint("pageRealRotationAngle : $rotationAngle");
 
         int realAngle = 0;
         if (rotationAngle == PdfPageRotateAngle.rotateAngle0) {
@@ -462,15 +462,15 @@ Future<PdfDocument?> modifyingPDFPagesUsingModifiedPDFDataMap(
 
         //Create the page as template.
         PdfTemplate template = page.createTemplate();
-        print(
+        debugPrint(
             "page.size.height: ${page.size.height}, page.size.width: ${page.size.width}");
         //Changing section orientation according to page height & width
         if (page.size.height < page.size.width) {
           newDocument.pageSettings.orientation = PdfPageOrientation.landscape;
-          print('Page is landscape');
+          debugPrint('Page is landscape');
         } else {
           newDocument.pageSettings.orientation = PdfPageOrientation.portrait;
-          print('Page is portrait');
+          debugPrint('Page is portrait');
         }
         //Set page size and add page.
         newDocument.pageSettings.size = page.size;
@@ -481,7 +481,7 @@ Future<PdfDocument?> modifyingPDFPagesUsingModifiedPDFDataMap(
         newDocument.pageSettings.margins.all = 0;
         PdfPage newPage = newDocument.pages.add();
         //Draw the template to the new document page.
-        newPage.graphics.drawPdfTemplate(template, Offset(0, 0));
+        newPage.graphics.drawPdfTemplate(template, const Offset(0, 0));
         // reorderedListOfDocuments[i].pageSettings.rotate =
         //     PdfPageRotateAngle.rotateAngle0;
         reorderedListOfDocuments[i] = newDocument;
@@ -521,40 +521,43 @@ Future<PdfDocument?> modifyingPDFPagesUsingModifiedPDFDataMap(
         i < reorderedListOfDocuments.length && shouldDataBeProcessed == true;
         i++) {
       String newFileName =
-          "${fileNameWithoutExtension + ' ' + i.toString() + extensionOfFileName}";
-      Map map = Map();
+          fileNameWithoutExtension + ' ' + i.toString() + extensionOfFileName;
+      Map map = {};
       map['_pdfFileName'] = newFileName;
       map['_extraBetweenNameAndExtension'] = '';
       map['_document'] = reorderedListOfDocuments[i];
       tempPdfFilePaths.add(await creatingAndSavingPDFFileTemporarily(map));
     }
-    print("tempPdfFilePaths : $tempPdfFilePaths");
+    debugPrint("tempPdfFilePaths : $tempPdfFilePaths");
 
     //merge the documents
     MergeMultiplePDFResponse response = await PdfMerger.mergeMultiplePDF(
         paths: tempPdfFilePaths,
         outputDirPath: await getExternalStorageFilePathFromFileName(
-            "${fileNameWithoutExtension + ' ' + 'merged' + extensionOfFileName}"));
+            fileNameWithoutExtension + ' ' + 'merged' + extensionOfFileName));
 
     if (response.status == "success") {
-      print(response.response); //for output path  in String
-      print(response.message); // for success message  in String
+      debugPrint(response.response); //for output path  in String
+      debugPrint(response.message); // for success message  in String
     }
 
     //removing unnecessary documents from getExternalStorageDirectory
     for (int i = 0; i < tempPdfFilePaths.length; i++) {
-      deletingTempPDFFiles("${getFileNameFromFilePath(tempPdfFilePaths[i])}");
+      deletingTempPDFFiles(getFileNameFromFilePath(tempPdfFilePaths[i]));
     }
 
     //passing final document to document variable
     document = PdfDocument(
         inputBytes: await File(await getExternalStorageFilePathFromFileName(
-                "${fileNameWithoutExtension + ' ' + 'merged' + extensionOfFileName}"))
+                fileNameWithoutExtension +
+                    ' ' +
+                    'merged' +
+                    extensionOfFileName))
             .readAsBytes());
 
     //removing unnecessary documents from getExternalStorageDirectory
     deletingTempPDFFiles(
-        "${fileNameWithoutExtension + ' ' + 'merged' + extensionOfFileName}");
+        fileNameWithoutExtension + ' ' + 'merged' + extensionOfFileName);
   } else {
     document = null;
   }

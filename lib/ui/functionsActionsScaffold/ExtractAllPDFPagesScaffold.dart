@@ -100,13 +100,13 @@ class _ExtractAllPDFPagesScaffoldState extends State<ExtractAllPDFPagesScaffold>
             pdfChangesDataMap: {
               //'TextEditingController': textEditingController,
               //'Number Of PDFs': numberOfPDFCreated,
-              'PDF File Name': '${widget.arguments!.pdfFile.name}'
+              'PDF File Name': widget.arguments!.pdfFile.name
             },
-            processType: "${widget.arguments!.processType}",
+            processType: widget.arguments!.processType,
             filePath: widget.arguments!.pdfFile.path,
             shouldDataBeProcessed: shouldDataBeProcessed);
 
-        Map map = Map();
+        Map map = {};
         map['_pdfFileName'] = widget.arguments!.pdfFile.name;
         map['_extraBetweenNameAndExtension'] = '';
         map['_rangesPdfsFilePaths'] = rangesPdfsFilePaths;
@@ -221,17 +221,17 @@ class _ExtractAllPDFPagesScaffoldState extends State<ExtractAllPDFPagesScaffold>
                                   child: pdfPagesCount != null
                                       ? Text(
                                           'Total number of Pages in PDF: $pdfPagesCount',
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                               fontWeight: FontWeight.bold),
                                           textAlign: TextAlign.center,
                                         )
                                       : Container(),
-                                  decoration: BoxDecoration(),
+                                  decoration: const BoxDecoration(),
                                 ),
                               ),
                             ],
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 10,
                           ),
                           pdfPagesCount != null
@@ -245,13 +245,13 @@ class _ExtractAllPDFPagesScaffoldState extends State<ExtractAllPDFPagesScaffold>
                                             child: pdfPagesCount != null
                                                 ? Text(
                                                     'Number of PDFs will be created: $pdfPagesCount',
-                                                    style: TextStyle(
+                                                    style: const TextStyle(
                                                         fontWeight:
                                                             FontWeight.bold),
                                                     textAlign: TextAlign.center,
                                                   )
                                                 : Container(),
-                                            decoration: BoxDecoration(),
+                                            decoration: const BoxDecoration(),
                                           ),
                                         ),
                                       ],
@@ -263,7 +263,7 @@ class _ExtractAllPDFPagesScaffoldState extends State<ExtractAllPDFPagesScaffold>
                                         Expanded(
                                           child: Container(
                                             child: pdfPagesCount != null
-                                                ? Text(
+                                                ? const Text(
                                                     'Can\'t proceed further as pdf pages are less than 2',
                                                     style: TextStyle(
                                                         fontWeight:
@@ -272,7 +272,7 @@ class _ExtractAllPDFPagesScaffoldState extends State<ExtractAllPDFPagesScaffold>
                                                     textAlign: TextAlign.center,
                                                   )
                                                 : Container(),
-                                            decoration: BoxDecoration(),
+                                            decoration: const BoxDecoration(),
                                           ),
                                         ),
                                       ],
@@ -283,7 +283,7 @@ class _ExtractAllPDFPagesScaffoldState extends State<ExtractAllPDFPagesScaffold>
                                     Expanded(
                                       child: Container(
                                         child: pdfPagesCount != null
-                                            ? Text(
+                                            ? const Text(
                                                 'Can\'t proceed further as pdf pages are less than 2',
                                                 style: TextStyle(
                                                     fontWeight: FontWeight.bold,
@@ -291,7 +291,7 @@ class _ExtractAllPDFPagesScaffoldState extends State<ExtractAllPDFPagesScaffold>
                                                 textAlign: TextAlign.center,
                                               )
                                             : Container(),
-                                        decoration: BoxDecoration(),
+                                        decoration: const BoxDecoration(),
                                       ),
                                     ),
                                   ],
@@ -314,7 +314,7 @@ class _ExtractAllPDFPagesScaffoldState extends State<ExtractAllPDFPagesScaffold>
                             bannerAdSize = size;
                           });
                         },
-                        child: BannerAD(),
+                        child: const BannerAD(),
                       ),
                     ],
                   ),

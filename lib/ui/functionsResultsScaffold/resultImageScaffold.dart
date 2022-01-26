@@ -48,11 +48,11 @@ class _ResultImageScaffoldState extends State<ResultImageScaffold> {
         sourceFilePath: tempImagePath, mimeTypesFilter: mimeTypes);
     //data: Uint8List.fromList(bytes), fileName: 'Test.pdf');
     final filePath = await FlutterFileDialog.saveFile(params: params);
-    print(filePath);
+    debugPrint(filePath);
     return filePath;
   }
 
-  TextEditingController _controller = TextEditingController();
+  final TextEditingController _controller = TextEditingController();
   late String extensionOfFileName;
   late String fileNameWithoutExtension;
   late String newFileName;
@@ -86,7 +86,7 @@ class _ResultImageScaffoldState extends State<ResultImageScaffold> {
 
       await file.delete();
     } catch (e) {
-      print(e);
+      debugPrint(e.toString());
     }
   }
 
@@ -166,10 +166,10 @@ class _ResultImageScaffoldState extends State<ResultImageScaffold> {
                               alignment: Alignment.center,
                               semanticsLabel: 'Image File Icon'),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 20,
                         ),
-                        Center(
+                        const Center(
                           child: Text(
                             'Your Image is ready',
                             textAlign: TextAlign.center,
@@ -181,15 +181,15 @@ class _ResultImageScaffoldState extends State<ResultImageScaffold> {
                             ),
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 20,
                         ),
                         Center(
                           child: Text(
                             // 'Test',
-                            'File Size : ${formatBytes(File('$tempImagePath').lengthSync(), 2)}',
+                            'File Size : ${formatBytes(File(tempImagePath).lengthSync(), 2)}',
                             textAlign: TextAlign.left,
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontFamily: AppTheme.fontName,
                               fontWeight: FontWeight.w600,
                               fontSize: 16,
@@ -197,7 +197,7 @@ class _ResultImageScaffoldState extends State<ResultImageScaffold> {
                             ),
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 20,
                         ),
                         TextFormField(
@@ -227,7 +227,7 @@ class _ResultImageScaffoldState extends State<ResultImageScaffold> {
 
                               file = File(tempImagePath);
                             } catch (e) {
-                              print(e);
+                              debugPrint(e.toString());
                             }
                             // creatingAndSavingFileTemporarily(newFileName)
                             //     .whenComplete(() {
@@ -237,8 +237,8 @@ class _ResultImageScaffoldState extends State<ResultImageScaffold> {
                           decoration: InputDecoration(
                             hintText: "File Name",
                             suffixText: extensionOfFileName,
-                            icon: Icon(Icons.drive_file_rename_outline),
-                            border: OutlineInputBorder(),
+                            icon: const Icon(Icons.drive_file_rename_outline),
+                            border: const OutlineInputBorder(),
                           ),
                         ),
                         ResultPageButtons(
@@ -246,14 +246,14 @@ class _ResultImageScaffoldState extends State<ResultImageScaffold> {
                           onTapAction: () async {
                             FocusManager.instance.primaryFocus?.unfocus();
                             final _result = await OpenFile.open(tempImagePath);
-                            print(_result.message);
+                            debugPrint(_result.message);
 
                             setState(() {
                               _openResult =
                                   "type=${_result.type}  message=${_result.message}";
                             });
                             if (_result.type == ResultType.noAppToOpen) {
-                              print(_openResult);
+                              debugPrint(_openResult);
                               //Using default app pdf viewer instead of suggesting downloading others
                               // Navigator.pushNamed(
                               //   context,
@@ -289,7 +289,7 @@ class _ResultImageScaffoldState extends State<ResultImageScaffold> {
                                     widget.arguments!.filePath,
                                     albumName: 'Files Tools')
                                 .then((saved) {
-                              print("saved");
+                              debugPrint("saved");
                             });
                             Navigator.pop(context); //closes the saving dialog
                             final filesSavedNotifierSnackBar = SnackBar(
@@ -336,7 +336,7 @@ class _ResultImageScaffoldState extends State<ResultImageScaffold> {
                           bannerAdSize = size;
                         });
                       },
-                      child: BannerAD(),
+                      child: const BannerAD(),
                     ),
                   ],
                 ),

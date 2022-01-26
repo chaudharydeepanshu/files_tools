@@ -70,21 +70,21 @@ class _DialogActionBodyOfButtonForSelectedMultipleFilesState
                   elevation: buttonElevation,
                   color: widget
                           .mapOfFunctionDetails!['Select File Button Color'] ??
-                      Color(0xffE4EAF6),
+                      const Color(0xffE4EAF6),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10.0),
                   ),
                   child: InkWell(
                     onTap: () async {
                       final _result = await OpenFile.open(widget.filePath);
-                      print(_result.message);
+                      debugPrint(_result.message);
 
                       setState(() {
                         _openResult =
                             "type=${_result.type}  message=${_result.message}";
                       });
                       if (_result.type == ResultType.noAppToOpen) {
-                        print(_openResult);
+                        debugPrint(_openResult);
                         //Using default app pdf viewer instead of suggesting downloading others
                         Navigator.pushNamed(
                           context,
@@ -110,7 +110,7 @@ class _DialogActionBodyOfButtonForSelectedMultipleFilesState
                             'Select File Button Effects Color'] ??
                         Colors.black.withOpacity(0.1),
                     child: Container(
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(10),
                           topRight: Radius.circular(10),
@@ -127,7 +127,7 @@ class _DialogActionBodyOfButtonForSelectedMultipleFilesState
                                 onChange: (size) {
                                   setState(() {
                                     myChildSize = size;
-                                    print(myChildSize);
+                                    debugPrint(myChildSize.toString());
                                   });
                                 },
                                 child: Padding(
@@ -140,8 +140,7 @@ class _DialogActionBodyOfButtonForSelectedMultipleFilesState
                                       fit: BoxFit.fitHeight,
                                       height: 35,
                                       color: widget.mapOfFunctionDetails![
-                                              'Select File Icon Color'] ??
-                                          null,
+                                              'Select File Icon Color'],
                                       alignment: Alignment.center,
                                       semanticsLabel: 'File Icon'),
                                   // Image.asset(
@@ -151,7 +150,7 @@ class _DialogActionBodyOfButtonForSelectedMultipleFilesState
                                   // ),
                                 ),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 width: 15,
                               ),
                               Expanded(
@@ -160,20 +159,20 @@ class _DialogActionBodyOfButtonForSelectedMultipleFilesState
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      "${widget.fileName}",
+                                      widget.fileName,
                                       overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                           fontWeight: FontWeight.w500,
                                           color: Colors.black),
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 5,
                                     ),
                                     Row(
                                       children: [
                                         Text(
-                                          '${formatBytes(widget.fileByte, 2)}',
-                                          style: TextStyle(
+                                          formatBytes(widget.fileByte, 2),
+                                          style: const TextStyle(
                                               fontSize: 12,
                                               color: Colors.black),
                                         ),

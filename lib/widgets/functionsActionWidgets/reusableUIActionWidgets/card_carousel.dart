@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class CarouselCard extends StatelessWidget {
-  CarouselCard({
+  const CarouselCard({
     Key? key,
     required this.pageRotationNumber,
     required this.controller,
@@ -88,13 +88,13 @@ class _CarouselListState extends State<CarouselList>
     return Container(
       decoration: BoxDecoration(
         color: widget.color ?? Colors.amber,
-        borderRadius: BorderRadius.all(Radius.circular(30)),
+        borderRadius: const BorderRadius.all(Radius.circular(30)),
       ),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Text(
           'Page ${currentPage + 1} of ${widget.listOfImages!.length}',
-          style: TextStyle(color: Colors.black),
+          style: const TextStyle(color: Colors.black),
         ),
       ),
     );
@@ -104,7 +104,7 @@ class _CarouselListState extends State<CarouselList>
 
   @override
   void initState() {
-    controllerList = new List<AnimationController>.generate(
+    controllerList = List<AnimationController>.generate(
         widget.listOfImages!.length, (i) {
       AnimationController controller$i = AnimationController(
         value: widget.controllerValueList![i],
@@ -118,9 +118,9 @@ class _CarouselListState extends State<CarouselList>
 
   @override
   void dispose() {
-    controllerList.forEach((element) {
+    for (var element in controllerList) {
       element.dispose();
-    });
+    }
     super.dispose();
   }
 
@@ -132,10 +132,10 @@ class _CarouselListState extends State<CarouselList>
           child: PageView.builder(
             itemBuilder: (context, index) {
               if (widget.listOfRotation![index] == 0) {
-                print('Deciding to run animation or not: 0');
+                debugPrint('Deciding to run animation or not: 0');
                 if (controllerList[index].value != 0.0 &&
                     widget.controllerValueList![index] != 0.0) {
-                  print(
+                  debugPrint(
                       'Animation Ran: 0 with controller.value: ${controllerList[index].value}');
                   controllerList[index].animateTo(1.0).whenComplete(() {
                     widget.controllerValueList![index] = 0.0;
@@ -147,10 +147,10 @@ class _CarouselListState extends State<CarouselList>
                   controllerList[index].value = 0.0;
                 }
               } else if (widget.listOfRotation![index] == 1) {
-                print('Deciding to run animation or not: 1');
+                debugPrint('Deciding to run animation or not: 1');
                 if (controllerList[index].value != 0.25 &&
                     widget.controllerValueList![index] != 0.25) {
-                  print(
+                  debugPrint(
                       'Animation Ran: 1 with controller.value: ${controllerList[index].value}');
                   controllerList[index].reset();
                   controllerList[index].animateTo(0.25).whenComplete(() {
@@ -163,10 +163,10 @@ class _CarouselListState extends State<CarouselList>
                   controllerList[index].value = 0.25;
                 }
               } else if (widget.listOfRotation![index] == 2) {
-                print('Deciding to run animation or not: 2');
+                debugPrint('Deciding to run animation or not: 2');
                 if (controllerList[index].value != 0.50 &&
                     widget.controllerValueList![index] != 0.50) {
-                  print(
+                  debugPrint(
                       'Animation Ran: 2 with controller.value: ${controllerList[index].value}');
                   controllerList[index].animateTo(0.50).whenComplete(() {
                     widget.controllerValueList![index] = 0.50;
@@ -178,10 +178,10 @@ class _CarouselListState extends State<CarouselList>
                   controllerList[index].value = 0.50;
                 }
               } else if (widget.listOfRotation![index] == 3) {
-                print('Deciding to run animation or not: 3');
+                debugPrint('Deciding to run animation or not: 3');
                 if (controllerList[index].value != 0.75 &&
                     widget.controllerValueList![index] != 0.75) {
-                  print(
+                  debugPrint(
                       'Animation Ran: 3 with controller.value: ${controllerList[index].value}');
                   controllerList[index].animateTo(0.75).whenComplete(() {
                     widget.controllerValueList![index] = 0.75;

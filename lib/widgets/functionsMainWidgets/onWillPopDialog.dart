@@ -7,10 +7,10 @@ Future<bool> onWillPopForSelectedFile(BuildContext context) async {
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
-        title: Text('Alert'),
+        title: const Text('Alert'),
         content: SingleChildScrollView(
           child: ListBody(
-            children: <Widget>[
+            children: const <Widget>[
               Text('Going back would cancel the selected file.'),
               Text('Do you still want to go back?'),
             ],
@@ -18,17 +18,17 @@ Future<bool> onWillPopForSelectedFile(BuildContext context) async {
         ),
         actions: <Widget>[
           OutlinedButton(
-            child: Text('Yes'),
+            child: const Text('Yes'),
             onPressed: () {
               Navigator.of(context).pop(true);
-              print('Pressed Yes');
+              debugPrint('Pressed Yes');
             },
           ),
           OutlinedButton(
-            child: Text('No'),
+            child: const Text('No'),
             onPressed: () {
               Navigator.of(context).pop(false);
-              print('Pressed No');
+              debugPrint('Pressed No');
             },
           ),
         ],

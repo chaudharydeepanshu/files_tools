@@ -86,7 +86,7 @@ class _PDFFunctionBodyState extends State<PDFFunctionBody>
 
     if (firstRun) {
       WidgetsBinding.instance!.addPostFrameCallback((_) async {
-        print('build complete');
+        debugPrint('build complete');
         if (await Permission.storage.isGranted == true) {
           setState(() {
             storagePermissionPermanentlyDenied = false;
@@ -98,7 +98,7 @@ class _PDFFunctionBodyState extends State<PDFFunctionBody>
             bool storagePermissionPermanentlyDeniedBoolValue =
                 prefs.getBool('storagePermissionPermanentlyDeniedBoolValue') ??
                     false;
-            print(prefs.getBool('storagePermissionPermanentlyDeniedBoolValue'));
+            debugPrint(prefs.getBool('storagePermissionPermanentlyDeniedBoolValue').toString());
             return storagePermissionPermanentlyDeniedBoolValue;
           }
 
@@ -108,13 +108,13 @@ class _PDFFunctionBodyState extends State<PDFFunctionBody>
           });
         }
         firstRun = false;
-        return null;
+        return;
       });
     }
 
     WidgetsBinding.instance!
         .addObserver(LifecycleEventHandler(resumeCallBack: () async {
-      print('resumeCallBack');
+      debugPrint('resumeCallBack');
       if (await Permission.storage.isGranted == true) {
         if (mounted) {
           setState(() {
@@ -141,7 +141,7 @@ class _PDFFunctionBodyState extends State<PDFFunctionBody>
         onPressed: () async {
           Navigator.pop(context);
           await openAppSettings().then((value) {
-            print('setting could be opened: $value');
+            debugPrint('setting could be opened: $value');
             return null;
           });
         },
@@ -209,7 +209,7 @@ class _PDFFunctionBodyState extends State<PDFFunctionBody>
             await newDocument.getPage(i); //always start from 1
         //pages.add(page);
 
-        print('height: ' +
+        debugPrint('height: ' +
             page.height.toString() +
             ' width: ' +
             page.width.toString());
@@ -225,7 +225,7 @@ class _PDFFunctionBodyState extends State<PDFFunctionBody>
 
         pdfPagesImages.add(pageImage);
         await page.close();
-        print(i);
+        debugPrint(i.toString());
         controller.value += indicatorSteps;
 
         if (i == pagesCount) {
@@ -237,7 +237,7 @@ class _PDFFunctionBodyState extends State<PDFFunctionBody>
 
       newDocument.close();
     } on PlatformException catch (error) {
-      print(error);
+      debugPrint(error.toString());
     }
   }
 
@@ -271,12 +271,11 @@ class _PDFFunctionBodyState extends State<PDFFunctionBody>
                     Container(
                       height: 15,
                       decoration: BoxDecoration(
-                        color: widget.mapOfFunctionDetails!['BG Color'] ?? null,
+                        color: widget.mapOfFunctionDetails!['BG Color'],
                         border: Border(
                           top: BorderSide(
                             width: 2,
-                            color: widget.mapOfFunctionDetails!['BG Color'] ??
-                                null,
+                            color: widget.mapOfFunctionDetails!['BG Color'],
                           ),
                         ),
                       ),
@@ -284,7 +283,7 @@ class _PDFFunctionBodyState extends State<PDFFunctionBody>
                     Padding(
                       padding: const EdgeInsets.only(top: 15),
                       child: Container(
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           // color: Color(0xFFFFAFAFA),
                           borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(10),
@@ -337,7 +336,7 @@ class _PDFFunctionBodyState extends State<PDFFunctionBody>
                                                   : 0,
                                           color: widget.mapOfFunctionDetails![
                                                   'Select File Button Color'] ??
-                                              Color(0xffE4EAF6),
+                                              const Color(0xffE4EAF6),
                                           shape: RoundedRectangleBorder(
                                             borderRadius:
                                                 BorderRadius.circular(10.0),
@@ -366,7 +365,7 @@ class _PDFFunctionBodyState extends State<PDFFunctionBody>
                                                             isFilePickingInitiated =
                                                                 true;
 
-                                                            print(
+                                                            debugPrint(
                                                                 'Permission granted');
                                                             FilePickerResult?
                                                                 result =
@@ -410,17 +409,17 @@ class _PDFFunctionBodyState extends State<PDFFunctionBody>
                                                                     false) {
                                                                   if (isEncryptedDocument ==
                                                                       false) {
-                                                                    print(file
+                                                                    debugPrint(file
                                                                         .name);
-                                                                    print(file
-                                                                        .bytes);
-                                                                    print(file
-                                                                        .size);
-                                                                    print(file
+                                                                    debugPrint(file
+                                                                        .bytes.toString());
+                                                                    debugPrint(file
+                                                                        .size.toString());
+                                                                    debugPrint(file
                                                                         .extension);
-                                                                    print(file
+                                                                    debugPrint(file
                                                                         .path);
-                                                                    print(
+                                                                    debugPrint(
                                                                         'Document not encrypted & encrypted documents are not allowed');
 
                                                                     setState(
@@ -450,7 +449,7 @@ class _PDFFunctionBodyState extends State<PDFFunctionBody>
                                                                     isFilePickingInitiated =
                                                                         false; //as the file should be picked and loaded in the app cache & here loaded doesn't mean converting to images
                                                                   } else {
-                                                                    print(
+                                                                    debugPrint(
                                                                         'Document encrypted & encrypted documents are not allowed');
 
                                                                     filesEncryptedCount++;
@@ -481,15 +480,15 @@ class _PDFFunctionBodyState extends State<PDFFunctionBody>
                                                                   } //show snackbar for document encrypted here as not allowed through above condition
                                                                 } else {
                                                                   //document not encrypted but allowed encrypted
-                                                                  print(file
+                                                                  debugPrint(file
                                                                       .name);
-                                                                  print(file
-                                                                      .bytes);
-                                                                  print(file
-                                                                      .size);
-                                                                  print(file
+                                                                  debugPrint(file
+                                                                      .bytes.toString());
+                                                                  debugPrint(file
+                                                                      .size.toString());
+                                                                  debugPrint(file
                                                                       .extension);
-                                                                  print(file
+                                                                  debugPrint(file
                                                                       .path);
 
                                                                   setState(() {
@@ -512,10 +511,10 @@ class _PDFFunctionBodyState extends State<PDFFunctionBody>
                                                                         false) {
                                                                       nativePDFRendererToImg(
                                                                           file.path!);
-                                                                      print(
+                                                                      debugPrint(
                                                                           'Document not encrypted & encrypted documents are allowed');
                                                                     } else {
-                                                                      print(
+                                                                      debugPrint(
                                                                           'Document encrypted & encrypted documents are allowed');
                                                                       filesEncryptedCount++;
                                                                     }
@@ -554,7 +553,7 @@ class _PDFFunctionBodyState extends State<PDFFunctionBody>
                                                               }
                                                             } else {
                                                               setState(() {
-                                                                print(
+                                                                debugPrint(
                                                                     'User canceled the picker');
                                                                 isFilePickingInitiated =
                                                                     false;
@@ -570,7 +569,7 @@ class _PDFFunctionBodyState extends State<PDFFunctionBody>
                                                           } else if (status ==
                                                               PermissionStatus
                                                                   .denied) {
-                                                            print(
+                                                            debugPrint(
                                                                 'Denied. Show a dialog with a reason and again ask for the permission.');
                                                             permissionDialogBox(
                                                                 actionButtonsList:
@@ -582,7 +581,7 @@ class _PDFFunctionBodyState extends State<PDFFunctionBody>
                                                           } else if (status ==
                                                               PermissionStatus
                                                                   .permanentlyDenied) {
-                                                            print(
+                                                            debugPrint(
                                                                 'Take the user to the settings page.');
                                                             setState(() {
                                                               storagePermissionPermanentlyDenied =
@@ -613,7 +612,7 @@ class _PDFFunctionBodyState extends State<PDFFunctionBody>
                                                               await OpenFile
                                                                   .open(file
                                                                       .path);
-                                                          print(
+                                                          debugPrint(
                                                               _result.message);
 
                                                           setState(() {
@@ -623,7 +622,7 @@ class _PDFFunctionBodyState extends State<PDFFunctionBody>
                                                           if (_result.type ==
                                                               ResultType
                                                                   .noAppToOpen) {
-                                                            print(_openResult);
+                                                            debugPrint(_openResult);
                                                             //Using default app pdf viewer instead of suggesting downloading others
                                                             Navigator.pushNamed(
                                                               context,
@@ -672,7 +671,7 @@ class _PDFFunctionBodyState extends State<PDFFunctionBody>
                                               height: isFilePicked == true
                                                   ? null
                                                   : 75,
-                                              decoration: BoxDecoration(
+                                              decoration: const BoxDecoration(
                                                 borderRadius: BorderRadius.only(
                                                   topLeft: Radius.circular(10),
                                                   topRight: Radius.circular(10),
@@ -695,8 +694,8 @@ class _PDFFunctionBodyState extends State<PDFFunctionBody>
                                                                 setState(() {
                                                                   myChildSize =
                                                                       size;
-                                                                  print(
-                                                                      myChildSize);
+                                                                  debugPrint(
+                                                                      myChildSize.toString());
                                                                 });
                                                               },
                                                               child: Padding(
@@ -715,8 +714,7 @@ class _PDFFunctionBodyState extends State<PDFFunctionBody>
                                                                         .fitHeight,
                                                                     height: 35,
                                                                     color: widget.mapOfFunctionDetails![
-                                                                            'Select File Icon Color'] ??
-                                                                        null,
+                                                                            'Select File Icon Color'],
                                                                     alignment:
                                                                         Alignment
                                                                             .center,
@@ -729,7 +727,7 @@ class _PDFFunctionBodyState extends State<PDFFunctionBody>
                                                                 // ),
                                                               ),
                                                             ),
-                                                            SizedBox(
+                                                            const SizedBox(
                                                               width: 15,
                                                             ),
                                                             Expanded(
@@ -746,21 +744,21 @@ class _PDFFunctionBodyState extends State<PDFFunctionBody>
                                                                     overflow:
                                                                         TextOverflow
                                                                             .ellipsis,
-                                                                    style: TextStyle(
+                                                                    style: const TextStyle(
                                                                         fontWeight:
                                                                             FontWeight
                                                                                 .w500,
                                                                         color: Colors
                                                                             .black),
                                                                   ),
-                                                                  SizedBox(
+                                                                  const SizedBox(
                                                                     height: 5,
                                                                   ),
                                                                   Row(
                                                                     children: [
                                                                       Text(
-                                                                        '${formatBytes(file.size, 2)}',
-                                                                        style: TextStyle(
+                                                                        formatBytes(file.size, 2),
+                                                                        style: const TextStyle(
                                                                             fontSize:
                                                                                 12,
                                                                             color:
@@ -776,15 +774,15 @@ class _PDFFunctionBodyState extends State<PDFFunctionBody>
                                                                   MainAxisAlignment
                                                                       .end,
                                                               children: [
-                                                                SizedBox(
+                                                                const SizedBox(
                                                                   width: 10,
                                                                 ),
-                                                                Container(
+                                                                SizedBox(
                                                                   height:
                                                                       myChildSize
                                                                           .height,
                                                                   child:
-                                                                      VerticalDivider(
+                                                                      const VerticalDivider(
                                                                     color: Colors
                                                                         .black,
                                                                     // thickness: 1,
@@ -801,15 +799,15 @@ class _PDFFunctionBodyState extends State<PDFFunctionBody>
                                                                         BorderRadius
                                                                             .only(
                                                                       topRight:
-                                                                          Radius.circular(
+                                                                          const Radius.circular(
                                                                               10),
                                                                       bottomRight: shouldRenderingImagesLoopBeDisabled ==
                                                                                   false &&
                                                                               isFileLoaded ==
                                                                                   false
-                                                                          ? Radius.circular(
+                                                                          ? const Radius.circular(
                                                                               0)
-                                                                          : Radius.circular(
+                                                                          : const Radius.circular(
                                                                               10),
                                                                     ),
                                                                   ),
@@ -839,15 +837,15 @@ class _PDFFunctionBodyState extends State<PDFFunctionBody>
                                                                         BorderRadius
                                                                             .only(
                                                                       topRight:
-                                                                          Radius.circular(
+                                                                          const Radius.circular(
                                                                               10),
                                                                       bottomRight: shouldRenderingImagesLoopBeDisabled ==
                                                                                   false &&
                                                                               isFileLoaded ==
                                                                                   false
-                                                                          ? Radius.circular(
+                                                                          ? const Radius.circular(
                                                                               0)
-                                                                          : Radius.circular(
+                                                                          : const Radius.circular(
                                                                               10),
                                                                     ),
                                                                     focusColor: widget.mapOfFunctionDetails![
@@ -871,12 +869,12 @@ class _PDFFunctionBodyState extends State<PDFFunctionBody>
                                                                             .black
                                                                             .withOpacity(0.1),
                                                                     child:
-                                                                        Container(
+                                                                        SizedBox(
                                                                       width: 50,
                                                                       height: myChildSize
                                                                           .height,
                                                                       child:
-                                                                          Icon(
+                                                                          const Icon(
                                                                         Icons
                                                                             .close_outlined,
                                                                         size:
@@ -898,7 +896,7 @@ class _PDFFunctionBodyState extends State<PDFFunctionBody>
                                                             ? Stack(
                                                                 children: [
                                                                   ClipRRect(
-                                                                    borderRadius: BorderRadius.only(
+                                                                    borderRadius: const BorderRadius.only(
                                                                         bottomLeft:
                                                                             Radius.circular(
                                                                                 10),
@@ -911,7 +909,7 @@ class _PDFFunctionBodyState extends State<PDFFunctionBody>
                                                                       backgroundColor:
                                                                           Colors
                                                                               .blue[100],
-                                                                      valueColor: AlwaysStoppedAnimation<
+                                                                      valueColor: const AlwaysStoppedAnimation<
                                                                               Color>(
                                                                           Colors
                                                                               .blue),
@@ -937,7 +935,7 @@ class _PDFFunctionBodyState extends State<PDFFunctionBody>
                                                                         textAlign:
                                                                             TextAlign.start,
                                                                         style:
-                                                                            TextStyle(
+                                                                            const TextStyle(
                                                                           color:
                                                                               Colors.black,
                                                                         ),
@@ -955,7 +953,7 @@ class _PDFFunctionBodyState extends State<PDFFunctionBody>
                                                           mainAxisAlignment:
                                                               MainAxisAlignment
                                                                   .center,
-                                                          children: [
+                                                          children: const [
                                                             Text(
                                                               'Select File',
                                                               textAlign:
@@ -990,7 +988,7 @@ class _PDFFunctionBodyState extends State<PDFFunctionBody>
                                                           mainAxisAlignment:
                                                               MainAxisAlignment
                                                                   .center,
-                                                          children: [
+                                                          children: const [
                                                             Text(
                                                               'Please wait ...',
                                                               textAlign:
@@ -1023,11 +1021,11 @@ class _PDFFunctionBodyState extends State<PDFFunctionBody>
                             ),
                             Stack(
                               children: [
-                                Divider(
+                                const Divider(
                                   height: 50,
                                   thickness: 1.5,
                                 ),
-                                Container(
+                                SizedBox(
                                   height: 50,
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
@@ -1037,12 +1035,12 @@ class _PDFFunctionBodyState extends State<PDFFunctionBody>
                                           border: Border.all(
                                               color: Colors.grey.shade400),
                                           color: Colors.white,
-                                          borderRadius: BorderRadius.all(
+                                          borderRadius: const BorderRadius.all(
                                               Radius.circular(20)),
                                         ),
                                         height: 30,
                                         width: 70,
-                                        child: Center(
+                                        child: const Center(
                                           child: Text(
                                             'Step - 2',
                                             textAlign: TextAlign.center,
@@ -1112,11 +1110,11 @@ class _PDFFunctionBodyState extends State<PDFFunctionBody>
                           decoration: BoxDecoration(
                             border: Border.all(color: Colors.grey.shade400),
                             color: Colors.white,
-                            borderRadius: BorderRadius.all(Radius.circular(20)),
+                            borderRadius: const BorderRadius.all(Radius.circular(20)),
                           ),
                           height: 30,
                           width: 70,
-                          child: Center(
+                          child: const Center(
                             child: Text(
                               'Step - 1',
                               textAlign: TextAlign.center,
@@ -1147,7 +1145,7 @@ class _PDFFunctionBodyState extends State<PDFFunctionBody>
                   bannerAdSize = size;
                 });
               },
-              child: BannerAD(),
+              child: const BannerAD(),
             ),
           ],
         ),

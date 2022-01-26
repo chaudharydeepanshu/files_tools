@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:files_tools/basicFunctionalityFunctions/hexToDecimal.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
 import 'dart:io';
 
@@ -24,11 +25,11 @@ Future<PdfDocument?> watermarkPDFPages(String pdfFilePath,
     //Converting hex color to RGB
     var hexColor = pdfChangesDataMap['Color Of Watermark'].substring(4);
     var red = hexToDecimal(hexColor[0].toString() + hexColor[1].toString())!;
-    print(red);
+    debugPrint(red.toString());
     var green = hexToDecimal(hexColor[2].toString() + hexColor[3].toString())!;
-    print(green);
+    debugPrint(green.toString());
     var blue = hexToDecimal(hexColor[4].toString() + hexColor[5].toString())!;
-    print(blue);
+    debugPrint(blue.toString());
     //for over the pdf content
 
     if (pdfChangesDataMap['Watermark Rotation Angle'] == 0) {
@@ -107,7 +108,7 @@ Future<PdfDocument?> watermarkPDFPages(String pdfFilePath,
 
           //Get page rotation applied
           PdfPageRotateAngle rotationAngle = page.rotation;
-          print("pageRealRotationAngle : $rotationAngle");
+          debugPrint("pageRealRotationAngle : $rotationAngle");
 
           int realAngle = 0;
           if (rotationAngle == PdfPageRotateAngle.rotateAngle0) {
@@ -134,15 +135,15 @@ Future<PdfDocument?> watermarkPDFPages(String pdfFilePath,
 
           //Create the page as template.
           PdfTemplate template = page.createTemplate();
-          print(
+          debugPrint(
               "page.size.height: ${page.size.height}, page.size.width: ${page.size.width}");
           //Changing section orientation according to page height & width
           if (page.size.height < page.size.width) {
             newDocument.pageSettings.orientation = PdfPageOrientation.landscape;
-            print('Page is landscape');
+            debugPrint('Page is landscape');
           } else {
             newDocument.pageSettings.orientation = PdfPageOrientation.portrait;
-            print('Page is portrait');
+            debugPrint('Page is portrait');
           }
           //Set page size and add page.
           newDocument.pageSettings.size = page.size;
@@ -217,7 +218,7 @@ Future<PdfDocument?> watermarkPDFPages(String pdfFilePath,
           //--------------------adding watermark -------------------------------//
 
           //Draw the template to the new document page.
-          newPage.graphics.drawPdfTemplate(template, Offset(0, 0));
+          newPage.graphics.drawPdfTemplate(template, const Offset(0, 0));
         }
         document = newDocument;
       }
@@ -302,7 +303,7 @@ Future<PdfDocument?> watermarkPDFPages(String pdfFilePath,
 
           //Get page rotation applied
           PdfPageRotateAngle rotationAngle = page.rotation;
-          print("pageRealRotationAngle : $rotationAngle");
+          debugPrint("pageRealRotationAngle : $rotationAngle");
 
           int realAngle = 0;
           if (rotationAngle == PdfPageRotateAngle.rotateAngle0) {
@@ -329,15 +330,15 @@ Future<PdfDocument?> watermarkPDFPages(String pdfFilePath,
 
           //Create the page as template.
           PdfTemplate template = page.createTemplate();
-          print(
+          debugPrint(
               "page.size.height: ${page.size.height}, page.size.width: ${page.size.width}");
           //Changing section orientation according to page height & width
           if (page.size.height < page.size.width) {
             newDocument.pageSettings.orientation = PdfPageOrientation.landscape;
-            print('Page is landscape');
+            debugPrint('Page is landscape');
           } else {
             newDocument.pageSettings.orientation = PdfPageOrientation.portrait;
-            print('Page is portrait');
+            debugPrint('Page is portrait');
           }
           //Set page size and add page.
           newDocument.pageSettings.size = page.size;
@@ -417,7 +418,7 @@ Future<PdfDocument?> watermarkPDFPages(String pdfFilePath,
           //--------------------adding watermark -------------------------------//
 
           //Draw the template to the new document page.
-          newPage.graphics.drawPdfTemplate(template, Offset(0, 0));
+          newPage.graphics.drawPdfTemplate(template, const Offset(0, 0));
         }
         document = newDocument;
       }

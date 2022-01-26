@@ -198,14 +198,14 @@ class _PDFPagesSelectionScaffoldState extends State<PDFPagesSelectionScaffold>
       Future.delayed(const Duration(milliseconds: 500), () async {
         document = await processSelectedDataFromUser(
             pdfChangesDataMap: {
-              'PDF File Name': '${widget.arguments!.pdfFile.name}'
+              'PDF File Name': widget.arguments!.pdfFile.name
             },
             selectedData: selectedImages,
             processType: widget.arguments!.processType,
             filePath: widget.arguments!.pdfFile.path,
             shouldDataBeProcessed: shouldDataBeProcessed);
 
-        Map map = Map();
+        Map map = {};
         map['_pdfFileName'] = widget.arguments!.pdfFile.name;
         map['_extraBetweenNameAndExtension'] = '';
         map['_document'] = document;
@@ -306,8 +306,8 @@ class _PDFPagesSelectionScaffoldState extends State<PDFPagesSelectionScaffold>
 
   @override
   Widget build(BuildContext context) {
-    print('setState Ran');
-    print(bannerAdSize.height);
+    debugPrint('setState Ran');
+    debugPrint(bannerAdSize.height.toString());
     return ReusableAnnotatedRegion(
       //child: WillPopScope(
       // onWillPop: shouldWePopScaffold == true ? _directPop : _onWillPop, // no use as we handle onWillPop on dialog box it in processingDialog and we used it before here because we were using a fake dialog box which looks like a dialog box but actually just a lookalike created using stack
@@ -336,7 +336,7 @@ class _PDFPagesSelectionScaffoldState extends State<PDFPagesSelectionScaffold>
                       Expanded(
                         child: GridView(
                           gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
+                              const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2,
                             childAspectRatio: 0.69, //childAspectRatio: 3 / 4.5,
                           ),
@@ -364,7 +364,7 @@ class _PDFPagesSelectionScaffoldState extends State<PDFPagesSelectionScaffold>
                                       ),
                                     ),
                                     child: ConstrainedBox(
-                                      constraints: BoxConstraints(
+                                      constraints: const BoxConstraints(
                                         maxHeight: 234,
                                         maxWidth: 165,
                                       ),
@@ -438,7 +438,7 @@ class _PDFPagesSelectionScaffoldState extends State<PDFPagesSelectionScaffold>
                                     ),
                                   ),
                                   Text('${index + 1}'),
-                                  SizedBox(
+                                  const SizedBox(
                                     height: 5,
                                   ),
                                 ],
@@ -464,7 +464,7 @@ class _PDFPagesSelectionScaffoldState extends State<PDFPagesSelectionScaffold>
                           bannerAdSize = size;
                         });
                       },
-                      child: BannerAD(),
+                      child: const BannerAD(),
                     ),
                   ],
                 ),

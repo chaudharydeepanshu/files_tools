@@ -89,13 +89,13 @@ class _FixedRangePDFPagesScaffoldState extends State<FixedRangePDFPagesScaffold>
             pdfChangesDataMap: {
               'TextEditingController': textEditingController,
               'Number Of PDFs': numberOfPDFCreated,
-              'PDF File Name': '${widget.arguments!.pdfFile.name}'
+              'PDF File Name': widget.arguments!.pdfFile.name
             },
-            processType: "${widget.arguments!.processType}",
+            processType: widget.arguments!.processType,
             filePath: widget.arguments!.pdfFile.path,
             shouldDataBeProcessed: shouldDataBeProcessed);
 
-        Map map = Map();
+        Map map = {};
         map['_pdfFileName'] = widget.arguments!.pdfFile.name;
         map['_extraBetweenNameAndExtension'] = '';
         map['_rangesPdfsFilePaths'] = rangesPdfsFilePaths;
@@ -179,8 +179,8 @@ class _FixedRangePDFPagesScaffoldState extends State<FixedRangePDFPagesScaffold>
       context: context,
       builder: (BuildContext context) {
         return SimpleDialog(
-          title: Center(
-            child: const Text('Information'),
+          title: const Center(
+            child: Text('Information'),
           ),
           children: <Widget>[
             Padding(
@@ -188,14 +188,14 @@ class _FixedRangePDFPagesScaffoldState extends State<FixedRangePDFPagesScaffold>
               child: Container(
                 child: Column(
                   children: [
-                    Text.rich(
+                    const Text.rich(
                       TextSpan(
                           text:
                               'Use this option to specify individual pages and page ranges that should be added to the output document.'),
                     ),
                     Row(
                       children: [
-                        SizedBox(
+                        const SizedBox(
                           width: 15,
                         ),
                         Expanded(
@@ -203,7 +203,7 @@ class _FixedRangePDFPagesScaffoldState extends State<FixedRangePDFPagesScaffold>
                             children: [
                               Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
+                                children: const [
                                   Text(
                                     "• ",
                                     style:
@@ -222,7 +222,7 @@ class _FixedRangePDFPagesScaffoldState extends State<FixedRangePDFPagesScaffold>
                               ),
                               Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
+                                children: const [
                                   Text(
                                     "• ",
                                     style:
@@ -241,7 +241,7 @@ class _FixedRangePDFPagesScaffoldState extends State<FixedRangePDFPagesScaffold>
                               ),
                               Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
+                                children: const [
                                   Text(
                                     "• ",
                                     style:
@@ -260,7 +260,7 @@ class _FixedRangePDFPagesScaffoldState extends State<FixedRangePDFPagesScaffold>
                               ),
                               Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
+                                children: const [
                                   Text(
                                     "• ",
                                     style:
@@ -279,7 +279,7 @@ class _FixedRangePDFPagesScaffoldState extends State<FixedRangePDFPagesScaffold>
                               ),
                               Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
+                                children: const [
                                   Text(
                                     "• ",
                                     style:
@@ -290,7 +290,7 @@ class _FixedRangePDFPagesScaffoldState extends State<FixedRangePDFPagesScaffold>
                                       TextSpan(
                                         style: TextStyle(),
                                         text:
-                                            'To specify a set of pages that contain a specific word or phrase, enter your search text in double or single quotes: \"Your Search Text Here\"',
+                                            'To specify a set of pages that contain a specific word or phrase, enter your search text in double or single quotes: "Your Search Text Here"',
                                       ),
                                     ),
                                   ),
@@ -371,21 +371,21 @@ class _FixedRangePDFPagesScaffoldState extends State<FixedRangePDFPagesScaffold>
                                   child: Text(
                                     'Total number of Pages in PDF: $pdfPagesCount',
                                     style:
-                                        TextStyle(fontWeight: FontWeight.bold),
+                                        const TextStyle(fontWeight: FontWeight.bold),
                                   ),
-                                  decoration: BoxDecoration(),
+                                  decoration: const BoxDecoration(),
                                 ),
                               ],
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 10,
                             ),
                             Row(
-                              children: [
+                              children: const [
                                 Text('Split PDF in page ranges of:'),
                               ],
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 5,
                             ),
                             TextFormField(
@@ -412,7 +412,7 @@ class _FixedRangePDFPagesScaffoldState extends State<FixedRangePDFPagesScaffold>
                                 labelText: 'Type a number',
                                 helperText: ' ',
                                 hintText: 'Ex: ${pdfPagesCount - 1}',
-                                border: OutlineInputBorder(),
+                                border: const OutlineInputBorder(),
                               ),
                               //autofocus: true,
                               showCursor: true,
@@ -441,7 +441,7 @@ class _FixedRangePDFPagesScaffoldState extends State<FixedRangePDFPagesScaffold>
                                             child: Text(
                                               'Number of PDFs will be created: ${pdfsCreatedCalc()}',
                                             ),
-                                            decoration: BoxDecoration(),
+                                            decoration: const BoxDecoration(),
                                           ),
                                         ],
                                       )
@@ -465,7 +465,7 @@ class _FixedRangePDFPagesScaffoldState extends State<FixedRangePDFPagesScaffold>
                               bannerAdSize = size;
                             });
                           },
-                          child: BannerAD(),
+                          child: const BannerAD(),
                         ),
                       ],
                     ),

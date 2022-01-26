@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:pdf_merger/pdf_merger.dart';
 // import 'package:pdf_merger/pdf_merger_response.dart';
 import 'package:files_tools/basicFunctionalityFunctions/creatingAndSavingPDFFileTemporarily.dart';
@@ -21,8 +22,8 @@ Future<PdfDocument?> mergePDFPagesAsSingleDocument(List<String> pdfFilesPaths,
         document =
             PdfDocument(inputBytes: File(pdfFilesPaths[i]).readAsBytesSync());
         listOfDocuments.add(document!);
-        print(listOfDocuments.length);
-        print(pdfFilesPaths[i]);
+        debugPrint(listOfDocuments.length.toString());
+        debugPrint(pdfFilesPaths[i]);
       }
     } catch (exception) {
       if (exception.toString().contains('Cannot open an encrypted document.')) {
@@ -62,38 +63,41 @@ Future<PdfDocument?> mergePDFPagesAsSingleDocument(List<String> pdfFilesPaths,
         i < reorderedListOfDocuments.length && shouldDataBeProcessed == true;
         i++) {
       String newFileName =
-          "${fileNameWithoutExtension + ' ' + i.toString() + extensionOfFileName}";
-      Map map = Map();
+          fileNameWithoutExtension + ' ' + i.toString() + extensionOfFileName;
+      Map map = {};
       map['_pdfFileName'] = newFileName;
       map['_extraBetweenNameAndExtension'] = '';
       map['_document'] = reorderedListOfDocuments[i];
       tempPdfFilePaths.add(await creatingAndSavingPDFFileTemporarily(map));
     }
-    print("tempPdfFilePaths : $tempPdfFilePaths");
+    debugPrint("tempPdfFilePaths : $tempPdfFilePaths");
 
     //merge the documents
     MergeMultiplePDFResponse response = await PdfMerger.mergeMultiplePDF(
         paths: tempPdfFilePaths,
         outputDirPath: await getExternalStorageFilePathFromFileName(
-            "${fileNameWithoutExtension + ' ' + 'merged' + extensionOfFileName}"));
+            fileNameWithoutExtension + ' ' + 'merged' + extensionOfFileName));
 
     if (response.status == "success") {
-      print(response.response); //for output path  in String
-      print(response.message); // for success message  in String
+      debugPrint(response.response); //for output path  in String
+      debugPrint(response.message); // for success message  in String
     }
 
     //passing final document to document variable
     document = PdfDocument(
         inputBytes: File(await getExternalStorageFilePathFromFileName(
-                "${fileNameWithoutExtension + ' ' + 'merged' + extensionOfFileName}"))
+                fileNameWithoutExtension +
+                    ' ' +
+                    'merged' +
+                    extensionOfFileName))
             .readAsBytesSync());
 
     //removing unnecessary documents from getExternalStorageDirectory
     for (int i = 0; i < tempPdfFilePaths.length; i++) {
-      deletingTempPDFFiles("${getFileNameFromFilePath(tempPdfFilePaths[i])}");
+      deletingTempPDFFiles(getFileNameFromFilePath(tempPdfFilePaths[i]));
     }
     deletingTempPDFFiles(
-        "${fileNameWithoutExtension + ' ' + 'merged' + extensionOfFileName}");
+        fileNameWithoutExtension + ' ' + 'merged' + extensionOfFileName);
   } else {
     document = null;
   }

@@ -44,7 +44,7 @@ class _PDFPagesModificationScaffoldState
   @override
   void initState() {
     listOfRotation =
-        new List<int>.generate(widget.arguments!.pdfPagesImages!.length, (i) {
+        List<int>.generate(widget.arguments!.pdfPagesImages!.length, (i) {
       return 0;
     });
 
@@ -54,7 +54,7 @@ class _PDFPagesModificationScaffoldState
     }
 
     listOfDeletedImages =
-        new List<bool>.generate(widget.arguments!.pdfPagesImages!.length, (i) {
+        List<bool>.generate(widget.arguments!.pdfPagesImages!.length, (i) {
       return true;
     });
 
@@ -68,7 +68,7 @@ class _PDFPagesModificationScaffoldState
       return 0.0;
     });
 
-    decorationImageListForReorder = new List<RotatedBox>.generate(
+    decorationImageListForReorder = List<RotatedBox>.generate(
         widget.arguments!.pdfPagesImages!.length, (i) {
       return RotatedBox(
         quarterTurns: listOfRotation[i] == 0
@@ -124,13 +124,13 @@ class _PDFPagesModificationScaffoldState
               'Page Rotations List': listOfRotation,
               'Deleted Page List': listOfDeletedImages,
               'Reordered Page List': reorderedList,
-              'PDF File Name': '${widget.arguments!.pdfFile.name}'
+              'PDF File Name': widget.arguments!.pdfFile.name
             },
             processType: widget.arguments!.processType,
             filePath: widget.arguments!.pdfFile.path,
             shouldDataBeProcessed: shouldDataBeProcessed);
 
-        Map map = Map();
+        Map map = {};
         map['_pdfFileName'] = widget.arguments!.pdfFile.name;
         map['_extraBetweenNameAndExtension'] = '';
         map['_document'] = document;
@@ -227,7 +227,7 @@ class _PDFPagesModificationScaffoldState
     });
 
     List<bool> defaultListOfDeletedPages =
-        new List<bool>.generate(widget.arguments!.pdfPagesImages!.length, (i) {
+        List<bool>.generate(widget.arguments!.pdfPagesImages!.length, (i) {
       return true;
     });
 
@@ -277,8 +277,8 @@ class _PDFPagesModificationScaffoldState
 
   @override
   Widget build(BuildContext context) {
-    print('listOfRotation: $listOfRotation');
-    print('listOfDeletedImages: $listOfDeletedImages');
+    debugPrint('listOfRotation: $listOfRotation');
+    debugPrint('listOfDeletedImages: $listOfDeletedImages');
     return ReusableAnnotatedRegion(
       //child: WillPopScope(
       // onWillPop: shouldWePopScaffold == true ? _directPop : _onWillPop, // no use as we handle onWillPop on dialog box it in processingDialog and we used it before here because we were using a fake dialog box which looks like a dialog box but actually just a lookalike created using stack
@@ -303,7 +303,7 @@ class _PDFPagesModificationScaffoldState
                 Expanded(
                   child: carouselList(),
                 ),
-                BannerAD(),
+                const BannerAD(),
               ],
             ),
             bottomNavigationBar: BottomAppBar(
@@ -311,10 +311,10 @@ class _PDFPagesModificationScaffoldState
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   bottomNavBarButtonsForFileModifications(
-                    buttonIcon: Icon(Icons.rotate_right),
-                    buttonLabel: Text('Rotate'),
+                    buttonIcon: const Icon(Icons.rotate_right),
+                    buttonLabel: const Text('Rotate'),
                     onTapAction: () {
-                      print('working');
+                      debugPrint('working');
                       setState(() {
                         decorationImageListForReorder[currentIndex] =
                             listOfDeletedImages[currentIndex] == false
@@ -358,10 +358,10 @@ class _PDFPagesModificationScaffoldState
                         widget.arguments!.mapOfSubFunctionDetails,
                   ),
                   bottomNavBarButtonsForFileModifications(
-                    buttonIcon: Icon(Icons.delete),
+                    buttonIcon: const Icon(Icons.delete),
                     buttonLabel: listOfDeletedImages[currentIndex] == true
-                        ? Text('Delete')
-                        : Text('Restore'),
+                        ? const Text('Delete')
+                        : const Text('Restore'),
                     onTapAction: widget.arguments!.pdfPagesImages!.length != 1
                         ? () {
                             setState(() {
@@ -438,8 +438,8 @@ class _PDFPagesModificationScaffoldState
                         widget.arguments!.mapOfSubFunctionDetails,
                   ),
                   bottomNavBarButtonsForFileModifications(
-                    buttonIcon: Icon(Icons.reorder),
-                    buttonLabel: Text('Reorder'),
+                    buttonIcon: const Icon(Icons.reorder),
+                    buttonLabel: const Text('Reorder'),
                     onTapAction: widget.arguments!.pdfPagesImages!.length != 1
                         ? () {
                             Navigator.pushNamed(

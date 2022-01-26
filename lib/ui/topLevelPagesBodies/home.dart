@@ -23,7 +23,7 @@ class _HomeBodyState extends State<HomeBody> with WidgetsBindingObserver {
   @override
   void didChangePlatformBrightness() {
     var brightness = WidgetsBinding.instance!.window.platformBrightness;
-    print(brightness);
+    debugPrint(brightness.name);
     // > should print Brightness.light / Brightness.dark when you switch
     bool darkModeOn = brightness == Brightness.dark;
     if (darkModeOn == true) {
@@ -53,7 +53,7 @@ class _HomeBodyState extends State<HomeBody> with WidgetsBindingObserver {
     super.initState();
     WidgetsBinding.instance!.addObserver(this); //most important
     var brightness = WidgetsBinding.instance!.window.platformBrightness;
-    print(brightness);
+    debugPrint(brightness.name);
     // > should print Brightness.light / Brightness.dark when you switch
     bool darkModeOn = brightness == Brightness.dark;
     if (darkModeOn == true) {
@@ -101,14 +101,14 @@ class _HomeBodyState extends State<HomeBody> with WidgetsBindingObserver {
                       children: [
                         Text(
                           AppLocalizations.of(context)!.documentTools,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 16,
                           ),
                         ),
                       ],
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 8,
                     ),
                     Column(
@@ -123,21 +123,21 @@ class _HomeBodyState extends State<HomeBody> with WidgetsBindingObserver {
                         );
                       }),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 8,
                     ),
                     Row(
                       children: [
                         Text(
                           AppLocalizations.of(context)!.mediaTools,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 16,
                           ),
                         ),
                       ],
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 8,
                     ),
                     Column(
@@ -152,7 +152,7 @@ class _HomeBodyState extends State<HomeBody> with WidgetsBindingObserver {
                         );
                       }),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 8,
                     ),
                   ],
@@ -175,7 +175,7 @@ class _HomeBodyState extends State<HomeBody> with WidgetsBindingObserver {
                   bannerAdSize = size;
                 });
               },
-              child: BannerAD(),
+              child: const BannerAD(),
             ),
           ],
         ),

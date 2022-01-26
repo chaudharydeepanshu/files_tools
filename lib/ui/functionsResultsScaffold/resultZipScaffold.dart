@@ -54,28 +54,28 @@ class _ResultZipScaffoldState extends State<ResultZipScaffold> {
         sourceFilePath: tempZipPath, mimeTypesFilter: ["application/zip"]);
     //data: Uint8List.fromList(bytes), fileName: 'Test.pdf');
     final filePath = await FlutterFileDialog.saveFile(params: params);
-    print(filePath);
+    debugPrint(filePath);
     return filePath;
   }
 
   Future<void> extractZipInUserDescribedLocation() async {
     String? result = await FilePicker.platform
         .getDirectoryPath(); //changes are made according to this https://github.com/miguelpruivo/flutter_file_picker/pull/763 to make it work. also read https://github.com/miguelpruivo/flutter_file_picker/issues/745
-    print('result: $result');
+    debugPrint('result: $result');
 
     if (result != null && result != '/') {
-      final zipFile = File("${widget.arguments!.rangesPdfsZipFilePath}");
-      final destinationDir = Directory("$result");
+      final zipFile = File(widget.arguments!.rangesPdfsZipFilePath);
+      final destinationDir = Directory(result);
       try {
         ZipFile.extractToDirectory(
             zipFile: zipFile, destinationDir: destinationDir);
       } catch (e) {
-        print(e);
+        debugPrint(e.toString());
       }
     }
   }
 
-  TextEditingController _controller = TextEditingController();
+  final TextEditingController _controller = TextEditingController();
   late String extensionOfFileName;
   late String fileNameWithoutExtension;
   late String newFileName;
@@ -95,9 +95,9 @@ class _ResultZipScaffoldState extends State<ResultZipScaffold> {
 
   @override
   void initState() {
-    File file = File("${widget.arguments!.rangesPdfsZipFilePath}");
+    File file = File(widget.arguments!.rangesPdfsZipFilePath);
     String fileName = PathLibrary.basename(file.path);
-    print("filename : $fileName");
+    debugPrint("filename : $fileName");
 
     if (Platform.isAndroid) {
       androidDeviceInfo().whenComplete(() {
@@ -117,12 +117,12 @@ class _ResultZipScaffoldState extends State<ResultZipScaffold> {
           Navigator.pop(context);
           await Permission.manageExternalStorage.request().then((value) {
             if (value == PermissionStatus.granted) {
-              print('Permission granted');
+              debugPrint('Permission granted');
             } else if (value == PermissionStatus.denied) {
-              print(
+              debugPrint(
                   'Denied. Show a dialog with a reason and again ask for the permission.');
             } else if (value == PermissionStatus.permanentlyDenied) {
-              print('Take the user to the settings page.');
+              debugPrint('Take the user to the settings page.');
             }
             return null;
           });
@@ -160,7 +160,7 @@ class _ResultZipScaffoldState extends State<ResultZipScaffold> {
 
       await file.delete();
     } catch (e) {
-      print(e);
+      debugPrint(e.toString());
     }
   }
 
@@ -200,7 +200,7 @@ class _ResultZipScaffoldState extends State<ResultZipScaffold> {
 
   @override
   Widget build(BuildContext context) {
-    print(extensionOfSingleFileFromZip);
+    debugPrint(extensionOfSingleFileFromZip);
     return ReusableAnnotatedRegion(
       child: GestureDetector(
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
@@ -241,10 +241,10 @@ class _ResultZipScaffoldState extends State<ResultZipScaffold> {
                               alignment: Alignment.center,
                               semanticsLabel: 'Zip File Icon'),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 20,
                         ),
-                        Center(
+                        const Center(
                           child: Text(
                             'Your files are ready',
                             textAlign: TextAlign.center,
@@ -256,15 +256,15 @@ class _ResultZipScaffoldState extends State<ResultZipScaffold> {
                             ),
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 20,
                         ),
                         Center(
                           child: Text(
                             // 'Test',
-                            'File Size : ${formatBytes(File('$tempZipPath').lengthSync(), 2)}',
+                            'File Size : ${formatBytes(File(tempZipPath).lengthSync(), 2)}',
                             textAlign: TextAlign.left,
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontFamily: AppTheme.fontName,
                               fontWeight: FontWeight.w600,
                               fontSize: 16,
@@ -272,7 +272,7 @@ class _ResultZipScaffoldState extends State<ResultZipScaffold> {
                             ),
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 20,
                         ),
                         TextFormField(
@@ -302,7 +302,7 @@ class _ResultZipScaffoldState extends State<ResultZipScaffold> {
 
                               file = File(tempZipPath);
                             } catch (e) {
-                              print(e);
+                              debugPrint(e.toString());
                             }
                             // creatingAndSavingFileTemporarily(newFileName)
                             //     .whenComplete(() {
@@ -312,8 +312,8 @@ class _ResultZipScaffoldState extends State<ResultZipScaffold> {
                           decoration: InputDecoration(
                             hintText: "File Name",
                             suffixText: extensionOfFileName,
-                            icon: Icon(Icons.drive_file_rename_outline),
-                            border: OutlineInputBorder(),
+                            icon: const Icon(Icons.drive_file_rename_outline),
+                            border: const OutlineInputBorder(),
                           ),
                         ),
                         ResultPageButtons(
@@ -321,14 +321,14 @@ class _ResultZipScaffoldState extends State<ResultZipScaffold> {
                           onTapAction: () async {
                             FocusManager.instance.primaryFocus?.unfocus();
                             final _result = await OpenFile.open(tempZipPath);
-                            print(_result.message);
+                            debugPrint(_result.message);
 
                             setState(() {
                               _openResult =
                                   "type=${_result.type}  message=${_result.message}";
                             });
                             if (_result.type == ResultType.noAppToOpen) {
-                              print(_openResult);
+                              debugPrint(_openResult);
                               setState(() {
                                 viewZipBannerStatus = true;
                               });
@@ -356,7 +356,7 @@ class _ResultZipScaffoldState extends State<ResultZipScaffold> {
                                     onTapAction: () async {
                                       FocusManager.instance.primaryFocus
                                           ?.unfocus();
-                                      print(androidInfo!.version.sdkInt);
+                                      debugPrint(androidInfo!.version.sdkInt.toString());
                                       extractZipInUserDescribedLocation();
                                     },
                                     buttonIcon: Icons.folder_open_outlined,
@@ -388,7 +388,7 @@ class _ResultZipScaffoldState extends State<ResultZipScaffold> {
                                                 .rangesPdfsFilePaths[i],
                                             albumName: 'Files Tools')
                                         .then((saved) {
-                                      print("saved $i - $saved");
+                                      debugPrint("saved $i - $saved");
                                     });
                                     if (i ==
                                         widget.arguments!.rangesPdfsFilePaths
@@ -455,7 +455,7 @@ class _ResultZipScaffoldState extends State<ResultZipScaffold> {
                                             extensionOfString:
                                                 extensionOfFileName);
                                     String newFileName =
-                                        "${fileNameWithoutExtension + ' ' + currentDateTimeInString() + extensionOfFileName}";
+                                        fileNameWithoutExtension + ' ' + currentDateTimeInString() + extensionOfFileName;
                                     filesNamesList.add(newFileName);
                                   }
                                   await DocumentFileSave.saveMultipleFiles(
@@ -543,7 +543,7 @@ class _ResultZipScaffoldState extends State<ResultZipScaffold> {
                           bannerAdSize = size;
                         });
                       },
-                      child: BannerAD(),
+                      child: const BannerAD(),
                     ),
                   ],
                 ),

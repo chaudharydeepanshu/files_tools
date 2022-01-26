@@ -13,6 +13,7 @@ import 'package:files_tools/main_functions/split/extractAllPages/extractAllPages
 import 'package:files_tools/main_functions/split/extractSelectedPages/extractSelectedPages.dart';
 import 'package:files_tools/main_functions/split/fixedRange/fixedRangePDFPages.dart';
 import 'package:files_tools/main_functions/watermarkPdf/watermarkPdfPages.dart';
+import 'package:flutter/cupertino.dart';
 
 Future<dynamic> processSelectedDataFromUser(
     {List<bool>? selectedData, //for selection type processes
@@ -21,87 +22,87 @@ Future<dynamic> processSelectedDataFromUser(
     String? filePath,
     List<String>? filesPaths,
     required bool shouldDataBeProcessed}) async {
-  print('processSelectedDataFromUser called');
+  debugPrint('processSelectedDataFromUser called');
   dynamic dataFromFunctions;
   if (processType == 'Modify PDF Data') {
     dataFromFunctions = await modifyingPDFPagesUsingModifiedPDFDataMap(
         filePath!, pdfChangesDataMap!, shouldDataBeProcessed);
-    print('waiting for modifyingPDFPagesUsingModifiedPDFDataMap');
+    debugPrint('waiting for modifyingPDFPagesUsingModifiedPDFDataMap');
     return dataFromFunctions;
   } else if (processType == 'Extract Selected PDF Pages') {
     dataFromFunctions = await extractSelectedPages(
         filePath!, selectedData!, pdfChangesDataMap!, shouldDataBeProcessed);
-    print('waiting for extractSelectedPages');
+    debugPrint('waiting for extractSelectedPages');
     return dataFromFunctions;
   } else if (processType ==
       'Extract Custom Range PDF Pages As Single Document') {
     dataFromFunctions = await customRangePDFPagesAsSingleDocument(
         filePath!, pdfChangesDataMap!, shouldDataBeProcessed);
-    print('waiting for customRangePDFPagesAsSingleDocument');
+    debugPrint('waiting for customRangePDFPagesAsSingleDocument');
     return dataFromFunctions;
   } else if (processType ==
       'Extract Custom Range PDF Pages As Separate Documents') {
     dataFromFunctions = await customRangePDFPagesAsSeparateDocument(
         filePath!, pdfChangesDataMap!, shouldDataBeProcessed);
-    print('waiting for customRangePDFPagesAsSeparateDocument');
+    debugPrint('waiting for customRangePDFPagesAsSeparateDocument');
     return dataFromFunctions;
   } else if (processType == 'Extract Fixed Range PDF Pages') {
     dataFromFunctions = await fixedRangePDFPages(
         filePath!, pdfChangesDataMap!, shouldDataBeProcessed);
-    print('waiting for fixedRangePDFPages');
+    debugPrint('waiting for fixedRangePDFPages');
     return dataFromFunctions;
   } else if (processType == 'Extract All PDF Pages') {
     dataFromFunctions = await extractAllPDFPages(
         filePath!, pdfChangesDataMap!, shouldDataBeProcessed);
-    print('waiting for extractAllPDFPages');
+    debugPrint('waiting for extractAllPDFPages');
     return dataFromFunctions;
   } else if (processType == 'Merge Selected PDFs') {
     dataFromFunctions = await mergePDFPagesAsSingleDocument(
         filesPaths!, pdfChangesDataMap!, shouldDataBeProcessed);
-    print('waiting for mergePDFPagesAsSingleDocument');
+    debugPrint('waiting for mergePDFPagesAsSingleDocument');
     return dataFromFunctions;
   } else if (processType == 'Compress PDF Data') {
     dataFromFunctions =
         await compressPDF(filePath!, pdfChangesDataMap!, shouldDataBeProcessed);
-    print('waiting for compressPDF');
+    debugPrint('waiting for compressPDF');
     return dataFromFunctions;
   } else if (processType == 'Encrypt PDF') {
     dataFromFunctions =
         await encryptPDF(filePath!, pdfChangesDataMap!, shouldDataBeProcessed);
-    print('waiting for encryptPDF');
+    debugPrint('waiting for encryptPDF');
     return dataFromFunctions;
   } else if (processType == 'Decrypt PDF') {
     dataFromFunctions =
         await decryptPDF(filePath!, pdfChangesDataMap!, shouldDataBeProcessed);
-    print('waiting for decryptPDF');
+    debugPrint('waiting for decryptPDF');
     return dataFromFunctions;
   } else if (processType == 'Images To PDF') {
     dataFromFunctions = await imagesToPdf(
         filesPaths!, pdfChangesDataMap!, shouldDataBeProcessed);
-    print('waiting for imagesToPdf');
+    debugPrint('waiting for imagesToPdf');
     return dataFromFunctions;
   } else if (processType == 'PDF TO Images') {
     dataFromFunctions =
         await pdfToImages(filePath!, pdfChangesDataMap!, shouldDataBeProcessed);
-    print('waiting for pdfToImages');
+    debugPrint('waiting for pdfToImages');
     return dataFromFunctions;
   } else if (processType == 'Modify Image') {
     dataFromFunctions =
         await modifyImage(filePath!, pdfChangesDataMap!, shouldDataBeProcessed);
-    print('waiting for modifyImage');
+    debugPrint('waiting for modifyImage');
     return dataFromFunctions;
   } else if (processType == 'Compress Images') {
     dataFromFunctions = await compressImages(
         filesPaths!, pdfChangesDataMap!, shouldDataBeProcessed);
-    print('waiting for compressImages');
+    debugPrint('waiting for compressImages');
     return dataFromFunctions;
   } else if (processType == 'Watermark PDF') {
     dataFromFunctions = await watermarkPDFPages(
         filePath!, pdfChangesDataMap!, shouldDataBeProcessed);
-    print('waiting for watermarkPDFPages');
+    debugPrint('waiting for watermarkPDFPages');
     return dataFromFunctions;
   } else {
-    print(
+    debugPrint(
         'Unidentified Process Type! Please provide process type to processSelectedDataFromUser');
     return null;
   }

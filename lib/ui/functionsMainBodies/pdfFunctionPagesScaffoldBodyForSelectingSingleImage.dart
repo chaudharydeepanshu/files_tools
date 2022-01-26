@@ -71,7 +71,7 @@ class _PDFFunctionBodyForSelectingSingleImageState
 
     if (firstRun) {
       WidgetsBinding.instance!.addPostFrameCallback((_) async {
-        print('build complete');
+        debugPrint('build complete');
         if (await Permission.storage.isGranted == true) {
           setState(() {
             storagePermissionPermanentlyDenied = false;
@@ -83,7 +83,7 @@ class _PDFFunctionBodyForSelectingSingleImageState
             bool storagePermissionPermanentlyDeniedBoolValue =
                 prefs.getBool('storagePermissionPermanentlyDeniedBoolValue') ??
                     false;
-            print(prefs.getBool('storagePermissionPermanentlyDeniedBoolValue'));
+            debugPrint(prefs.getBool('storagePermissionPermanentlyDeniedBoolValue').toString());
             return storagePermissionPermanentlyDeniedBoolValue;
           }
 
@@ -93,13 +93,13 @@ class _PDFFunctionBodyForSelectingSingleImageState
           });
         }
         firstRun = false;
-        return null;
+        return;
       });
     }
 
     WidgetsBinding.instance!
         .addObserver(LifecycleEventHandler(resumeCallBack: () async {
-      print('resumeCallBack');
+      debugPrint('resumeCallBack');
       if (await Permission.storage.isGranted == true) {
         if (mounted) {
           setState(() {
@@ -126,7 +126,7 @@ class _PDFFunctionBodyForSelectingSingleImageState
         onPressed: () async {
           Navigator.pop(context);
           await openAppSettings().then((value) {
-            print('setting could be opened: $value');
+            debugPrint('setting could be opened: $value');
             return null;
           });
         },
@@ -210,12 +210,12 @@ class _PDFFunctionBodyForSelectingSingleImageState
                   children: [
                     Container(
                       height: 15,
-                      color: widget.mapOfFunctionDetails!['BG Color'] ?? null,
+                      color: widget.mapOfFunctionDetails!['BG Color'],
                     ),
                     Padding(
                       padding: const EdgeInsets.only(top: 15),
                       child: Container(
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           //color: Color(0xFFFFAFAFA),
                           borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(10),
@@ -268,7 +268,7 @@ class _PDFFunctionBodyForSelectingSingleImageState
                                                   : 0,
                                           color: widget.mapOfFunctionDetails![
                                                   'Select File Button Color'] ??
-                                              Color(0xffE4EAF6),
+                                              const Color(0xffE4EAF6),
                                           shape: RoundedRectangleBorder(
                                             borderRadius:
                                                 BorderRadius.circular(10.0),
@@ -295,7 +295,7 @@ class _PDFFunctionBodyForSelectingSingleImageState
                                                             isFilePickingInitiated =
                                                                 true;
 
-                                                            print(
+                                                            debugPrint(
                                                                 'Permission granted');
                                                             // final ImagePicker?
                                                             //     result =
@@ -368,7 +368,7 @@ class _PDFFunctionBodyForSelectingSingleImageState
                                                                       File file,
                                                                       String
                                                                           targetPath) async {
-                                                                var imageCompressResult;
+                                                                File? imageCompressResult;
                                                                 if (extensionOfFileName ==
                                                                     '.png') {
                                                                   imageCompressResult = await FlutterImageCompress.compressAndGetFile(
@@ -419,18 +419,18 @@ class _PDFFunctionBodyForSelectingSingleImageState
                                                                           .heic);
                                                                 }
 
-                                                                print(file
-                                                                    .lengthSync());
-                                                                print(imageCompressResult!
-                                                                    .lengthSync());
+                                                                debugPrint(file
+                                                                    .lengthSync().toString());
+                                                                debugPrint(imageCompressResult!
+                                                                    .lengthSync().toString());
 
                                                                 return imageCompressResult;
                                                               }
 
                                                               String
                                                                   targetPath =
-                                                                  "${await getCacheFilePathFromFileName(fileNameWithoutExtension + ' ' + 'compressed' + extensionOfFileName)}";
-                                                              print(targetPath);
+                                                                  await getCacheFilePathFromFileName(fileNameWithoutExtension + ' ' + 'compressed' + extensionOfFileName);
+                                                              debugPrint(targetPath);
                                                               if (extensionOfFileName == '.png' ||
                                                                   extensionOfFileName ==
                                                                       '.jpg' ||
@@ -452,7 +452,7 @@ class _PDFFunctionBodyForSelectingSingleImageState
                                                               filePath =
                                                                   platformFile
                                                                       .path!;
-                                                              print(
+                                                              debugPrint(
                                                                   "xFile.path : ${platformFile.path}");
 
                                                               fileByte = file
@@ -482,7 +482,7 @@ class _PDFFunctionBodyForSelectingSingleImageState
                                                                   false; //as the file should be picked and loaded in the app cache & images are compressed at this point
                                                             } else {
                                                               setState(() {
-                                                                print(
+                                                                debugPrint(
                                                                     'User canceled the picker');
                                                                 isFilePickingInitiated =
                                                                     false;
@@ -513,7 +513,7 @@ class _PDFFunctionBodyForSelectingSingleImageState
                                                           } else if (status ==
                                                               PermissionStatus
                                                                   .denied) {
-                                                            print(
+                                                            debugPrint(
                                                                 'Denied. Show a dialog with a reason and again ask for the permission.');
                                                             permissionDialogBox(
                                                                 actionButtonsList:
@@ -525,7 +525,7 @@ class _PDFFunctionBodyForSelectingSingleImageState
                                                           } else if (status ==
                                                               PermissionStatus
                                                                   .permanentlyDenied) {
-                                                            print(
+                                                            debugPrint(
                                                                 'Take the user to the settings page.');
                                                             setState(() {
                                                               storagePermissionPermanentlyDenied =
@@ -590,7 +590,7 @@ class _PDFFunctionBodyForSelectingSingleImageState
                                               height: isFilePicked == true
                                                   ? null
                                                   : 75,
-                                              decoration: BoxDecoration(
+                                              decoration: const BoxDecoration(
                                                 borderRadius: BorderRadius.only(
                                                   topLeft: Radius.circular(10),
                                                   topRight: Radius.circular(10),
@@ -613,8 +613,8 @@ class _PDFFunctionBodyForSelectingSingleImageState
                                                                 setState(() {
                                                                   myChildSize =
                                                                       size;
-                                                                  print(
-                                                                      myChildSize);
+                                                                  debugPrint(
+                                                                      myChildSize.toString());
                                                                 });
                                                               },
                                                               child: Padding(
@@ -633,8 +633,7 @@ class _PDFFunctionBodyForSelectingSingleImageState
                                                                         .fitHeight,
                                                                     height: 35,
                                                                     color: widget.mapOfFunctionDetails![
-                                                                            'Select File Icon Color'] ??
-                                                                        null,
+                                                                            'Select File Icon Color'],
                                                                     alignment:
                                                                         Alignment
                                                                             .center,
@@ -647,7 +646,7 @@ class _PDFFunctionBodyForSelectingSingleImageState
                                                                 // ),
                                                               ),
                                                             ),
-                                                            SizedBox(
+                                                            const SizedBox(
                                                               width: 15,
                                                             ),
                                                             Expanded(
@@ -659,7 +658,7 @@ class _PDFFunctionBodyForSelectingSingleImageState
                                                                     CrossAxisAlignment
                                                                         .start,
                                                                 children: [
-                                                                  Text(
+                                                                  const Text(
                                                                     "Image",
                                                                     overflow:
                                                                         TextOverflow
@@ -671,14 +670,14 @@ class _PDFFunctionBodyForSelectingSingleImageState
                                                                         color: Colors
                                                                             .black),
                                                                   ),
-                                                                  SizedBox(
+                                                                  const SizedBox(
                                                                     height: 5,
                                                                   ),
                                                                   Row(
                                                                     children: [
                                                                       Text(
-                                                                        '${formatBytes(filesSize, 2)}',
-                                                                        style: TextStyle(
+                                                                        formatBytes(filesSize, 2),
+                                                                        style: const TextStyle(
                                                                             fontSize:
                                                                                 12,
                                                                             color:
@@ -694,15 +693,15 @@ class _PDFFunctionBodyForSelectingSingleImageState
                                                                   MainAxisAlignment
                                                                       .end,
                                                               children: [
-                                                                SizedBox(
+                                                                const SizedBox(
                                                                   width: 10,
                                                                 ),
-                                                                Container(
+                                                                SizedBox(
                                                                   height:
                                                                       myChildSize
                                                                           .height,
                                                                   child:
-                                                                      VerticalDivider(
+                                                                      const VerticalDivider(
                                                                     color: Colors
                                                                         .black,
                                                                     // thickness: 1,
@@ -719,15 +718,15 @@ class _PDFFunctionBodyForSelectingSingleImageState
                                                                         BorderRadius
                                                                             .only(
                                                                       topRight:
-                                                                          Radius.circular(
+                                                                          const Radius.circular(
                                                                               10),
                                                                       bottomRight: shouldRenderingImagesLoopBeDisabled ==
                                                                                   false &&
                                                                               isFileLoaded ==
                                                                                   false
-                                                                          ? Radius.circular(
+                                                                          ? const Radius.circular(
                                                                               0)
-                                                                          : Radius.circular(
+                                                                          : const Radius.circular(
                                                                               10),
                                                                     ),
                                                                   ),
@@ -757,15 +756,15 @@ class _PDFFunctionBodyForSelectingSingleImageState
                                                                         BorderRadius
                                                                             .only(
                                                                       topRight:
-                                                                          Radius.circular(
+                                                                          const Radius.circular(
                                                                               10),
                                                                       bottomRight: shouldRenderingImagesLoopBeDisabled ==
                                                                                   false &&
                                                                               isFileLoaded ==
                                                                                   false
-                                                                          ? Radius.circular(
+                                                                          ? const Radius.circular(
                                                                               0)
-                                                                          : Radius.circular(
+                                                                          : const Radius.circular(
                                                                               10),
                                                                     ),
                                                                     focusColor: widget.mapOfFunctionDetails![
@@ -789,12 +788,12 @@ class _PDFFunctionBodyForSelectingSingleImageState
                                                                             .black
                                                                             .withOpacity(0.1),
                                                                     child:
-                                                                        Container(
+                                                                        SizedBox(
                                                                       width: 50,
                                                                       height: myChildSize
                                                                           .height,
                                                                       child:
-                                                                          Icon(
+                                                                          const Icon(
                                                                         Icons
                                                                             .close_outlined,
                                                                         size:
@@ -816,7 +815,7 @@ class _PDFFunctionBodyForSelectingSingleImageState
                                                             ? Stack(
                                                                 children: [
                                                                   ClipRRect(
-                                                                    borderRadius: BorderRadius.only(
+                                                                    borderRadius: const BorderRadius.only(
                                                                         bottomLeft:
                                                                             Radius.circular(
                                                                                 10),
@@ -829,7 +828,7 @@ class _PDFFunctionBodyForSelectingSingleImageState
                                                                       backgroundColor:
                                                                           Colors
                                                                               .blue[100],
-                                                                      valueColor: AlwaysStoppedAnimation<
+                                                                      valueColor: const AlwaysStoppedAnimation<
                                                                               Color>(
                                                                           Colors
                                                                               .blue),
@@ -855,7 +854,7 @@ class _PDFFunctionBodyForSelectingSingleImageState
                                                                         textAlign:
                                                                             TextAlign.start,
                                                                         style:
-                                                                            TextStyle(
+                                                                            const TextStyle(
                                                                           color:
                                                                               Colors.black,
                                                                         ),
@@ -873,7 +872,7 @@ class _PDFFunctionBodyForSelectingSingleImageState
                                                           mainAxisAlignment:
                                                               MainAxisAlignment
                                                                   .center,
-                                                          children: [
+                                                          children: const [
                                                             Text(
                                                               'Select Image',
                                                               textAlign:
@@ -908,7 +907,7 @@ class _PDFFunctionBodyForSelectingSingleImageState
                                                           mainAxisAlignment:
                                                               MainAxisAlignment
                                                                   .center,
-                                                          children: [
+                                                          children: const [
                                                             Text(
                                                               'Please wait ...',
                                                               textAlign:
@@ -941,11 +940,11 @@ class _PDFFunctionBodyForSelectingSingleImageState
                             ),
                             Stack(
                               children: [
-                                Divider(
+                                const Divider(
                                   height: 50,
                                   thickness: 1.5,
                                 ),
-                                Container(
+                                SizedBox(
                                   height: 50,
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
@@ -955,12 +954,12 @@ class _PDFFunctionBodyForSelectingSingleImageState
                                           border: Border.all(
                                               color: Colors.grey.shade400),
                                           color: Colors.white,
-                                          borderRadius: BorderRadius.all(
+                                          borderRadius: const BorderRadius.all(
                                               Radius.circular(20)),
                                         ),
                                         height: 30,
                                         width: 70,
-                                        child: Center(
+                                        child: const Center(
                                           child: Text(
                                             'Step - 2',
                                             textAlign: TextAlign.center,
@@ -997,13 +996,9 @@ class _PDFFunctionBodyForSelectingSingleImageState
                                                       'Sublist Functions']
                                                   [index]['Action'](
                                               file,
-                                              compressedFile != null
-                                                  ? compressedFile
-                                                  : file,
+                                              compressedFile ?? file,
                                               filePath,
-                                              compressedFilesPath != null
-                                                  ? compressedFilesPath
-                                                  : filePath,
+                                              compressedFilesPath ?? filePath,
                                               fileName,
                                               fileByte,
                                               widget.mapOfFunctionDetails![
@@ -1038,11 +1033,11 @@ class _PDFFunctionBodyForSelectingSingleImageState
                           decoration: BoxDecoration(
                             border: Border.all(color: Colors.grey.shade400),
                             color: Colors.white,
-                            borderRadius: BorderRadius.all(Radius.circular(20)),
+                            borderRadius: const BorderRadius.all(Radius.circular(20)),
                           ),
                           height: 30,
                           width: 70,
-                          child: Center(
+                          child: const Center(
                             child: Text(
                               'Step - 1',
                               textAlign: TextAlign.center,
@@ -1073,7 +1068,7 @@ class _PDFFunctionBodyForSelectingSingleImageState
                   bannerAdSize = size;
                 });
               },
-              child: BannerAD(),
+              child: const BannerAD(),
             ),
           ],
         ),

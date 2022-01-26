@@ -89,7 +89,7 @@ class _DecryptPDFScaffoldState extends State<DecryptPDFScaffold>
       Future.delayed(const Duration(milliseconds: 500), () async {
         document = await processSelectedDataFromUser(
             pdfChangesDataMap: {
-              'PDF File Name': '${widget.arguments!.pdfFile.name}',
+              'PDF File Name': widget.arguments!.pdfFile.name,
               'Owner Password TextEditingController':
                   textEditingControllerOwnerPassword,
               'User Password TextEditingController':
@@ -114,8 +114,8 @@ class _DecryptPDFScaffoldState extends State<DecryptPDFScaffold>
           // and use it to show a SnackBar.
           ScaffoldMessenger.of(context).showSnackBar(snackBar);
         }
-        Map map = Map();
-        map['_pdfFileName'] = '${widget.arguments!.pdfFile.name}';
+        Map map = {};
+        map['_pdfFileName'] = widget.arguments!.pdfFile.name;
         map['_extraBetweenNameAndExtension'] = '';
         map['_document'] = document;
 
@@ -331,7 +331,7 @@ class _DecryptPDFScaffoldState extends State<DecryptPDFScaffold>
                               bannerAdSize = size;
                             });
                           },
-                          child: BannerAD(),
+                          child: const BannerAD(),
                         ),
                       ],
                     ),
@@ -419,7 +419,7 @@ class _TextFormFieldsForEncryptPDFState
       decoration: InputDecoration(
         //icon: Icon(Icons.favorite),
         labelText: widget.labelText,
-        labelStyle: TextStyle(
+        labelStyle: const TextStyle(
           color: Color(0xFF6200EE),
         ),
         hintText: 'Password@123',
@@ -434,7 +434,7 @@ class _TextFormFieldsForEncryptPDFState
             });
           },
         ),
-        enabledBorder: UnderlineInputBorder(
+        enabledBorder: const UnderlineInputBorder(
           borderSide: BorderSide(color: Color(0xFF6200EE)),
         ),
       ),

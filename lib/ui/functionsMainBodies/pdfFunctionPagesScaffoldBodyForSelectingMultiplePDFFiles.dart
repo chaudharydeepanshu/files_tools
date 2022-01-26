@@ -4,6 +4,7 @@ import 'package:files_tools/ads/banner_ad.dart';
 import 'package:files_tools/basicFunctionalityFunctions/fileNameManager.dart';
 import 'package:files_tools/widgets/functionsMainWidgets/directPop.dart';
 import 'package:files_tools/widgets/functionsMainWidgets/onWillPopDialog.dart';
+import 'package:flutter/foundation.dart';
 // import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -90,7 +91,7 @@ class _PDFFunctionBodyForMultipleFilesState
 
     if (firstRun) {
       WidgetsBinding.instance!.addPostFrameCallback((_) async {
-        print('build complete');
+        debugPrint('build complete');
         if (await Permission.storage.isGranted == true) {
           setState(() {
             storagePermissionPermanentlyDenied = false;
@@ -102,7 +103,7 @@ class _PDFFunctionBodyForMultipleFilesState
             bool storagePermissionPermanentlyDeniedBoolValue =
                 prefs.getBool('storagePermissionPermanentlyDeniedBoolValue') ??
                     false;
-            print(prefs.getBool('storagePermissionPermanentlyDeniedBoolValue'));
+            debugPrint(prefs.getBool('storagePermissionPermanentlyDeniedBoolValue').toString());
             return storagePermissionPermanentlyDeniedBoolValue;
           }
 
@@ -112,13 +113,13 @@ class _PDFFunctionBodyForMultipleFilesState
           });
         }
         firstRun = false;
-        return null;
+        return;
       });
     }
 
     WidgetsBinding.instance!
         .addObserver(LifecycleEventHandler(resumeCallBack: () async {
-      print('resumeCallBack');
+      debugPrint('resumeCallBack');
       if (await Permission.storage.isGranted == true) {
         if (mounted) {
           setState(() {
@@ -145,7 +146,7 @@ class _PDFFunctionBodyForMultipleFilesState
         onPressed: () async {
           Navigator.pop(context);
           await openAppSettings().then((value) {
-            print('setting could be opened: $value');
+            debugPrint('setting could be opened: $value');
             return null;
           });
         },
@@ -233,9 +234,9 @@ class _PDFFunctionBodyForMultipleFilesState
         return SimpleDialog(
           title: Center(
             child: Column(
-              children: [
-                const Text('Selected Files'),
-                const Text('Click to view'),
+              children: const [
+                Text('Selected Files'),
+                Text('Click to view'),
               ],
             ),
           ),
@@ -263,7 +264,7 @@ class _PDFFunctionBodyForMultipleFilesState
             await newDocument.getPage(i); //always start from 1
         //pages.add(page);
 
-        print('height: ' +
+        debugPrint('height: ' +
             page.height.toString() +
             ' width: ' +
             page.width.toString());
@@ -279,7 +280,7 @@ class _PDFFunctionBodyForMultipleFilesState
 
         listPDFPagesImages.add(pageImage);
         await page.close();
-        print(i);
+        debugPrint(i.toString());
         controller.value += indicatorSteps;
 
         if (i == pagesCount) {
@@ -306,7 +307,7 @@ class _PDFFunctionBodyForMultipleFilesState
       newDocument.close();
       return listPDFPagesImages;
     } on PlatformException catch (error) {
-      print(error);
+      debugPrint(error.toString());
       return [];
     }
   }
@@ -340,12 +341,12 @@ class _PDFFunctionBodyForMultipleFilesState
                   children: [
                     Container(
                       height: 15,
-                      color: widget.mapOfFunctionDetails!['BG Color'] ?? null,
+                      color: widget.mapOfFunctionDetails!['BG Color'],
                     ),
                     Padding(
                       padding: const EdgeInsets.only(top: 15),
                       child: Container(
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           //color: Color(0xFFFFAFAFA),
                           borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(10),
@@ -398,7 +399,7 @@ class _PDFFunctionBodyForMultipleFilesState
                                                   : 0,
                                           color: widget.mapOfFunctionDetails![
                                                   'Select File Button Color'] ??
-                                              Color(0xffE4EAF6),
+                                              const Color(0xffE4EAF6),
                                           shape: RoundedRectangleBorder(
                                             borderRadius:
                                                 BorderRadius.circular(10.0),
@@ -427,7 +428,7 @@ class _PDFFunctionBodyForMultipleFilesState
                                                             isFilePickingInitiated =
                                                                 true;
 
-                                                            print(
+                                                            debugPrint(
                                                                 'Permission granted');
                                                             FilePickerResult?
                                                                 result =
@@ -448,7 +449,7 @@ class _PDFFunctionBodyForMultipleFilesState
                                                                   [];
                                                               fileSelectionCompatibilityStatus =
                                                                   false;
-                                                              print(
+                                                              debugPrint(
                                                                   'checking compatibility');
                                                               for (int i = 0;
                                                                   i <
@@ -469,8 +470,10 @@ class _PDFFunctionBodyForMultipleFilesState
                                                                           false);
                                                                 }
                                                               }
-                                                              print(
+                                                              if (kDebugMode) {
+                                                                print(
                                                                   fileSelectionCompatibility);
+                                                              }
 
                                                               bool ifEveryTrue =
                                                                   fileSelectionCompatibility
@@ -599,7 +602,7 @@ class _PDFFunctionBodyForMultipleFilesState
                                                                           files[x]
                                                                               .path,
                                                                           x));
-                                                                      print(
+                                                                      debugPrint(
                                                                           "hello: ${listOfListPDFPagesImages[x].length}");
                                                                     }
                                                                   } else {
@@ -611,7 +614,7 @@ class _PDFFunctionBodyForMultipleFilesState
                                                                 }
                                                                 if (filesEncryptedCount !=
                                                                     0) {
-                                                                  print(
+                                                                  debugPrint(
                                                                       'Document encrypted & encrypted documents are not allowed');
                                                                   setState(() {
                                                                     isFilePickingInitiated =
@@ -642,7 +645,7 @@ class _PDFFunctionBodyForMultipleFilesState
                                                                       .showSnackBar(
                                                                           encryptedFileWarningSnackBar);
                                                                 } else {
-                                                                  print(
+                                                                  debugPrint(
                                                                       'Document not encrypted & encrypted documents are not allowed');
                                                                 }
                                                               } else {
@@ -677,10 +680,10 @@ class _PDFFunctionBodyForMultipleFilesState
                                                                           files[x]
                                                                               .path,
                                                                           x));
-                                                                      print(
+                                                                      debugPrint(
                                                                           'Document not encrypted & encrypted documents are allowed');
                                                                     } else {
-                                                                      print(
+                                                                      debugPrint(
                                                                           'Document encrypted & encrypted documents are allowed');
                                                                     }
                                                                   } else {
@@ -751,7 +754,7 @@ class _PDFFunctionBodyForMultipleFilesState
                                                           } else if (status ==
                                                               PermissionStatus
                                                                   .denied) {
-                                                            print(
+                                                            debugPrint(
                                                                 'Denied. Show a dialog with a reason and again ask for the permission.');
                                                             permissionDialogBox(
                                                                 actionButtonsList:
@@ -763,7 +766,7 @@ class _PDFFunctionBodyForMultipleFilesState
                                                           } else if (status ==
                                                               PermissionStatus
                                                                   .permanentlyDenied) {
-                                                            print(
+                                                            debugPrint(
                                                                 'Take the user to the settings page.');
                                                             setState(() {
                                                               storagePermissionPermanentlyDenied =
@@ -840,7 +843,7 @@ class _PDFFunctionBodyForMultipleFilesState
                                               height: isFilePicked == true
                                                   ? null
                                                   : 75,
-                                              decoration: BoxDecoration(
+                                              decoration: const BoxDecoration(
                                                 borderRadius: BorderRadius.only(
                                                   topLeft: Radius.circular(10),
                                                   topRight: Radius.circular(10),
@@ -863,8 +866,8 @@ class _PDFFunctionBodyForMultipleFilesState
                                                                 setState(() {
                                                                   myChildSize =
                                                                       size;
-                                                                  print(
-                                                                      myChildSize);
+                                                                  debugPrint(
+                                                                      myChildSize.toString());
                                                                 });
                                                               },
                                                               child: Padding(
@@ -883,8 +886,7 @@ class _PDFFunctionBodyForMultipleFilesState
                                                                         .fitHeight,
                                                                     height: 35,
                                                                     color: widget.mapOfFunctionDetails![
-                                                                            'Select File Icon Color'] ??
-                                                                        null,
+                                                                            'Select File Icon Color'],
                                                                     alignment:
                                                                         Alignment
                                                                             .center,
@@ -897,7 +899,7 @@ class _PDFFunctionBodyForMultipleFilesState
                                                                 // ),
                                                               ),
                                                             ),
-                                                            SizedBox(
+                                                            const SizedBox(
                                                               width: 15,
                                                             ),
                                                             Expanded(
@@ -910,25 +912,25 @@ class _PDFFunctionBodyForMultipleFilesState
                                                                         .start,
                                                                 children: [
                                                                   Text(
-                                                                    "${files.length.toString() + ' ' + 'files selected'}",
+                                                                    files.length.toString() + ' ' + 'files selected',
                                                                     overflow:
                                                                         TextOverflow
                                                                             .ellipsis,
-                                                                    style: TextStyle(
+                                                                    style: const TextStyle(
                                                                         fontWeight:
                                                                             FontWeight
                                                                                 .w500,
                                                                         color: Colors
                                                                             .black),
                                                                   ),
-                                                                  SizedBox(
+                                                                  const SizedBox(
                                                                     height: 5,
                                                                   ),
                                                                   Row(
                                                                     children: [
                                                                       Text(
-                                                                        '${formatBytes(filesSize, 2)}',
-                                                                        style: TextStyle(
+                                                                        formatBytes(filesSize, 2),
+                                                                        style: const TextStyle(
                                                                             fontSize:
                                                                                 12,
                                                                             color:
@@ -944,15 +946,15 @@ class _PDFFunctionBodyForMultipleFilesState
                                                                   MainAxisAlignment
                                                                       .end,
                                                               children: [
-                                                                SizedBox(
+                                                                const SizedBox(
                                                                   width: 10,
                                                                 ),
-                                                                Container(
+                                                                SizedBox(
                                                                   height:
                                                                       myChildSize
                                                                           .height,
                                                                   child:
-                                                                      VerticalDivider(
+                                                                      const VerticalDivider(
                                                                     color: Colors
                                                                         .black,
                                                                     // thickness: 1,
@@ -969,15 +971,15 @@ class _PDFFunctionBodyForMultipleFilesState
                                                                         BorderRadius
                                                                             .only(
                                                                       topRight:
-                                                                          Radius.circular(
+                                                                          const Radius.circular(
                                                                               10),
                                                                       bottomRight: shouldRenderingImagesLoopBeDisabled ==
                                                                                   false &&
                                                                               isFilesLoaded ==
                                                                                   false
-                                                                          ? Radius.circular(
+                                                                          ? const Radius.circular(
                                                                               0)
-                                                                          : Radius.circular(
+                                                                          : const Radius.circular(
                                                                               10),
                                                                     ),
                                                                   ),
@@ -1007,15 +1009,15 @@ class _PDFFunctionBodyForMultipleFilesState
                                                                         BorderRadius
                                                                             .only(
                                                                       topRight:
-                                                                          Radius.circular(
+                                                                          const Radius.circular(
                                                                               10),
                                                                       bottomRight: shouldRenderingImagesLoopBeDisabled ==
                                                                                   false &&
                                                                               isFilesLoaded ==
                                                                                   false
-                                                                          ? Radius.circular(
+                                                                          ? const Radius.circular(
                                                                               0)
-                                                                          : Radius.circular(
+                                                                          : const Radius.circular(
                                                                               10),
                                                                     ),
                                                                     focusColor: widget.mapOfFunctionDetails![
@@ -1039,12 +1041,12 @@ class _PDFFunctionBodyForMultipleFilesState
                                                                             .black
                                                                             .withOpacity(0.1),
                                                                     child:
-                                                                        Container(
+                                                                        SizedBox(
                                                                       width: 50,
                                                                       height: myChildSize
                                                                           .height,
                                                                       child:
-                                                                          Icon(
+                                                                          const Icon(
                                                                         Icons
                                                                             .close_outlined,
                                                                         size:
@@ -1066,7 +1068,7 @@ class _PDFFunctionBodyForMultipleFilesState
                                                             ? Stack(
                                                                 children: [
                                                                   ClipRRect(
-                                                                    borderRadius: BorderRadius.only(
+                                                                    borderRadius: const BorderRadius.only(
                                                                         bottomLeft:
                                                                             Radius.circular(
                                                                                 10),
@@ -1079,7 +1081,7 @@ class _PDFFunctionBodyForMultipleFilesState
                                                                       backgroundColor:
                                                                           Colors
                                                                               .blue[100],
-                                                                      valueColor: AlwaysStoppedAnimation<
+                                                                      valueColor: const AlwaysStoppedAnimation<
                                                                               Color>(
                                                                           Colors
                                                                               .blue),
@@ -1105,7 +1107,7 @@ class _PDFFunctionBodyForMultipleFilesState
                                                                         textAlign:
                                                                             TextAlign.start,
                                                                         style:
-                                                                            TextStyle(
+                                                                            const TextStyle(
                                                                           color:
                                                                               Colors.black,
                                                                         ),
@@ -1123,7 +1125,7 @@ class _PDFFunctionBodyForMultipleFilesState
                                                           mainAxisAlignment:
                                                               MainAxisAlignment
                                                                   .center,
-                                                          children: [
+                                                          children: const [
                                                             Text(
                                                               'Select Multiple Files',
                                                               textAlign:
@@ -1158,7 +1160,7 @@ class _PDFFunctionBodyForMultipleFilesState
                                                           mainAxisAlignment:
                                                               MainAxisAlignment
                                                                   .center,
-                                                          children: [
+                                                          children: const [
                                                             Text(
                                                               'Please wait ...',
                                                               textAlign:
@@ -1191,11 +1193,11 @@ class _PDFFunctionBodyForMultipleFilesState
                             ),
                             Stack(
                               children: [
-                                Divider(
+                                const Divider(
                                   height: 50,
                                   thickness: 1.5,
                                 ),
-                                Container(
+                                SizedBox(
                                   height: 50,
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
@@ -1205,12 +1207,12 @@ class _PDFFunctionBodyForMultipleFilesState
                                           border: Border.all(
                                               color: Colors.grey.shade400),
                                           color: Colors.white,
-                                          borderRadius: BorderRadius.all(
+                                          borderRadius: const BorderRadius.all(
                                               Radius.circular(20)),
                                         ),
                                         height: 30,
                                         width: 70,
-                                        child: Center(
+                                        child: const Center(
                                           child: Text(
                                             'Step - 2',
                                             textAlign: TextAlign.center,
@@ -1283,11 +1285,11 @@ class _PDFFunctionBodyForMultipleFilesState
                           decoration: BoxDecoration(
                             border: Border.all(color: Colors.grey.shade400),
                             color: Colors.white,
-                            borderRadius: BorderRadius.all(Radius.circular(20)),
+                            borderRadius: const BorderRadius.all(Radius.circular(20)),
                           ),
                           height: 30,
                           width: 70,
-                          child: Center(
+                          child: const Center(
                             child: Text(
                               'Step - 1',
                               textAlign: TextAlign.center,
@@ -1318,7 +1320,7 @@ class _PDFFunctionBodyForMultipleFilesState
                   bannerAdSize = size;
                 });
               },
-              child: BannerAD(),
+              child: const BannerAD(),
             ),
           ],
         ),

@@ -42,7 +42,7 @@ class _ImagesToPDFScaffoldState extends State<ImagesToPDFScaffold> {
   @override
   void initState() {
     listOfRotation =
-        new List<int>.generate(widget.arguments!.files.length, (i) {
+        List<int>.generate(widget.arguments!.files.length, (i) {
       return 0;
     });
 
@@ -51,7 +51,7 @@ class _ImagesToPDFScaffoldState extends State<ImagesToPDFScaffold> {
     }
 
     listOfDeletedImages =
-        new List<bool>.generate(widget.arguments!.files.length, (i) {
+        List<bool>.generate(widget.arguments!.files.length, (i) {
       return true;
     });
 
@@ -65,7 +65,7 @@ class _ImagesToPDFScaffoldState extends State<ImagesToPDFScaffold> {
     });
 
     decorationImageListForReorder =
-        new List<RotatedBox>.generate(widget.arguments!.filePaths.length, (i) {
+        List<RotatedBox>.generate(widget.arguments!.filePaths.length, (i) {
       return RotatedBox(
         quarterTurns: listOfRotation[i] == 0
             ? 0
@@ -129,7 +129,7 @@ class _ImagesToPDFScaffoldState extends State<ImagesToPDFScaffold> {
             filesPaths: widget.arguments!.compressedFilesPaths,
             shouldDataBeProcessed: shouldDataBeProcessed);
 
-        Map map = Map();
+        Map map = {};
         map['_pdfFileName'] = "Image to pdf ${currentDateTimeInString()}.pdf";
         map['_extraBetweenNameAndExtension'] = '';
         map['_document'] = document;
@@ -245,8 +245,8 @@ class _ImagesToPDFScaffoldState extends State<ImagesToPDFScaffold> {
 
   @override
   Widget build(BuildContext context) {
-    print('listOfRotation: $listOfRotation');
-    print('listOfDeletedImages: $listOfDeletedImages');
+    debugPrint('listOfRotation: $listOfRotation');
+    debugPrint('listOfDeletedImages: $listOfDeletedImages');
     return ReusableAnnotatedRegion(
       //child: WillPopScope(
       // onWillPop: shouldWePopScaffold == true ? _directPop : _onWillPop, // no use as we handle onWillPop on dialog box it in processingDialog and we used it before here because we were using a fake dialog box which looks like a dialog box but actually just a lookalike created using stack
@@ -277,14 +277,14 @@ class _ImagesToPDFScaffoldState extends State<ImagesToPDFScaffold> {
                           FocusManager.instance.primaryFocus?.unfocus();
                           setState(() {
                             _isSameSizeEnabled = newValue!;
-                            print("_isSameSizeEnabled: $_isSameSizeEnabled");
+                            debugPrint("_isSameSizeEnabled: $_isSameSizeEnabled");
                           });
                         },
                 ),
                 Expanded(
                   child: carouselList(),
                 ),
-                BannerAD(),
+                const BannerAD(),
               ],
             ),
             bottomNavigationBar: BottomAppBar(
@@ -292,10 +292,10 @@ class _ImagesToPDFScaffoldState extends State<ImagesToPDFScaffold> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   bottomNavBarButtonsForFileModifications(
-                    buttonIcon: Icon(Icons.rotate_right),
-                    buttonLabel: Text('Rotate'),
+                    buttonIcon: const Icon(Icons.rotate_right),
+                    buttonLabel: const Text('Rotate'),
                     onTapAction: () {
-                      print('working');
+                      debugPrint('working');
                       setState(() {
                         decorationImageListForReorder[currentIndex] =
                             listOfDeletedImages[currentIndex] == false
@@ -341,10 +341,10 @@ class _ImagesToPDFScaffoldState extends State<ImagesToPDFScaffold> {
                         widget.arguments!.mapOfSubFunctionDetails,
                   ),
                   bottomNavBarButtonsForFileModifications(
-                    buttonIcon: Icon(Icons.delete),
+                    buttonIcon: const Icon(Icons.delete),
                     buttonLabel: listOfDeletedImages[currentIndex] == true
-                        ? Text('Delete')
-                        : Text('Restore'),
+                        ? const Text('Delete')
+                        : const Text('Restore'),
                     onTapAction: widget.arguments!.files.length != 1
                         ? () {
                             setState(() {
@@ -423,8 +423,8 @@ class _ImagesToPDFScaffoldState extends State<ImagesToPDFScaffold> {
                         widget.arguments!.mapOfSubFunctionDetails,
                   ),
                   bottomNavBarButtonsForFileModifications(
-                    buttonIcon: Icon(Icons.reorder),
-                    buttonLabel: Text('Reorder'),
+                    buttonIcon: const Icon(Icons.reorder),
+                    buttonLabel: const Text('Reorder'),
                     onTapAction: widget.arguments!.files.length != 1
                         ? () {
                             Navigator.pushNamed(

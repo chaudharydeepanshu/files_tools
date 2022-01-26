@@ -24,9 +24,9 @@ class ExpandingContainer extends StatelessWidget {
   void _scrollToSelectedContent({required GlobalKey expansionTileKey}) {
     final keyContext = expansionTileKey.currentContext;
     if (keyContext != null) {
-      Future.delayed(Duration(milliseconds: 200)).then((value) {
+      Future.delayed(const Duration(milliseconds: 200)).then((value) {
         Scrollable.ensureVisible(keyContext,
-            duration: Duration(milliseconds: 200));
+            duration: const Duration(milliseconds: 200));
       });
     }
   }
@@ -53,9 +53,9 @@ class ExpandingContainer extends StatelessWidget {
               Colors.pink.withOpacity(0.25),
       effectsColor: mapOfCardDetails!['Card BG Effects Color'] ??
           Colors.black.withOpacity(0.1),
-      childrenPadding: EdgeInsets.only(right: 12, left: 12, top: 8.0),
+      childrenPadding: const EdgeInsets.only(right: 12, left: 12, top: 8.0),
       cardTrailingArrowColor:
-          mapOfCardDetails!['Card Trailing Arrow Color'] ?? null,
+          mapOfCardDetails!['Card Trailing Arrow Color'],
       leading: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -64,8 +64,8 @@ class ExpandingContainer extends StatelessWidget {
             width: 68,
             decoration: BoxDecoration(
               shape: BoxShape.rectangle,
-              borderRadius: BorderRadius.all(Radius.circular(200)),
-              color: mapOfCardDetails!['Card Asset BG Color'] ?? null,
+              borderRadius: const BorderRadius.all(Radius.circular(200)),
+              color: mapOfCardDetails!['Card Asset BG Color'],
             ),
             child: Padding(
               padding: const EdgeInsets.all(10.0),
@@ -74,7 +74,7 @@ class ExpandingContainer extends StatelessWidget {
                       'assets/images/tools_icons/pdf_tools_icon.svg',
                   fit: BoxFit.fitHeight,
                   height: 45,
-                  color: mapOfCardDetails!['Card Asset Color'] ?? null,
+                  color: mapOfCardDetails!['Card Asset Color'],
                   alignment: Alignment.center,
                   semanticsLabel:
                       '${mapOfCardDetails!['Card Title'](context)} Icon'),
@@ -104,7 +104,7 @@ class ExpandingContainer extends StatelessWidget {
               mapOfFunctionIconAndAction: mapOfCardDetails!['Functions Details']
                   [index],
             ),
-            SizedBox(
+            const SizedBox(
               height: 8,
             ),
           ],
@@ -134,12 +134,12 @@ class ButtonsOfDocFunctions extends StatelessWidget {
   Widget build(BuildContext context) {
     return Material(
       color: mapOfFunctionIconAndAction!['Button Color'] ?? Colors.pink,
-      borderRadius: BorderRadius.all(Radius.circular(15)),
+      borderRadius: const BorderRadius.all(Radius.circular(15)),
       child: InkWell(
         onTap: () => mapOfFunctionIconAndAction!['Action'](context) ?? () {},
         customBorder: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15.0),
-            side: BorderSide(color: Colors.red)),
+            side: const BorderSide(color: Colors.red)),
         focusColor: Colors.black.withOpacity(0.1),
         highlightColor: Colors.black.withOpacity(0.1),
         splashColor: Colors.black.withOpacity(0.1),
@@ -147,7 +147,7 @@ class ButtonsOfDocFunctions extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Container(
+            SizedBox(
               height: 48,
               width: 165,
               child: Row(
@@ -159,10 +159,10 @@ class ButtonsOfDocFunctions extends StatelessWidget {
                       height: 40,
                       color:
                           mapOfFunctionIconAndAction!['Icon And Text Color'] ??
-                              Color(0xFFF9C7D8),
+                              const Color(0xFFF9C7D8),
                       semanticsLabel:
                           '${mapOfFunctionIconAndAction!['Function']} Icon'),
-                  SizedBox(
+                  const SizedBox(
                     width: 10,
                   ),
                   Expanded(
@@ -172,7 +172,7 @@ class ButtonsOfDocFunctions extends StatelessWidget {
                       style: TextStyle(
                         color: mapOfFunctionIconAndAction![
                                 'Icon And Text Color'] ??
-                            Color(0xFFF9C7D8),
+                            const Color(0xFFF9C7D8),
                         fontWeight: FontWeight.bold,
                       ),
                     ),

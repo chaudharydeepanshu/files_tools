@@ -72,7 +72,7 @@ class _PDFFunctionBodyForSelectingSingleMultipleImagesState
 
     if (firstRun) {
       WidgetsBinding.instance!.addPostFrameCallback((_) async {
-        print('build complete');
+        debugPrint('build complete');
         if (await Permission.storage.isGranted == true) {
           setState(() {
             storagePermissionPermanentlyDenied = false;
@@ -84,7 +84,7 @@ class _PDFFunctionBodyForSelectingSingleMultipleImagesState
             bool storagePermissionPermanentlyDeniedBoolValue =
                 prefs.getBool('storagePermissionPermanentlyDeniedBoolValue') ??
                     false;
-            print(prefs.getBool('storagePermissionPermanentlyDeniedBoolValue'));
+            debugPrint(prefs.getBool('storagePermissionPermanentlyDeniedBoolValue').toString());
             return storagePermissionPermanentlyDeniedBoolValue;
           }
 
@@ -94,13 +94,13 @@ class _PDFFunctionBodyForSelectingSingleMultipleImagesState
           });
         }
         firstRun = false;
-        return null;
+        return;
       });
     }
 
     WidgetsBinding.instance!
         .addObserver(LifecycleEventHandler(resumeCallBack: () async {
-      print('resumeCallBack');
+      debugPrint('resumeCallBack');
       if (await Permission.storage.isGranted == true) {
         if (mounted) {
           setState(() {
@@ -127,7 +127,7 @@ class _PDFFunctionBodyForSelectingSingleMultipleImagesState
         onPressed: () async {
           Navigator.pop(context);
           await openAppSettings().then((value) {
-            print('setting could be opened: $value');
+            debugPrint('setting could be opened: $value');
             return null;
           });
         },
@@ -162,7 +162,7 @@ class _PDFFunctionBodyForSelectingSingleMultipleImagesState
   bool isFileLoaded = false;
   bool isFilePickingInitiated = false;
   late List<File> files = [];
-  late List<File> compressedFiles = [];
+  late List<File?> compressedFiles = [];
   late List<String> filePaths = [];
   late List<String> compressedFilesPaths = [];
   late List<String> fileNames = [];
@@ -204,9 +204,9 @@ class _PDFFunctionBodyForSelectingSingleMultipleImagesState
         return SimpleDialog(
           title: Center(
             child: Column(
-              children: [
-                const Text('Selected Images'),
-                const Text('Click to view'),
+              children: const [
+                Text('Selected Images'),
+                Text('Click to view'),
               ],
             ),
           ),
@@ -243,12 +243,12 @@ class _PDFFunctionBodyForSelectingSingleMultipleImagesState
                   children: [
                     Container(
                       height: 15,
-                      color: widget.mapOfFunctionDetails!['BG Color'] ?? null,
+                      color: widget.mapOfFunctionDetails!['BG Color'],
                     ),
                     Padding(
                       padding: const EdgeInsets.only(top: 15),
                       child: Container(
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           //color: Color(0xFFFFAFAFA),
                           borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(10),
@@ -301,7 +301,7 @@ class _PDFFunctionBodyForSelectingSingleMultipleImagesState
                                                   : 0,
                                           color: widget.mapOfFunctionDetails![
                                                   'Select File Button Color'] ??
-                                              Color(0xffE4EAF6),
+                                              const Color(0xffE4EAF6),
                                           shape: RoundedRectangleBorder(
                                             borderRadius:
                                                 BorderRadius.circular(10.0),
@@ -330,7 +330,7 @@ class _PDFFunctionBodyForSelectingSingleMultipleImagesState
                                                                   true;
                                                             });
 
-                                                            print(
+                                                            debugPrint(
                                                                 'Permission granted');
                                                             if (Platform
                                                                     .isAndroid ||
@@ -550,7 +550,8 @@ class _PDFFunctionBodyForSelectingSingleMultipleImagesState
                                                                               file,
                                                                           String
                                                                               targetPath) async {
-                                                                    var imageCompressResult;
+                                                                    File?
+                                                                        imageCompressResult;
                                                                     if (extensionOfFileName ==
                                                                         '.png') {
                                                                       imageCompressResult = await FlutterImageCompress.compressAndGetFile(
@@ -605,18 +606,23 @@ class _PDFFunctionBodyForSelectingSingleMultipleImagesState
                                                                               CompressFormat.heic);
                                                                     }
 
-                                                                    print(file
-                                                                        .lengthSync());
-                                                                    print(imageCompressResult!
-                                                                        .lengthSync());
+                                                                    debugPrint(file
+                                                                        .lengthSync().toString());
+                                                                    debugPrint(imageCompressResult!
+                                                                        .lengthSync().toString());
 
                                                                     return imageCompressResult;
                                                                   }
 
                                                                   String
                                                                       targetPath =
-                                                                      "${await getCacheFilePathFromFileName(fileNameWithoutExtension + ' ' + 'compressed' + ' ' + i.toString() + extensionOfFileName)}";
-                                                                  print(
+                                                                      await getCacheFilePathFromFileName(fileNameWithoutExtension +
+                                                                          ' ' +
+                                                                          'compressed' +
+                                                                          ' ' +
+                                                                          i.toString() +
+                                                                          extensionOfFileName);
+                                                                  debugPrint(
                                                                       "targetPath $targetPath");
                                                                   if (extensionOfFileName == '.png' ||
                                                                       extensionOfFileName ==
@@ -640,7 +646,7 @@ class _PDFFunctionBodyForSelectingSingleMultipleImagesState
                                                                   filePaths.add(
                                                                       platFormFile
                                                                           .path!);
-                                                                  print(
+                                                                  debugPrint(
                                                                       "xFile.path : ${platFormFile.path}");
 
                                                                   fileBytes.add(
@@ -654,7 +660,7 @@ class _PDFFunctionBodyForSelectingSingleMultipleImagesState
                                                                               i];
                                                                 }
 
-                                                                print(
+                                                                debugPrint(
                                                                     "fileNames $fileNames");
 
                                                                 setState(() {
@@ -676,7 +682,7 @@ class _PDFFunctionBodyForSelectingSingleMultipleImagesState
                                                                     false; //as the file should be picked and loaded in the app cache & images are compressed at this point
                                                               } else {
                                                                 setState(() {
-                                                                  print(
+                                                                  debugPrint(
                                                                       'User canceled the picker');
                                                                   isFilePickingInitiated =
                                                                       false;
@@ -789,13 +795,14 @@ class _PDFFunctionBodyForSelectingSingleMultipleImagesState
                                                                       extensionOfString:
                                                                           extensionOfFileName);
 
-                                                                  Future<File>
+                                                                  Future<File?>
                                                                       compressAndGetFile(
                                                                           File
                                                                               file,
                                                                           String
                                                                               targetPath) async {
-                                                                    var imageCompressResult;
+                                                                    File?
+                                                                        imageCompressResult;
                                                                     if (extensionOfFileName ==
                                                                         '.png') {
                                                                       ImageFile
@@ -808,7 +815,7 @@ class _PDFFunctionBodyForSelectingSingleMultipleImagesState
                                                                       ); // set the input image file
                                                                       Configuration
                                                                           config =
-                                                                          Configuration(
+                                                                          const Configuration(
                                                                         outputType:
                                                                             ImageOutputType.png,
                                                                         // can only be true for Android and iOS while using ImageOutputType.jpg or ImageOutputType.pngÏ
@@ -853,7 +860,7 @@ class _PDFFunctionBodyForSelectingSingleMultipleImagesState
                                                                       ); // set the input image file
                                                                       Configuration
                                                                           config =
-                                                                          Configuration(
+                                                                          const Configuration(
                                                                         outputType:
                                                                             ImageOutputType.jpg,
                                                                         // can only be true for Android and iOS while using ImageOutputType.jpg or ImageOutputType.pngÏ
@@ -896,7 +903,7 @@ class _PDFFunctionBodyForSelectingSingleMultipleImagesState
                                                                       ); // set the input image file
                                                                       Configuration
                                                                           config =
-                                                                          Configuration(
+                                                                          const Configuration(
                                                                         outputType:
                                                                             ImageOutputType.webpThenPng,
                                                                         // can only be true for Android and iOS while using ImageOutputType.jpg or ImageOutputType.pngÏ
@@ -954,8 +961,13 @@ class _PDFFunctionBodyForSelectingSingleMultipleImagesState
 
                                                                   String
                                                                       targetPath =
-                                                                      "${await getCacheFilePathFromFileName(fileNameWithoutExtension + ' ' + 'compressed' + ' ' + i.toString() + extensionOfFileName)}";
-                                                                  print(
+                                                                      await getCacheFilePathFromFileName(fileNameWithoutExtension +
+                                                                          ' ' +
+                                                                          'compressed' +
+                                                                          ' ' +
+                                                                          i.toString() +
+                                                                          extensionOfFileName);
+                                                                  debugPrint(
                                                                       "targetPath $targetPath");
                                                                   if (extensionOfFileName ==
                                                                           '.png' ||
@@ -979,7 +991,7 @@ class _PDFFunctionBodyForSelectingSingleMultipleImagesState
                                                                   }
                                                                 }
 
-                                                                print(
+                                                                debugPrint(
                                                                     "fileNames $fileNames");
 
                                                                 setState(() {
@@ -1003,7 +1015,7 @@ class _PDFFunctionBodyForSelectingSingleMultipleImagesState
                                                               } else {
                                                                 //result was null
                                                                 setState(() {
-                                                                  print(
+                                                                  debugPrint(
                                                                       'ImagePicker() result was null');
                                                                   isFilePickingInitiated =
                                                                       false;
@@ -1019,7 +1031,7 @@ class _PDFFunctionBodyForSelectingSingleMultipleImagesState
                                                           } else if (status ==
                                                               PermissionStatus
                                                                   .denied) {
-                                                            print(
+                                                            debugPrint(
                                                                 'Denied. Show a dialog with a reason and again ask for the permission.');
                                                             permissionDialogBox(
                                                                 actionButtonsList:
@@ -1031,7 +1043,7 @@ class _PDFFunctionBodyForSelectingSingleMultipleImagesState
                                                           } else if (status ==
                                                               PermissionStatus
                                                                   .permanentlyDenied) {
-                                                            print(
+                                                            debugPrint(
                                                                 'Take the user to the settings page.');
                                                             setState(() {
                                                               storagePermissionPermanentlyDenied =
@@ -1095,7 +1107,7 @@ class _PDFFunctionBodyForSelectingSingleMultipleImagesState
                                               height: isFilePicked == true
                                                   ? null
                                                   : 75,
-                                              decoration: BoxDecoration(
+                                              decoration: const BoxDecoration(
                                                 borderRadius: BorderRadius.only(
                                                   topLeft: Radius.circular(10),
                                                   topRight: Radius.circular(10),
@@ -1118,8 +1130,8 @@ class _PDFFunctionBodyForSelectingSingleMultipleImagesState
                                                                 setState(() {
                                                                   myChildSize =
                                                                       size;
-                                                                  print(
-                                                                      myChildSize);
+                                                                  debugPrint(
+                                                                      myChildSize.toString());
                                                                 });
                                                               },
                                                               child: Padding(
@@ -1137,9 +1149,9 @@ class _PDFFunctionBodyForSelectingSingleMultipleImagesState
                                                                     fit: BoxFit
                                                                         .fitHeight,
                                                                     height: 35,
-                                                                    color: widget.mapOfFunctionDetails![
-                                                                            'Select File Icon Color'] ??
-                                                                        null,
+                                                                    color: widget
+                                                                            .mapOfFunctionDetails![
+                                                                        'Select File Icon Color'],
                                                                     alignment:
                                                                         Alignment
                                                                             .center,
@@ -1152,7 +1164,7 @@ class _PDFFunctionBodyForSelectingSingleMultipleImagesState
                                                                 // ),
                                                               ),
                                                             ),
-                                                            SizedBox(
+                                                            const SizedBox(
                                                               width: 15,
                                                             ),
                                                             Expanded(
@@ -1165,25 +1177,30 @@ class _PDFFunctionBodyForSelectingSingleMultipleImagesState
                                                                         .start,
                                                                 children: [
                                                                   Text(
-                                                                    "${files.length.toString() + ' ' + 'Images Selected'}",
+                                                                    files.length
+                                                                            .toString() +
+                                                                        ' ' +
+                                                                        'Images Selected',
                                                                     overflow:
                                                                         TextOverflow
                                                                             .ellipsis,
-                                                                    style: TextStyle(
+                                                                    style: const TextStyle(
                                                                         fontWeight:
                                                                             FontWeight
                                                                                 .w500,
                                                                         color: Colors
                                                                             .black),
                                                                   ),
-                                                                  SizedBox(
+                                                                  const SizedBox(
                                                                     height: 5,
                                                                   ),
                                                                   Row(
                                                                     children: [
                                                                       Text(
-                                                                        '${formatBytes(filesSize, 2)}',
-                                                                        style: TextStyle(
+                                                                        formatBytes(
+                                                                            filesSize,
+                                                                            2),
+                                                                        style: const TextStyle(
                                                                             fontSize:
                                                                                 12,
                                                                             color:
@@ -1199,15 +1216,15 @@ class _PDFFunctionBodyForSelectingSingleMultipleImagesState
                                                                   MainAxisAlignment
                                                                       .end,
                                                               children: [
-                                                                SizedBox(
+                                                                const SizedBox(
                                                                   width: 10,
                                                                 ),
-                                                                Container(
+                                                                SizedBox(
                                                                   height:
                                                                       myChildSize
                                                                           .height,
                                                                   child:
-                                                                      VerticalDivider(
+                                                                      const VerticalDivider(
                                                                     color: Colors
                                                                         .black,
                                                                     // thickness: 1,
@@ -1224,15 +1241,15 @@ class _PDFFunctionBodyForSelectingSingleMultipleImagesState
                                                                         BorderRadius
                                                                             .only(
                                                                       topRight:
-                                                                          Radius.circular(
+                                                                          const Radius.circular(
                                                                               10),
                                                                       bottomRight: shouldRenderingImagesLoopBeDisabled ==
                                                                                   false &&
                                                                               isFileLoaded ==
                                                                                   false
-                                                                          ? Radius.circular(
+                                                                          ? const Radius.circular(
                                                                               0)
-                                                                          : Radius.circular(
+                                                                          : const Radius.circular(
                                                                               10),
                                                                     ),
                                                                   ),
@@ -1264,15 +1281,15 @@ class _PDFFunctionBodyForSelectingSingleMultipleImagesState
                                                                         BorderRadius
                                                                             .only(
                                                                       topRight:
-                                                                          Radius.circular(
+                                                                          const Radius.circular(
                                                                               10),
                                                                       bottomRight: shouldRenderingImagesLoopBeDisabled ==
                                                                                   false &&
                                                                               isFileLoaded ==
                                                                                   false
-                                                                          ? Radius.circular(
+                                                                          ? const Radius.circular(
                                                                               0)
-                                                                          : Radius.circular(
+                                                                          : const Radius.circular(
                                                                               10),
                                                                     ),
                                                                     focusColor: widget.mapOfFunctionDetails![
@@ -1296,12 +1313,12 @@ class _PDFFunctionBodyForSelectingSingleMultipleImagesState
                                                                             .black
                                                                             .withOpacity(0.1),
                                                                     child:
-                                                                        Container(
+                                                                        SizedBox(
                                                                       width: 50,
                                                                       height: myChildSize
                                                                           .height,
                                                                       child:
-                                                                          Icon(
+                                                                          const Icon(
                                                                         Icons
                                                                             .close_outlined,
                                                                         size:
@@ -1323,7 +1340,8 @@ class _PDFFunctionBodyForSelectingSingleMultipleImagesState
                                                             ? Stack(
                                                                 children: [
                                                                   ClipRRect(
-                                                                    borderRadius: BorderRadius.only(
+                                                                    borderRadius: const BorderRadius
+                                                                            .only(
                                                                         bottomLeft:
                                                                             Radius.circular(
                                                                                 10),
@@ -1336,7 +1354,7 @@ class _PDFFunctionBodyForSelectingSingleMultipleImagesState
                                                                       backgroundColor:
                                                                           Colors
                                                                               .blue[100],
-                                                                      valueColor: AlwaysStoppedAnimation<
+                                                                      valueColor: const AlwaysStoppedAnimation<
                                                                               Color>(
                                                                           Colors
                                                                               .blue),
@@ -1362,7 +1380,7 @@ class _PDFFunctionBodyForSelectingSingleMultipleImagesState
                                                                         textAlign:
                                                                             TextAlign.start,
                                                                         style:
-                                                                            TextStyle(
+                                                                            const TextStyle(
                                                                           color:
                                                                               Colors.black,
                                                                         ),
@@ -1380,7 +1398,7 @@ class _PDFFunctionBodyForSelectingSingleMultipleImagesState
                                                           mainAxisAlignment:
                                                               MainAxisAlignment
                                                                   .center,
-                                                          children: [
+                                                          children: const [
                                                             Text(
                                                               'Select Images',
                                                               textAlign:
@@ -1415,7 +1433,7 @@ class _PDFFunctionBodyForSelectingSingleMultipleImagesState
                                                           mainAxisAlignment:
                                                               MainAxisAlignment
                                                                   .center,
-                                                          children: [
+                                                          children: const [
                                                             Text(
                                                               'Please wait ...',
                                                               textAlign:
@@ -1448,11 +1466,11 @@ class _PDFFunctionBodyForSelectingSingleMultipleImagesState
                             ),
                             Stack(
                               children: [
-                                Divider(
+                                const Divider(
                                   height: 50,
                                   thickness: 1.5,
                                 ),
-                                Container(
+                                SizedBox(
                                   height: 50,
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
@@ -1462,12 +1480,12 @@ class _PDFFunctionBodyForSelectingSingleMultipleImagesState
                                           border: Border.all(
                                               color: Colors.grey.shade400),
                                           color: Colors.white,
-                                          borderRadius: BorderRadius.all(
+                                          borderRadius: const BorderRadius.all(
                                               Radius.circular(20)),
                                         ),
                                         height: 30,
                                         width: 70,
-                                        child: Center(
+                                        child: const Center(
                                           child: Text(
                                             'Step - 2',
                                             textAlign: TextAlign.center,
@@ -1548,11 +1566,12 @@ class _PDFFunctionBodyForSelectingSingleMultipleImagesState
                           decoration: BoxDecoration(
                             border: Border.all(color: Colors.grey.shade400),
                             color: Colors.white,
-                            borderRadius: BorderRadius.all(Radius.circular(20)),
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(20)),
                           ),
                           height: 30,
                           width: 70,
-                          child: Center(
+                          child: const Center(
                             child: Text(
                               'Step - 1',
                               textAlign: TextAlign.center,
@@ -1583,7 +1602,7 @@ class _PDFFunctionBodyForSelectingSingleMultipleImagesState
                   bannerAdSize = size;
                 });
               },
-              child: BannerAD(),
+              child: const BannerAD(),
             ),
           ],
         ),

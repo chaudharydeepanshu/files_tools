@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:files_tools/basicFunctionalityFunctions/creatingAndSavingPDFRendererImageFileTemporarily.dart';
 import 'package:files_tools/basicFunctionalityFunctions/fileNameManager.dart';
@@ -46,7 +47,7 @@ Future<List<String>?> pdfToImages(String pdfFilePath,
             await newDocument.getPage(i); //always start from 1
         //pages.add(page);
 
-        print('height: ' +
+        debugPrint('height: ' +
             page.height.toString() +
             ' width: ' +
             page.width.toString());
@@ -62,19 +63,19 @@ Future<List<String>?> pdfToImages(String pdfFilePath,
 
         pdfPagesImages.add(pageImage);
         await page.close();
-        print(i);
+        debugPrint(i.toString());
       }
 
       newDocument.close();
     } on PlatformException catch (error) {
-      print(error);
+      debugPrint(error.message);
     }
 
     //save the images temporarily
     for (int i = 0; i < pdfPagesImages.length; i++) {
       String newFileName =
-          "${fileNameWithoutExtension + ' ' + i.toString() + '.jpg'}";
-      Map map = Map();
+          fileNameWithoutExtension + ' ' + i.toString() + '.jpg';
+      Map map = {};
       map['_pdfPageImageName'] = newFileName;
       map['_extraBetweenNameAndExtension'] = '';
       map['_pdfPageImage'] = pdfPagesImages[i];

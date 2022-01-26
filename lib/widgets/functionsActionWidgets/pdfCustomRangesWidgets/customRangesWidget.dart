@@ -98,7 +98,7 @@ class _RangeWidgetState extends State<RangeWidget> {
                     height: 40,
                     child: Material(
                       color: Colors.transparent,
-                      shape: StadiumBorder(),
+                      shape: const StadiumBorder(),
                       child: Tooltip(
                         message: "Delete",
                         child: InkWell(
@@ -106,12 +106,12 @@ class _RangeWidgetState extends State<RangeWidget> {
                             FocusManager.instance.primaryFocus?.unfocus();
                             widget.onDeleteRange?.call(widget.rangeNumber + 1);
                           },
-                          customBorder: StadiumBorder(),
+                          customBorder: const StadiumBorder(),
                           focusColor: Colors.red.withOpacity(0.1),
                           highlightColor: Colors.red.withOpacity(0.1),
                           splashColor: Colors.red.withOpacity(0.1),
                           hoverColor: Colors.red.withOpacity(0.1),
-                          child: Icon(
+                          child: const Icon(
                             Icons.delete_forever,
                             size: 24,
                             color: Colors.red,
@@ -123,7 +123,7 @@ class _RangeWidgetState extends State<RangeWidget> {
                 ),
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Row(
@@ -143,7 +143,7 @@ class _RangeWidgetState extends State<RangeWidget> {
                   listTextInputFormatter: listTextInputFormatter,
                 ),
                 Column(
-                  children: [
+                  children: const [
                     Icon(
                       Icons.remove,
                       size: 12,
@@ -167,7 +167,7 @@ class _RangeWidgetState extends State<RangeWidget> {
                   textEditingControllerInt: 1,
                   listTextInputFormatter: listTextInputFormatter,
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 2,
                 ),
                 Expanded(
@@ -210,7 +210,7 @@ class _RangeWidgetState extends State<RangeWidget> {
                             ),
                           ],
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 5,
                         ),
                         Row(
@@ -247,7 +247,7 @@ class _RangeWidgetState extends State<RangeWidget> {
                             ),
                           ],
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 22,
                         ),
                       ],
@@ -319,7 +319,7 @@ class RangeTextForField extends StatelessWidget {
           labelText: labelText,
           helperText: ' ',
           hintText: hintText,
-          border: OutlineInputBorder(),
+          border: const OutlineInputBorder(),
         ),
         //autofocus: true,
         showCursor: true,
@@ -459,7 +459,7 @@ class ButtonsOfRanges extends StatelessWidget {
               child: Text(
                 buttonText,
                 textAlign: TextAlign.center,
-                style: TextStyle(),
+                style: const TextStyle(),
               ),
             ),
           ),

@@ -12,7 +12,7 @@ Future<dynamic> modifyImage(String imageFilePath,
 
   Future<Uint8List?> cropImageDataWithNativeLibrary(
       {required ExtendedImageEditorState state}) async {
-    print('native library start cropping');
+    debugPrint('native library start cropping');
 
     final Rect? cropRect = state.getCropRect();
     final EditActionDetails action = state.editAction!;
@@ -50,7 +50,7 @@ Future<dynamic> modifyImage(String imageFilePath,
       imageEditorOption: option,
     );
 
-    print('${DateTime.now().difference(start)} ：total time');
+    debugPrint('${DateTime.now().difference(start)} ：total time');
     return result;
   }
 

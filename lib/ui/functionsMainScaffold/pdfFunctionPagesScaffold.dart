@@ -77,7 +77,7 @@ class _PDFFunctionsPageScaffoldState extends State<PDFFunctionsPageScaffold> {
         mapOfFunctionDetails: mapOfFunctionDetails,
       );
     } else {
-      print('empty body provided');
+      debugPrint('empty body provided');
       body = Container();
     }
     super.initState();

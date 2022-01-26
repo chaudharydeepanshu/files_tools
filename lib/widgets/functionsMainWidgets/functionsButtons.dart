@@ -97,7 +97,7 @@ class _PDFFunctionsState extends State<PDFFunctions> {
                 Colors.black.withOpacity(0.1),
             child: Container(
               //height: widget.fileLoadingStatus == true ? 77 : 92,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(10),
                   topRight: Radius.circular(10),
@@ -136,7 +136,7 @@ class _PDFFunctionsState extends State<PDFFunctions> {
                                             AppTheme.darkText,
                                   ),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 5,
                                 ),
                                 Text(
@@ -159,7 +159,7 @@ class _PDFFunctionsState extends State<PDFFunctions> {
                             ),
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 15,
                         ),
                       ],
@@ -169,7 +169,7 @@ class _PDFFunctionsState extends State<PDFFunctions> {
                       ? widget.filePickedStatus == false
                           ? Container(
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.only(
+                                borderRadius: const BorderRadius.only(
                                   bottomLeft: Radius.circular(10),
                                   bottomRight: Radius.circular(10),
                                 ),
@@ -201,7 +201,7 @@ class _PDFFunctionsState extends State<PDFFunctions> {
                                   true
                               ? Container(
                                   decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.only(
+                                    borderRadius: const BorderRadius.only(
                                       bottomLeft: Radius.circular(10),
                                       bottomRight: Radius.circular(10),
                                     ),

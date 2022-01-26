@@ -28,7 +28,7 @@ class ReusableSilverAppBar extends StatefulWidget with PreferredSizeWidget {
   _ReusableSilverAppBarState createState() => _ReusableSilverAppBarState();
 
   @override
-  Size get preferredSize => Size.fromHeight(kToolbarHeight);
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }
 
 class _ReusableSilverAppBarState extends State<ReusableSilverAppBar> {
@@ -66,12 +66,12 @@ class _ReusableSilverAppBarState extends State<ReusableSilverAppBar> {
                       height: 40,
                       child: Material(
                         color: Colors.transparent,
-                        shape: StadiumBorder(),
+                        shape: const StadiumBorder(),
                         child: Tooltip(
                           message: widget.appBarIconLeftToolTip ?? "Search",
                           child: InkWell(
                             onTap: widget.appBarIconLeftAction ?? () {},
-                            customBorder: StadiumBorder(),
+                            customBorder: const StadiumBorder(),
                             focusColor: widget.leftButtonColor != null
                                 ? widget.leftButtonColor!.withOpacity(0.1)
                                 : Colors.black.withOpacity(0.1),
@@ -85,9 +85,9 @@ class _ReusableSilverAppBarState extends State<ReusableSilverAppBar> {
                                 ? widget.leftButtonColor!.withOpacity(0.1)
                                 : Colors.black.withOpacity(0.1),
                             child: Icon(
-                              widget.appBarIconLeft ?? null,
+                              widget.appBarIconLeft,
                               size: 24,
-                              color: widget.leftButtonColor ?? null,
+                              color: widget.leftButtonColor,
                             ),
                           ),
                         ),
@@ -105,15 +105,13 @@ class _ReusableSilverAppBarState extends State<ReusableSilverAppBar> {
                         height: 40,
                         child: Material(
                           color: Colors.transparent,
-                          shape: StadiumBorder(),
+                          shape: const StadiumBorder(),
                           child: Tooltip(
                             message:
                                 widget.appBarIconRightToolTip ?? "Settings",
                             child: InkWell(
-                              onTap: widget.appBarIconRightAction != null
-                                  ? widget.appBarIconRightAction
-                                  : null,
-                              customBorder: StadiumBorder(),
+                              onTap: widget.appBarIconRightAction ?? null,
+                              customBorder: const StadiumBorder(),
                               focusColor: widget.rightButtonColor != null
                                   ? widget.rightButtonColor!.withOpacity(0.1)
                                   : Colors.black.withOpacity(0.1),
@@ -127,7 +125,7 @@ class _ReusableSilverAppBarState extends State<ReusableSilverAppBar> {
                                   ? widget.rightButtonColor!.withOpacity(0.1)
                                   : Colors.black.withOpacity(0.1),
                               child: Icon(
-                                widget.appBarIconRight ?? null,
+                                widget.appBarIconRight,
                                 size: 24,
                                 color: widget.appBarIconRightAction != null
                                     ? widget.rightButtonColor

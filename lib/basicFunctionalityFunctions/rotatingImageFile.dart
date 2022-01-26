@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:files_tools/basicFunctionalityFunctions/getCacheFilePathFromFileName.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:image/image.dart' as img;
 import 'dart:io';
 import 'fileNameManager.dart';
@@ -12,11 +13,11 @@ Future<File> rotateImage(
   String fileNameWithoutExtension = stringWithoutExtension(
       fileName: imageFileName, extensionOfString: extensionOfFileName);
 
-  Random random = new Random();
+  Random random = Random();
   int randomNumber = random.nextInt(1000000);
 
   File finalFile = await file.copy(await getCacheFilePathFromFileName(
-      '${fileNameWithoutExtension + ' $randomNumber' + extensionOfFileName}'));
+      fileNameWithoutExtension + ' $randomNumber' + extensionOfFileName));
   try {
     final newFile = finalFile;
 
@@ -34,8 +35,8 @@ Future<File> rotateImage(
 
     return fixedFile;
   } catch (e) {
-    print('file not rotated due to exception');
-    print(e);
+    debugPrint('file not rotated due to exception');
+    debugPrint(e.toString());
   }
   return finalFile;
 }

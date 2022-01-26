@@ -6,6 +6,7 @@ import 'package:files_tools/basicFunctionalityFunctions/getExternalStorageFilePa
 import 'package:files_tools/basicFunctionalityFunctions/getFileNameFromFilePath.dart';
 import 'package:files_tools/basicFunctionalityFunctions/readFileByteFromFilePath.dart';
 import 'package:files_tools/ui/functionsActionsScaffold/compressImage.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:flutter_native_image/flutter_native_image.dart';
 
@@ -14,7 +15,7 @@ Future<dynamic> compressImages(List<String> imageFilePaths,
   List<File> compressedFiles = [];
   List<String> compressedFilesPaths = [];
 
-  print(imageFilePaths.length);
+  debugPrint(imageFilePaths.length.toString());
 
   for (int i = 0; i < imageFilePaths.length; i++) {
     File file = File(imageFilePaths[i]);
@@ -25,7 +26,7 @@ Future<dynamic> compressImages(List<String> imageFilePaths,
     String fileNameWithoutExtension = stringWithoutExtension(
         fileName: pdfChangesDataMap['File Names'][i],
         extensionOfString: extensionOfFileName);
-    print(extensionOfFileName);
+    debugPrint(extensionOfFileName);
 
     Future<File> compressAndGetFile(
         File file, String targetPath, int quality) async {
@@ -45,7 +46,7 @@ Future<dynamic> compressImages(List<String> imageFilePaths,
           readFileByteFromFilePath(myPath).then((bytesData) async {
             fileByte = bytesData!;
             //do your task here
-            Map map = Map();
+            Map map = {};
             map['_imageName'] = getFileNameFromFilePath(targetPath);
             map['_extraBetweenNameAndExtension'] = '';
             map['_imageBytes'] = fileByte;
@@ -53,7 +54,7 @@ Future<dynamic> compressImages(List<String> imageFilePaths,
           });
         } catch (e) {
           // if path invalid or not able to read
-          print(e);
+          debugPrint(e.toString());
         }
       } else if (extensionOfFileName == '.jpg' ||
           extensionOfFileName == '.jpeg') {
@@ -71,15 +72,15 @@ Future<dynamic> compressImages(List<String> imageFilePaths,
             quality: quality, rotate: 0, format: CompressFormat.heic);
       }
 
-      print(file.lengthSync());
-      print(imageCompressResult!.lengthSync());
+      debugPrint(file.lengthSync().toString());
+      debugPrint(imageCompressResult!.lengthSync().toString());
 
       return imageCompressResult;
     }
 
     String targetPath =
-        "${await getExternalStorageFilePathFromFileName(fileNameWithoutExtension + ' ' + 'compressed' + ' ' + i.toString() + extensionOfFileName)}";
-    print(targetPath);
+        await getExternalStorageFilePathFromFileName(fileNameWithoutExtension + ' ' + 'compressed' + ' ' + i.toString() + extensionOfFileName);
+    debugPrint(targetPath);
     int quality = 0;
     if (pdfChangesDataMap['Qualities Method'] == Qualities.high) {
       quality = 88;
@@ -90,7 +91,7 @@ Future<dynamic> compressImages(List<String> imageFilePaths,
     } else if (pdfChangesDataMap['Qualities Method'] == Qualities.custom) {
       quality = pdfChangesDataMap['Quality Custom Value'];
     }
-    print(quality);
+    debugPrint(quality.toString());
 
     if (extensionOfFileName == '.png' ||
         extensionOfFileName == '.jpg' ||
@@ -103,6 +104,8 @@ Future<dynamic> compressImages(List<String> imageFilePaths,
     }
   }
 
-  print(compressedFilesPaths);
+  if (kDebugMode) {
+    print(compressedFilesPaths);
+  }
   return compressedFilesPaths;
 }

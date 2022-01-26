@@ -38,7 +38,7 @@ class _ReusableAnnotatedRegionState extends State<ReusableAnnotatedRegion>
   @override
   void didChangePlatformBrightness() {
     var brightness = WidgetsBinding.instance!.window.platformBrightness;
-    print(brightness);
+    debugPrint(brightness.name);
     // > should print Brightness.light / Brightness.dark when you switch
     themeCalc();
     setState(() {
@@ -52,7 +52,7 @@ class _ReusableAnnotatedRegionState extends State<ReusableAnnotatedRegion>
   void initState() {
     WidgetsBinding.instance!.addObserver(this); //most important
     var brightness = WidgetsBinding.instance!.window.platformBrightness;
-    print(brightness);
+    debugPrint(brightness.name);
     // > should print Brightness.light / Brightness.dark when you switch
     themeCalc();
     setState(() {

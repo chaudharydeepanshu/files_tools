@@ -1,8 +1,9 @@
 import 'package:files_tools/basicFunctionalityFunctions/manageAppDirectoryAndCache.dart';
+import 'package:flutter/cupertino.dart';
 
 Future<bool> directPop() async {
   //deleteCacheDir();
   deleteAppDir();
-  print('Direct Pop');
+  debugPrint('Direct Pop');
   return true;
 }

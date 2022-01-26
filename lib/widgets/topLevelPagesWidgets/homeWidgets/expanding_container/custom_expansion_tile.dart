@@ -259,7 +259,7 @@ class _CustomExpansionTileState extends State<CustomExpansionTile>
 
     return Material(
       color: _backgroundColor.value ?? Colors.transparent,
-      borderRadius: BorderRadius.all(Radius.circular(15)),
+      borderRadius: const BorderRadius.all(Radius.circular(15)),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
@@ -267,17 +267,17 @@ class _CustomExpansionTileState extends State<CustomExpansionTile>
             onTap: _handleTap,
             customBorder: RoundedRectangleBorder(
               borderRadius: _isExpanded == true
-                  ? BorderRadius.only(
+                  ? const BorderRadius.only(
                       topLeft: Radius.circular(15),
                       topRight: Radius.circular(15))
-                  : BorderRadius.all(Radius.circular(15)),
+                  : const BorderRadius.all(Radius.circular(15)),
             ),
             focusColor: widget.effectsColor ?? Colors.black.withOpacity(0.1),
             highlightColor:
                 widget.effectsColor ?? Colors.black.withOpacity(0.1),
             splashColor: widget.effectsColor ?? Colors.black.withOpacity(0.1),
             hoverColor: widget.effectsColor ?? Colors.black.withOpacity(0.1),
-            child: Container(
+            child: SizedBox(
               height: 80,
               child: Padding(
                 padding: const EdgeInsets.only(left: 12.0, right: 12),
@@ -290,7 +290,7 @@ class _CustomExpansionTileState extends State<CustomExpansionTile>
                             Container(
                               width: 50,
                               height: 50,
-                              decoration: BoxDecoration(
+                              decoration: const BoxDecoration(
                                 shape: BoxShape.rectangle,
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(20)),
@@ -316,7 +316,7 @@ class _CustomExpansionTileState extends State<CustomExpansionTile>
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               widget.title,
-                              Container(
+                              SizedBox(
                                 width: 180,
                                 child: widget.subtitle,
                               ),
@@ -329,7 +329,7 @@ class _CustomExpansionTileState extends State<CustomExpansionTile>
                       turns: _iconTurns,
                       child: Icon(
                         Icons.expand_more,
-                        color: widget.cardTrailingArrowColor ?? null,
+                        color: widget.cardTrailingArrowColor,
                       ),
                     ),
                   ],
@@ -369,7 +369,7 @@ class _CustomExpansionTileState extends State<CustomExpansionTile>
                 onChange: (size) {
                   setState(() {
                     myChildSize = size;
-                    print(myChildSize.height);
+                    debugPrint(myChildSize.height.toString());
                   });
                 },
                 child: Container(
@@ -416,7 +416,7 @@ class _CustomExpansionTileState extends State<CustomExpansionTile>
                     decoration: BoxDecoration(
                       color: widget.expandedSublistBackgroundColor ??
                           Colors.pink.withOpacity(0.25),
-                      borderRadius: BorderRadius.only(
+                      borderRadius: const BorderRadius.only(
                           bottomLeft: Radius.circular(15),
                           bottomRight: Radius.circular(15)),
                     ),

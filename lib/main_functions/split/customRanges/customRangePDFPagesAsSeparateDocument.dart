@@ -314,15 +314,14 @@ Future<List<String>?> customRangePDFPagesAsSeparateDocument(String pdfFilePath,
         i++) {
       PdfDocument tempDocument = PdfDocument(
           inputBytes: File(splitResult.pagePaths[i]).readAsBytesSync());
-      print("tempDocument.pages.count: ${tempDocument.pages.count}");
+      debugPrint("tempDocument.pages.count: ${tempDocument.pages.count}");
       listOfDocuments.add(tempDocument);
     }
-    print("listOfDocuments.length : ${listOfDocuments.length}");
+    debugPrint("listOfDocuments.length : ${listOfDocuments.length}");
 
     //removing saved single page documents as they are loaded in a list already
     for (int i = 0; i < splitResult.pagePaths.length; i++) {
-      deletingTempPDFFiles(
-          "${getFileNameFromFilePath(splitResult.pagePaths[i])}");
+      deletingTempPDFFiles(getFileNameFromFilePath(splitResult.pagePaths[i]));
     }
 
     // creating new reordered list of TextEditingControllerPairs and listOfQuartetsOfButtonsOfRanges. Also removed deleted ranges TextEditingControllerPairs and listOfQuartetsOfButtonsOfRanges.
@@ -351,15 +350,16 @@ Future<List<String>?> customRangePDFPagesAsSeparateDocument(String pdfFilePath,
         PdfDocument tempDocument = listOfDocuments[rangeFirstPageNumber - 1];
         tempListOfDocuments.add(tempDocument);
         listOfRangesDocumentsList.add(tempListOfDocuments);
-        print('equal ranges : $rangeFirstPageNumber , $rangeLastPageNumber');
-        print('normal run');
+        debugPrint(
+            'equal ranges : $rangeFirstPageNumber , $rangeLastPageNumber');
+        debugPrint('normal run');
       } else if (rangeFirstPageNumber < rangeLastPageNumber) {
         if (newListOfQuartetsOfButtonsOfRanges[i][0]) {
           for (int x = rangeFirstPageNumber; x <= rangeLastPageNumber; x++) {
             PdfDocument tempDocument = listOfDocuments[x - 1];
             tempListOfDocuments.add(tempDocument);
           }
-          print('normal run');
+          debugPrint('normal run');
         } else if (newListOfQuartetsOfButtonsOfRanges[i][1]) {
           int temp = rangeFirstPageNumber;
           int reversedRangeFirstPageNumber = rangeLastPageNumber;
@@ -370,7 +370,7 @@ Future<List<String>?> customRangePDFPagesAsSeparateDocument(String pdfFilePath,
             PdfDocument tempDocument = listOfDocuments[x - 1];
             tempListOfDocuments.add(tempDocument);
           }
-          print('reverse run');
+          debugPrint('reverse run');
         } else if (newListOfQuartetsOfButtonsOfRanges[i][2]) {
           for (int x = rangeFirstPageNumber; x <= rangeLastPageNumber; x++) {
             if (x.isOdd) {
@@ -378,7 +378,7 @@ Future<List<String>?> customRangePDFPagesAsSeparateDocument(String pdfFilePath,
               tempListOfDocuments.add(tempDocument);
             }
           }
-          print('odd run');
+          debugPrint('odd run');
         } else if (newListOfQuartetsOfButtonsOfRanges[i][3]) {
           for (int x = rangeFirstPageNumber; x <= rangeLastPageNumber; x++) {
             if (x.isEven) {
@@ -386,10 +386,10 @@ Future<List<String>?> customRangePDFPagesAsSeparateDocument(String pdfFilePath,
               tempListOfDocuments.add(tempDocument);
             }
           }
-          print('even run');
+          debugPrint('even run');
         }
         listOfRangesDocumentsList.add(tempListOfDocuments);
-        print(
+        debugPrint(
             'not equal ranges : $rangeFirstPageNumber , $rangeLastPageNumber');
       } else if (rangeFirstPageNumber > rangeLastPageNumber) {
         if (newListOfQuartetsOfButtonsOfRanges[i][0]) {
@@ -397,7 +397,7 @@ Future<List<String>?> customRangePDFPagesAsSeparateDocument(String pdfFilePath,
             PdfDocument tempDocument = listOfDocuments[x - 1];
             tempListOfDocuments.add(tempDocument);
           }
-          print('normal run');
+          debugPrint('normal run');
         } else if (newListOfQuartetsOfButtonsOfRanges[i][1]) {
           int temp = rangeFirstPageNumber;
           int reversedRangeFirstPageNumber = rangeLastPageNumber;
@@ -408,7 +408,7 @@ Future<List<String>?> customRangePDFPagesAsSeparateDocument(String pdfFilePath,
             PdfDocument tempDocument = listOfDocuments[x - 1];
             tempListOfDocuments.add(tempDocument);
           }
-          print('reverse run');
+          debugPrint('reverse run');
         } else if (newListOfQuartetsOfButtonsOfRanges[i][2]) {
           for (int x = rangeFirstPageNumber; x >= rangeLastPageNumber; x--) {
             if (x.isOdd) {
@@ -416,7 +416,7 @@ Future<List<String>?> customRangePDFPagesAsSeparateDocument(String pdfFilePath,
               tempListOfDocuments.add(tempDocument);
             }
           }
-          print('odd run');
+          debugPrint('odd run');
         } else if (newListOfQuartetsOfButtonsOfRanges[i][3]) {
           for (int x = rangeFirstPageNumber; x >= rangeLastPageNumber; x--) {
             if (x.isEven) {
@@ -424,16 +424,16 @@ Future<List<String>?> customRangePDFPagesAsSeparateDocument(String pdfFilePath,
               tempListOfDocuments.add(tempDocument);
             }
           }
-          print('even run');
+          debugPrint('even run');
         }
         listOfRangesDocumentsList.add(tempListOfDocuments);
-        print(
+        debugPrint(
             'not equal ranges : $rangeFirstPageNumber , $rangeLastPageNumber');
       }
     }
-    print(
+    debugPrint(
         "listOfRangesDocumentsList[0].length : ${listOfRangesDocumentsList[0].length}");
-    print(
+    debugPrint(
         "listOfRangesDocumentsList.length : ${listOfRangesDocumentsList.length}");
 
     //save the pdf document of separate documents lists in a list called finalListOfDocument
@@ -446,31 +446,45 @@ Future<List<String>?> customRangePDFPagesAsSeparateDocument(String pdfFilePath,
           i < listOfRangesDocumentsList[x].length &&
               shouldDataBeProcessed == true;
           i++) {
-        String newFileName =
-            "${fileNameWithoutExtension + ' ' + x.toString() + ' ' + i.toString() + extensionOfFileName}";
-        Map map = Map();
+        String newFileName = fileNameWithoutExtension +
+            ' ' +
+            x.toString() +
+            ' ' +
+            i.toString() +
+            extensionOfFileName;
+        Map map = {};
         map['_pdfFileName'] = newFileName;
         map['_extraBetweenNameAndExtension'] = '';
         map['_document'] = listOfRangesDocumentsList[x][i];
         tempPdfFilePaths.add(await creatingAndSavingPDFFileTemporarily(map));
       }
-      print("tempPdfFilePaths : $tempPdfFilePaths");
+      debugPrint("tempPdfFilePaths : $tempPdfFilePaths");
 
       //merge the documents
       MergeMultiplePDFResponse response = await PdfMerger.mergeMultiplePDF(
           paths: tempPdfFilePaths,
           outputDirPath: await getExternalStorageFilePathFromFileName(
-              "${fileNameWithoutExtension + ' ' + x.toString() + ' ' + 'merged' + extensionOfFileName}"));
+              fileNameWithoutExtension +
+                  ' ' +
+                  x.toString() +
+                  ' ' +
+                  'merged' +
+                  extensionOfFileName));
 
       if (response.status == "success") {
-        print(response.response); //for output path  in String
-        print(response.message); // for success message  in String
+        debugPrint(response.response); //for output path  in String
+        debugPrint(response.message); // for success message  in String
       }
 
       //passing final document to tempDocument variable
       PdfDocument tempDocument = PdfDocument(
           inputBytes: File(await getExternalStorageFilePathFromFileName(
-                  "${fileNameWithoutExtension + ' ' + x.toString() + ' ' + 'merged' + extensionOfFileName}"))
+                  fileNameWithoutExtension +
+                      ' ' +
+                      x.toString() +
+                      ' ' +
+                      'merged' +
+                      extensionOfFileName))
               .readAsBytesSync());
 
       //adding the prepared final document of range to finalListOfDocument
@@ -478,10 +492,14 @@ Future<List<String>?> customRangePDFPagesAsSeparateDocument(String pdfFilePath,
 
       //removing unnecessary documents from getExternalStorageDirectory
       for (int y = 0; y < tempPdfFilePaths.length; y++) {
-        deletingTempPDFFiles("${getFileNameFromFilePath(tempPdfFilePaths[y])}");
+        deletingTempPDFFiles(getFileNameFromFilePath(tempPdfFilePaths[y]));
       }
-      deletingTempPDFFiles(
-          "${fileNameWithoutExtension + ' ' + x.toString() + ' ' + 'merged' + extensionOfFileName}");
+      deletingTempPDFFiles(fileNameWithoutExtension +
+          ' ' +
+          x.toString() +
+          ' ' +
+          'merged' +
+          extensionOfFileName);
     }
 
     //creating and saving single document from list called finalListOfDocument
@@ -489,15 +507,19 @@ Future<List<String>?> customRangePDFPagesAsSeparateDocument(String pdfFilePath,
     for (var i = 0;
         i < finalListOfDocument.length && shouldDataBeProcessed == true;
         i++) {
-      String newFileName =
-          "${fileNameWithoutExtension + ' ' + 'range separated' + ' ' + i.toString() + extensionOfFileName}";
-      Map map = Map();
+      String newFileName = fileNameWithoutExtension +
+          ' ' +
+          'range separated' +
+          ' ' +
+          i.toString() +
+          extensionOfFileName;
+      Map map = {};
       map['_pdfFileName'] = newFileName;
       map['_extraBetweenNameAndExtension'] = '';
       map['_document'] = finalListOfDocument[i];
       tempPdfFilePaths.add(await creatingAndSavingPDFFileTemporarily(map));
     }
-    print("tempPdfFilePaths : $tempPdfFilePaths");
+    debugPrint("tempPdfFilePaths : $tempPdfFilePaths");
 
     rangesPdfsFilePaths = List.from(tempPdfFilePaths);
   } else {

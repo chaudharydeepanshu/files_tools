@@ -143,14 +143,14 @@ class _WatermarkPDFPagesScaffoldState extends State<WatermarkPDFPagesScaffold>
                   double.parse(transparencyTextEditingController.text),
               'Watermark Rotation Angle':
                   double.parse(rotationAngleTextEditingController.text),
-              'PDF File Name': '${widget.arguments!.pdfFile.name}'
+              'PDF File Name': widget.arguments!.pdfFile.name
             },
-            processType: "${widget.arguments!.processType}",
+            processType: widget.arguments!.processType,
             filePath: widget.arguments!.pdfFile.path,
             shouldDataBeProcessed: shouldDataBeProcessed);
 
-        Map map = Map();
-        map['_pdfFileName'] = '${widget.arguments!.pdfFile.name}';
+        Map map = {};
+        map['_pdfFileName'] = widget.arguments!.pdfFile.name;
         map['_extraBetweenNameAndExtension'] = '';
         map['_document'] = document;
 
@@ -305,7 +305,7 @@ class _WatermarkPDFPagesScaffoldState extends State<WatermarkPDFPagesScaffold>
 
   @override
   Widget build(BuildContext context) {
-    print("0x${ColorTools.colorCode(dialogPickerColor)}");
+    debugPrint("0x${ColorTools.colorCode(dialogPickerColor)}");
     return ReusableAnnotatedRegion(
       child: GestureDetector(
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
@@ -346,7 +346,7 @@ class _WatermarkPDFPagesScaffoldState extends State<WatermarkPDFPagesScaffold>
                               children: [
                                 Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
+                                  children: const [
                                     Text(
                                       'Note: ',
                                       style: TextStyle(color: Colors.red),
@@ -357,15 +357,15 @@ class _WatermarkPDFPagesScaffoldState extends State<WatermarkPDFPagesScaffold>
                                     ),
                                   ],
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 10,
                                 ),
                                 Row(
-                                  children: [
+                                  children: const [
                                     Text('Watermark Text:'),
                                   ],
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 5,
                                 ),
                                 TextFormField(
@@ -375,7 +375,7 @@ class _WatermarkPDFPagesScaffoldState extends State<WatermarkPDFPagesScaffold>
                                   onChanged: (String value) {
                                     setState(() {});
                                   },
-                                  decoration: InputDecoration(
+                                  decoration: const InputDecoration(
                                     labelText: 'Enter your watermark',
                                     helperText: ' ',
                                     hintText: 'Ex: Your Name',
@@ -392,15 +392,15 @@ class _WatermarkPDFPagesScaffoldState extends State<WatermarkPDFPagesScaffold>
                                     return null;
                                   },
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 5,
                                 ),
                                 Row(
-                                  children: [
+                                  children: const [
                                     Text('Font size:'),
                                   ],
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 5,
                                 ),
                                 TextFormField(
@@ -429,7 +429,7 @@ class _WatermarkPDFPagesScaffoldState extends State<WatermarkPDFPagesScaffold>
                                       }
                                     });
                                   },
-                                  decoration: InputDecoration(
+                                  decoration: const InputDecoration(
                                     labelText: 'Enter watermark font size',
                                     helperText: ' ',
                                     hintText: 'Ex: 40',
@@ -448,20 +448,20 @@ class _WatermarkPDFPagesScaffoldState extends State<WatermarkPDFPagesScaffold>
                                 ),
                               ],
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 5,
                             ),
                             Row(
-                              children: [
+                              children: const [
                                 Text('Position of watermark:'),
                               ],
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 5,
                             ),
                             Row(
                               children: [
-                                Container(
+                                SizedBox(
                                   height: 150,
                                   width: 150,
                                   child: GridView.count(
@@ -472,14 +472,14 @@ class _WatermarkPDFPagesScaffoldState extends State<WatermarkPDFPagesScaffold>
                                         9, //this is the total number of cards
                                         (index) {
                                       return Container(
-                                        margin: EdgeInsets.all(5),
+                                        margin: const EdgeInsets.all(5),
                                         child: Material(
                                           //elevation: 6,
                                           color: listOfPositionsStatus[index]
                                               ? Colors.lightBlue
                                               : null,
                                           shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.all(
+                                            borderRadius: const BorderRadius.all(
                                               Radius.circular(10),
                                             ),
                                             side: BorderSide(
@@ -490,7 +490,7 @@ class _WatermarkPDFPagesScaffoldState extends State<WatermarkPDFPagesScaffold>
                                           ),
                                           child: InkWell(
                                             customBorder:
-                                                RoundedRectangleBorder(
+                                                const RoundedRectangleBorder(
                                               borderRadius: BorderRadius.all(
                                                 Radius.circular(10),
                                               ),
@@ -531,15 +531,15 @@ class _WatermarkPDFPagesScaffoldState extends State<WatermarkPDFPagesScaffold>
                                 ),
                               ],
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 22,
                             ),
                             Row(
-                              children: [
+                              children: const [
                                 Text('Color:'),
                               ],
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 5,
                             ),
                             ListTile(
@@ -568,15 +568,15 @@ class _WatermarkPDFPagesScaffoldState extends State<WatermarkPDFPagesScaffold>
                                 },
                               ),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 22,
                             ),
                             Row(
-                              children: [
+                              children: const [
                                 Text('Layer:'),
                               ],
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 5,
                             ),
                             SingleChildScrollView(
@@ -618,26 +618,26 @@ class _WatermarkPDFPagesScaffoldState extends State<WatermarkPDFPagesScaffold>
                                 ],
                               ),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 22,
                             ),
                             Row(
-                              children: [
+                              children: const [
                                 Text('Set transparency:'),
                               ],
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 5,
                             ),
                             TextFormField(
                               controller: transparencyTextEditingController,
-                              keyboardType: TextInputType.numberWithOptions(
+                              keyboardType: const TextInputType.numberWithOptions(
                                   decimal: true),
                               inputFormatters: transparencyTextInputFormatter,
                               onChanged: (String value) {
                                 setState(() {});
                               },
-                              decoration: InputDecoration(
+                              decoration: const InputDecoration(
                                 labelText: 'Enter transparency',
                                 helperText: ' ',
                                 hintText: 'Ex: 0.50',
@@ -659,16 +659,16 @@ class _WatermarkPDFPagesScaffoldState extends State<WatermarkPDFPagesScaffold>
                               },
                             ),
                             Row(
-                              children: [
+                              children: const [
                                 Text('Set rotation angle:'),
                               ],
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 5,
                             ),
                             TextFormField(
                               controller: rotationAngleTextEditingController,
-                              keyboardType: TextInputType.numberWithOptions(
+                              keyboardType: const TextInputType.numberWithOptions(
                                   decimal: true),
                               inputFormatters: rotationAngleTextInputFormatter,
                               onChanged: (String value) {
@@ -711,7 +711,7 @@ class _WatermarkPDFPagesScaffoldState extends State<WatermarkPDFPagesScaffold>
                                   }
                                 });
                               },
-                              decoration: InputDecoration(
+                              decoration: const InputDecoration(
                                 labelText: 'Enter rotation angle',
                                 helperText: ' ',
                                 hintText: 'Ex: -40',
@@ -757,7 +757,7 @@ class _WatermarkPDFPagesScaffoldState extends State<WatermarkPDFPagesScaffold>
                         bannerAdSize = size;
                       });
                     },
-                    child: BannerAD(),
+                    child: const BannerAD(),
                   ),
                 ],
               ),
@@ -807,14 +807,14 @@ class _WatermarkLayerButtonsState extends State<WatermarkLayerButtons> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(6.0),
-      child: Container(
+      child: SizedBox(
         //height: 150,
         width: 250,
         child: Material(
           //elevation: 6,
           color: widget.buttonStatus == true ? Colors.lightBlue : null,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(
+            borderRadius: const BorderRadius.all(
               Radius.circular(10),
             ),
             side: BorderSide(
@@ -831,7 +831,7 @@ class _WatermarkLayerButtonsState extends State<WatermarkLayerButtons> {
                 //widget.onButtonStatus.call(false);
               }
             },
-            customBorder: RoundedRectangleBorder(
+            customBorder: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(
                 Radius.circular(10),
               ),
@@ -853,12 +853,12 @@ class _WatermarkLayerButtonsState extends State<WatermarkLayerButtons> {
                       color: Theme.of(context).iconTheme.color,
                       alignment: Alignment.center,
                       semanticsLabel: 'No Asset Function Icon'),
-                  SizedBox(
+                  const SizedBox(
                     width: 10,
                   ),
                   Text(
                     widget.buttonText,
-                    style: TextStyle(fontSize: 15),
+                    style: const TextStyle(fontSize: 15),
                     textAlign: TextAlign.center,
                   ),
                 ],
