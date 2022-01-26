@@ -319,124 +319,117 @@ class _CustomRangePDFPagesScaffoldState
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-              child: Container(
-                child: Column(
-                  children: [
-                    const Text.rich(
-                      TextSpan(
-                          text:
-                              'Use this option to specify individual pages and page ranges that should be added to the output document.'),
-                    ),
-                    Row(
-                      children: [
-                        const SizedBox(
-                          width: 15,
+              child: Column(
+                children: [
+                  const Text.rich(
+                    TextSpan(
+                        text:
+                            'Use this option to specify individual pages and page ranges that should be added to the output document.'),
+                  ),
+                  Row(
+                    children: [
+                      const SizedBox(
+                        width: 15,
+                      ),
+                      Expanded(
+                        child: Column(
+                          children: [
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: const [
+                                Text(
+                                  "• ",
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                Expanded(
+                                  child: Text.rich(
+                                    TextSpan(
+                                      style: TextStyle(),
+                                      text:
+                                          'Enter pages separated by commas, ex: 1, 4-8, 10, 22-24',
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: const [
+                                Text(
+                                  "• ",
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                Expanded(
+                                  child: Text.rich(
+                                    TextSpan(
+                                      style: TextStyle(),
+                                      text:
+                                          'To specify a reverse page order swap first/last pages, e.g: 5-1',
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: const [
+                                Text(
+                                  "• ",
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                Expanded(
+                                  child: Text.rich(
+                                    TextSpan(
+                                      style: TextStyle(),
+                                      text:
+                                          'To specify only even pages from a range enter: 1-5E',
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: const [
+                                Text(
+                                  "• ",
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                Expanded(
+                                  child: Text.rich(
+                                    TextSpan(
+                                      style: TextStyle(),
+                                      text:
+                                          'To specify only odd pages from a range enter: 1-5D',
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: const [
+                                Text(
+                                  "• ",
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                Expanded(
+                                  child: Text.rich(
+                                    TextSpan(
+                                      style: TextStyle(),
+                                      text:
+                                          'To specify a set of pages that contain a specific word or phrase, enter your search text in double or single quotes: "Your Search Text Here"',
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
-                        Expanded(
-                          child: Column(
-                            children: [
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: const [
-                                  Text(
-                                    "• ",
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  ),
-                                  Expanded(
-                                    child: Text.rich(
-                                      TextSpan(
-                                        style: TextStyle(),
-                                        text:
-                                            'Enter pages separated by commas, ex: 1, 4-8, 10, 22-24',
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: const [
-                                  Text(
-                                    "• ",
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  ),
-                                  Expanded(
-                                    child: Text.rich(
-                                      TextSpan(
-                                        style: TextStyle(),
-                                        text:
-                                            'To specify a reverse page order swap first/last pages, e.g: 5-1',
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: const [
-                                  Text(
-                                    "• ",
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  ),
-                                  Expanded(
-                                    child: Text.rich(
-                                      TextSpan(
-                                        style: TextStyle(),
-                                        text:
-                                            'To specify only even pages from a range enter: 1-5E',
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: const [
-                                  Text(
-                                    "• ",
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  ),
-                                  Expanded(
-                                    child: Text.rich(
-                                      TextSpan(
-                                        style: TextStyle(),
-                                        text:
-                                            'To specify only odd pages from a range enter: 1-5D',
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: const [
-                                  Text(
-                                    "• ",
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  ),
-                                  Expanded(
-                                    child: Text.rich(
-                                      TextSpan(
-                                        style: TextStyle(),
-                                        text:
-                                            'To specify a set of pages that contain a specific word or phrase, enter your search text in double or single quotes: "Your Search Text Here"',
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
           ],

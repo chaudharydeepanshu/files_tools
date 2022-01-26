@@ -1,4 +1,3 @@
-import 'dart:ui';
 import 'package:files_tools/basicFunctionalityFunctions/hex_to_decimal.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';

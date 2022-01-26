@@ -14,14 +14,11 @@ class PDFScaffold extends StatefulWidget {
   const PDFScaffold({Key? key, this.arguments}) : super(key: key);
 
   @override
-  _HomePage createState() => _HomePage(test: 'sdfdsf');
+  _HomePage createState() => _HomePage();
 }
 
 class _HomePage extends State<PDFScaffold> {
   final GlobalKey<SfPdfViewerState> _pdfViewerKey = GlobalKey();
-  final test;
-
-  _HomePage({this.test});
   // @override
   // void initState() {
   //   super.initState();

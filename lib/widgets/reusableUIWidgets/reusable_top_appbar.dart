@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class ReusableSilverAppBar extends StatefulWidget with PreferredSizeWidget {
   const ReusableSilverAppBar({
+    Key? key,
     this.title,
     this.appBarIconLeft,
     this.appBarIconLeftToolTip,
@@ -12,7 +13,7 @@ class ReusableSilverAppBar extends StatefulWidget with PreferredSizeWidget {
     this.titleColor,
     this.leftButtonColor,
     this.rightButtonColor,
-  });
+  }) : super(key: key);
   final String? title;
   final Color? titleColor;
   final Color? leftButtonColor;
@@ -110,7 +111,7 @@ class _ReusableSilverAppBarState extends State<ReusableSilverAppBar> {
                             message:
                                 widget.appBarIconRightToolTip ?? "Settings",
                             child: InkWell(
-                              onTap: widget.appBarIconRightAction ?? null,
+                              onTap: widget.appBarIconRightAction,
                               customBorder: const StadiumBorder(),
                               focusColor: widget.rightButtonColor != null
                                   ? widget.rightButtonColor!.withOpacity(0.1)
