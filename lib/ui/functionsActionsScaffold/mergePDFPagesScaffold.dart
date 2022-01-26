@@ -175,8 +175,8 @@ class _MergePDFPagesScaffoldState extends State<MergePDFPagesScaffold>
                                               fit: BoxFit.fitHeight,
                                               height: 35,
                                               color: widget.arguments!
-                                                          .mapOfSubFunctionDetails![
-                                                      'File Icon Color'],
+                                                      .mapOfSubFunctionDetails![
+                                                  'File Icon Color'],
                                               alignment: Alignment.center,
                                               semanticsLabel: 'File Icon'),
                                           // Image.asset(
@@ -197,7 +197,8 @@ class _MergePDFPagesScaffoldState extends State<MergePDFPagesScaffold>
                                               CrossAxisAlignment.start,
                                           children: [
                                             Text(
-                                              widget.arguments!.pdfFilesNames[index],
+                                              widget.arguments!
+                                                  .pdfFilesNames[index],
                                               overflow: TextOverflow.ellipsis,
                                               style: TextStyle(
                                                 fontWeight: FontWeight.w500,
@@ -213,7 +214,10 @@ class _MergePDFPagesScaffoldState extends State<MergePDFPagesScaffold>
                                             Row(
                                               children: [
                                                 Text(
-                                                  formatBytes(widget.arguments!.pdfFilesSizes[index], 2),
+                                                  formatBytes(
+                                                      widget.arguments!
+                                                          .pdfFilesSizes[index],
+                                                      2),
                                                   style: TextStyle(
                                                     fontSize: 12,
                                                     color: widget.arguments!

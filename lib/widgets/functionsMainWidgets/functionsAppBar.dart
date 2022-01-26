@@ -64,8 +64,7 @@ class _PdfFunctionsAppBarState extends State<PdfFunctionsAppBar> {
                               message: "Back",
                               child: InkWell(
                                 onTap: () {
-                                  if (widget.notifyAppbarFileStatus ==
-                                      false) {
+                                  if (widget.notifyAppbarFileStatus == false) {
                                     Navigator.of(context).pop();
                                   } else if (widget.notifyAppbarFileStatus ==
                                       true) {
@@ -99,8 +98,7 @@ class _PdfFunctionsAppBarState extends State<PdfFunctionsAppBar> {
                       Padding(
                         padding: const EdgeInsets.only(left: 20),
                         child: Text(
-                          widget.mapOfFunctionDetails!['Title'] ??
-                              'Split PDF',
+                          widget.mapOfFunctionDetails!['Title'] ?? 'Split PDF',
                           textAlign: TextAlign.start,
                           style: const TextStyle(
                               fontFamily: AppTheme.fontName,
@@ -137,8 +135,8 @@ class _PdfFunctionsAppBarState extends State<PdfFunctionsAppBar> {
                           'assets/images/tools_icons/pdf_tools_icon.svg',
                       fit: BoxFit.fitHeight,
                       height: 85,
-                      color: widget
-                              .mapOfFunctionDetails!['Icon And Text Color'],
+                      color:
+                          widget.mapOfFunctionDetails!['Icon And Text Color'],
                       alignment: Alignment.center,
                       semanticsLabel:
                           '${widget.mapOfFunctionDetails!['Title']} Icon'),

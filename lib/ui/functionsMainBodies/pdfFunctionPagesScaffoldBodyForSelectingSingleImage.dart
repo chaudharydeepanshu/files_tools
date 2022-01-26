@@ -83,7 +83,9 @@ class _PDFFunctionBodyForSelectingSingleImageState
             bool storagePermissionPermanentlyDeniedBoolValue =
                 prefs.getBool('storagePermissionPermanentlyDeniedBoolValue') ??
                     false;
-            debugPrint(prefs.getBool('storagePermissionPermanentlyDeniedBoolValue').toString());
+            debugPrint(prefs
+                .getBool('storagePermissionPermanentlyDeniedBoolValue')
+                .toString());
             return storagePermissionPermanentlyDeniedBoolValue;
           }
 
@@ -368,7 +370,8 @@ class _PDFFunctionBodyForSelectingSingleImageState
                                                                       File file,
                                                                       String
                                                                           targetPath) async {
-                                                                File? imageCompressResult;
+                                                                File?
+                                                                    imageCompressResult;
                                                                 if (extensionOfFileName ==
                                                                     '.png') {
                                                                   imageCompressResult = await FlutterImageCompress.compressAndGetFile(
@@ -420,17 +423,24 @@ class _PDFFunctionBodyForSelectingSingleImageState
                                                                 }
 
                                                                 debugPrint(file
-                                                                    .lengthSync().toString());
+                                                                    .lengthSync()
+                                                                    .toString());
                                                                 debugPrint(imageCompressResult!
-                                                                    .lengthSync().toString());
+                                                                    .lengthSync()
+                                                                    .toString());
 
                                                                 return imageCompressResult;
                                                               }
 
                                                               String
                                                                   targetPath =
-                                                                  await getCacheFilePathFromFileName(fileNameWithoutExtension + ' ' + 'compressed' + extensionOfFileName);
-                                                              debugPrint(targetPath);
+                                                                  await getCacheFilePathFromFileName(
+                                                                      fileNameWithoutExtension +
+                                                                          ' ' +
+                                                                          'compressed' +
+                                                                          extensionOfFileName);
+                                                              debugPrint(
+                                                                  targetPath);
                                                               if (extensionOfFileName == '.png' ||
                                                                   extensionOfFileName ==
                                                                       '.jpg' ||
@@ -614,7 +624,8 @@ class _PDFFunctionBodyForSelectingSingleImageState
                                                                   myChildSize =
                                                                       size;
                                                                   debugPrint(
-                                                                      myChildSize.toString());
+                                                                      myChildSize
+                                                                          .toString());
                                                                 });
                                                               },
                                                               child: Padding(
@@ -632,8 +643,9 @@ class _PDFFunctionBodyForSelectingSingleImageState
                                                                     fit: BoxFit
                                                                         .fitHeight,
                                                                     height: 35,
-                                                                    color: widget.mapOfFunctionDetails![
-                                                                            'Select File Icon Color'],
+                                                                    color: widget
+                                                                            .mapOfFunctionDetails![
+                                                                        'Select File Icon Color'],
                                                                     alignment:
                                                                         Alignment
                                                                             .center,
@@ -676,7 +688,9 @@ class _PDFFunctionBodyForSelectingSingleImageState
                                                                   Row(
                                                                     children: [
                                                                       Text(
-                                                                        formatBytes(filesSize, 2),
+                                                                        formatBytes(
+                                                                            filesSize,
+                                                                            2),
                                                                         style: const TextStyle(
                                                                             fontSize:
                                                                                 12,
@@ -815,7 +829,8 @@ class _PDFFunctionBodyForSelectingSingleImageState
                                                             ? Stack(
                                                                 children: [
                                                                   ClipRRect(
-                                                                    borderRadius: const BorderRadius.only(
+                                                                    borderRadius: const BorderRadius
+                                                                            .only(
                                                                         bottomLeft:
                                                                             Radius.circular(
                                                                                 10),
@@ -991,19 +1006,19 @@ class _PDFFunctionBodyForSelectingSingleImageState
                                     PDFFunctions(
                                       filePickedStatus: isFilePicked,
                                       fileLoadingStatus: isFileLoaded,
-                                      onTapAction: () =>
+                                      onTapAction: () => widget
+                                                      .mapOfFunctionDetails![
+                                                  'Sublist Functions'][index]
+                                              ['Action'](
+                                          file,
+                                          compressedFile ?? file,
+                                          filePath,
+                                          compressedFilesPath ?? filePath,
+                                          fileName,
+                                          fileByte,
                                           widget.mapOfFunctionDetails![
-                                                      'Sublist Functions']
-                                                  [index]['Action'](
-                                              file,
-                                              compressedFile ?? file,
-                                              filePath,
-                                              compressedFilesPath ?? filePath,
-                                              fileName,
-                                              fileByte,
-                                              widget.mapOfFunctionDetails![
-                                                  'Sublist Functions'][index],
-                                              context),
+                                              'Sublist Functions'][index],
+                                          context),
                                       subFunctionDetailMap:
                                           widget.mapOfFunctionDetails![
                                               'Sublist Functions'][index],
@@ -1033,7 +1048,8 @@ class _PDFFunctionBodyForSelectingSingleImageState
                           decoration: BoxDecoration(
                             border: Border.all(color: Colors.grey.shade400),
                             color: Colors.white,
-                            borderRadius: const BorderRadius.all(Radius.circular(20)),
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(20)),
                           ),
                           height: 30,
                           width: 70,

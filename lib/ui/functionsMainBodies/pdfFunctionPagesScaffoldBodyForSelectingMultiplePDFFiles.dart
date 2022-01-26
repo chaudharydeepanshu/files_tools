@@ -103,7 +103,9 @@ class _PDFFunctionBodyForMultipleFilesState
             bool storagePermissionPermanentlyDeniedBoolValue =
                 prefs.getBool('storagePermissionPermanentlyDeniedBoolValue') ??
                     false;
-            debugPrint(prefs.getBool('storagePermissionPermanentlyDeniedBoolValue').toString());
+            debugPrint(prefs
+                .getBool('storagePermissionPermanentlyDeniedBoolValue')
+                .toString());
             return storagePermissionPermanentlyDeniedBoolValue;
           }
 
@@ -472,7 +474,7 @@ class _PDFFunctionBodyForMultipleFilesState
                                                               }
                                                               if (kDebugMode) {
                                                                 print(
-                                                                  fileSelectionCompatibility);
+                                                                    fileSelectionCompatibility);
                                                               }
 
                                                               bool ifEveryTrue =
@@ -867,7 +869,8 @@ class _PDFFunctionBodyForMultipleFilesState
                                                                   myChildSize =
                                                                       size;
                                                                   debugPrint(
-                                                                      myChildSize.toString());
+                                                                      myChildSize
+                                                                          .toString());
                                                                 });
                                                               },
                                                               child: Padding(
@@ -885,8 +888,9 @@ class _PDFFunctionBodyForMultipleFilesState
                                                                     fit: BoxFit
                                                                         .fitHeight,
                                                                     height: 35,
-                                                                    color: widget.mapOfFunctionDetails![
-                                                                            'Select File Icon Color'],
+                                                                    color: widget
+                                                                            .mapOfFunctionDetails![
+                                                                        'Select File Icon Color'],
                                                                     alignment:
                                                                         Alignment
                                                                             .center,
@@ -912,7 +916,10 @@ class _PDFFunctionBodyForMultipleFilesState
                                                                         .start,
                                                                 children: [
                                                                   Text(
-                                                                    files.length.toString() + ' ' + 'files selected',
+                                                                    files.length
+                                                                            .toString() +
+                                                                        ' ' +
+                                                                        'files selected',
                                                                     overflow:
                                                                         TextOverflow
                                                                             .ellipsis,
@@ -929,7 +936,9 @@ class _PDFFunctionBodyForMultipleFilesState
                                                                   Row(
                                                                     children: [
                                                                       Text(
-                                                                        formatBytes(filesSize, 2),
+                                                                        formatBytes(
+                                                                            filesSize,
+                                                                            2),
                                                                         style: const TextStyle(
                                                                             fontSize:
                                                                                 12,
@@ -1068,7 +1077,8 @@ class _PDFFunctionBodyForMultipleFilesState
                                                             ? Stack(
                                                                 children: [
                                                                   ClipRRect(
-                                                                    borderRadius: const BorderRadius.only(
+                                                                    borderRadius: const BorderRadius
+                                                                            .only(
                                                                         bottomLeft:
                                                                             Radius.circular(
                                                                                 10),
@@ -1285,7 +1295,8 @@ class _PDFFunctionBodyForMultipleFilesState
                           decoration: BoxDecoration(
                             border: Border.all(color: Colors.grey.shade400),
                             color: Colors.white,
-                            borderRadius: const BorderRadius.all(Radius.circular(20)),
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(20)),
                           ),
                           height: 30,
                           width: 70,

@@ -479,7 +479,8 @@ class _WatermarkPDFPagesScaffoldState extends State<WatermarkPDFPagesScaffold>
                                               ? Colors.lightBlue
                                               : null,
                                           shape: RoundedRectangleBorder(
-                                            borderRadius: const BorderRadius.all(
+                                            borderRadius:
+                                                const BorderRadius.all(
                                               Radius.circular(10),
                                             ),
                                             side: BorderSide(
@@ -631,8 +632,9 @@ class _WatermarkPDFPagesScaffoldState extends State<WatermarkPDFPagesScaffold>
                             ),
                             TextFormField(
                               controller: transparencyTextEditingController,
-                              keyboardType: const TextInputType.numberWithOptions(
-                                  decimal: true),
+                              keyboardType:
+                                  const TextInputType.numberWithOptions(
+                                      decimal: true),
                               inputFormatters: transparencyTextInputFormatter,
                               onChanged: (String value) {
                                 setState(() {});
@@ -668,8 +670,9 @@ class _WatermarkPDFPagesScaffoldState extends State<WatermarkPDFPagesScaffold>
                             ),
                             TextFormField(
                               controller: rotationAngleTextEditingController,
-                              keyboardType: const TextInputType.numberWithOptions(
-                                  decimal: true),
+                              keyboardType:
+                                  const TextInputType.numberWithOptions(
+                                      decimal: true),
                               inputFormatters: rotationAngleTextInputFormatter,
                               onChanged: (String value) {
                                 setState(() {

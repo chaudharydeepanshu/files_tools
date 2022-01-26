@@ -41,8 +41,7 @@ class _ImagesToPDFScaffoldState extends State<ImagesToPDFScaffold> {
 
   @override
   void initState() {
-    listOfRotation =
-        List<int>.generate(widget.arguments!.files.length, (i) {
+    listOfRotation = List<int>.generate(widget.arguments!.files.length, (i) {
       return 0;
     });
 
@@ -277,7 +276,8 @@ class _ImagesToPDFScaffoldState extends State<ImagesToPDFScaffold> {
                           FocusManager.instance.primaryFocus?.unfocus();
                           setState(() {
                             _isSameSizeEnabled = newValue!;
-                            debugPrint("_isSameSizeEnabled: $_isSameSizeEnabled");
+                            debugPrint(
+                                "_isSameSizeEnabled: $_isSameSizeEnabled");
                           });
                         },
                 ),

@@ -1064,8 +1064,7 @@ class _ReorderPDFPagesScaffoldState extends State<ReorderPDFPagesScaffold>
                           mainAxisSpacing: 0,
                           crossAxisCount: 2,
                           childAspectRatio: 0.68,
-                          children:
-                              data!.map((e) => buildItem(e)).toList(),
+                          children: data!.map((e) => buildItem(e)).toList(),
                           dragWidgetBuilder: dragWidget,
                           scrollSpeedController: (int timeInMilliSecond,
                               double overSize, double itemSize) {

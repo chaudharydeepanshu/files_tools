@@ -356,7 +356,8 @@ class _ResultZipScaffoldState extends State<ResultZipScaffold> {
                                     onTapAction: () async {
                                       FocusManager.instance.primaryFocus
                                           ?.unfocus();
-                                      debugPrint(androidInfo!.version.sdkInt.toString());
+                                      debugPrint(androidInfo!.version.sdkInt
+                                          .toString());
                                       extractZipInUserDescribedLocation();
                                     },
                                     buttonIcon: Icons.folder_open_outlined,
@@ -455,7 +456,10 @@ class _ResultZipScaffoldState extends State<ResultZipScaffold> {
                                             extensionOfString:
                                                 extensionOfFileName);
                                     String newFileName =
-                                        fileNameWithoutExtension + ' ' + currentDateTimeInString() + extensionOfFileName;
+                                        fileNameWithoutExtension +
+                                            ' ' +
+                                            currentDateTimeInString() +
+                                            extensionOfFileName;
                                     filesNamesList.add(newFileName);
                                   }
                                   await DocumentFileSave.saveMultipleFiles(

@@ -145,8 +145,7 @@ class _CustomRangePDFPagesScaffoldState
               'Reordered Range List': rangesReorderRecorder,
               'PDF File Name': widget.arguments!.pdfFile.name
             },
-            processType:
-                widget.arguments!.processType + " As Single Document",
+            processType: widget.arguments!.processType + " As Single Document",
             filePath: widget.arguments!.pdfFile.path,
             shouldDataBeProcessed: shouldDataBeProcessed);
 
@@ -574,7 +573,8 @@ class _CustomRangePDFPagesScaffoldState
                                       }
                                     }
                                     setState(() {
-                                      debugPrint('rangeToDelete: $rangeToDelete');
+                                      debugPrint(
+                                          'rangeToDelete: $rangeToDelete');
                                       debugPrint('value: $value');
                                       ranges.removeAt(rangeToDelete!);
                                       rangesReorderRecorder

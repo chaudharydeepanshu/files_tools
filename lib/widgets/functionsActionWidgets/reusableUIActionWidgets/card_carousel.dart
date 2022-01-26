@@ -104,8 +104,8 @@ class _CarouselListState extends State<CarouselList>
 
   @override
   void initState() {
-    controllerList = List<AnimationController>.generate(
-        widget.listOfImages!.length, (i) {
+    controllerList =
+        List<AnimationController>.generate(widget.listOfImages!.length, (i) {
       AnimationController controller$i = AnimationController(
         value: widget.controllerValueList![i],
         duration: const Duration(milliseconds: 500),

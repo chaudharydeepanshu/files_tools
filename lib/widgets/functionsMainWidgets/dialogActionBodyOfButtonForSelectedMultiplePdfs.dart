@@ -140,7 +140,7 @@ class _DialogActionBodyOfButtonForSelectedMultipleFilesState
                                       fit: BoxFit.fitHeight,
                                       height: 35,
                                       color: widget.mapOfFunctionDetails![
-                                              'Select File Icon Color'],
+                                          'Select File Icon Color'],
                                       alignment: Alignment.center,
                                       semanticsLabel: 'File Icon'),
                                   // Image.asset(

@@ -98,7 +98,9 @@ class _PDFFunctionBodyState extends State<PDFFunctionBody>
             bool storagePermissionPermanentlyDeniedBoolValue =
                 prefs.getBool('storagePermissionPermanentlyDeniedBoolValue') ??
                     false;
-            debugPrint(prefs.getBool('storagePermissionPermanentlyDeniedBoolValue').toString());
+            debugPrint(prefs
+                .getBool('storagePermissionPermanentlyDeniedBoolValue')
+                .toString());
             return storagePermissionPermanentlyDeniedBoolValue;
           }
 
@@ -409,16 +411,18 @@ class _PDFFunctionBodyState extends State<PDFFunctionBody>
                                                                     false) {
                                                                   if (isEncryptedDocument ==
                                                                       false) {
+                                                                    debugPrint(
+                                                                        file.name);
                                                                     debugPrint(file
-                                                                        .name);
+                                                                        .bytes
+                                                                        .toString());
                                                                     debugPrint(file
-                                                                        .bytes.toString());
-                                                                    debugPrint(file
-                                                                        .size.toString());
+                                                                        .size
+                                                                        .toString());
                                                                     debugPrint(file
                                                                         .extension);
-                                                                    debugPrint(file
-                                                                        .path);
+                                                                    debugPrint(
+                                                                        file.path);
                                                                     debugPrint(
                                                                         'Document not encrypted & encrypted documents are not allowed');
 
@@ -480,16 +484,18 @@ class _PDFFunctionBodyState extends State<PDFFunctionBody>
                                                                   } //show snackbar for document encrypted here as not allowed through above condition
                                                                 } else {
                                                                   //document not encrypted but allowed encrypted
+                                                                  debugPrint(
+                                                                      file.name);
                                                                   debugPrint(file
-                                                                      .name);
+                                                                      .bytes
+                                                                      .toString());
                                                                   debugPrint(file
-                                                                      .bytes.toString());
-                                                                  debugPrint(file
-                                                                      .size.toString());
+                                                                      .size
+                                                                      .toString());
                                                                   debugPrint(file
                                                                       .extension);
-                                                                  debugPrint(file
-                                                                      .path);
+                                                                  debugPrint(
+                                                                      file.path);
 
                                                                   setState(() {
                                                                     isFilePickingInitiated =
@@ -622,7 +628,8 @@ class _PDFFunctionBodyState extends State<PDFFunctionBody>
                                                           if (_result.type ==
                                                               ResultType
                                                                   .noAppToOpen) {
-                                                            debugPrint(_openResult);
+                                                            debugPrint(
+                                                                _openResult);
                                                             //Using default app pdf viewer instead of suggesting downloading others
                                                             Navigator.pushNamed(
                                                               context,
@@ -695,7 +702,8 @@ class _PDFFunctionBodyState extends State<PDFFunctionBody>
                                                                   myChildSize =
                                                                       size;
                                                                   debugPrint(
-                                                                      myChildSize.toString());
+                                                                      myChildSize
+                                                                          .toString());
                                                                 });
                                                               },
                                                               child: Padding(
@@ -713,8 +721,9 @@ class _PDFFunctionBodyState extends State<PDFFunctionBody>
                                                                     fit: BoxFit
                                                                         .fitHeight,
                                                                     height: 35,
-                                                                    color: widget.mapOfFunctionDetails![
-                                                                            'Select File Icon Color'],
+                                                                    color: widget
+                                                                            .mapOfFunctionDetails![
+                                                                        'Select File Icon Color'],
                                                                     alignment:
                                                                         Alignment
                                                                             .center,
@@ -757,7 +766,9 @@ class _PDFFunctionBodyState extends State<PDFFunctionBody>
                                                                   Row(
                                                                     children: [
                                                                       Text(
-                                                                        formatBytes(file.size, 2),
+                                                                        formatBytes(
+                                                                            file.size,
+                                                                            2),
                                                                         style: const TextStyle(
                                                                             fontSize:
                                                                                 12,
@@ -896,7 +907,8 @@ class _PDFFunctionBodyState extends State<PDFFunctionBody>
                                                             ? Stack(
                                                                 children: [
                                                                   ClipRRect(
-                                                                    borderRadius: const BorderRadius.only(
+                                                                    borderRadius: const BorderRadius
+                                                                            .only(
                                                                         bottomLeft:
                                                                             Radius.circular(
                                                                                 10),
@@ -1110,7 +1122,8 @@ class _PDFFunctionBodyState extends State<PDFFunctionBody>
                           decoration: BoxDecoration(
                             border: Border.all(color: Colors.grey.shade400),
                             color: Colors.white,
-                            borderRadius: const BorderRadius.all(Radius.circular(20)),
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(20)),
                           ),
                           height: 30,
                           width: 70,

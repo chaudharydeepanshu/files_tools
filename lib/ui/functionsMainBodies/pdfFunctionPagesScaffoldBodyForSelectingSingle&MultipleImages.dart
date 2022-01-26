@@ -84,7 +84,9 @@ class _PDFFunctionBodyForSelectingSingleMultipleImagesState
             bool storagePermissionPermanentlyDeniedBoolValue =
                 prefs.getBool('storagePermissionPermanentlyDeniedBoolValue') ??
                     false;
-            debugPrint(prefs.getBool('storagePermissionPermanentlyDeniedBoolValue').toString());
+            debugPrint(prefs
+                .getBool('storagePermissionPermanentlyDeniedBoolValue')
+                .toString());
             return storagePermissionPermanentlyDeniedBoolValue;
           }
 
@@ -607,9 +609,11 @@ class _PDFFunctionBodyForSelectingSingleMultipleImagesState
                                                                     }
 
                                                                     debugPrint(file
-                                                                        .lengthSync().toString());
+                                                                        .lengthSync()
+                                                                        .toString());
                                                                     debugPrint(imageCompressResult!
-                                                                        .lengthSync().toString());
+                                                                        .lengthSync()
+                                                                        .toString());
 
                                                                     return imageCompressResult;
                                                                   }
@@ -1131,7 +1135,8 @@ class _PDFFunctionBodyForSelectingSingleMultipleImagesState
                                                                   myChildSize =
                                                                       size;
                                                                   debugPrint(
-                                                                      myChildSize.toString());
+                                                                      myChildSize
+                                                                          .toString());
                                                                 });
                                                               },
                                                               child: Padding(
