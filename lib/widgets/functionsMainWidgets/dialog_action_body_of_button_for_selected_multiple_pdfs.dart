@@ -27,7 +27,7 @@ class DialogActionBodyOfButtonForSelectedMultipleFiles extends StatefulWidget {
 
 class _DialogActionBodyOfButtonForSelectedMultipleFilesState
     extends State<DialogActionBodyOfButtonForSelectedMultipleFiles> {
-  var myChildSize;
+  dynamic myChildSize;
 
   double defaultButtonElevation = 3;
   double onTapDownButtonElevation = 0;

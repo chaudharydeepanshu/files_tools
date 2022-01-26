@@ -364,7 +364,7 @@ class ModifyImageScaffold extends StatefulWidget {
 }
 
 class _ModifyImageScaffoldState extends State<ModifyImageScaffold> {
-  late var tempImageFile;
+  late dynamic tempImageFile;
 
   final GlobalKey<PopupMenuButtonState<EditorCropLayerPainter>> popupMenuKey =
       GlobalKey<PopupMenuButtonState<EditorCropLayerPainter>>();

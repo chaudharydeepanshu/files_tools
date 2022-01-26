@@ -25,7 +25,7 @@ class DialogActionBodyOfButtonForSelectedMultipleImages extends StatefulWidget {
 
 class _DialogActionBodyOfButtonForSelectedMultipleImagesState
     extends State<DialogActionBodyOfButtonForSelectedMultipleImages> {
-  var myChildSize;
+  dynamic myChildSize;
 
   double defaultButtonElevation = 3;
   double onTapDownButtonElevation = 0;

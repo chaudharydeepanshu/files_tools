@@ -85,7 +85,7 @@ class _DecryptPDFScaffoldState extends State<DecryptPDFScaffold>
         },
       ); //shows the processing dialog
 
-      var document;
+      dynamic document;
       Future.delayed(const Duration(milliseconds: 500), () async {
         document = await processSelectedDataFromUser(
             pdfChangesDataMap: {

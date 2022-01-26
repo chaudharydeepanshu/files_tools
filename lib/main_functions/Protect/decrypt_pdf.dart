@@ -4,7 +4,7 @@ import 'dart:io';
 
 Future<dynamic> decryptPDF(String pdfFilePath,
     Map<String, dynamic> pdfChangesDataMap, bool shouldDataBeProcessed) async {
-  late var document;
+  late dynamic document;
 
   // document = PdfDocument(inputBytes: File(pdfFilePath).readAsBytesSync());
 
