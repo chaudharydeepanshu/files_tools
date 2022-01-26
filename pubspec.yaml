@@ -27,15 +27,15 @@ dependencies:
     sdk: flutter
   intl: ^0.17.0
   #  salomon_bottom_bar: ^3.1.0
-  file_picker: ^4.3.0
-  syncfusion_flutter_pdf: ^19.4.38-beta
-  syncfusion_flutter_pdfviewer: ^19.4.38-beta
+  file_picker: ^4.3.2
+  syncfusion_flutter_pdf: ^19.4.47-beta
+  syncfusion_flutter_pdfviewer: ^19.4.47-beta
   open_file: ^3.2.1
   path_provider: ^2.0.8
   native_pdf_renderer: ^4.0.1
   pdf_merger: ^0.0.6
   flutter_file_dialog: ^2.3.0
-  flutter_svg: ^1.0.0
+  flutter_svg: ^1.0.3
   reorderable_grid_view: ^2.2.2
   #  reorderable_grid_view:
   #    git:
@@ -44,11 +44,11 @@ dependencies:
   #  reorderables: ^0.4.1
   #  pdf: ^3.4.2
   uuid: ^3.0.5
-  flutter_archive: ^4.1.0
+  flutter_archive: ^4.1.1
   permission_handler: ^8.3.0
-  shared_preferences: ^2.0.11
+  shared_preferences: ^2.0.12
   store_redirect: ^2.0.0
-  device_info_plus: ^3.2.0
+  device_info_plus: ^3.2.1
   flutter_pdf_split:
     git:
       url: https://github.com/brightseagit/flutter_pdf_split.git
@@ -58,7 +58,7 @@ dependencies:
     git:
      url: https://github.com/brightseagit/flutter_pdf_compressor.git
      ref: master
-  image_picker: ^0.8.4+4
+  image_picker: ^0.8.4+5
   flutter_image_compress: ^1.1.0
   image_compression_flutter: ^1.0.2
   share_plus: ^3.0.4
@@ -68,7 +68,7 @@ dependencies:
       url: https://github.com/SuaMusica/googleads-mobile-flutter.git
       path: packages/google_mobile_ads
       ref: feature/suamusica
-  provider: ^6.0.1
+  provider: ^6.0.2
   adaptive_theme: ^2.3.0
   gallery_saver: ^2.3.2
   document_file_save:
@@ -90,6 +90,13 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+  # The "flutter_lints" package below contains a set of recommended lints to
+  # encourage good coding practices. The lint set provided by the package is
+  # activated in the `analysis_options.yaml` file located at the root of your
+  # package. See that file for information about deactivating specific lint
+  # rules and activating additional ones.
+  flutter_lints: ^1.0.4
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
