@@ -60,7 +60,9 @@ Future<void> processingDialog(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Platform.isWindows ? const CircularProgressIndicator() : Container(),
+                Platform.isWindows
+                    ? const CircularProgressIndicator()
+                    : Container(),
                 const SizedBox(
                   height: 20,
                 ),
