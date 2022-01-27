@@ -278,61 +278,70 @@ class _CustomExpansionTileState extends State<CustomExpansionTile>
             splashColor: widget.effectsColor ?? Colors.black.withOpacity(0.1),
             hoverColor: widget.effectsColor ?? Colors.black.withOpacity(0.1),
             child: SizedBox(
-              height: 80,
+              height: 100,
               child: Padding(
                 padding: const EdgeInsets.only(left: 12.0, right: 12),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        widget.leading ??
-                            Container(
-                              width: 50,
-                              height: 50,
-                              decoration: const BoxDecoration(
-                                shape: BoxShape.rectangle,
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(20)),
-                                color: Colors.black,
-                              ),
-                              child: SvgPicture.asset(
-                                  'assets/images/tools_icons/pdf_tools_icon.svg',
-                                  fit: BoxFit.fitHeight,
-                                  height: 45,
-                                  color: null,
-                                  alignment: Alignment.center,
-                                  semanticsLabel: 'No Asset Function Icon'),
-                              // Image.asset(
-                              //   'assets/images/pdf_icon.png',
-                              //   fit: BoxFit.fitHeight,
-                              //   height: 45,
-                              // ),
+                child: FittedBox(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          SizedBox(
+                            width: 60,
+                            height: 60,
+                            child: FittedBox(
+                              child: widget.leading ??
+                                  Container(
+                                    // width: 50,
+                                    // height: 50,
+                                    decoration: const BoxDecoration(
+                                      shape: BoxShape.rectangle,
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(20)),
+                                      color: Colors.black,
+                                    ),
+                                    child: SvgPicture.asset(
+                                        'assets/images/tools_icons/pdf_tools_icon.svg',
+                                        fit: BoxFit.fitHeight,
+                                        height: 45,
+                                        color: null,
+                                        alignment: Alignment.center,
+                                        semanticsLabel:
+                                            'No Asset Function Icon'),
+                                    // Image.asset(
+                                    //   'assets/images/pdf_icon.png',
+                                    //   fit: BoxFit.fitHeight,
+                                    //   height: 45,
+                                    // ),
+                                  ),
                             ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 8.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              widget.title,
-                              SizedBox(
-                                width: 180,
-                                child: widget.subtitle,
-                              ),
-                            ],
                           ),
-                        ),
-                      ],
-                    ),
-                    RotationTransition(
-                      turns: _iconTurns,
-                      child: Icon(
-                        Icons.expand_more,
-                        color: widget.cardTrailingArrowColor,
+                          Padding(
+                            padding: const EdgeInsets.only(left: 8.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                widget.title,
+                                SizedBox(
+                                  width: 230,
+                                  child: widget.subtitle,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                  ],
+                      RotationTransition(
+                        turns: _iconTurns,
+                        child: Icon(
+                          Icons.expand_more,
+                          color: widget.cardTrailingArrowColor,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

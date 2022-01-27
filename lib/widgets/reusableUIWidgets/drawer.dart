@@ -108,24 +108,26 @@ class _CustomDrawerState extends State<CustomDrawer> {
                   decoration: const BoxDecoration(
                       //color: Colors.white,
                       ),
-                  child: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SvgPicture.asset(
-                            'assets/images/logos/files_tools_app_logo.svg',
-                            fit: BoxFit.fitHeight,
-                            height: 100,
-                            alignment: Alignment.center,
-                            semanticsLabel: 'App Logo'),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        const Text(
-                          'Files Tools',
-                          style: TextStyle(fontSize: 20),
-                        ),
-                      ],
+                  child: FittedBox(
+                    child: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SvgPicture.asset(
+                              'assets/images/logos/files_tools_app_logo.svg',
+                              fit: BoxFit.fitHeight,
+                              height: 100,
+                              alignment: Alignment.center,
+                              semanticsLabel: 'App Logo'),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          const Text(
+                            'Files Tools',
+                            style: TextStyle(fontSize: 20),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),

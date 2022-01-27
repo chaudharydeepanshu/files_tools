@@ -230,7 +230,7 @@ Map<String, dynamic>? mapOfCompressFunctionDetailsForPDFTools = {
       'Button Color': Colors.red.shade100,
       'Button Effects Color': Colors.red.withOpacity(0.1),
       'Button Text Color': Colors.black,
-      'Title': 'Compress PDF Offline (Beta)',
+      'Title': 'Compress PDF Offline (β)',
       'Subtitle': 'Compress PDF in low, medium and high quality',
       'File Loading Required': false,
       'Action': (file, pdfPagesImages, mapOfSubFunctionDetails, context) {

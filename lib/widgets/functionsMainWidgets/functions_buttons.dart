@@ -123,7 +123,7 @@ class _PDFFunctionsState extends State<PDFFunctions> {
                                 Text(
                                   widget.subFunctionDetailMap!['Title'] ??
                                       'Extract select pages',
-                                  textAlign: TextAlign.center,
+                                  textAlign: TextAlign.start,
                                   style: TextStyle(
                                     fontFamily: AppTheme.fontName,
                                     fontWeight: FontWeight.w500,
