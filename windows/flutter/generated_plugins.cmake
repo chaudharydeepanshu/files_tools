@@ -5,7 +5,7 @@
 list(APPEND FLUTTER_PLUGIN_LIST
   connectivity_plus_windows
   image_compression_flutter
-  native_pdf_renderer
+  pdfx
   url_launcher_windows
 )
 

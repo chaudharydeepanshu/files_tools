@@ -28,16 +28,21 @@ import 'package:provider/provider.dart';
 import 'ads/ad_state.dart';
 import 'navigation/page_routes_model.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
+
+void initialization(BuildContext context) async {
+  // This is where you can initialize the resources needed by your app while
+  // the splash screen is displayed.  After this function completes, the
+  // splash screen will be removed.
+  WidgetsFlutterBinding.ensureInitialized();
+}
 
 Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.removeAfter(initialization);
+  // runApp will run, but not be shown until initialization completes:
   final initFuture = MobileAds.instance.initialize();
   final adState = AdState(initFuture);
   final savedThemeMode = await AdaptiveTheme.getThemeMode();
-  // await SystemChrome.setPreferredOrientations(<DeviceOrientation>[
-  //   DeviceOrientation.portraitUp,
-  //   DeviceOrientation.portraitDown
-  // ]);
   runApp(Provider.value(
     value: adState,
     builder: (context, child) => MyApp(savedThemeMode: savedThemeMode),

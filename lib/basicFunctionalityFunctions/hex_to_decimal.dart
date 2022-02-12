@@ -512,4 +512,5 @@ int? hexToDecimal(var hex) {
   } else if (hex == 'FF') {
     return 255;
   }
+  return null;
 }
