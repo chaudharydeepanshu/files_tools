@@ -40,9 +40,15 @@ void initialization(BuildContext context) async {
 Future<void> main() async {
   FlutterNativeSplash.removeAfter(initialization);
   // runApp will run, but not be shown until initialization completes:
-  final initFuture = MobileAds.instance.initialize();
+  final initFuture = MobileAds.instance.initialize().then((initializationStatus) {
+    initializationStatus.adapterStatuses.forEach((key, value) {
+      debugPrint('Adapter status for $key: ${value.description}');
+    });
+    return initializationStatus;
+  });
   final adState = AdState(initFuture);
   final savedThemeMode = await AdaptiveTheme.getThemeMode();
+
   runApp(Provider.value(
     value: adState,
     builder: (context, child) => MyApp(savedThemeMode: savedThemeMode),

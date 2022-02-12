@@ -77,6 +77,13 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics-ktx'
     //For android 12 support //Targeting S+ (version 31 and above) requires that one of FLAG_IMMUTABLE or FLAG_MUTABLE be specified when creating a PendingIntent.
     implementation 'androidx.work:work-runtime:2.7.0-rc01'
+    // Import the Facebook Audience Network SDK and adapter
+    implementation 'com.google.ads.mediation:facebook:6.8.0.0'
+    // Import the AdColony SDK and adapter
+    implementation 'com.google.ads.mediation:adcolony:4.6.5.0'
+    // You should already have the ads dependency in your app.
+    implementation 'com.google.android.gms:play-services-ads:20.5.0'
+    implementation 'com.google.android.ads:mediation-test-suite:2.0.0'
 }
 
 android.buildTypes.release.ndk.debugSymbolLevel = 'FULL'
