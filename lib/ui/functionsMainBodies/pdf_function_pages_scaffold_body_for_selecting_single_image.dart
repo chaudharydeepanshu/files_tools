@@ -11,7 +11,7 @@ import 'package:files_tools/basicFunctionalityFunctions/file_name_manager.dart';
 import 'package:files_tools/basicFunctionalityFunctions/get_cache_file_path_from_file_name.dart';
 import 'package:files_tools/basicFunctionalityFunctions/lifecycle_event_handler.dart';
 import 'package:files_tools/basicFunctionalityFunctions/size_calculator.dart';
-import 'package:native_pdf_renderer/native_pdf_renderer.dart' as pdf_renderer;
+import 'package:pdfx/pdfx.dart' as pdf_renderer;
 import 'package:files_tools/widgets/functionsMainWidgets/permission_dialog_box.dart';
 import 'package:open_file/open_file.dart';
 import 'package:permission_handler/permission_handler.dart';

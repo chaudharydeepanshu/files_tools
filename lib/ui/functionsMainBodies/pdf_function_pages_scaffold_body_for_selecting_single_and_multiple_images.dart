@@ -12,7 +12,7 @@ import 'package:files_tools/basicFunctionalityFunctions/get_cache_file_path_from
 import 'package:files_tools/basicFunctionalityFunctions/lifecycle_event_handler.dart';
 import 'package:files_tools/basicFunctionalityFunctions/size_calculator.dart';
 import 'package:image_compression_flutter/image_compression_flutter.dart';
-import 'package:native_pdf_renderer/native_pdf_renderer.dart' as pdf_renderer;
+import 'package:pdfx/pdfx.dart' as pdf_renderer;
 import 'package:files_tools/widgets/functionsMainWidgets/dialog_action_body_of_button_for_selected_multiple_images.dart';
 import 'package:files_tools/widgets/functionsMainWidgets/permission_dialog_box.dart';
 import 'package:permission_handler/permission_handler.dart';

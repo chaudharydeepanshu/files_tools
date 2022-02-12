@@ -12,7 +12,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:files_tools/basicFunctionalityFunctions/check_encrypted_document.dart';
 import 'package:files_tools/basicFunctionalityFunctions/lifecycle_event_handler.dart';
 import 'package:files_tools/basicFunctionalityFunctions/size_calculator.dart';
-import 'package:native_pdf_renderer/native_pdf_renderer.dart' as pdf_renderer;
+import 'package:pdfx/pdfx.dart' as pdf_renderer;
 import 'package:files_tools/widgets/functionsMainWidgets/permission_dialog_box.dart';
 import 'package:files_tools/widgets/functionsMainWidgets/dialog_action_body_of_button_for_selected_multiple_pdfs.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -275,9 +275,9 @@ class _PDFFunctionBodyForMultipleFilesState
         int pageWidth = ((page.width) / 1).round();
 
         pdf_renderer.PdfPageImage? pageImage = await page.render(
-          width: pageWidth,
-          height: pageHeight,
-          format: pdf_renderer.PdfPageFormat.JPEG,
+          width: pageWidth.toDouble(),
+          height: pageHeight.toDouble(),
+          format: pdf_renderer.PdfPageImageFormat.jpeg,
         );
 
         listPDFPagesImages.add(pageImage);

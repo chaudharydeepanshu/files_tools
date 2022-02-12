@@ -13,7 +13,7 @@ import 'package:files_tools/basicFunctionalityFunctions/process_selected_data_fr
 import 'package:files_tools/ui/functionsResultsScaffold/result_zip_scaffold.dart';
 import 'package:files_tools/widgets/functionsActionWidgets/reusableUIActionWidgets/processing_dialog.dart';
 import 'package:files_tools/widgets/reusableUIWidgets/reusable_top_appbar.dart';
-import 'package:native_pdf_renderer/native_pdf_renderer.dart' as pdf_renderer;
+import 'package:pdfx/pdfx.dart' as pdf_renderer;
 import 'package:provider/provider.dart';
 
 class ExtractAllPDFPagesScaffold extends StatefulWidget {

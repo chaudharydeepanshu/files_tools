@@ -19,7 +19,7 @@ import 'package:open_file/open_file.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
 import 'package:uuid/uuid.dart';
-import 'package:native_pdf_renderer/native_pdf_renderer.dart' as pdf_renderer;
+import 'package:pdfx/pdfx.dart' as pdf_renderer;
 import 'dart:io';
 
 var uuid = const Uuid();

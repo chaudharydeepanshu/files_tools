@@ -4,7 +4,7 @@ import 'package:files_tools/basicFunctionalityFunctions/creating_and_saving_pdf_
 import 'package:files_tools/basicFunctionalityFunctions/file_name_manager.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
 import 'dart:io';
-import 'package:native_pdf_renderer/native_pdf_renderer.dart' as pdf_renderer;
+import 'package:pdfx/pdfx.dart' as pdf_renderer;
 
 Future<List<String>?> pdfToImages(String pdfFilePath,
     Map<String, dynamic> pdfChangesDataMap, bool shouldDataBeProcessed) async {
@@ -56,9 +56,9 @@ Future<List<String>?> pdfToImages(String pdfFilePath,
         int pageWidth = ((page.width) / 1).round();
 
         pdf_renderer.PdfPageImage? pageImage = await page.render(
-          width: pageWidth,
-          height: pageHeight,
-          format: pdf_renderer.PdfPageFormat.JPEG,
+          width: pageWidth.toDouble(),
+          height: pageHeight.toDouble(),
+          format: pdf_renderer.PdfPageImageFormat.jpeg,
         );
 
         pdfPagesImages.add(pageImage);

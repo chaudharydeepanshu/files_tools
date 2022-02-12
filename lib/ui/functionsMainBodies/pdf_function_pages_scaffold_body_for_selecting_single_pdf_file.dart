@@ -11,7 +11,7 @@ import 'package:files_tools/basicFunctionalityFunctions/check_encrypted_document
 import 'package:files_tools/basicFunctionalityFunctions/lifecycle_event_handler.dart';
 import 'package:files_tools/basicFunctionalityFunctions/size_calculator.dart';
 import 'package:files_tools/navigation/page_routes_model.dart';
-import 'package:native_pdf_renderer/native_pdf_renderer.dart' as pdf_renderer;
+import 'package:pdfx/pdfx.dart' as pdf_renderer;
 import 'package:files_tools/widgets/functionsMainWidgets/permission_dialog_box.dart';
 import 'package:open_file/open_file.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -220,9 +220,9 @@ class _PDFFunctionBodyState extends State<PDFFunctionBody>
         int pageWidth = ((page.width) / 1).round();
 
         pdf_renderer.PdfPageImage? pageImage = await page.render(
-          width: pageWidth,
-          height: pageHeight,
-          format: pdf_renderer.PdfPageFormat.JPEG,
+          width: pageWidth.toDouble(),
+          height: pageHeight.toDouble(),
+          format: pdf_renderer.PdfPageImageFormat.jpeg,
         );
 
         pdfPagesImages.add(pageImage);
