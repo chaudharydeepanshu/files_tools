@@ -492,7 +492,7 @@ class _ImagesToPDFScaffoldState extends State<ImagesToPDFScaffold> {
 }
 
 class ImagesToPDFScaffoldArguments {
-  //List imagesList;
+  // List imagesList;
   List<File> files;
   List<File> compressedFiles;
   List<String> filePaths;
@@ -503,7 +503,7 @@ class ImagesToPDFScaffoldArguments {
   Map<String, dynamic> mapOfSubFunctionDetails;
 
   ImagesToPDFScaffoldArguments({
-    //required this.imagesList,
+    // required this.imagesList,
     required this.files,
     required this.compressedFiles,
     required this.filePaths,

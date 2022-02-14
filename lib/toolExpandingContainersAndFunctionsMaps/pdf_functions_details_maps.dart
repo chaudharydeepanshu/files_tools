@@ -14,6 +14,7 @@ import 'package:files_tools/ui/functionsActionsScaffold/merge_pdf_pages_scaffold
 import 'package:files_tools/ui/functionsActionsScaffold/pdf_pages_modification_scaffold.dart';
 import 'package:files_tools/ui/functionsActionsScaffold/pdf_pages_selection_scaffold.dart';
 import '../navigation/page_routes_model.dart';
+import 'dart:io';
 
 //For PDF
 Map<String, dynamic>? mapOfMergeFunctionDetailsForPDFTools = {
@@ -399,13 +400,13 @@ Map<String, dynamic>? mapOfImageToPDFFunctionDetailsForPDFTools = {
       'Title': 'Images to PDF',
       'Subtitle': 'Reorder, rotate images & then convert to PDF',
       'File Loading Required': true,
-      'Action': (files, compressedFiles, filePaths, compressedFilesPaths,
+      'Action': (List<File> files, List<File> compressedFiles, filePaths, compressedFilesPaths,
           fileNames, fileSizes, mapOfSubFunctionDetails, context) {
         Navigator.pushNamed(
           context,
           PageRoutes.imagesToPDFScaffold,
           arguments: ImagesToPDFScaffoldArguments(
-            //imagesList: imagesList,
+            // imagesList: imagesList,
             files: files,
             compressedFiles: compressedFiles,
             processType: 'Images To PDF',
@@ -485,7 +486,7 @@ Map<String, dynamic>? mapOfImageToPDFFunctionDetailsForImageTools = {
       'Title': 'Images to PDF',
       'Subtitle': 'Reorder, rotate images & then convert to PDF',
       'File Loading Required': true,
-      'Action': (files, compressedFiles, filePaths, compressedFilesPaths,
+      'Action': (List<File> files, List<File> compressedFiles, filePaths, compressedFilesPaths,
           fileNames, fileSizes, mapOfSubFunctionDetails, context) {
         Navigator.pushNamed(
           context,

@@ -164,7 +164,7 @@ class _PDFFunctionBodyForSelectingSingleMultipleImagesState
   bool isFileLoaded = false;
   bool isFilePickingInitiated = false;
   late List<File> files = [];
-  late List<File?> compressedFiles = [];
+  late List<File> compressedFiles = [];
   late List<String> filePaths = [];
   late List<String> compressedFilesPaths = [];
   late List<String> fileNames = [];
@@ -985,10 +985,14 @@ class _PDFFunctionBodyForSelectingSingleMultipleImagesState
                                                                       //     '.heif' ||
                                                                       extensionOfFileName ==
                                                                           '.webp') {
-                                                                    compressedFiles.add(await compressAndGetFile(
+                                                                    File? tempCompressedFile = await compressAndGetFile(
                                                                         files[
-                                                                            i],
-                                                                        targetPath));
+                                                                        i],
+                                                                        targetPath) ;
+                                                                    if(tempCompressedFile != null){
+
+                                                                    compressedFiles.add(tempCompressedFile);
+                                                                    }
                                                                     compressedFilesPaths
                                                                         .add(
                                                                             targetPath);
