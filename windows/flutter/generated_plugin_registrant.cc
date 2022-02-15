@@ -8,7 +8,7 @@
 
 #include <connectivity_plus_windows/connectivity_plus_windows_plugin.h>
 #include <image_compression_flutter/image_compression_flutter_plugin.h>
-#include <pdfx/native_pdf_renderer_plugin.h>
+#include <pdfx/pdfx_plugin.h>
 #include <url_launcher_windows/url_launcher_windows.h>
 
 void RegisterPlugins(flutter::PluginRegistry* registry) {
@@ -16,8 +16,8 @@ void RegisterPlugins(flutter::PluginRegistry* registry) {
       registry->GetRegistrarForPlugin("ConnectivityPlusWindowsPlugin"));
   ImageCompressionFlutterPluginRegisterWithRegistrar(
       registry->GetRegistrarForPlugin("ImageCompressionFlutterPlugin"));
-  NativePdfRendererPluginRegisterWithRegistrar(
-      registry->GetRegistrarForPlugin("NativePdfRendererPlugin"));
+  PdfxPluginRegisterWithRegistrar(
+      registry->GetRegistrarForPlugin("PdfxPlugin"));
   UrlLauncherWindowsRegisterWithRegistrar(
       registry->GetRegistrarForPlugin("UrlLauncherWindows"));
 }
