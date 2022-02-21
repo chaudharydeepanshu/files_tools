@@ -260,36 +260,36 @@ class _CustomExpansionTileState extends State<CustomExpansionTile>
     return Material(
       color: _backgroundColor.value ?? Colors.transparent,
       borderRadius: const BorderRadius.all(Radius.circular(15)),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          InkWell(
-            onTap: _handleTap,
-            customBorder: RoundedRectangleBorder(
-              borderRadius: _isExpanded == true
-                  ? const BorderRadius.only(
-                      topLeft: Radius.circular(15),
-                      topRight: Radius.circular(15))
-                  : const BorderRadius.all(Radius.circular(15)),
-            ),
-            focusColor: widget.effectsColor ?? Colors.black.withOpacity(0.1),
-            highlightColor:
-                widget.effectsColor ?? Colors.black.withOpacity(0.1),
-            splashColor: widget.effectsColor ?? Colors.black.withOpacity(0.1),
-            hoverColor: widget.effectsColor ?? Colors.black.withOpacity(0.1),
-            child: SizedBox(
-              height: 100,
-              child: Padding(
-                padding: const EdgeInsets.only(left: 12.0, right: 12),
-                child: FittedBox(
+      child: InkWell(
+        onTap: _handleTap,
+        customBorder: RoundedRectangleBorder(
+          borderRadius: _isExpanded == true
+              ? const BorderRadius.only(
+              topLeft: Radius.circular(15),
+              topRight: Radius.circular(15))
+              : const BorderRadius.all(Radius.circular(15)),
+        ),
+        focusColor: widget.effectsColor ?? Colors.black.withOpacity(0.1),
+        highlightColor:
+        widget.effectsColor ?? Colors.black.withOpacity(0.1),
+        splashColor: widget.effectsColor ?? Colors.black.withOpacity(0.1),
+        hoverColor: widget.effectsColor ?? Colors.black.withOpacity(0.1),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            SizedBox(
+                // height: 100,
+                child: Padding(
+                  padding: const EdgeInsets.only( top: 12, bottom: 12 , left: 12.0, right: 12),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Row(
+                        crossAxisAlignment:  CrossAxisAlignment.start,
                         children: [
                           SizedBox(
-                            width: 60,
-                            height: 60,
+                            width: 78,
+                            height: 78,
                             child: FittedBox(
                               child: widget.leading ??
                                   Container(
@@ -317,17 +317,21 @@ class _CustomExpansionTileState extends State<CustomExpansionTile>
                                   ),
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 8.0),
+                          const SizedBox(
+                            width: 8.0,
+                          ),
+                          SizedBox(
+                            width: 210,
+                            height: 78,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 widget.title,
-                                SizedBox(
-                                  width: 230,
-                                  child: widget.subtitle,
+                                const SizedBox(
+                                  height: 8.0,
                                 ),
+                                widget.subtitle!,
                               ],
                             ),
                           ),
@@ -344,50 +348,50 @@ class _CustomExpansionTileState extends State<CustomExpansionTile>
                   ),
                 ),
               ),
-            ),
-          ),
-          // ListTileTheme.merge(
-          //   iconColor: _iconColor.value,
-          //   textColor: _headerColor.value,
-          //   child: ListTile(
-          //     minVerticalPadding: 50,
-          //     shape: RoundedRectangleBorder(
-          //       borderRadius: _isExpanded == false
-          //           ? BorderRadius.all(Radius.circular(10))
-          //           : BorderRadius.only(
-          //               topLeft: Radius.circular(10),
-          //               topRight: Radius.circular(10)),
-          //     ),
-          //     onTap: _handleTap,
-          //     contentPadding: widget.tilePadding,
-          //     leading: widget.leading,
-          //     title: widget.title,
-          //     subtitle: widget.subtitle,
-          //     trailing: widget.trailing ??
-          //         RotationTransition(
-          //           turns: _iconTurns,
-          //           child: const Icon(Icons.expand_more),
-          //         ),
-          //   ),
-          // ),
-          ClipRect(
-            child: Align(
-              alignment: widget.expandedAlignment ?? Alignment.center,
-              heightFactor: _heightFactor.value,
-              child: MeasureSize(
-                onChange: (size) {
-                  setState(() {
-                    myChildSize = size;
-                    debugPrint(myChildSize.height.toString());
-                  });
-                },
-                child: Container(
-                  child: child,
+
+            // ListTileTheme.merge(
+            //   iconColor: _iconColor.value,
+            //   textColor: _headerColor.value,
+            //   child: ListTile(
+            //     minVerticalPadding: 50,
+            //     shape: RoundedRectangleBorder(
+            //       borderRadius: _isExpanded == false
+            //           ? BorderRadius.all(Radius.circular(10))
+            //           : BorderRadius.only(
+            //               topLeft: Radius.circular(10),
+            //               topRight: Radius.circular(10)),
+            //     ),
+            //     onTap: _handleTap,
+            //     contentPadding: widget.tilePadding,
+            //     leading: widget.leading,
+            //     title: widget.title,
+            //     subtitle: widget.subtitle,
+            //     trailing: widget.trailing ??
+            //         RotationTransition(
+            //           turns: _iconTurns,
+            //           child: const Icon(Icons.expand_more),
+            //         ),
+            //   ),
+            // ),
+            ClipRect(
+              child: Align(
+                alignment: widget.expandedAlignment ?? Alignment.center,
+                heightFactor: _heightFactor.value,
+                child: MeasureSize(
+                  onChange: (size) {
+                    setState(() {
+                      myChildSize = size;
+                      debugPrint(myChildSize.height.toString());
+                    });
+                  },
+                  child: Container(
+                    child: child,
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
