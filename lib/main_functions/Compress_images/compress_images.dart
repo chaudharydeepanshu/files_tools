@@ -1,5 +1,5 @@
+import 'dart:io';
 import 'dart:typed_data';
-import 'package:extended_image/extended_image.dart';
 import 'package:files_tools/basicFunctionalityFunctions/creating_and_saving_image_file_using_bytes_temporarily.dart';
 import 'package:files_tools/basicFunctionalityFunctions/file_name_manager.dart';
 import 'package:files_tools/basicFunctionalityFunctions/get_external_storage_file_path_from_file_name.dart';

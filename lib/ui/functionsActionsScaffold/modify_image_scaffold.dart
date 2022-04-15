@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:typed_data';
 // import 'dart:ui';
 import 'package:extended_image/extended_image.dart';

@@ -27,12 +27,12 @@ dependencies:
     sdk: flutter
   intl: ^0.17.0
   #  salomon_bottom_bar: ^3.1.0
-  file_picker: ^4.4.0
-  syncfusion_flutter_pdf: ^19.4.52-beta
-  syncfusion_flutter_pdfviewer: ^19.4.52-beta
+  file_picker: ^4.5.1
+  syncfusion_flutter_pdf: ^20.1.48-beta
+  syncfusion_flutter_pdfviewer: ^20.1.48-beta.1
   open_file: ^3.2.1
   path_provider: ^2.0.9
-  pdfx: ^2.0.1+1
+  pdfx: ^2.0.1+2
   pdf_merger: ^0.0.6
   flutter_file_dialog: ^2.3.0
   flutter_svg: ^1.0.3
@@ -44,11 +44,11 @@ dependencies:
   #  reorderables: ^0.4.1
   #  pdf: ^3.4.2
   uuid: ^3.0.6
-  flutter_archive: ^4.1.1
-  permission_handler: ^9.1.0
+  flutter_archive: ^4.2.0
+  permission_handler: ^9.2.0
   shared_preferences: ^2.0.13
   store_redirect: ^2.0.1
-  device_info_plus: ^3.2.2
+  device_info_plus: ^3.2.3
   flutter_pdf_split:
     git:
       url: https://github.com/brightseagit/flutter_pdf_split.git
@@ -58,10 +58,10 @@ dependencies:
     git:
      url: https://github.com/brightseagit/flutter_pdf_compressor.git
      ref: master
-  image_picker: ^0.8.4+9
+  image_picker: ^0.8.5
   flutter_image_compress: ^1.1.0
   image_compression_flutter: ^1.0.2
-  share_plus: ^3.1.0
+  share_plus: ^4.0.4
 #  google_mobile_ads: ^1.0.1
   google_mobile_ads:
     git:
@@ -69,19 +69,19 @@ dependencies:
       path: packages/google_mobile_ads
       ref: feature/suamusica
   provider: ^6.0.2
-  adaptive_theme: ^2.3.0
+  adaptive_theme: ^2.3.1
   gallery_saver: ^2.3.2
   document_file_save:
     git:
       url: https://github.com/brightseagit/document_file_save.git
       ref: master
-  package_info_plus: ^1.4.0
+  package_info_plus: ^1.4.2
   connectivity_plus: ^2.0.2 #this plugin is using pedantic and causing warning
-  extended_image: ^6.0.1
+  extended_image: ^6.0.2+1
   image_editor: ^1.0.2
   flutter_native_image: ^0.0.6+1
-  flex_color_picker: ^2.3.0
-  flutter_native_splash: ^2.0.5
+  flex_color_picker: ^2.3.1
+  flutter_native_splash: ^2.1.5
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

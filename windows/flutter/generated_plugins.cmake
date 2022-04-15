@@ -6,6 +6,8 @@ list(APPEND FLUTTER_PLUGIN_LIST
   connectivity_plus_windows
   image_compression_flutter
   pdfx
+  permission_handler_windows
+  syncfusion_pdfviewer_windows
   url_launcher_windows
 )
 

@@ -30,7 +30,7 @@ import 'navigation/page_routes_model.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 
-void initialization(BuildContext context) async {
+void initialization() async {
   // This is where you can initialize the resources needed by your app while
   // the splash screen is displayed.  After this function completes, the
   // splash screen will be removed.
@@ -38,9 +38,11 @@ void initialization(BuildContext context) async {
 }
 
 Future<void> main() async {
-  FlutterNativeSplash.removeAfter(initialization);
+  initialization();
+  FlutterNativeSplash.remove();
   // runApp will run, but not be shown until initialization completes:
-  final initFuture = MobileAds.instance.initialize().then((initializationStatus) {
+  final initFuture =
+      MobileAds.instance.initialize().then((initializationStatus) {
     initializationStatus.adapterStatuses.forEach((key, value) {
       debugPrint('Adapter status for $key: ${value.description}');
     });
