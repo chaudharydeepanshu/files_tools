@@ -6,20 +6,35 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pdf_bitmaps/pdf_bitmaps.dart';
 
-Future<PdfPageModel> getUpdatedPdfPage(
-    {required int index,
-    required String? pdfUri,
-    required String? pdfPath}) async {
+Future<PdfPageModel> getUpdatedPdfPage({
+  required int index,
+  required String? pdfUri,
+  required String? pdfPath,
+  int? quality,
+}) async {
   Uint8List? bytes = await PdfBitmaps().pdfBitmap(
       params: PDFBitmapParams(
-          pdfUri: pdfUri, pdfPath: pdfPath, pageIndex: index, quality: 25));
+          pdfUri: pdfUri,
+          pdfPath: pdfPath,
+          pageIndex: index,
+          quality: quality ?? 25));
   PdfPageModel updatedPdfPage;
   if (bytes != null) {
     updatedPdfPage = PdfPageModel(
-        pageIndex: index, pageBytes: bytes, pageErrorStatus: false);
+        pageIndex: index,
+        pageBytes: bytes,
+        pageErrorStatus: false,
+        pageSelected: false,
+        pageRotationAngle: 0,
+        pageHidden: false);
   } else {
-    updatedPdfPage =
-        PdfPageModel(pageIndex: index, pageBytes: null, pageErrorStatus: true);
+    updatedPdfPage = PdfPageModel(
+        pageIndex: index,
+        pageBytes: null,
+        pageErrorStatus: true,
+        pageSelected: false,
+        pageRotationAngle: 0,
+        pageHidden: false);
   }
   return updatedPdfPage;
 }
@@ -37,16 +52,22 @@ Future<int?> generatePdfPageCount(
 }
 
 Future<List<PdfPageModel>> generatePdfPagesList(
-    {required String? pdfUri, required String? pdfPath}) async {
+    {required String? pdfUri, required String? pdfPath, int? pageCount}) async {
   List<PdfPageModel> pdfPages = [];
   int? pdfPageCount;
 
-  pdfPageCount = await generatePdfPageCount(pdfUri: pdfUri, pdfPath: pdfPath);
+  pdfPageCount =
+      pageCount ?? await generatePdfPageCount(pdfUri: pdfUri, pdfPath: pdfPath);
   if (pdfPageCount != null) {
     pdfPages = List<PdfPageModel>.generate(
         pdfPageCount,
         (int index) => PdfPageModel(
-            pageIndex: index, pageBytes: null, pageErrorStatus: false));
+            pageIndex: index,
+            pageBytes: null,
+            pageErrorStatus: false,
+            pageSelected: false,
+            pageRotationAngle: 0,
+            pageHidden: false));
   }
 
   return pdfPages;
@@ -254,7 +275,7 @@ class LoadingPage extends StatelessWidget {
       children: [
         const CircularProgressIndicator(),
         const SizedBox(height: 16),
-        Text("Loading page...", style: Theme.of(context).textTheme.caption),
+        Text("Loading page...", style: Theme.of(context).textTheme.bodySmall),
         const SizedBox(height: 16),
         PageNumber(pageIndex: pageIndex),
       ],
@@ -273,7 +294,7 @@ class LoadingPdf extends StatelessWidget {
         children: [
           const CircularProgressIndicator(),
           const SizedBox(height: 16),
-          Text("Loading pdf...", style: Theme.of(context).textTheme.caption),
+          Text("Loading pdf...", style: Theme.of(context).textTheme.bodySmall),
         ],
       ),
     );
@@ -316,7 +337,7 @@ class PdfError extends StatelessWidget {
             "Failed to load pdf",
             style: Theme.of(context)
                 .textTheme
-                .caption
+                .bodySmall
                 ?.copyWith(color: Theme.of(context).colorScheme.error),
           ),
         ],
@@ -341,7 +362,7 @@ class PageError extends StatelessWidget {
           "Failed to load page",
           style: Theme.of(context)
               .textTheme
-              .caption
+              .bodySmall
               ?.copyWith(color: Theme.of(context).colorScheme.error),
         ),
         const SizedBox(height: 16),

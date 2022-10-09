@@ -94,7 +94,7 @@ class FilesSelected extends StatelessWidget {
                     children: [
                       const SizedBox(height: 10),
                       Text('Picking files please wait ...',
-                          style: Theme.of(context).textTheme.caption),
+                          style: Theme.of(context).textTheme.bodySmall),
                       const Divider()
                     ],
                   )
@@ -106,7 +106,7 @@ class FilesSelected extends StatelessWidget {
                             'Please select at least one more file',
                             style: Theme.of(context)
                                 .textTheme
-                                .caption
+                                .bodySmall
                                 ?.copyWith(
                                     color: Theme.of(context).colorScheme.error),
                           ),
@@ -120,7 +120,7 @@ class FilesSelected extends StatelessWidget {
                               const SizedBox(height: 10),
                               Text(
                                 'Long press on files to reorder them',
-                                style: Theme.of(context).textTheme.caption,
+                                style: Theme.of(context).textTheme.bodySmall,
                               ),
                               const Divider()
                             ],
@@ -202,7 +202,7 @@ class NoFilesSelected extends StatelessWidget {
         ),
         Text(
           'Please select ${selectFileType == SelectFileType.multiple ? "some files" : "a file"}',
-          style: Theme.of(context).textTheme.caption,
+          style: Theme.of(context).textTheme.bodySmall,
         ),
         Consumer(
           builder: (BuildContext context, WidgetRef ref, Widget? child) {
@@ -279,7 +279,7 @@ class SelectedFileTile extends StatelessWidget {
             Expanded(
               flex: 6,
               child: Text(file.fileDate,
-                  style: Theme.of(context).textTheme.caption,
+                  style: Theme.of(context).textTheme.bodySmall,
                   overflow: TextOverflow.ellipsis),
             ),
             const VerticalDivider(),
@@ -287,7 +287,7 @@ class SelectedFileTile extends StatelessWidget {
               flex: 3,
               child: Text(
                 file.fileTime,
-                style: Theme.of(context).textTheme.caption,
+                style: Theme.of(context).textTheme.bodySmall,
                 overflow: TextOverflow.ellipsis,
                 textAlign: TextAlign.center,
               ),
@@ -297,7 +297,7 @@ class SelectedFileTile extends StatelessWidget {
               flex: 5,
               child: Text(
                 file.fileSizeFormatBytes,
-                style: Theme.of(context).textTheme.caption,
+                style: Theme.of(context).textTheme.bodySmall,
                 overflow: TextOverflow.ellipsis,
                 textAlign: TextAlign.center,
               ),
@@ -397,23 +397,23 @@ class _ReorderableFilesListViewState extends State<ReorderableFilesListView> {
       );
     }
 
-    return ReorderableListView(
+    return ReorderableListView.builder(
       shrinkWrap: _files.length < 10,
       proxyDecorator: proxyDecorator,
-      children: <Widget>[
-        for (int index = 0; index < _files.length; index += 1)
-          Column(
-            key: Key('$index'),
-            children: [
-              Material(
-                  color: Colors.transparent,
-                  child: SelectedFileTile(file: _files[index])),
-              index != _files.length - 1
-                  ? const SizedBox(height: 10)
-                  : const SizedBox(),
-            ],
-          ),
-      ],
+      itemCount: _files.length,
+      itemBuilder: (BuildContext context, int index) {
+        return Column(
+          key: Key('$index'),
+          children: [
+            Material(
+                color: Colors.transparent,
+                child: SelectedFileTile(file: _files[index])),
+            index != _files.length - 1
+                ? const SizedBox(height: 10)
+                : const SizedBox(),
+          ],
+        );
+      },
       onReorder: (int oldIndex, int newIndex) {
         setState(() {
           if (oldIndex < newIndex) {

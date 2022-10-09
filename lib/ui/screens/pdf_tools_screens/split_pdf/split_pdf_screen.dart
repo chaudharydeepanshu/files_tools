@@ -185,7 +185,7 @@ class LoadingDialog extends StatelessWidget {
           ),
           Text(
             'Please wait ...',
-            style: Theme.of(context).textTheme.caption,
+            style: Theme.of(context).textTheme.bodySmall,
           ),
         ],
       ),

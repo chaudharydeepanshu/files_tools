@@ -1,13 +1,9 @@
 import 'dart:ui';
 
 import 'package:files_tools/models/file_model.dart';
-import 'package:files_tools/state/providers.dart';
-import 'package:files_tools/state/tools_actions_state.dart';
 import 'package:files_tools/ui/screens/pdf_tools_screens/split_pdf/split_pdf_tools_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:files_tools/route/route.dart' as route;
 
 class SplitByPageRanges extends StatelessWidget {
   const SplitByPageRanges(
@@ -81,8 +77,6 @@ class PageRangesActionBody extends StatefulWidget {
 }
 
 class _PageRangesActionBodyState extends State<PageRangesActionBody> {
-  final _formKey = GlobalKey<FormState>();
-
   List<TextEditingController> pageRangesControllers = [TextEditingController()];
 
   List<String> pageRangeStringList = [];
@@ -216,7 +210,7 @@ class _PageRangesActionBodyState extends State<PageRangesActionBody> {
                     Flexible(
                       child: Text(
                         sanitizedData.join(", "),
-                        style: Theme.of(context).textTheme.caption,
+                        style: Theme.of(context).textTheme.bodySmall,
                         textAlign: TextAlign.start,
                       ),
                     ),
@@ -459,7 +453,7 @@ class _PageRangesActionBodyState extends State<PageRangesActionBody> {
 //                               Flexible(
 //                                 child: Text(
 //                                   sanitizedData.join(", "),
-//                                   style: Theme.of(context).textTheme.caption,
+//                                   style: Theme.of(context).textTheme.bodySmall,
 //                                   textAlign: TextAlign.start,
 //                                 ),
 //                               ),
@@ -508,7 +502,7 @@ class _PageRangesActionBodyState extends State<PageRangesActionBody> {
 //                     'Sorry, can\'t split a pdf with less than 2 pages.',
 //                     style: Theme.of(context)
 //                         .textTheme
-//                         .caption
+//                         .bodySmall
 //                         ?.copyWith(color: Theme.of(context).colorScheme.error),
 //                   ),
 //           ],
@@ -590,6 +584,8 @@ class _PageRangeTileState extends State<PageRangeTile> {
         autovalidateMode: AutovalidateMode.onUserInteraction,
         // The validator receives the text that the user has entered.
         validator: (value) {
+          return null;
+
           // return pageRangeGeneralValidator(
           //     pageRangeStringList: pageRangeStringList,
           //     pdfPageCount: widget.pdfPageCount);

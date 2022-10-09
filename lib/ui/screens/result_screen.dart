@@ -2,7 +2,6 @@ import 'package:files_tools/models/file_model.dart';
 import 'package:files_tools/state/providers.dart';
 import 'package:files_tools/state/tools_actions_state.dart';
 import 'package:files_tools/ui/screens/pdf_screen.dart';
-import 'package:files_tools/utils/format_bytes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rive/rive.dart';
@@ -119,7 +118,7 @@ class ErrorBody extends StatelessWidget {
             "Sorry, failed to complete the processing.",
             style: Theme.of(context)
                 .textTheme
-                .caption
+                .bodySmall
                 ?.copyWith(color: Theme.of(context).colorScheme.error),
           ),
           Consumer(
@@ -158,7 +157,7 @@ class ProcessingBody extends StatelessWidget {
           ),
           Text(
             'Processing please wait ...',
-            style: Theme.of(context).textTheme.caption,
+            style: Theme.of(context).textTheme.bodySmall,
           ),
           Consumer(
             builder: (BuildContext context, WidgetRef ref, Widget? child) {
@@ -199,7 +198,7 @@ class SavingSingleFile extends StatelessWidget {
             const SizedBox(height: 10),
             Text(
               'To view files click over them.',
-              style: Theme.of(context).textTheme.caption,
+              style: Theme.of(context).textTheme.bodySmall,
             ),
             const Divider(),
             Consumer(
@@ -258,7 +257,7 @@ class SavingMultipleFiles extends StatelessWidget {
               const SizedBox(height: 10),
               Text(
                 'To view files click over them.',
-                style: Theme.of(context).textTheme.caption,
+                style: Theme.of(context).textTheme.bodySmall,
               ),
               const Divider(),
               Consumer(
@@ -349,7 +348,7 @@ class OutputFileTile extends StatelessWidget {
             Expanded(
               flex: 6,
               child: Text(file.fileDate,
-                  style: Theme.of(context).textTheme.caption,
+                  style: Theme.of(context).textTheme.bodySmall,
                   overflow: TextOverflow.ellipsis),
             ),
             const VerticalDivider(),
@@ -357,7 +356,7 @@ class OutputFileTile extends StatelessWidget {
               flex: 3,
               child: Text(
                 file.fileTime,
-                style: Theme.of(context).textTheme.caption,
+                style: Theme.of(context).textTheme.bodySmall,
                 overflow: TextOverflow.ellipsis,
                 textAlign: TextAlign.center,
               ),
@@ -367,7 +366,7 @@ class OutputFileTile extends StatelessWidget {
               flex: 5,
               child: Text(
                 file.fileSize,
-                style: Theme.of(context).textTheme.caption,
+                style: Theme.of(context).textTheme.bodySmall,
                 overflow: TextOverflow.ellipsis,
                 textAlign: TextAlign.center,
               ),

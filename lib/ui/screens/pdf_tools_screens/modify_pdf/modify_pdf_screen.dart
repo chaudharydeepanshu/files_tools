@@ -5,7 +5,7 @@ import 'package:files_tools/state/select_file_state.dart';
 import 'package:files_tools/state/tools_actions_state.dart';
 import 'package:files_tools/ui/components/select_file_section.dart';
 import 'package:files_tools/ui/components/tool_actions_section.dart';
-import 'package:files_tools/ui/screens/pdf_tools_screens/split_pdf/split_pdf_tools_screen.dart';
+import 'package:files_tools/ui/screens/pdf_tools_screens/modify_pdf/modify_pdf_tool_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pick_or_save/pick_or_save.dart';
@@ -47,13 +47,13 @@ class ModifyPDFPage extends StatelessWidget {
                     actionText: "Rotate, Delete & Reorder PDF Pages",
                     actionOnTap: selectedFiles.length == 1
                         ? () {
-                            // Navigator.pushNamed(
-                            //   context,
-                            //   route.splitPDFToolsPage,
-                            //   arguments: SplitPDFToolsPageArguments(
-                            //       actionType: ToolsActions.splitByPageCount,
-                            //       file: selectedFiles[0]),
-                            // );
+                            Navigator.pushNamed(
+                              context,
+                              route.modifyPDFToolsPage,
+                              arguments: ModifyPDFToolsPageArguments(
+                                  actionType: ToolsActions.modify,
+                                  file: selectedFiles[0]),
+                            );
                           }
                         : null,
                   ),
@@ -129,7 +129,7 @@ class LoadingDialog extends StatelessWidget {
           ),
           Text(
             'Please wait ...',
-            style: Theme.of(context).textTheme.caption,
+            style: Theme.of(context).textTheme.bodySmall,
           ),
         ],
       ),

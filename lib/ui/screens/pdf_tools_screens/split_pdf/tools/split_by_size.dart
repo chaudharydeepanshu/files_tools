@@ -209,7 +209,7 @@ class _SplitBySizeActionCardState extends State<SplitBySizeActionCard> {
                     'Sorry, can\'t split a pdf with less than 2 pages.',
                     style: Theme.of(context)
                         .textTheme
-                        .caption
+                        .bodySmall
                         ?.copyWith(color: Theme.of(context).colorScheme.error),
                   ),
           ],

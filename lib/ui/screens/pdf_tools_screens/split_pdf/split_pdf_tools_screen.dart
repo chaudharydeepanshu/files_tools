@@ -145,7 +145,7 @@ class ErrorBody extends StatelessWidget {
             "Sorry, failed to process the pdf.",
             style: Theme.of(context)
                 .textTheme
-                .caption
+                .bodySmall
                 ?.copyWith(color: Theme.of(context).colorScheme.error),
           ),
           Consumer(
@@ -178,7 +178,7 @@ class ProcessingBody extends StatelessWidget {
           const SizedBox(height: 10),
           Text(
             'Getting pdf info please wait ...',
-            style: Theme.of(context).textTheme.caption,
+            style: Theme.of(context).textTheme.bodySmall,
           ),
         ],
       ),

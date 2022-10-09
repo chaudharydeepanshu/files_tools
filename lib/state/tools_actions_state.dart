@@ -14,7 +14,8 @@ enum ToolsActions {
   splitByByteSize,
   splitByPageNumbers,
   splitByPageRanges,
-  splitByPageRange
+  splitByPageRange,
+  modify,
 }
 
 class ToolsActionsState extends ChangeNotifier {
@@ -37,6 +38,7 @@ class ToolsActionsState extends ChangeNotifier {
   ToolsActions get currentActionType => _currentActionType;
 
   Future<void> mergeSelectedFiles({required List<InputFileModel> files}) async {
+    updateActionErrorStatus(false);
     updateActionProcessingStatus(true);
     updateActionType(ToolsActions.merge);
     List<String> uriPathsOfFilesToMerge = List<String>.generate(
@@ -48,6 +50,8 @@ class ToolsActionsState extends ChangeNotifier {
         pdfsUris: uriPathsOfFilesToMerge,
       ));
     } on PlatformException catch (e) {
+      log(e.toString());
+    } catch (e) {
       log(e.toString());
     }
     if (result != null) {
@@ -62,7 +66,7 @@ class ToolsActionsState extends ChangeNotifier {
             filePath: file.filePath)
       ];
     } else {
-      _actionErrorStatus = true;
+      updateActionErrorStatus(true);
     }
     updateActionProcessingStatus(false);
     notifyListeners();
@@ -76,6 +80,7 @@ class ToolsActionsState extends ChangeNotifier {
     List<String>? pageRanges,
     String? pageRange,
   }) async {
+    updateActionErrorStatus(false);
     updateActionProcessingStatus(true);
     String nameOfFileToSplit = files[0].fileName;
     String extensionOfFileToSplit =
@@ -148,13 +153,14 @@ class ToolsActionsState extends ChangeNotifier {
       }
     } on PlatformException catch (e) {
       log(e.toString());
+    } catch (e) {
+      log(e.toString());
     }
     if (result != null && result.isNotEmpty) {
       outputFiles.clear();
       for (int i = 0; i < result.length; i++) {
         OutputFileModel file =
             await getOutputFileModelFromPath(path: result[i]);
-        DateTime currentDateTime = DateTime.now();
         file = OutputFileModel(
             fileName: outputFilesNames[i],
             fileDate: file.fileDate,
@@ -164,7 +170,60 @@ class ToolsActionsState extends ChangeNotifier {
         outputFiles.add(file);
       }
     } else {
-      _actionErrorStatus = true;
+      updateActionErrorStatus(true);
+    }
+    updateActionProcessingStatus(false);
+    notifyListeners();
+  }
+
+  Future<void> modifySelectedFile({
+    required List<InputFileModel> files,
+    List<PageRotationInfo>? pagesRotationInfo,
+    List<int>? pageNumbersForReorder,
+    List<int>? pageNumbersForDeleter,
+  }) async {
+    updateActionErrorStatus(false);
+    updateActionProcessingStatus(true);
+    String nameOfFileToSplit = files[0].fileName;
+    String extensionOfFileToSplit =
+        getFileNameExtension(fileName: nameOfFileToSplit);
+    String nameOfFileToSplitWithoutExtension =
+        getFileNameWithoutExtension(fileName: nameOfFileToSplit);
+    String uriPathOfFileToModify = files[0].fileUri;
+    String? result;
+    String outputFileName = "Unknown File.pdf";
+    try {
+      updateActionType(ToolsActions.splitByPageCount);
+      result = await PdfManipulator().pdfPageRotatorDeleterReorder(
+          params: PDFPageRotatorDeleterReorderParams(
+        pdfUri: uriPathOfFileToModify,
+        pagesRotationInfo: pagesRotationInfo,
+        pageNumbersForDeleter: pageNumbersForDeleter,
+        pageNumbersForReorder: pageNumbersForReorder,
+      ));
+
+      if (result != null) {
+        DateTime currentDateTime = DateTime.now();
+        outputFileName =
+            "$nameOfFileToSplitWithoutExtension - $currentDateTime$extensionOfFileToSplit";
+      }
+    } on PlatformException catch (e) {
+      log(e.toString());
+    } catch (e) {
+      log(e.toString());
+    }
+    if (result != null && result.isNotEmpty) {
+      outputFiles.clear();
+      OutputFileModel file = await getOutputFileModelFromPath(path: result);
+      file = OutputFileModel(
+          fileName: outputFileName,
+          fileDate: file.fileDate,
+          fileTime: file.fileTime,
+          fileSize: file.fileSize,
+          filePath: file.filePath);
+      outputFiles.add(file);
+    } else {
+      updateActionErrorStatus(true);
     }
     updateActionProcessingStatus(false);
     notifyListeners();
@@ -176,8 +235,15 @@ class ToolsActionsState extends ChangeNotifier {
       PdfManipulator().cancelManipulations();
     } on PlatformException catch (e) {
       log(e.toString());
+    } catch (e) {
+      log(e.toString());
     }
     updateActionProcessingStatus(false);
+    notifyListeners();
+  }
+
+  updateActionErrorStatus(bool status) {
+    _actionErrorStatus = status;
     notifyListeners();
   }
 
@@ -213,6 +279,8 @@ class ToolsActionsState extends ChangeNotifier {
         mimeTypeFilter: mimeTypeFilter,
       ));
     } on PlatformException catch (e) {
+      log(e.toString());
+    } catch (e) {
       log(e.toString());
     }
     if (result != null) {

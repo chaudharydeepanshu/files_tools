@@ -1,5 +1,4 @@
 import 'package:flutter/services.dart';
-import 'dart:math' as math;
 
 class CommaTextInputFormatter extends TextInputFormatter {
   @override

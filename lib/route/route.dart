@@ -1,5 +1,6 @@
 import 'package:files_tools/ui/screens/pdf_screen.dart';
 import 'package:files_tools/ui/screens/pdf_tools_screens/modify_pdf/modify_pdf_screen.dart';
+import 'package:files_tools/ui/screens/pdf_tools_screens/modify_pdf/modify_pdf_tool_screen.dart';
 import 'package:files_tools/ui/screens/pdf_tools_screens/split_pdf/split_pdf_screen.dart';
 import 'package:files_tools/ui/screens/pdf_tools_screens/split_pdf/split_pdf_tools_screen.dart';
 import 'package:files_tools/ui/screens/result_screen.dart';
@@ -19,6 +20,7 @@ const String splitPDFPage = '/splitPDF';
 const String modifyPDFPage = '/modifyPDF';
 const String resultPage = '/Result';
 const String splitPDFToolsPage = '/SplitPDFTools';
+const String modifyPDFToolsPage = '/ModifyPDFTools';
 
 // Control our page route flow
 Route<dynamic> controller(RouteSettings settings) {
@@ -53,6 +55,11 @@ Route<dynamic> controller(RouteSettings settings) {
     case modifyPDFPage:
       return MaterialPageRoute(
           builder: (context) => const ModifyPDFPage(),
+          settings: RouteSettings(name: settings.name));
+    case modifyPDFToolsPage:
+      return MaterialPageRoute(
+          builder: (context) => ModifyPDFToolsPage(
+              arguments: settings.arguments as ModifyPDFToolsPageArguments),
           settings: RouteSettings(name: settings.name));
     case resultPage:
       return MaterialPageRoute(
