@@ -1,16 +1,16 @@
 import 'dart:developer';
 
 import 'package:files_tools/models/file_model.dart';
-import 'package:files_tools/state/providers.dart';
 import 'package:files_tools/state/tools_actions_state.dart';
-import 'package:files_tools/ui/screens/pdf_screen.dart';
+import 'package:files_tools/ui/screens/pdf_tools_screens/components/tools_error_body.dart';
+import 'package:files_tools/ui/screens/pdf_tools_screens/components/tools_processing_body.dart';
 import 'package:files_tools/ui/screens/pdf_tools_screens/split_pdf/tools/split_by_page_count.dart';
 import 'package:files_tools/ui/screens/pdf_tools_screens/split_pdf/tools/split_by_page_numbers.dart';
 import 'package:files_tools/ui/screens/pdf_tools_screens/split_pdf/tools/split_by_page_range.dart';
 import 'package:files_tools/ui/screens/pdf_tools_screens/split_pdf/tools/split_by_page_ranges.dart';
 import 'package:files_tools/ui/screens/pdf_tools_screens/split_pdf/tools/split_by_size.dart';
+import 'package:files_tools/utils/get_pdf_bitmaps.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class SplitPDFToolsPage extends StatefulWidget {
   const SplitPDFToolsPage({Key? key, required this.arguments})
@@ -128,122 +128,4 @@ String getAppBarTitleForActionType({required ToolsActions actionType}) {
     title = "Provide Page Range";
   }
   return title;
-}
-
-class ErrorBody extends StatelessWidget {
-  const ErrorBody({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(Icons.error, color: Theme.of(context).colorScheme.error),
-          const SizedBox(height: 16),
-          Text(
-            "Sorry, failed to process the pdf.",
-            style: Theme.of(context)
-                .textTheme
-                .bodySmall
-                ?.copyWith(color: Theme.of(context).colorScheme.error),
-          ),
-          Consumer(
-            builder: (BuildContext context, WidgetRef ref, Widget? child) {
-              return TextButton(
-                onPressed: () {
-                  ref.read(toolsActionsStateProvider).cancelAction();
-                  Navigator.pop(context);
-                },
-                child: const Text('Go back'),
-              );
-            },
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class ProcessingBody extends StatelessWidget {
-  const ProcessingBody({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const CircularProgressIndicator(),
-          const SizedBox(height: 10),
-          Text(
-            'Getting pdf info please wait ...',
-            style: Theme.of(context).textTheme.bodySmall,
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class AboutActionCard extends StatelessWidget {
-  const AboutActionCard(
-      {Key? key, required this.aboutText, this.exampleText = ""})
-      : super(key: key);
-
-  final String aboutText;
-  final String exampleText;
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      clipBehavior: Clip.antiAlias,
-      margin: const EdgeInsets.symmetric(horizontal: 16.0),
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Icon(Icons.info),
-            const Divider(),
-            Text(
-              aboutText,
-              style: Theme.of(context).textTheme.bodyMedium,
-              textAlign: TextAlign.center,
-            ),
-            if (exampleText.isNotEmpty)
-              Padding(
-                padding: const EdgeInsets.only(top: 10.0),
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    color: Theme.of(context).colorScheme.surface,
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 16.0, vertical: 10.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        Text(
-                          "Example:-",
-                          style: Theme.of(context).textTheme.bodyMedium,
-                          textAlign: TextAlign.center,
-                        ),
-                        const SizedBox(height: 10),
-                        Text(
-                          exampleText,
-                          style: Theme.of(context).textTheme.bodySmall,
-                          textAlign: TextAlign.start,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-          ],
-        ),
-      ),
-    );
-  }
 }

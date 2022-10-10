@@ -9,7 +9,6 @@ import 'package:files_tools/ui/screens/pdf_tools_screens/modify_pdf/modify_pdf_t
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pick_or_save/pick_or_save.dart';
-import 'package:rive/rive.dart';
 import 'package:files_tools/route/route.dart' as route;
 
 class ModifyPDFPage extends StatelessWidget {
@@ -30,6 +29,7 @@ class ModifyPDFPage extends StatelessWidget {
               toolScreenStateProvider.select((value) => value.selectedFiles));
           return ListView(
             children: [
+              const SizedBox(height: 16),
               SelectFilesCard(
                 selectFileType: SelectFileType.single,
                 files: watchToolScreenStateProviderValue.selectedFiles,
@@ -63,82 +63,6 @@ class ModifyPDFPage extends StatelessWidget {
           );
         },
       ),
-    );
-  }
-}
-
-// class SaveCard extends StatelessWidget {
-//   const SaveCard({Key? key}) : super(key: key);
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Card(
-//       clipBehavior: Clip.antiAlias,
-//       margin: const EdgeInsets.symmetric(horizontal: 16.0),
-//       child: Padding(
-//         padding: const EdgeInsets.all(16.0),
-//         child: Column(
-//           children: [
-//             Row(
-//               children: const [
-//                 Icon(Icons.looks_3),
-//               ],
-//             ),
-//             ElevatedButton(
-//               style: ElevatedButton.styleFrom(
-//                 foregroundColor: Theme.of(context).colorScheme.onPrimary,
-//                 backgroundColor: Theme.of(context).colorScheme.primary,
-//               ).copyWith(elevation: ButtonStyleButton.allOrNull(0.0)),
-//               onPressed: () {
-//
-//               },
-//               child: const Text('Save file'),
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
-
-loadingDialog({required BuildContext context}) {
-  return showDialog<String>(
-    context: context,
-    barrierDismissible: false,
-    builder: (BuildContext context) => const LoadingDialog(),
-  );
-}
-
-class LoadingDialog extends StatelessWidget {
-  const LoadingDialog({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return AlertDialog(
-      title: const Text('Processing', textAlign: TextAlign.center),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          const SizedBox(
-            width: 150,
-            height: 100,
-            child: RiveAnimation.asset(
-              'assets/rive/finger_tapping.riv',
-              fit: BoxFit.contain,
-            ),
-          ),
-          Text(
-            'Please wait ...',
-            style: Theme.of(context).textTheme.bodySmall,
-          ),
-        ],
-      ),
-      actions: <Widget>[
-        TextButton(
-          onPressed: () => Navigator.pop(context, 'Cancel'),
-          child: const Text('Cancel'),
-        ),
-      ],
     );
   }
 }

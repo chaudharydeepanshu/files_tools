@@ -25,11 +25,12 @@ class ResultPage extends StatelessWidget {
               toolsActionsStateProvider
                   .select((value) => value.currentActionType));
           if (isActionProcessing) {
-            return const ProcessingBody();
+            return const ProcessingResult();
           } else if (actionErrorStatus) {
-            return const ErrorBody();
+            return const ProcessingResultError();
           } else {
             return SingleChildScrollView(
+                padding: const EdgeInsets.symmetric(vertical: 16.0),
                 child: ResultBody(actionType: currentActionType));
           }
         },
@@ -103,8 +104,8 @@ class ResultBody extends StatelessWidget {
   }
 }
 
-class ErrorBody extends StatelessWidget {
-  const ErrorBody({Key? key}) : super(key: key);
+class ProcessingResultError extends StatelessWidget {
+  const ProcessingResultError({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -138,8 +139,8 @@ class ErrorBody extends StatelessWidget {
   }
 }
 
-class ProcessingBody extends StatelessWidget {
-  const ProcessingBody({Key? key}) : super(key: key);
+class ProcessingResult extends StatelessWidget {
+  const ProcessingResult({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

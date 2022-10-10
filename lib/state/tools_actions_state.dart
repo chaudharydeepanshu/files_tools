@@ -16,6 +16,7 @@ enum ToolsActions {
   splitByPageRanges,
   splitByPageRange,
   modify,
+  convertToImage,
 }
 
 class ToolsActionsState extends ChangeNotifier {
@@ -222,6 +223,110 @@ class ToolsActionsState extends ChangeNotifier {
           fileSize: file.fileSize,
           filePath: file.filePath);
       outputFiles.add(file);
+    } else {
+      updateActionErrorStatus(true);
+    }
+    updateActionProcessingStatus(false);
+    notifyListeners();
+  }
+
+  Future<void> convertSelectedFile({
+    required List<InputFileModel> files,
+    int? pageCount,
+    int? byteSize,
+    List<int>? pageNumbers,
+    List<String>? pageRanges,
+    String? pageRange,
+  }) async {
+    updateActionErrorStatus(false);
+    updateActionProcessingStatus(true);
+    String nameOfFileToSplit = files[0].fileName;
+    String extensionOfFileToSplit =
+        getFileNameExtension(fileName: nameOfFileToSplit);
+    String nameOfFileToSplitWithoutExtension =
+        getFileNameWithoutExtension(fileName: nameOfFileToSplit);
+    String uriPathOfFileToSplit = files[0].fileUri;
+    List<String>? result;
+    List<String> outputFilesNames = [];
+    try {
+      if (pageCount != null) {
+        updateActionType(ToolsActions.splitByPageCount);
+        result = await PdfManipulator().splitPDF(
+            params: PDFSplitterParams(
+          pdfUri: uriPathOfFileToSplit,
+          pageCount: pageCount,
+        ));
+        if (result != null) {
+          outputFilesNames = List<String>.generate(result.length, (int index) {
+            DateTime currentDateTime = DateTime.now();
+            return "$nameOfFileToSplitWithoutExtension - ${index + 1} - $currentDateTime$extensionOfFileToSplit";
+          }, growable: false);
+        }
+      } else if (byteSize != null) {
+        updateActionType(ToolsActions.splitByByteSize);
+        result = await PdfManipulator().splitPDF(
+            params: PDFSplitterParams(
+          pdfUri: uriPathOfFileToSplit,
+          byteSize: byteSize,
+        ));
+        if (result != null) {
+          outputFilesNames = List<String>.generate(result.length, (int index) {
+            DateTime currentDateTime = DateTime.now();
+            return "$nameOfFileToSplitWithoutExtension - ${index + 1} - $currentDateTime$extensionOfFileToSplit";
+          }, growable: false);
+        }
+      } else if (pageNumbers != null) {
+        updateActionType(ToolsActions.splitByPageNumbers);
+        result = await PdfManipulator().splitPDF(
+            params: PDFSplitterParams(
+          pdfUri: uriPathOfFileToSplit,
+          pageNumbers: pageNumbers,
+        ));
+        if (result != null) {
+          outputFilesNames = List<String>.generate(result.length, (int index) {
+            DateTime currentDateTime = DateTime.now();
+            return "$nameOfFileToSplitWithoutExtension - ${index + 1} - $currentDateTime$extensionOfFileToSplit";
+          }, growable: false);
+        }
+      } else if (pageRange != null) {
+        updateActionType(ToolsActions.splitByPageRange);
+        result = await PdfManipulator().splitPDF(
+            params: PDFSplitterParams(
+          pdfUri: uriPathOfFileToSplit,
+          pageRange: pageRange,
+        ));
+        if (result != null) {
+          outputFilesNames = List<String>.generate(result.length, (int index) {
+            DateTime currentDateTime = DateTime.now();
+            return "$nameOfFileToSplitWithoutExtension - ${index + 1} - $currentDateTime$extensionOfFileToSplit";
+          }, growable: false);
+        }
+      } else if (pageRanges != null) {
+        updateActionType(ToolsActions.splitByPageRanges);
+        result = await PdfManipulator().splitPDF(
+            params: PDFSplitterParams(
+          pdfUri: uriPathOfFileToSplit,
+          pageRanges: pageRanges,
+        ));
+      }
+    } on PlatformException catch (e) {
+      log(e.toString());
+    } catch (e) {
+      log(e.toString());
+    }
+    if (result != null && result.isNotEmpty) {
+      outputFiles.clear();
+      for (int i = 0; i < result.length; i++) {
+        OutputFileModel file =
+            await getOutputFileModelFromPath(path: result[i]);
+        file = OutputFileModel(
+            fileName: outputFilesNames[i],
+            fileDate: file.fileDate,
+            fileTime: file.fileTime,
+            fileSize: file.fileSize,
+            filePath: file.filePath);
+        outputFiles.add(file);
+      }
     } else {
       updateActionErrorStatus(true);
     }

@@ -5,21 +5,21 @@ import 'package:files_tools/models/pdf_page_model.dart';
 import 'package:files_tools/state/tools_actions_state.dart';
 import 'package:files_tools/ui/screens/pdf_tools_screens/components/tools_error_body.dart';
 import 'package:files_tools/ui/screens/pdf_tools_screens/components/tools_processing_body.dart';
-import 'package:files_tools/ui/screens/pdf_tools_screens/modify_pdf/tools/rotate_delete_reorder_pages.dart';
+import 'package:files_tools/ui/screens/pdf_tools_screens/convert_pdf/tools/convert_to_image.dart';
 import 'package:files_tools/utils/get_pdf_bitmaps.dart';
 import 'package:flutter/material.dart';
 
-class ModifyPDFToolsPage extends StatefulWidget {
-  const ModifyPDFToolsPage({Key? key, required this.arguments})
+class ConvertPDFToolsPage extends StatefulWidget {
+  const ConvertPDFToolsPage({Key? key, required this.arguments})
       : super(key: key);
 
-  final ModifyPDFToolsPageArguments arguments;
+  final ConvertPDFToolsPageArguments arguments;
 
   @override
-  State<ModifyPDFToolsPage> createState() => _ModifyPDFToolsPageState();
+  State<ConvertPDFToolsPage> createState() => _ConvertPDFToolsPageState();
 }
 
-class _ModifyPDFToolsPageState extends State<ModifyPDFToolsPage> {
+class _ConvertPDFToolsPageState extends State<ConvertPDFToolsPage> {
   List<PdfPageModel> pdfPages = [];
 
   late Future<bool> initPdfPages;
@@ -63,7 +63,7 @@ class _ModifyPDFToolsPageState extends State<ModifyPDFToolsPage> {
                   log(snapshot.error.toString());
                   return const ErrorBody();
                 } else {
-                  return ModifyPDFToolsBody(
+                  return ConvertPDFToolsBody(
                       actionType: widget.arguments.actionType,
                       file: widget.arguments.file,
                       pdfPages: pdfPages);
@@ -76,15 +76,15 @@ class _ModifyPDFToolsPageState extends State<ModifyPDFToolsPage> {
   }
 }
 
-class ModifyPDFToolsPageArguments {
+class ConvertPDFToolsPageArguments {
   final ToolsActions actionType;
   final InputFileModel file;
 
-  ModifyPDFToolsPageArguments({required this.actionType, required this.file});
+  ConvertPDFToolsPageArguments({required this.actionType, required this.file});
 }
 
-class ModifyPDFToolsBody extends StatelessWidget {
-  const ModifyPDFToolsBody(
+class ConvertPDFToolsBody extends StatelessWidget {
+  const ConvertPDFToolsBody(
       {Key? key,
       required this.actionType,
       required this.file,
@@ -97,8 +97,8 @@ class ModifyPDFToolsBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (actionType == ToolsActions.modify) {
-      return RotateDeleteReorderPages(pdfPages: pdfPages, file: file);
+    if (actionType == ToolsActions.convertToImage) {
+      return ConvertToImage(pdfPages: pdfPages, file: file);
     } else {
       return Container();
     }
@@ -107,8 +107,8 @@ class ModifyPDFToolsBody extends StatelessWidget {
 
 String getAppBarTitleForActionType({required ToolsActions actionType}) {
   String title = "Action Successful";
-  if (actionType == ToolsActions.modify) {
-    title = "Rotate, Delete & Reorder";
+  if (actionType == ToolsActions.convertToImage) {
+    title = "Select Pages";
   }
   return title;
 }

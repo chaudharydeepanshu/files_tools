@@ -119,7 +119,12 @@ class PDFToolsSection extends StatelessWidget {
       GridCardDetail(
         cardIcon: const Icon(Icons.cached),
         cardTitle: 'Convert PDF',
-        cardOnTap: () {},
+        cardOnTap: () {
+          Navigator.pushNamed(
+            context,
+            route.convertPDFPage,
+          );
+        },
       ),
       GridCardDetail(
         cardIcon: const Icon(Icons.compress),

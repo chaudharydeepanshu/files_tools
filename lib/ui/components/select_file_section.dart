@@ -10,7 +10,7 @@ import 'package:pick_or_save/pick_or_save.dart';
 import 'package:rive/rive.dart';
 import 'package:files_tools/route/route.dart' as route;
 
-enum SelectFileType { single, multiple }
+enum SelectFileType { single, multiple, both }
 
 class SelectFilesCard extends StatelessWidget {
   const SelectFilesCard(
@@ -137,7 +137,8 @@ class FilesSelected extends StatelessWidget {
             return Wrap(
               spacing: 10,
               children: [
-                if (selectFileType == SelectFileType.multiple)
+                if (selectFileType == SelectFileType.multiple ||
+                    selectFileType == SelectFileType.both)
                   ElevatedButton.icon(
                     style: ElevatedButton.styleFrom(
                       foregroundColor: Theme.of(context).colorScheme.onPrimary,
@@ -201,7 +202,7 @@ class NoFilesSelected extends StatelessWidget {
           ),
         ),
         Text(
-          'Please select ${selectFileType == SelectFileType.multiple ? "some files" : "a file"}',
+          'Please select ${selectFileType == SelectFileType.multiple || selectFileType == SelectFileType.both ? "some files" : "a file"}',
           style: Theme.of(context).textTheme.bodySmall,
         ),
         Consumer(
@@ -223,7 +224,7 @@ class NoFilesSelected extends StatelessWidget {
                     }
                   : null,
               child: Text(
-                  'Select ${selectFileType == SelectFileType.multiple ? "files" : "file"}'),
+                  'Select ${selectFileType == SelectFileType.multiple || selectFileType == SelectFileType.both ? "files" : "file"}'),
             );
           },
         ),
