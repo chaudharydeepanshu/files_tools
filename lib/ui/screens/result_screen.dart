@@ -1,7 +1,10 @@
+import 'dart:developer';
+
 import 'package:files_tools/models/file_model.dart';
 import 'package:files_tools/state/providers.dart';
 import 'package:files_tools/state/tools_actions_state.dart';
-import 'package:files_tools/ui/screens/pdf_screen.dart';
+import 'package:files_tools/ui/screens/image_viewer.dart';
+import 'package:files_tools/ui/screens/pdf_viewer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rive/rive.dart';
@@ -318,12 +321,26 @@ class OutputFileTile extends StatelessWidget {
       visualDensity: VisualDensity.comfortable,
       dense: true,
       onTap: () {
-        Navigator.pushNamed(
-          context,
-          route.pdfScreen,
-          arguments: PDFScreenArguments(
-              fileName: file.fileName, fileUri: null, filePath: file.filePath),
-        );
+        String fileExtension = getFileNameExtension(fileName: file.fileName);
+        if (fileExtension.toLowerCase() == ".pdf") {
+          Navigator.pushNamed(
+            context,
+            route.pdfViewer,
+            arguments: PdfViewerArguments(
+                fileName: file.fileName, filePath: file.filePath),
+          );
+        } else if (fileExtension.toLowerCase() == ".png" ||
+            fileExtension.toLowerCase() == ".jpg" ||
+            fileExtension.toLowerCase() == ".jpeg") {
+          Navigator.pushNamed(
+            context,
+            route.imageViewer,
+            arguments: ImageViewerArguments(
+                fileName: file.fileName, filePath: file.filePath),
+          );
+        } else {
+          log("No action found for opening file with extension $fileExtension");
+        }
       },
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(12)),

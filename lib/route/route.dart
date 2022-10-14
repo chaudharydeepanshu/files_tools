@@ -1,4 +1,5 @@
-import 'package:files_tools/ui/screens/pdf_screen.dart';
+import 'package:files_tools/ui/screens/image_viewer.dart';
+import 'package:files_tools/ui/screens/pdf_viewer.dart';
 import 'package:files_tools/ui/screens/pdf_tools_screens/convert_pdf/convert_pdf_screen.dart';
 import 'package:files_tools/ui/screens/pdf_tools_screens/convert_pdf/convert_pdf_tool_screen.dart';
 import 'package:files_tools/ui/screens/pdf_tools_screens/modify_pdf/modify_pdf_screen.dart';
@@ -15,7 +16,8 @@ import '../ui/screens/pdf_tools_screens/merge_pdfs_screen.dart';
 
 // Route Names
 const String homePage = '/';
-const String pdfScreen = '/pdf';
+const String pdfViewer = '/pdfViewer';
+const String imageViewer = '/imageViewer';
 const String pdfToolsPagePage = '/explore';
 const String mergePDFsPage = '/mergePDFs';
 const String splitPDFPage = '/splitPDF';
@@ -33,10 +35,15 @@ Route<dynamic> controller(RouteSettings settings) {
       return MaterialPageRoute(
           builder: (context) => const HomePage(),
           settings: RouteSettings(name: settings.name));
-    case pdfScreen:
+    case pdfViewer:
       return MaterialPageRoute(
           builder: (context) =>
-              PDFScreen(arguments: settings.arguments as PDFScreenArguments),
+              PdfViewer(arguments: settings.arguments as PdfViewerArguments),
+          settings: RouteSettings(name: settings.name));
+    case imageViewer:
+      return MaterialPageRoute(
+          builder: (context) => ImageViewer(
+              arguments: settings.arguments as ImageViewerArguments),
           settings: RouteSettings(name: settings.name));
     case pdfToolsPagePage:
       return MaterialPageRoute(

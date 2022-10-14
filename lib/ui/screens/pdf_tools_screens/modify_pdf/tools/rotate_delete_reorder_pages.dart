@@ -8,9 +8,9 @@ import 'package:files_tools/ui/screens/pdf_tools_screens/components/pdf_page_sma
 import 'package:files_tools/utils/get_pdf_bitmaps.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:files_tools/route/route.dart' as route;
 import 'package:pdf_manipulator/pdf_manipulator.dart';
 import 'package:reorderable_grid_view/reorderable_grid_view.dart';
+import 'package:files_tools/route/route.dart' as route;
 
 class RotateDeleteReorderPages extends StatefulWidget {
   const RotateDeleteReorderPages(
@@ -37,9 +37,9 @@ class _RotateDeleteReorderPagesState extends State<RotateDeleteReorderPages> {
       isPageProcessing = true;
       PdfPageModel updatedPdfPage = await getUpdatedPdfPage(
         index: index,
-        pdfUri: widget.file.fileUri,
-        pdfPath: null,
-        quality: 7,
+        pdfPath: widget.file.fileUri,
+        scale: 0.3,
+        pdfPageModel: pdfPages[index],
       );
       setState(() {
         pdfPages[index] = updatedPdfPage;
@@ -57,7 +57,7 @@ class _RotateDeleteReorderPagesState extends State<RotateDeleteReorderPages> {
     return Stack(
       children: [
         ReorderableGridView.builder(
-          padding: const EdgeInsets.symmetric(vertical: 16.0),
+          padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
           gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
             childAspectRatio: 1,
             maxCrossAxisExtent: 150,

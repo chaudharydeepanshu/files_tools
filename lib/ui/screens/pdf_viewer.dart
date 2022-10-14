@@ -6,16 +6,16 @@ import 'package:files_tools/utils/get_pdf_bitmaps.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class PDFScreen extends StatefulWidget {
-  const PDFScreen({Key? key, required this.arguments}) : super(key: key);
+class PdfViewer extends StatefulWidget {
+  const PdfViewer({Key? key, required this.arguments}) : super(key: key);
 
-  final PDFScreenArguments arguments;
+  final PdfViewerArguments arguments;
 
   @override
-  State<PDFScreen> createState() => _PDFScreenState();
+  State<PdfViewer> createState() => _PdfViewerState();
 }
 
-class _PDFScreenState extends State<PDFScreen> {
+class _PdfViewerState extends State<PdfViewer> {
   final pageController = PageController(viewportFraction: 1.02);
 
   bool isPageProcessing = false;
@@ -28,9 +28,10 @@ class _PDFScreenState extends State<PDFScreen> {
         isPageProcessing == false) {
       isPageProcessing = true;
       PdfPageModel updatedPdfPage = await getUpdatedPdfPage(
-          index: index,
-          pdfUri: widget.arguments.fileUri,
-          pdfPath: widget.arguments.filePath);
+        index: index,
+        pdfPath: widget.arguments.filePath,
+        pdfPageModel: pdfPages[index],
+      );
       setState(() {
         pdfPages[index] = updatedPdfPage;
         isPageProcessing = false;
@@ -41,8 +42,7 @@ class _PDFScreenState extends State<PDFScreen> {
   late Future<bool> initPdfPages;
   Future<bool> initPdfPagesState() async {
     Stopwatch stopwatch = Stopwatch()..start();
-    pdfPages = await generatePdfPagesList(
-        pdfUri: widget.arguments.fileUri, pdfPath: widget.arguments.filePath);
+    pdfPages = await generatePdfPagesList(pdfPath: widget.arguments.filePath);
     log('initPdfPagesState Executed in ${stopwatch.elapsed}');
     return true;
   }
@@ -113,16 +113,11 @@ class _PDFScreenState extends State<PDFScreen> {
   }
 }
 
-class PDFScreenArguments {
+class PdfViewerArguments {
   final String fileName;
-  final String? fileUri;
-  final String? filePath;
+  final String filePath;
 
-  PDFScreenArguments({required this.fileName, this.fileUri, this.filePath})
-      : assert(fileUri != null || filePath != null,
-            "provide anyone out of fileUri or filePath"),
-        assert(fileUri == null || filePath == null,
-            "only provide anyone out of fileUri or filePath");
+  PdfViewerArguments({required this.fileName, required this.filePath});
 }
 
 class PageImageView extends StatelessWidget {

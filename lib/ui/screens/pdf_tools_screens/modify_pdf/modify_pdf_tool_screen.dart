@@ -25,8 +25,8 @@ class _ModifyPDFToolsPageState extends State<ModifyPDFToolsPage> {
   late Future<bool> initPdfPages;
   Future<bool> initPdfPagesState() async {
     Stopwatch stopwatch = Stopwatch()..start();
-    pdfPages = await generatePdfPagesList(
-        pdfUri: widget.arguments.file.fileUri, pdfPath: null);
+    pdfPages =
+        await generatePdfPagesList(pdfPath: widget.arguments.file.fileUri);
     log('initPdfPagesState Executed in ${stopwatch.elapsed}');
     return true;
   }

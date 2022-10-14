@@ -27,8 +27,8 @@ class _SplitPDFToolsPageState extends State<SplitPDFToolsPage> {
   int? pdfPageCount;
 
   Future<bool> initPdfPageCount() async {
-    pdfPageCount = await generatePdfPageCount(
-        pdfUri: widget.arguments.file.fileUri, pdfPath: null);
+    pdfPageCount =
+        await getPdfPageCount(pdfPath: widget.arguments.file.fileUri);
     return true;
   }
 

@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:files_tools/models/file_model.dart';
 import 'package:files_tools/state/providers.dart';
 import 'package:files_tools/state/select_file_state.dart';
-import 'package:files_tools/ui/screens/pdf_screen.dart';
+import 'package:files_tools/ui/screens/pdf_viewer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pick_or_save/pick_or_save.dart';
@@ -251,9 +251,9 @@ class SelectedFileTile extends StatelessWidget {
       onTap: () {
         Navigator.pushNamed(
           context,
-          route.pdfScreen,
-          arguments: PDFScreenArguments(
-              fileName: file.fileName, fileUri: file.fileUri),
+          route.pdfViewer,
+          arguments: PdfViewerArguments(
+              fileName: file.fileName, filePath: file.fileUri),
         );
       },
       shape: const RoundedRectangleBorder(

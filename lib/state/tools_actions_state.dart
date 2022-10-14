@@ -1,8 +1,12 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:files_tools/models/file_model.dart';
+import 'package:files_tools/models/pdf_page_model.dart';
+import 'package:files_tools/utils/get_pdf_bitmaps.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:pdf_manipulator/pdf_manipulator.dart';
 import 'package:pick_or_save/pick_or_save.dart';
 
@@ -48,7 +52,7 @@ class ToolsActionsState extends ChangeNotifier {
     try {
       result = await PdfManipulator().mergePDFs(
           params: PDFMergerParams(
-        pdfsUris: uriPathsOfFilesToMerge,
+        pdfsPaths: uriPathsOfFilesToMerge,
       ));
     } on PlatformException catch (e) {
       log(e.toString());
@@ -96,7 +100,7 @@ class ToolsActionsState extends ChangeNotifier {
         updateActionType(ToolsActions.splitByPageCount);
         result = await PdfManipulator().splitPDF(
             params: PDFSplitterParams(
-          pdfUri: uriPathOfFileToSplit,
+          pdfPath: uriPathOfFileToSplit,
           pageCount: pageCount,
         ));
         if (result != null) {
@@ -109,7 +113,7 @@ class ToolsActionsState extends ChangeNotifier {
         updateActionType(ToolsActions.splitByByteSize);
         result = await PdfManipulator().splitPDF(
             params: PDFSplitterParams(
-          pdfUri: uriPathOfFileToSplit,
+          pdfPath: uriPathOfFileToSplit,
           byteSize: byteSize,
         ));
         if (result != null) {
@@ -122,7 +126,7 @@ class ToolsActionsState extends ChangeNotifier {
         updateActionType(ToolsActions.splitByPageNumbers);
         result = await PdfManipulator().splitPDF(
             params: PDFSplitterParams(
-          pdfUri: uriPathOfFileToSplit,
+          pdfPath: uriPathOfFileToSplit,
           pageNumbers: pageNumbers,
         ));
         if (result != null) {
@@ -135,7 +139,7 @@ class ToolsActionsState extends ChangeNotifier {
         updateActionType(ToolsActions.splitByPageRange);
         result = await PdfManipulator().splitPDF(
             params: PDFSplitterParams(
-          pdfUri: uriPathOfFileToSplit,
+          pdfPath: uriPathOfFileToSplit,
           pageRange: pageRange,
         ));
         if (result != null) {
@@ -148,7 +152,7 @@ class ToolsActionsState extends ChangeNotifier {
         updateActionType(ToolsActions.splitByPageRanges);
         result = await PdfManipulator().splitPDF(
             params: PDFSplitterParams(
-          pdfUri: uriPathOfFileToSplit,
+          pdfPath: uriPathOfFileToSplit,
           pageRanges: pageRanges,
         ));
       }
@@ -197,7 +201,7 @@ class ToolsActionsState extends ChangeNotifier {
       updateActionType(ToolsActions.splitByPageCount);
       result = await PdfManipulator().pdfPageRotatorDeleterReorder(
           params: PDFPageRotatorDeleterReorderParams(
-        pdfUri: uriPathOfFileToModify,
+        pdfPath: uriPathOfFileToModify,
         pagesRotationInfo: pagesRotationInfo,
         pageNumbersForDeleter: pageNumbersForDeleter,
         pageNumbersForReorder: pageNumbersForReorder,
@@ -232,89 +236,48 @@ class ToolsActionsState extends ChangeNotifier {
 
   Future<void> convertSelectedFile({
     required List<InputFileModel> files,
-    int? pageCount,
-    int? byteSize,
-    List<int>? pageNumbers,
-    List<String>? pageRanges,
-    String? pageRange,
+    required List<PdfPageModel> selectedPages,
+    double? imageScaling,
   }) async {
     updateActionErrorStatus(false);
     updateActionProcessingStatus(true);
-    String nameOfFileToSplit = files[0].fileName;
-    String extensionOfFileToSplit =
-        getFileNameExtension(fileName: nameOfFileToSplit);
-    String nameOfFileToSplitWithoutExtension =
-        getFileNameWithoutExtension(fileName: nameOfFileToSplit);
-    String uriPathOfFileToSplit = files[0].fileUri;
-    List<String>? result;
+    String nameOfFileToConvert = files[0].fileName;
+    // String extensionOfFileToCovert =
+    //     getFileNameExtension(fileName: nameOfFileToConvert);
+    String nameOfFileToConvertWithoutExtension =
+        getFileNameWithoutExtension(fileName: nameOfFileToConvert);
+    String uriPathOfFileToConvert = files[0].fileUri;
+    List<String> result = [];
     List<String> outputFilesNames = [];
     try {
-      if (pageCount != null) {
-        updateActionType(ToolsActions.splitByPageCount);
-        result = await PdfManipulator().splitPDF(
-            params: PDFSplitterParams(
-          pdfUri: uriPathOfFileToSplit,
-          pageCount: pageCount,
-        ));
-        if (result != null) {
-          outputFilesNames = List<String>.generate(result.length, (int index) {
-            DateTime currentDateTime = DateTime.now();
-            return "$nameOfFileToSplitWithoutExtension - ${index + 1} - $currentDateTime$extensionOfFileToSplit";
-          }, growable: false);
+      if (imageScaling != null) {
+        String imageTypeExtension = ".png";
+        updateActionType(ToolsActions.convertToImage);
+        String tempPath = (await getTemporaryDirectory()).path;
+        for (var page in selectedPages) {
+          Uint8List? pageBytes;
+          pageBytes = await getPdfPageBitmap(
+              index: page.pageIndex,
+              pdfPath: uriPathOfFileToConvert,
+              scale: imageScaling,
+              rotationAngle: page.pageRotationAngle);
+          DateTime currentDateTime = DateTime.now();
+          File file = File('$tempPath/$currentDateTime$imageTypeExtension');
+          await file.writeAsBytes(pageBytes!.buffer
+              .asUint8List(pageBytes.offsetInBytes, pageBytes.lengthInBytes));
+          result.add(file.path);
         }
-      } else if (byteSize != null) {
-        updateActionType(ToolsActions.splitByByteSize);
-        result = await PdfManipulator().splitPDF(
-            params: PDFSplitterParams(
-          pdfUri: uriPathOfFileToSplit,
-          byteSize: byteSize,
-        ));
-        if (result != null) {
-          outputFilesNames = List<String>.generate(result.length, (int index) {
-            DateTime currentDateTime = DateTime.now();
-            return "$nameOfFileToSplitWithoutExtension - ${index + 1} - $currentDateTime$extensionOfFileToSplit";
-          }, growable: false);
-        }
-      } else if (pageNumbers != null) {
-        updateActionType(ToolsActions.splitByPageNumbers);
-        result = await PdfManipulator().splitPDF(
-            params: PDFSplitterParams(
-          pdfUri: uriPathOfFileToSplit,
-          pageNumbers: pageNumbers,
-        ));
-        if (result != null) {
-          outputFilesNames = List<String>.generate(result.length, (int index) {
-            DateTime currentDateTime = DateTime.now();
-            return "$nameOfFileToSplitWithoutExtension - ${index + 1} - $currentDateTime$extensionOfFileToSplit";
-          }, growable: false);
-        }
-      } else if (pageRange != null) {
-        updateActionType(ToolsActions.splitByPageRange);
-        result = await PdfManipulator().splitPDF(
-            params: PDFSplitterParams(
-          pdfUri: uriPathOfFileToSplit,
-          pageRange: pageRange,
-        ));
-        if (result != null) {
-          outputFilesNames = List<String>.generate(result.length, (int index) {
-            DateTime currentDateTime = DateTime.now();
-            return "$nameOfFileToSplitWithoutExtension - ${index + 1} - $currentDateTime$extensionOfFileToSplit";
-          }, growable: false);
-        }
-      } else if (pageRanges != null) {
-        updateActionType(ToolsActions.splitByPageRanges);
-        result = await PdfManipulator().splitPDF(
-            params: PDFSplitterParams(
-          pdfUri: uriPathOfFileToSplit,
-          pageRanges: pageRanges,
-        ));
+        outputFilesNames = List<String>.generate(result.length, (int index) {
+          DateTime currentDateTime = DateTime.now();
+          return "$nameOfFileToConvertWithoutExtension - ${index + 1} - $currentDateTime$imageTypeExtension";
+        }, growable: false);
       }
     } on PlatformException catch (e) {
       log(e.toString());
     } catch (e) {
       log(e.toString());
     }
-    if (result != null && result.isNotEmpty) {
+    if (result.isNotEmpty) {
       outputFiles.clear();
       for (int i = 0; i < result.length; i++) {
         OutputFileModel file =
