@@ -257,7 +257,20 @@ class _SplitBySizeActionCardState extends State<SplitBySizeActionCard> {
                         backgroundColor: Theme.of(context).colorScheme.primary,
                       ).copyWith(elevation: ButtonStyleButton.allOrNull(0.0)),
                       onPressed: () async {
-                        if (_formKey.currentState!.validate()) {
+                        if (compressionType == CompressionTypes.custom &&
+                            _formKey.currentState!.validate()) {
+                          watchToolsActionsStateProviderValue
+                              .compressSelectedFile(
+                            files: [widget.file],
+                            imageScale: imageScale,
+                            imageQuality: imageQuality,
+                            unEmbedFonts: unEmbedFonts,
+                          );
+                          Navigator.pushNamed(
+                            context,
+                            route.resultPage,
+                          );
+                        } else {
                           watchToolsActionsStateProviderValue
                               .compressSelectedFile(
                             files: [widget.file],
