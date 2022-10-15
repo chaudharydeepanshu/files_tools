@@ -68,7 +68,7 @@ dependencies:
 #  flutter_pdfview: ^1.2.5 it accepts URI so look into it in future
 
   # For pdf manipulations.
-  pdf_manipulator: ^0.2.1
+  pdf_manipulator: ^0.3.2
 
   # For draggable gridview.
   reorderable_grid_view: ^2.2.5

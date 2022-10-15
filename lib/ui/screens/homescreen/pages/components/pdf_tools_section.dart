@@ -129,8 +129,12 @@ class PDFToolsSection extends StatelessWidget {
       GridCardDetail(
         cardIcon: const Icon(Icons.compress),
         cardTitle: 'Compress PDF',
-        cardOnTap: null,
-        // () {},
+        cardOnTap: () {
+          Navigator.pushNamed(
+            context,
+            route.compressPDFPage,
+          );
+        },
       ),
       GridCardDetail(
         cardIcon: const Icon(Icons.branding_watermark),

@@ -5,20 +5,20 @@ import 'package:files_tools/state/select_file_state.dart';
 import 'package:files_tools/state/tools_actions_state.dart';
 import 'package:files_tools/ui/components/select_file_section.dart';
 import 'package:files_tools/ui/components/tool_actions_section.dart';
-import 'package:files_tools/ui/screens/pdf_tools_screens/convert_pdf/convert_pdf_tool_screen.dart';
+import 'package:files_tools/ui/screens/pdf_tools_screens/compress_pdf/compress_pdf_tool_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pick_or_save/pick_or_save.dart';
 import 'package:files_tools/route/route.dart' as route;
 
-class ConvertPDFPage extends StatelessWidget {
-  const ConvertPDFPage({Key? key}) : super(key: key);
+class CompressPDFPage extends StatelessWidget {
+  const CompressPDFPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Convert PDF"),
+        title: const Text("Compress PDF"),
         centerTitle: true,
       ),
       body: Consumer(
@@ -44,14 +44,14 @@ class ConvertPDFPage extends StatelessWidget {
               ToolActionsCard(
                 toolActions: [
                   ToolActionsModel(
-                    actionText: "Convert pdf pages to images",
+                    actionText: "Compress pdf",
                     actionOnTap: selectedFiles.length == 1
                         ? () {
                             Navigator.pushNamed(
                               context,
-                              route.convertPDFToolsPage,
-                              arguments: ConvertPDFToolsPageArguments(
-                                  actionType: ToolsActions.convertToImage,
+                              route.compressPDFToolsPage,
+                              arguments: CompressPDFToolsPageArguments(
+                                  actionType: ToolsActions.compress,
                                   file: selectedFiles[0]),
                             );
                           }

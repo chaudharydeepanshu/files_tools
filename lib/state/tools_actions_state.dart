@@ -21,6 +21,7 @@ enum ToolsActions {
   splitByPageRange,
   modify,
   convertToImage,
+  compress,
 }
 
 class ToolsActionsState extends ChangeNotifier {
@@ -196,7 +197,7 @@ class ToolsActionsState extends ChangeNotifier {
         getFileNameWithoutExtension(fileName: nameOfFileToSplit);
     String uriPathOfFileToModify = files[0].fileUri;
     String? result;
-    String outputFileName = "Unknown File.pdf";
+    String outputFileName = "Unknown File$extensionOfFileToSplit";
     try {
       updateActionType(ToolsActions.splitByPageCount);
       result = await PdfManipulator().pdfPageRotatorDeleterReorder(
@@ -290,6 +291,58 @@ class ToolsActionsState extends ChangeNotifier {
             filePath: file.filePath);
         outputFiles.add(file);
       }
+    } else {
+      updateActionErrorStatus(true);
+    }
+    updateActionProcessingStatus(false);
+    notifyListeners();
+  }
+
+  Future<void> compressSelectedFile({
+    required List<InputFileModel> files,
+    double? imageScale,
+    int? imageQuality,
+    bool? unEmbedFonts,
+  }) async {
+    updateActionErrorStatus(false);
+    updateActionProcessingStatus(true);
+    String nameOfFileToCompress = files[0].fileName;
+    String extensionOfFileToCompress =
+        getFileNameExtension(fileName: nameOfFileToCompress);
+    String nameOfFileToCompressWithoutExtension =
+        getFileNameWithoutExtension(fileName: nameOfFileToCompress);
+    String uriPathOfFileToCompress = files[0].fileUri;
+    String? result;
+    String outputFileName = "Unknown File$extensionOfFileToCompress";
+    try {
+      updateActionType(ToolsActions.splitByPageCount);
+      result = await PdfManipulator().pdfCompressor(
+          params: PDFCompressorParams(
+        pdfPath: uriPathOfFileToCompress,
+        imageScale: imageScale ?? 1,
+        imageQuality: imageQuality ?? 100,
+        unEmbedFonts: unEmbedFonts ?? false,
+      ));
+      if (result != null) {
+        DateTime currentDateTime = DateTime.now();
+        outputFileName =
+            "$nameOfFileToCompressWithoutExtension - Compressed - $currentDateTime$extensionOfFileToCompress";
+      }
+    } on PlatformException catch (e) {
+      log(e.toString());
+    } catch (e) {
+      log(e.toString());
+    }
+    if (result != null && result.isNotEmpty) {
+      outputFiles.clear();
+      OutputFileModel file = await getOutputFileModelFromPath(path: result);
+      file = OutputFileModel(
+          fileName: outputFileName,
+          fileDate: file.fileDate,
+          fileTime: file.fileTime,
+          fileSize: file.fileSize,
+          filePath: file.filePath);
+      outputFiles.add(file);
     } else {
       updateActionErrorStatus(true);
     }

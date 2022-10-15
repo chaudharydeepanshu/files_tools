@@ -1,4 +1,6 @@
 import 'package:files_tools/ui/screens/image_viewer.dart';
+import 'package:files_tools/ui/screens/pdf_tools_screens/compress_pdf/compress_pdf_screen.dart';
+import 'package:files_tools/ui/screens/pdf_tools_screens/compress_pdf/compress_pdf_tool_screen.dart';
 import 'package:files_tools/ui/screens/pdf_viewer.dart';
 import 'package:files_tools/ui/screens/pdf_tools_screens/convert_pdf/convert_pdf_screen.dart';
 import 'package:files_tools/ui/screens/pdf_tools_screens/convert_pdf/convert_pdf_tool_screen.dart';
@@ -23,10 +25,12 @@ const String mergePDFsPage = '/mergePDFs';
 const String splitPDFPage = '/splitPDF';
 const String modifyPDFPage = '/modifyPDF';
 const String convertPDFPage = '/convertPDF';
+const String compressPDFPage = '/CompressPDF';
 const String resultPage = '/Result';
 const String splitPDFToolsPage = '/SplitPDFTools';
 const String modifyPDFToolsPage = '/ModifyPDFTools';
 const String convertPDFToolsPage = '/ConvertPDFTools';
+const String compressPDFToolsPage = '/CompressPDFTools';
 
 // Control our page route flow
 Route<dynamic> controller(RouteSettings settings) {
@@ -80,6 +84,15 @@ Route<dynamic> controller(RouteSettings settings) {
       return MaterialPageRoute(
           builder: (context) => ConvertPDFToolsPage(
               arguments: settings.arguments as ConvertPDFToolsPageArguments),
+          settings: RouteSettings(name: settings.name));
+    case compressPDFPage:
+      return MaterialPageRoute(
+          builder: (context) => const CompressPDFPage(),
+          settings: RouteSettings(name: settings.name));
+    case compressPDFToolsPage:
+      return MaterialPageRoute(
+          builder: (context) => CompressPDFToolsPage(
+              arguments: settings.arguments as CompressPDFToolsPageArguments),
           settings: RouteSettings(name: settings.name));
     case resultPage:
       return MaterialPageRoute(
