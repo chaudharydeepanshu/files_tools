@@ -45,13 +45,13 @@ class ToolsActionsState extends ChangeNotifier {
   late ToolsActions _currentActionType;
   ToolsActions get currentActionType => _currentActionType;
 
-  bool _mounted = false;
+  bool _mounted = true;
   bool get mounted => _mounted;
 
   @override
   void dispose() {
     super.dispose();
-    _mounted = true;
+    _mounted = false;
   }
 
   Future<void> mergeSelectedFiles({required List<InputFileModel> files}) async {
@@ -83,17 +83,14 @@ class ToolsActionsState extends ChangeNotifier {
             filePath: file.filePath)
       ];
     } else {
-      // Using mounted because the state might be disposed when the cancellation was in progress.
-      // And once cancellation completes it get called.
-      if (mounted) {
-        updateActionErrorStatus(true);
-      }
+      updateActionErrorStatus(true);
+
       // We can use this place to get the exact time of cancellation action.
       // But don't just put clear cache here as at this state user may have started another task.
       // So we avoid clearing cache here as we don't want the user to wait till cancellation for next task will.
     }
     updateActionProcessingStatus(false);
-    notifyListeners();
+    customNotifyListener();
   }
 
   Future<void> splitSelectedFile({
@@ -194,17 +191,14 @@ class ToolsActionsState extends ChangeNotifier {
         outputFiles.add(file);
       }
     } else {
-      // Using mounted because the state might be disposed when the cancellation was in progress.
-      // And once cancellation completes it get called.
-      if (mounted) {
-        updateActionErrorStatus(true);
-      }
+      updateActionErrorStatus(true);
+
       // We can use this place to get the exact time of cancellation action.
       // But don't just put clear cache here as at this state user may have started another task.
       // So we avoid clearing cache here as we don't want the user to wait till cancellation for next task will.
     }
     updateActionProcessingStatus(false);
-    notifyListeners();
+    customNotifyListener();
   }
 
   Future<void> modifySelectedFile({
@@ -254,17 +248,14 @@ class ToolsActionsState extends ChangeNotifier {
           filePath: file.filePath);
       outputFiles.add(file);
     } else {
-      // Using mounted because the state might be disposed when the cancellation was in progress.
-      // And once cancellation completes it get called.
-      if (mounted) {
-        updateActionErrorStatus(true);
-      }
+      updateActionErrorStatus(true);
+
       // We can use this place to get the exact time of cancellation action.
       // But don't just put clear cache here as at this state user may have started another task.
       // So we avoid clearing cache here as we don't want the user to wait till cancellation for next task will.
     }
     updateActionProcessingStatus(false);
-    notifyListeners();
+    customNotifyListener();
   }
 
   Future<void> convertSelectedFile({
@@ -324,17 +315,14 @@ class ToolsActionsState extends ChangeNotifier {
         outputFiles.add(file);
       }
     } else {
-      // Using mounted because the state might be disposed when the cancellation was in progress.
-      // And once cancellation completes it get called.
-      if (mounted) {
-        updateActionErrorStatus(true);
-      }
+      updateActionErrorStatus(true);
+
       // We can use this place to get the exact time of cancellation action.
       // But don't just put clear cache here as at this state user may have started another task.
       // So we avoid clearing cache here as we don't want the user to wait till cancellation for next task will.
     }
     updateActionProcessingStatus(false);
-    notifyListeners();
+    customNotifyListener();
   }
 
   Future<void> compressSelectedFile({
@@ -383,17 +371,14 @@ class ToolsActionsState extends ChangeNotifier {
           filePath: file.filePath);
       outputFiles.add(file);
     } else {
-      // Using mounted because the state might be disposed when the cancellation was in progress.
-      // And once cancellation completes it get called.
-      if (mounted) {
-        updateActionErrorStatus(true);
-      }
+      updateActionErrorStatus(true);
+
       // We can use this place to get the exact time of cancellation action.
       // But don't just put clear cache here as at this state user may have started another task.
       // So we avoid clearing cache here as we don't want the user to wait till cancellation for next task will.
     }
     updateActionProcessingStatus(false);
-    notifyListeners();
+    customNotifyListener();
   }
 
   Future<void> watermarkSelectedFile({
@@ -450,17 +435,14 @@ class ToolsActionsState extends ChangeNotifier {
           filePath: file.filePath);
       outputFiles.add(file);
     } else {
-      // Using mounted because the state might be disposed when the cancellation was in progress.
-      // And once cancellation completes it get called.
-      if (mounted) {
-        updateActionErrorStatus(true);
-      }
+      updateActionErrorStatus(true);
+
       // We can use this place to get the exact time of cancellation action.
       // But don't just put clear cache here as at this state user may have started another task.
       // So we avoid clearing cache here as we don't want the user to wait till cancellation for next task will.
     }
     updateActionProcessingStatus(false);
-    notifyListeners();
+    customNotifyListener();
   }
 
   void cancelAction() {
@@ -474,7 +456,7 @@ class ToolsActionsState extends ChangeNotifier {
       log(e.toString());
     }
     updateActionProcessingStatus(false);
-    notifyListeners();
+    customNotifyListener();
   }
 
   void cancelFileSaving() {
@@ -486,27 +468,35 @@ class ToolsActionsState extends ChangeNotifier {
       log(e.toString());
     }
     updateSaveProcessingStatus(false);
-    notifyListeners();
+    customNotifyListener();
   }
 
   updateActionErrorStatus(bool status) {
     _actionErrorStatus = status;
-    notifyListeners();
+    customNotifyListener();
   }
 
   updateActionProcessingStatus(bool status) {
     _isActionProcessing = status;
-    notifyListeners();
+    customNotifyListener();
   }
 
   updateSaveProcessingStatus(bool status) {
     _isSaveProcessing = status;
-    notifyListeners();
+    customNotifyListener();
   }
 
   updateActionType(ToolsActions actionType) {
     _currentActionType = actionType;
-    notifyListeners();
+    customNotifyListener();
+  }
+
+  void customNotifyListener() {
+    // Using mounted because the state might be disposed when the cancellation was in progress due to manual cancellation.
+    // And once cancellation completes it get called.
+    if (_mounted) {
+      notifyListeners();
+    }
   }
 
   Future<void> saveFile(
@@ -535,7 +525,7 @@ class ToolsActionsState extends ChangeNotifier {
       _saveErrorStatus = true;
     }
     updateSaveProcessingStatus(false);
-    notifyListeners();
+    customNotifyListener();
   }
 }
 
