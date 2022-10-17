@@ -272,7 +272,7 @@ class _SplitBySizeActionCardState extends State<SplitBySizeActionCard> {
                           );
                         }
                       },
-                      child: const Text("Split PDF"),
+                      child: const Text("Compress PDF"),
                     );
                   },
                 ),

@@ -96,13 +96,8 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
             IconButton(
               icon: const Icon(Icons.home),
               onPressed: () {
-                ref.watch(toolScreenStateProvider).updateSelectedFiles(
-                  files: [],
-                );
-                Navigator.pushReplacementNamed(
-                  context,
-                  route.homePage,
-                );
+                Navigator.pushNamedAndRemoveUntil(
+                    context, route.homePage, (Route<dynamic> route) => false);
               },
             ),
           ],
