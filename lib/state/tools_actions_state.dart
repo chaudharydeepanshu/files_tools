@@ -45,6 +45,15 @@ class ToolsActionsState extends ChangeNotifier {
   late ToolsActions _currentActionType;
   ToolsActions get currentActionType => _currentActionType;
 
+  bool _mounted = false;
+  bool get mounted => _mounted;
+
+  @override
+  void dispose() {
+    super.dispose();
+    _mounted = true;
+  }
+
   Future<void> mergeSelectedFiles({required List<InputFileModel> files}) async {
     updateActionErrorStatus(false);
     updateActionProcessingStatus(true);
@@ -74,7 +83,11 @@ class ToolsActionsState extends ChangeNotifier {
             filePath: file.filePath)
       ];
     } else {
-      updateActionErrorStatus(true);
+      // Using mounted because the state might be disposed when the cancellation was in progress.
+      // And once cancellation completes it get called.
+      if (mounted) {
+        updateActionErrorStatus(true);
+      }
       // We can use this place to get the exact time of cancellation action.
       // But don't just put clear cache here as at this state user may have started another task.
       // So we avoid clearing cache here as we don't want the user to wait till cancellation for next task will.
@@ -181,7 +194,11 @@ class ToolsActionsState extends ChangeNotifier {
         outputFiles.add(file);
       }
     } else {
-      updateActionErrorStatus(true);
+      // Using mounted because the state might be disposed when the cancellation was in progress.
+      // And once cancellation completes it get called.
+      if (mounted) {
+        updateActionErrorStatus(true);
+      }
       // We can use this place to get the exact time of cancellation action.
       // But don't just put clear cache here as at this state user may have started another task.
       // So we avoid clearing cache here as we don't want the user to wait till cancellation for next task will.
@@ -237,7 +254,11 @@ class ToolsActionsState extends ChangeNotifier {
           filePath: file.filePath);
       outputFiles.add(file);
     } else {
-      updateActionErrorStatus(true);
+      // Using mounted because the state might be disposed when the cancellation was in progress.
+      // And once cancellation completes it get called.
+      if (mounted) {
+        updateActionErrorStatus(true);
+      }
       // We can use this place to get the exact time of cancellation action.
       // But don't just put clear cache here as at this state user may have started another task.
       // So we avoid clearing cache here as we don't want the user to wait till cancellation for next task will.
@@ -303,7 +324,11 @@ class ToolsActionsState extends ChangeNotifier {
         outputFiles.add(file);
       }
     } else {
-      updateActionErrorStatus(true);
+      // Using mounted because the state might be disposed when the cancellation was in progress.
+      // And once cancellation completes it get called.
+      if (mounted) {
+        updateActionErrorStatus(true);
+      }
       // We can use this place to get the exact time of cancellation action.
       // But don't just put clear cache here as at this state user may have started another task.
       // So we avoid clearing cache here as we don't want the user to wait till cancellation for next task will.
@@ -358,7 +383,11 @@ class ToolsActionsState extends ChangeNotifier {
           filePath: file.filePath);
       outputFiles.add(file);
     } else {
-      updateActionErrorStatus(true);
+      // Using mounted because the state might be disposed when the cancellation was in progress.
+      // And once cancellation completes it get called.
+      if (mounted) {
+        updateActionErrorStatus(true);
+      }
       // We can use this place to get the exact time of cancellation action.
       // But don't just put clear cache here as at this state user may have started another task.
       // So we avoid clearing cache here as we don't want the user to wait till cancellation for next task will.
@@ -421,7 +450,11 @@ class ToolsActionsState extends ChangeNotifier {
           filePath: file.filePath);
       outputFiles.add(file);
     } else {
-      updateActionErrorStatus(true);
+      // Using mounted because the state might be disposed when the cancellation was in progress.
+      // And once cancellation completes it get called.
+      if (mounted) {
+        updateActionErrorStatus(true);
+      }
       // We can use this place to get the exact time of cancellation action.
       // But don't just put clear cache here as at this state user may have started another task.
       // So we avoid clearing cache here as we don't want the user to wait till cancellation for next task will.
