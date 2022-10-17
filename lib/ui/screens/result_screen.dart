@@ -24,8 +24,10 @@ class ResultPage extends StatelessWidget {
           onWillPop: () async {
             // Canceling files save before screen popping,
             ref.read(toolsActionsStateProvider).cancelFileSaving();
+            // Canceling running actions.
+            ref.read(toolsActionsStateProvider).cancelAction();
             // Remove result cached Files
-            clearCache();
+            clearCache(clearCacheCommandFrom: "WillPopScope");
             // Returning true allows the pop to happen, returning false prevents it.
             return true;
           },
@@ -96,6 +98,10 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
             IconButton(
               icon: const Icon(Icons.home),
               onPressed: () {
+                // Canceling files save before screen popping,
+                ref.read(toolsActionsStateProvider).cancelFileSaving();
+                // Canceling running actions.
+                ref.read(toolsActionsStateProvider).cancelAction();
                 Navigator.pushNamedAndRemoveUntil(
                     context, route.homePage, (Route<dynamic> route) => false);
               },

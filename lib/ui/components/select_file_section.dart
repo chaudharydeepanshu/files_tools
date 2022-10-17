@@ -165,7 +165,8 @@ class FilesSelected extends StatelessWidget {
                           readToolScreenStateProviderValue.updateSelectedFiles(
                             files: [],
                           );
-                          clearCache();
+                          clearCache(
+                              clearCacheCommandFrom: "Clear File Selection");
                         }
                       : null,
                   label: const Text('Clear Selection'),

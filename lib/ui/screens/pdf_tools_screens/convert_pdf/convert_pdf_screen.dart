@@ -22,7 +22,7 @@ class ConvertPDFPage extends StatefulWidget {
 class _ConvertPDFPageState extends State<ConvertPDFPage> {
   @override
   void initState() {
-    clearCache();
+    clearCache(clearCacheCommandFrom: "ConvertPDFPage");
     super.initState();
   }
 

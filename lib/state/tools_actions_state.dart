@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:files_tools/models/file_model.dart';
 import 'package:files_tools/models/pdf_page_model.dart';
+import 'package:files_tools/utils/clear_cache.dart';
 import 'package:files_tools/utils/get_pdf_bitmaps.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -74,6 +75,9 @@ class ToolsActionsState extends ChangeNotifier {
       ];
     } else {
       updateActionErrorStatus(true);
+      // We can use this place to get the exact time of cancellation action.
+      // But don't just put clear cache here as at this state user may have started another task.
+      // So we avoid clearing cache here as we don't want the user to wait till cancellation for next task will.
     }
     updateActionProcessingStatus(false);
     notifyListeners();
@@ -178,6 +182,9 @@ class ToolsActionsState extends ChangeNotifier {
       }
     } else {
       updateActionErrorStatus(true);
+      // We can use this place to get the exact time of cancellation action.
+      // But don't just put clear cache here as at this state user may have started another task.
+      // So we avoid clearing cache here as we don't want the user to wait till cancellation for next task will.
     }
     updateActionProcessingStatus(false);
     notifyListeners();
@@ -231,6 +238,9 @@ class ToolsActionsState extends ChangeNotifier {
       outputFiles.add(file);
     } else {
       updateActionErrorStatus(true);
+      // We can use this place to get the exact time of cancellation action.
+      // But don't just put clear cache here as at this state user may have started another task.
+      // So we avoid clearing cache here as we don't want the user to wait till cancellation for next task will.
     }
     updateActionProcessingStatus(false);
     notifyListeners();
@@ -294,6 +304,9 @@ class ToolsActionsState extends ChangeNotifier {
       }
     } else {
       updateActionErrorStatus(true);
+      // We can use this place to get the exact time of cancellation action.
+      // But don't just put clear cache here as at this state user may have started another task.
+      // So we avoid clearing cache here as we don't want the user to wait till cancellation for next task will.
     }
     updateActionProcessingStatus(false);
     notifyListeners();
@@ -346,6 +359,9 @@ class ToolsActionsState extends ChangeNotifier {
       outputFiles.add(file);
     } else {
       updateActionErrorStatus(true);
+      // We can use this place to get the exact time of cancellation action.
+      // But don't just put clear cache here as at this state user may have started another task.
+      // So we avoid clearing cache here as we don't want the user to wait till cancellation for next task will.
     }
     updateActionProcessingStatus(false);
     notifyListeners();
@@ -406,12 +422,16 @@ class ToolsActionsState extends ChangeNotifier {
       outputFiles.add(file);
     } else {
       updateActionErrorStatus(true);
+      // We can use this place to get the exact time of cancellation action.
+      // But don't just put clear cache here as at this state user may have started another task.
+      // So we avoid clearing cache here as we don't want the user to wait till cancellation for next task will.
     }
     updateActionProcessingStatus(false);
     notifyListeners();
   }
 
   void cancelAction() {
+    clearCache(clearCacheCommandFrom: "Cancel Running Action");
     updateActionProcessingStatus(true);
     try {
       PdfManipulator().cancelManipulations();

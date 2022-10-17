@@ -22,7 +22,7 @@ class ModifyPDFPage extends StatefulWidget {
 class _ModifyPDFPageState extends State<ModifyPDFPage> {
   @override
   void initState() {
-    clearCache();
+    clearCache(clearCacheCommandFrom: "ModifyPDFPage");
     super.initState();
   }
 

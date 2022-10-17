@@ -21,7 +21,7 @@ class MergePDFsPage extends StatefulWidget {
 class _MergePDFsPageState extends State<MergePDFsPage> {
   @override
   void initState() {
-    clearCache();
+    clearCache(clearCacheCommandFrom: "MergePDFsPage");
     super.initState();
   }
 
