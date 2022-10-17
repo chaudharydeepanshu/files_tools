@@ -82,6 +82,9 @@ dependencies:
   # For color picking of text in watermarking pdf.
   flex_color_picker: ^2.6.1
 
+  # For clearing cache.
+  flutter_cache_manager: ^3.3.0
+
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.5
