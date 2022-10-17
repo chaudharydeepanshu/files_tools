@@ -13,19 +13,25 @@ class ImageViewer extends StatefulWidget {
 class _ImageViewerState extends State<ImageViewer> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.arguments.fileName),
-        actions: <Widget>[
-          IconButton(
-            icon: const Icon(Icons.share),
-            onPressed: () {},
+    return GestureDetector(
+      onTap: () {
+        FocusManager.instance.primaryFocus?.unfocus();
+        ScaffoldMessenger.of(context).hideCurrentSnackBar();
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(widget.arguments.fileName),
+          actions: <Widget>[
+            IconButton(
+              icon: const Icon(Icons.share),
+              onPressed: () {},
+            ),
+          ],
+        ),
+        body: Center(
+          child: ImageView(
+            filePath: widget.arguments.filePath,
           ),
-        ],
-      ),
-      body: Center(
-        child: ImageView(
-          filePath: widget.arguments.filePath,
         ),
       ),
     );

@@ -42,6 +42,7 @@ class _ModifyPDFToolsPageState extends State<ModifyPDFToolsPage> {
     return GestureDetector(
       onTap: () {
         FocusManager.instance.primaryFocus?.unfocus();
+        ScaffoldMessenger.of(context).hideCurrentSnackBar();
       },
       child: Scaffold(
         appBar: AppBar(

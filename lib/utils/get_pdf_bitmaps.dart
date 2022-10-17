@@ -15,7 +15,7 @@ Future<Uint8List?> getPdfPageBitmap({
   Uint8List? bytes = await PdfBitmaps().pdfBitmap(
       params: PDFBitmapParams(
           pdfPath: pdfPath,
-          pageInfo: PageInfo(
+          pageInfo: BitmapConfigForPage(
               pageNumber: index + 1,
               scale: scale ?? 1,
               rotationAngle: rotationAngle ?? 0,

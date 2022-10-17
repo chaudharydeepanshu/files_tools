@@ -5,21 +5,21 @@ import 'package:files_tools/state/select_file_state.dart';
 import 'package:files_tools/state/tools_actions_state.dart';
 import 'package:files_tools/ui/components/select_file_section.dart';
 import 'package:files_tools/ui/components/tool_actions_section.dart';
-import 'package:files_tools/ui/screens/pdf_tools_screens/convert_pdf/convert_pdf_tool_screen.dart';
+import 'package:files_tools/ui/screens/pdf_tools_screens/watermark_pdf/watermark_pdf_tool_screen.dart';
 import 'package:files_tools/utils/clear_cache.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pick_or_save/pick_or_save.dart';
 import 'package:files_tools/route/route.dart' as route;
 
-class ConvertPDFPage extends StatefulWidget {
-  const ConvertPDFPage({Key? key}) : super(key: key);
+class WatermarkPDFPage extends StatefulWidget {
+  const WatermarkPDFPage({Key? key}) : super(key: key);
 
   @override
-  State<ConvertPDFPage> createState() => _ConvertPDFPageState();
+  State<WatermarkPDFPage> createState() => _WatermarkPDFPageState();
 }
 
-class _ConvertPDFPageState extends State<ConvertPDFPage> {
+class _WatermarkPDFPageState extends State<WatermarkPDFPage> {
   @override
   void initState() {
     clearCache();
@@ -30,7 +30,7 @@ class _ConvertPDFPageState extends State<ConvertPDFPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Convert PDF"),
+        title: const Text("Watermark PDF"),
         centerTitle: true,
       ),
       body: Consumer(
@@ -56,14 +56,14 @@ class _ConvertPDFPageState extends State<ConvertPDFPage> {
               ToolActionsCard(
                 toolActions: [
                   ToolActionsModel(
-                    actionText: "Convert pdf pages to images",
+                    actionText: "Watermark pdf",
                     actionOnTap: selectedFiles.length == 1
                         ? () {
                             Navigator.pushNamed(
                               context,
-                              route.convertPDFToolsPage,
-                              arguments: ConvertPDFToolsPageArguments(
-                                  actionType: ToolsActions.convertToImage,
+                              route.watermarkPDFToolsPage,
+                              arguments: WatermarkPDFToolsPageArguments(
+                                  actionType: ToolsActions.watermark,
                                   file: selectedFiles[0]),
                             );
                           }

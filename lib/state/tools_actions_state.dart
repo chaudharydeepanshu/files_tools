@@ -22,6 +22,7 @@ enum ToolsActions {
   modify,
   convertToImage,
   compress,
+  watermark,
 }
 
 class ToolsActionsState extends ChangeNotifier {
@@ -199,7 +200,7 @@ class ToolsActionsState extends ChangeNotifier {
     String? result;
     String outputFileName = "Unknown File$extensionOfFileToSplit";
     try {
-      updateActionType(ToolsActions.splitByPageCount);
+      updateActionType(ToolsActions.modify);
       result = await PdfManipulator().pdfPageRotatorDeleterReorder(
           params: PDFPageRotatorDeleterReorderParams(
         pdfPath: uriPathOfFileToModify,
@@ -315,7 +316,7 @@ class ToolsActionsState extends ChangeNotifier {
     String? result;
     String outputFileName = "Unknown File$extensionOfFileToCompress";
     try {
-      updateActionType(ToolsActions.splitByPageCount);
+      updateActionType(ToolsActions.compress);
       result = await PdfManipulator().pdfCompressor(
           params: PDFCompressorParams(
         pdfPath: uriPathOfFileToCompress,
@@ -350,6 +351,66 @@ class ToolsActionsState extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> watermarkSelectedFile({
+    required List<InputFileModel> files,
+    required String text,
+    double? fontSize,
+    WatermarkLayer? watermarkLayer,
+    double? opacity,
+    double? rotationAngle,
+    Color? watermarkColor,
+    PositionType? positionType,
+  }) async {
+    updateActionErrorStatus(false);
+    updateActionProcessingStatus(true);
+    String nameOfFileToWatermark = files[0].fileName;
+    String extensionOfFileToWatermark =
+        getFileNameExtension(fileName: nameOfFileToWatermark);
+    String nameOfFileToWatermarkWithoutExtension =
+        getFileNameWithoutExtension(fileName: nameOfFileToWatermark);
+    String uriPathOfFileToWatermark = files[0].fileUri;
+    String? result;
+    String outputFileName = "Unknown File$extensionOfFileToWatermark";
+    try {
+      updateActionType(ToolsActions.watermark);
+      result = await PdfManipulator().pdfWatermark(
+          params: PDFWatermarkParams(
+        pdfPath: uriPathOfFileToWatermark,
+        text: text,
+        fontSize: fontSize ?? 30,
+        watermarkLayer: watermarkLayer ?? WatermarkLayer.overContent,
+        opacity: opacity ?? 0.5,
+        rotationAngle: rotationAngle ?? 45,
+        watermarkColor: watermarkColor ?? Colors.black,
+        positionType: positionType ?? PositionType.center,
+      ));
+      if (result != null) {
+        DateTime currentDateTime = DateTime.now();
+        outputFileName =
+            "$nameOfFileToWatermarkWithoutExtension - Watermarked - $currentDateTime$extensionOfFileToWatermark";
+      }
+    } on PlatformException catch (e) {
+      log(e.toString());
+    } catch (e) {
+      log(e.toString());
+    }
+    if (result != null && result.isNotEmpty) {
+      outputFiles.clear();
+      OutputFileModel file = await getOutputFileModelFromPath(path: result);
+      file = OutputFileModel(
+          fileName: outputFileName,
+          fileDate: file.fileDate,
+          fileTime: file.fileTime,
+          fileSize: file.fileSize,
+          filePath: file.filePath);
+      outputFiles.add(file);
+    } else {
+      updateActionErrorStatus(true);
+    }
+    updateActionProcessingStatus(false);
+    notifyListeners();
+  }
+
   void cancelAction() {
     updateActionProcessingStatus(true);
     try {
@@ -360,6 +421,18 @@ class ToolsActionsState extends ChangeNotifier {
       log(e.toString());
     }
     updateActionProcessingStatus(false);
+    notifyListeners();
+  }
+
+  void cancelFileSaving() {
+    try {
+      PickOrSave().cancelFilesSaving();
+    } on PlatformException catch (e) {
+      log(e.toString());
+    } catch (e) {
+      log(e.toString());
+    }
+    updateSaveProcessingStatus(false);
     notifyListeners();
   }
 

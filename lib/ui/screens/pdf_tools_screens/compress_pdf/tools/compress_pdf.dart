@@ -180,23 +180,6 @@ class _SplitBySizeActionCardState extends State<SplitBySizeActionCard> {
                                 return null;
                               },
                             ),
-                            const SizedBox(height: 10),
-                            CheckboxListTile(
-                                tileColor: Theme.of(context)
-                                    .colorScheme
-                                    .onSurfaceVariant
-                                    .withOpacity(0.3),
-                                // contentPadding: EdgeInsets.zero,
-                                visualDensity: VisualDensity.compact,
-                                title: Text("Remove fonts from pdf",
-                                    style:
-                                        Theme.of(context).textTheme.bodyMedium),
-                                value: isUnEmbedFonts,
-                                onChanged: (bool? value) {
-                                  setState(() {
-                                    isUnEmbedFonts = value ?? !isUnEmbedFonts;
-                                  });
-                                }),
                           ],
                         ),
                       ),
@@ -209,6 +192,19 @@ class _SplitBySizeActionCardState extends State<SplitBySizeActionCard> {
                 });
               },
             ),
+            const SizedBox(height: 10),
+            CheckboxListTile(
+                tileColor: Theme.of(context).colorScheme.surfaceVariant,
+                // contentPadding: EdgeInsets.zero,
+                visualDensity: VisualDensity.compact,
+                title: Text("Remove fonts from pdf",
+                    style: Theme.of(context).textTheme.bodyMedium),
+                value: isUnEmbedFonts,
+                onChanged: (bool? value) {
+                  setState(() {
+                    isUnEmbedFonts = value ?? !isUnEmbedFonts;
+                  });
+                }),
             const SizedBox(height: 10),
             Column(
               children: [
@@ -240,15 +236,7 @@ class _SplitBySizeActionCardState extends State<SplitBySizeActionCard> {
                                     ? int.parse(
                                         imageQualityController.value.text)
                                     : 100;
-                    bool unEmbedFonts = compressionType == CompressionTypes.less
-                        ? false
-                        : compressionType == CompressionTypes.medium
-                            ? false
-                            : compressionType == CompressionTypes.extreme
-                                ? false
-                                : compressionType == CompressionTypes.custom
-                                    ? isUnEmbedFonts
-                                    : false;
+                    bool unEmbedFonts = isUnEmbedFonts;
 
                     return ElevatedButton(
                       style: ElevatedButton.styleFrom(

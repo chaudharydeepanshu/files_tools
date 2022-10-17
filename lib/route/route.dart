@@ -1,6 +1,8 @@
 import 'package:files_tools/ui/screens/image_viewer.dart';
 import 'package:files_tools/ui/screens/pdf_tools_screens/compress_pdf/compress_pdf_screen.dart';
 import 'package:files_tools/ui/screens/pdf_tools_screens/compress_pdf/compress_pdf_tool_screen.dart';
+import 'package:files_tools/ui/screens/pdf_tools_screens/watermark_pdf/watermark_pdf_screen.dart';
+import 'package:files_tools/ui/screens/pdf_tools_screens/watermark_pdf/watermark_pdf_tool_screen.dart';
 import 'package:files_tools/ui/screens/pdf_viewer.dart';
 import 'package:files_tools/ui/screens/pdf_tools_screens/convert_pdf/convert_pdf_screen.dart';
 import 'package:files_tools/ui/screens/pdf_tools_screens/convert_pdf/convert_pdf_tool_screen.dart';
@@ -10,9 +12,9 @@ import 'package:files_tools/ui/screens/pdf_tools_screens/split_pdf/split_pdf_scr
 import 'package:files_tools/ui/screens/pdf_tools_screens/split_pdf/split_pdf_tools_screen.dart';
 import 'package:files_tools/ui/screens/result_screen.dart';
 import 'package:flutter/material.dart';
-import '../ui/screens/homescreen/homescreen.dart';
-import '../ui/screens/homescreen/pages/components/pdf_tools_section.dart';
-import '../ui/screens/pdf_tools_screens/merge_pdfs_screen.dart';
+import 'package:files_tools/ui/screens/homescreen/homescreen.dart';
+import 'package:files_tools/ui/screens/homescreen/pages/components/pdf_tools_section.dart';
+import 'package:files_tools/ui/screens/pdf_tools_screens/merge_pdfs_screen.dart';
 
 // Note: When using path "/" in routes then the initial route will always have to be "/".
 
@@ -26,11 +28,13 @@ const String splitPDFPage = '/splitPDF';
 const String modifyPDFPage = '/modifyPDF';
 const String convertPDFPage = '/convertPDF';
 const String compressPDFPage = '/CompressPDF';
+const String watermarkPDFPage = '/WatermarkPDF';
 const String resultPage = '/Result';
 const String splitPDFToolsPage = '/SplitPDFTools';
 const String modifyPDFToolsPage = '/ModifyPDFTools';
 const String convertPDFToolsPage = '/ConvertPDFTools';
 const String compressPDFToolsPage = '/CompressPDFTools';
+const String watermarkPDFToolsPage = '/WatermarkPDFTools';
 
 // Control our page route flow
 Route<dynamic> controller(RouteSettings settings) {
@@ -93,6 +97,15 @@ Route<dynamic> controller(RouteSettings settings) {
       return MaterialPageRoute(
           builder: (context) => CompressPDFToolsPage(
               arguments: settings.arguments as CompressPDFToolsPageArguments),
+          settings: RouteSettings(name: settings.name));
+    case watermarkPDFPage:
+      return MaterialPageRoute(
+          builder: (context) => const WatermarkPDFPage(),
+          settings: RouteSettings(name: settings.name));
+    case watermarkPDFToolsPage:
+      return MaterialPageRoute(
+          builder: (context) => WatermarkPDFToolsPage(
+              arguments: settings.arguments as WatermarkPDFToolsPageArguments),
           settings: RouteSettings(name: settings.name));
     case resultPage:
       return MaterialPageRoute(

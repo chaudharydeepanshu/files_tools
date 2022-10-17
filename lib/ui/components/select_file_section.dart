@@ -4,6 +4,7 @@ import 'package:files_tools/models/file_model.dart';
 import 'package:files_tools/state/providers.dart';
 import 'package:files_tools/state/select_file_state.dart';
 import 'package:files_tools/ui/screens/pdf_viewer.dart';
+import 'package:files_tools/utils/clear_cache.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pick_or_save/pick_or_save.dart';
@@ -164,6 +165,7 @@ class FilesSelected extends StatelessWidget {
                           readToolScreenStateProviderValue.updateSelectedFiles(
                             files: [],
                           );
+                          clearCache();
                         }
                       : null,
                   label: const Text('Clear Selection'),

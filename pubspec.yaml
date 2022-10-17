@@ -61,14 +61,14 @@ dependencies:
   flutter_spinkit: ^5.1.0
 
   # For picking and saving single or multiple files.
-  pick_or_save: ^0.0.9
+  pick_or_save: ^0.1.1
 
   # For pdf bitmaps and page count.
-  pdf_bitmaps: ^0.2.1
+  pdf_bitmaps: ^0.2.3
 #  flutter_pdfview: ^1.2.5 it accepts URI so look into it in future
 
   # For pdf manipulations.
-  pdf_manipulator: ^0.3.2
+  pdf_manipulator: ^0.4.3
 
   # For draggable gridview.
   reorderable_grid_view: ^2.2.5
@@ -78,6 +78,9 @@ dependencies:
 
   # For getting device path like temporary directory path.
   path_provider: ^2.0.11
+
+  # For color picking of text in watermarking pdf.
+  flex_color_picker: ^2.6.1
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:files_tools/models/file_model.dart';
 import 'package:files_tools/state/providers.dart';
 import 'package:files_tools/state/tools_actions_state.dart';
+import 'package:files_tools/ui/components/custom_snack_bar.dart';
 import 'package:files_tools/ui/screens/image_viewer.dart';
 import 'package:files_tools/ui/screens/pdf_viewer.dart';
 import 'package:flutter/material.dart';
@@ -10,34 +11,57 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rive/rive.dart';
 
 import 'package:files_tools/route/route.dart' as route;
+import 'package:files_tools/utils/clear_cache.dart';
 
 class ResultPage extends StatelessWidget {
   const ResultPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: const CustomAppBar(),
-      body: Consumer(
-        builder: (BuildContext context, WidgetRef ref, Widget? child) {
-          final bool isActionProcessing = ref.watch(toolsActionsStateProvider
-              .select((value) => value.isActionProcessing));
-          final bool actionErrorStatus = ref.watch(toolsActionsStateProvider
-              .select((value) => value.actionErrorStatus));
-          final ToolsActions currentActionType = ref.watch(
-              toolsActionsStateProvider
-                  .select((value) => value.currentActionType));
-          if (isActionProcessing) {
-            return const ProcessingResult();
-          } else if (actionErrorStatus) {
-            return const ProcessingResultError();
-          } else {
-            return SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(vertical: 16.0),
-                child: ResultBody(actionType: currentActionType));
-          }
-        },
-      ),
+    return Consumer(
+      builder: (BuildContext context, WidgetRef ref, Widget? child) {
+        return WillPopScope(
+          onWillPop: () async {
+            // Canceling files save before screen popping,
+            ref.read(toolsActionsStateProvider).cancelFileSaving();
+            // Remove result cached Files
+            clearCache();
+            // Returning true allows the pop to happen, returning false prevents it.
+            return true;
+          },
+          child: GestureDetector(
+            onTap: () {
+              FocusManager.instance.primaryFocus?.unfocus();
+              ScaffoldMessenger.of(context).hideCurrentSnackBar();
+            },
+            child: Scaffold(
+              appBar: const CustomAppBar(),
+              body: Consumer(
+                builder: (BuildContext context, WidgetRef ref, Widget? child) {
+                  final bool isActionProcessing = ref.watch(
+                      toolsActionsStateProvider
+                          .select((value) => value.isActionProcessing));
+                  final bool actionErrorStatus = ref.watch(
+                      toolsActionsStateProvider
+                          .select((value) => value.actionErrorStatus));
+                  final ToolsActions currentActionType = ref.watch(
+                      toolsActionsStateProvider
+                          .select((value) => value.currentActionType));
+                  if (isActionProcessing) {
+                    return const ProcessingResult();
+                  } else if (actionErrorStatus) {
+                    return const ProcessingResultError();
+                  } else {
+                    return SingleChildScrollView(
+                        padding: const EdgeInsets.symmetric(vertical: 16.0),
+                        child: ResultBody(actionType: currentActionType));
+                  }
+                },
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }
@@ -68,6 +92,20 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
                   ? "Error Occurred"
                   : actionAppbarTitle),
           centerTitle: true,
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.home),
+              onPressed: () {
+                ref.watch(toolScreenStateProvider).updateSelectedFiles(
+                  files: [],
+                );
+                Navigator.pushReplacementNamed(
+                  context,
+                  route.homePage,
+                );
+              },
+            ),
+          ],
         );
       },
     );
@@ -207,18 +245,48 @@ class SavingSingleFile extends StatelessWidget {
             const Divider(),
             Consumer(
               builder: (BuildContext context, WidgetRef ref, Widget? child) {
+                ref.listen(
+                    toolsActionsStateProvider.select(
+                        (value) => value.isSaveProcessing), (previous, next) {
+                  if (previous != next && next == true) {
+                    String? contentText = 'Saving file! Please wait...';
+                    Color? backgroundColor;
+                    Duration? duration = const Duration(days: 365);
+                    IconData? iconData = Icons.save;
+                    Color? iconAndTextColor;
+
+                    showCustomSnackBar(
+                      context: context,
+                      contentText: contentText,
+                      backgroundColor: backgroundColor,
+                      duration: duration,
+                      iconData: iconData,
+                      iconAndTextColor: iconAndTextColor,
+                    );
+                  } else if (next == false) {
+                    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                  }
+                });
+
+                bool isSaveProcessing = ref.watch(toolsActionsStateProvider
+                    .select((value) => value.isSaveProcessing));
+
                 return ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     foregroundColor: Theme.of(context).colorScheme.onPrimary,
                     backgroundColor: Theme.of(context).colorScheme.primary,
                   ).copyWith(elevation: ButtonStyleButton.allOrNull(0.0)),
-                  onPressed: () {
-                    ref.read(toolsActionsStateProvider).saveFile(
-                      files: [file],
-                      mimeTypeFilter: ["application/pdf"],
-                    );
-                  },
-                  child: const Text("Save File"),
+                  onPressed: isSaveProcessing
+                      ? null
+                      : () {
+                          ref.read(toolsActionsStateProvider).saveFile(
+                            files: [file],
+                            mimeTypeFilter: ["application/pdf"],
+                          );
+                        },
+                  child: isSaveProcessing
+                      ? const Text("Saving File. Please wait")
+                      : const Text("Save File"),
                 );
               },
             ),
@@ -266,18 +334,48 @@ class SavingMultipleFiles extends StatelessWidget {
               const Divider(),
               Consumer(
                 builder: (BuildContext context, WidgetRef ref, Widget? child) {
+                  ref.listen(
+                      toolsActionsStateProvider.select(
+                          (value) => value.isSaveProcessing), (previous, next) {
+                    if (previous != next && next == true) {
+                      String? contentText = 'Saving files! Please wait...';
+                      Color? backgroundColor;
+                      Duration? duration = const Duration(days: 365);
+                      IconData? iconData = Icons.save;
+                      Color? iconAndTextColor;
+
+                      showCustomSnackBar(
+                        context: context,
+                        contentText: contentText,
+                        backgroundColor: backgroundColor,
+                        duration: duration,
+                        iconData: iconData,
+                        iconAndTextColor: iconAndTextColor,
+                      );
+                    } else if (next == false) {
+                      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                    }
+                  });
+
+                  bool isSaveProcessing = ref.watch(toolsActionsStateProvider
+                      .select((value) => value.isSaveProcessing));
+
                   return ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       foregroundColor: Theme.of(context).colorScheme.onPrimary,
                       backgroundColor: Theme.of(context).colorScheme.primary,
                     ).copyWith(elevation: ButtonStyleButton.allOrNull(0.0)),
-                    onPressed: () {
-                      ref.read(toolsActionsStateProvider).saveFile(
-                        files: files,
-                        mimeTypeFilter: ["application/pdf"],
-                      );
-                    },
-                    child: const Text("Save Files"),
+                    onPressed: isSaveProcessing
+                        ? null
+                        : () {
+                            ref.read(toolsActionsStateProvider).saveFile(
+                              files: files,
+                              mimeTypeFilter: ["application/pdf"],
+                            );
+                          },
+                    child: isSaveProcessing
+                        ? const Text("Saving Files. Please wait")
+                        : const Text("Save Files"),
                   );
                 },
               ),

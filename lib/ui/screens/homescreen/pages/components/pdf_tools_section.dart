@@ -139,8 +139,12 @@ class PDFToolsSection extends StatelessWidget {
       GridCardDetail(
         cardIcon: const Icon(Icons.branding_watermark),
         cardTitle: 'Watermark PDF',
-        cardOnTap: null,
-        // () {},
+        cardOnTap: () {
+          Navigator.pushNamed(
+            context,
+            route.watermarkPDFPage,
+          );
+        },
       ),
       GridCardDetail(
         cardIcon: const Icon(Icons.lock),

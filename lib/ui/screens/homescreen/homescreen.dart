@@ -1,5 +1,6 @@
 import 'package:files_tools/ui/screens/homescreen/pages/document_tools_page.dart';
 import 'package:files_tools/ui/screens/homescreen/pages/media_tools_page.dart';
+import 'package:files_tools/utils/clear_cache.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -11,6 +12,12 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int currentPageIndex = 0;
+
+  @override
+  void initState() {
+    clearCache();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

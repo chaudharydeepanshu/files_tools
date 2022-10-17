@@ -4,21 +4,21 @@ import 'package:files_tools/models/file_model.dart';
 import 'package:files_tools/state/tools_actions_state.dart';
 import 'package:files_tools/ui/screens/pdf_tools_screens/components/tools_error_body.dart';
 import 'package:files_tools/ui/screens/pdf_tools_screens/components/tools_processing_body.dart';
-import 'package:files_tools/ui/screens/pdf_tools_screens/compress_pdf/tools/compress_pdf.dart';
+import 'package:files_tools/ui/screens/pdf_tools_screens/watermark_pdf/tools/watermark_pdf.dart';
 import 'package:files_tools/utils/get_pdf_bitmaps.dart';
 import 'package:flutter/material.dart';
 
-class CompressPDFToolsPage extends StatefulWidget {
-  const CompressPDFToolsPage({Key? key, required this.arguments})
+class WatermarkPDFToolsPage extends StatefulWidget {
+  const WatermarkPDFToolsPage({Key? key, required this.arguments})
       : super(key: key);
 
-  final CompressPDFToolsPageArguments arguments;
+  final WatermarkPDFToolsPageArguments arguments;
 
   @override
-  State<CompressPDFToolsPage> createState() => _CompressPDFToolsPageState();
+  State<WatermarkPDFToolsPage> createState() => _WatermarkPDFToolsPageState();
 }
 
-class _CompressPDFToolsPageState extends State<CompressPDFToolsPage> {
+class _WatermarkPDFToolsPageState extends State<WatermarkPDFToolsPage> {
   late Future<bool> initPageCount;
   int? pdfPageCount;
 
@@ -61,7 +61,7 @@ class _CompressPDFToolsPageState extends State<CompressPDFToolsPage> {
                   log(snapshot.error.toString());
                   return const ErrorBody();
                 } else {
-                  return CompressPDFToolsBody(
+                  return WatermarkPDFToolsBody(
                       actionType: widget.arguments.actionType,
                       file: widget.arguments.file,
                       pdfPageCount: pdfPageCount!);
@@ -74,15 +74,16 @@ class _CompressPDFToolsPageState extends State<CompressPDFToolsPage> {
   }
 }
 
-class CompressPDFToolsPageArguments {
+class WatermarkPDFToolsPageArguments {
   final ToolsActions actionType;
   final InputFileModel file;
 
-  CompressPDFToolsPageArguments({required this.actionType, required this.file});
+  WatermarkPDFToolsPageArguments(
+      {required this.actionType, required this.file});
 }
 
-class CompressPDFToolsBody extends StatelessWidget {
-  const CompressPDFToolsBody(
+class WatermarkPDFToolsBody extends StatelessWidget {
+  const WatermarkPDFToolsBody(
       {Key? key,
       required this.actionType,
       required this.file,
@@ -95,8 +96,8 @@ class CompressPDFToolsBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (actionType == ToolsActions.compress) {
-      return CompressPDF(pdfPageCount: pdfPageCount, file: file);
+    if (actionType == ToolsActions.watermark) {
+      return WatermarkPDF(pdfPageCount: pdfPageCount, file: file);
     } else {
       return Container();
     }
@@ -105,8 +106,8 @@ class CompressPDFToolsBody extends StatelessWidget {
 
 String getAppBarTitleForActionType({required ToolsActions actionType}) {
   String title = "Action Successful";
-  if (actionType == ToolsActions.compress) {
-    title = "Select Compress Config";
+  if (actionType == ToolsActions.watermark) {
+    title = "Select Watermark Config";
   }
   return title;
 }

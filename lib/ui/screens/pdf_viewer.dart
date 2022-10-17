@@ -55,59 +55,65 @@ class _PdfViewerState extends State<PdfViewer> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.arguments.fileName),
-        actions: <Widget>[
-          IconButton(
-            icon: const Icon(Icons.share),
-            onPressed: () {},
-          ),
-        ],
-      ),
-      body: FutureBuilder<bool>(
-        future: initPdfPages, // async work
-        builder: (context, AsyncSnapshot<bool> snapshot) {
-          switch (snapshot.connectionState) {
-            case ConnectionState.waiting:
-              return const LoadingPdf();
-            default:
-              if (snapshot.hasError) {
-                log(snapshot.error.toString());
-                return const PdfLoadingError();
-              } else if (pdfPages.isEmpty) {
-                log(snapshot.error.toString());
-                return const PdfLoadingError();
-              } else {
-                return PageView.builder(
-                  scrollDirection: Axis.vertical,
-                  controller: pageController,
-                  pageSnapping: false,
-                  itemBuilder: (BuildContext context, int index) {
-                    updatePdfPages(index: index);
-                    if (pdfPages[index].pageErrorStatus) {
-                      log(snapshot.error.toString());
-                      return PageError(pageIndex: index);
-                    } else if (pdfPages[index].pageBytes != null) {
-                      return PDFPageView(
-                        viewportFraction: pageController.viewportFraction,
-                        page: PageImageView(
-                          bytes: pdfPages[index].pageBytes!,
-                          pageIndex: index,
-                        ),
-                      );
-                    } else {
-                      return PDFPageView(
-                        viewportFraction: pageController.viewportFraction,
-                        page: LoadingPage(pageIndex: index),
-                      );
-                    }
-                  },
-                  itemCount: pdfPages.length,
-                );
-              }
-          }
-        },
+    return GestureDetector(
+      onTap: () {
+        FocusManager.instance.primaryFocus?.unfocus();
+        ScaffoldMessenger.of(context).hideCurrentSnackBar();
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(widget.arguments.fileName),
+          actions: <Widget>[
+            IconButton(
+              icon: const Icon(Icons.share),
+              onPressed: () {},
+            ),
+          ],
+        ),
+        body: FutureBuilder<bool>(
+          future: initPdfPages, // async work
+          builder: (context, AsyncSnapshot<bool> snapshot) {
+            switch (snapshot.connectionState) {
+              case ConnectionState.waiting:
+                return const LoadingPdf();
+              default:
+                if (snapshot.hasError) {
+                  log(snapshot.error.toString());
+                  return const PdfLoadingError();
+                } else if (pdfPages.isEmpty) {
+                  log(snapshot.error.toString());
+                  return const PdfLoadingError();
+                } else {
+                  return PageView.builder(
+                    scrollDirection: Axis.vertical,
+                    controller: pageController,
+                    pageSnapping: false,
+                    itemBuilder: (BuildContext context, int index) {
+                      updatePdfPages(index: index);
+                      if (pdfPages[index].pageErrorStatus) {
+                        log(snapshot.error.toString());
+                        return PageError(pageIndex: index);
+                      } else if (pdfPages[index].pageBytes != null) {
+                        return PDFPageView(
+                          viewportFraction: pageController.viewportFraction,
+                          page: PageImageView(
+                            bytes: pdfPages[index].pageBytes!,
+                            pageIndex: index,
+                          ),
+                        );
+                      } else {
+                        return PDFPageView(
+                          viewportFraction: pageController.viewportFraction,
+                          page: LoadingPage(pageIndex: index),
+                        );
+                      }
+                    },
+                    itemCount: pdfPages.length,
+                  );
+                }
+            }
+          },
+        ),
       ),
     );
   }
