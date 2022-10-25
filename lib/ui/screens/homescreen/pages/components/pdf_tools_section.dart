@@ -162,7 +162,7 @@ class PDFToolsSection extends StatelessWidget {
         cardOnTap: () {
           Navigator.pushNamed(
             context,
-            route.encryptPDFPage,
+            route.decryptPDFPage,
           );
         },
       ),

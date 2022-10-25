@@ -1,6 +1,8 @@
 import 'package:files_tools/ui/screens/image_viewer.dart';
 import 'package:files_tools/ui/screens/pdf_tools_screens/compress_pdf/compress_pdf_screen.dart';
 import 'package:files_tools/ui/screens/pdf_tools_screens/compress_pdf/compress_pdf_tool_screen.dart';
+import 'package:files_tools/ui/screens/pdf_tools_screens/decrypt_pdf/decrypt_pdf_screen.dart';
+import 'package:files_tools/ui/screens/pdf_tools_screens/decrypt_pdf/decrypt_pdf_tools_screen.dart';
 import 'package:files_tools/ui/screens/pdf_tools_screens/watermark_pdf/watermark_pdf_screen.dart';
 import 'package:files_tools/ui/screens/pdf_tools_screens/watermark_pdf/watermark_pdf_tool_screen.dart';
 import 'package:files_tools/ui/screens/pdf_viewer.dart';
@@ -15,9 +17,8 @@ import 'package:flutter/material.dart';
 import 'package:files_tools/ui/screens/homescreen/homescreen.dart';
 import 'package:files_tools/ui/screens/homescreen/pages/components/pdf_tools_section.dart';
 import 'package:files_tools/ui/screens/pdf_tools_screens/merge_pdfs_screen.dart';
-
-import '../ui/screens/pdf_tools_screens/encrypt_decrypt_pdf/encrypt_pdf_screen.dart';
-import '../ui/screens/pdf_tools_screens/encrypt_decrypt_pdf/encrypt_pdf_tools_screen.dart';
+import 'package:files_tools/ui/screens/pdf_tools_screens/encrypt_pdf/encrypt_pdf_screen.dart';
+import 'package:files_tools/ui/screens/pdf_tools_screens/encrypt_pdf/encrypt_pdf_tools_screen.dart';
 
 // Note: When using path "/" in routes then the initial route will always have to be "/".
 
@@ -33,6 +34,7 @@ const String convertPDFPage = '/convertPDF';
 const String compressPDFPage = '/CompressPDF';
 const String watermarkPDFPage = '/WatermarkPDF';
 const String encryptPDFPage = '/EncryptPDF';
+const String decryptPDFPage = '/DecryptPDF';
 const String resultPage = '/Result';
 const String splitPDFToolsPage = '/SplitPDFTools';
 const String modifyPDFToolsPage = '/ModifyPDFTools';
@@ -40,6 +42,7 @@ const String convertPDFToolsPage = '/ConvertPDFTools';
 const String compressPDFToolsPage = '/CompressPDFTools';
 const String watermarkPDFToolsPage = '/WatermarkPDFTools';
 const String encryptPDFToolsPage = '/EncryptPDFTools';
+const String decryptPDFToolsPage = '/DecryptPDFTools';
 
 // Control our page route flow
 Route<dynamic> controller(RouteSettings settings) {
@@ -120,6 +123,15 @@ Route<dynamic> controller(RouteSettings settings) {
       return MaterialPageRoute(
           builder: (context) => EncryptPDFToolsPage(
               arguments: settings.arguments as EncryptPDFToolsPageArguments),
+          settings: RouteSettings(name: settings.name));
+    case decryptPDFPage:
+      return MaterialPageRoute(
+          builder: (context) => const DecryptPDFPage(),
+          settings: RouteSettings(name: settings.name));
+    case decryptPDFToolsPage:
+      return MaterialPageRoute(
+          builder: (context) => DecryptPDFToolsPage(
+              arguments: settings.arguments as DecryptPDFToolsPageArguments),
           settings: RouteSettings(name: settings.name));
     case resultPage:
       return MaterialPageRoute(

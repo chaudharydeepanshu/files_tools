@@ -529,6 +529,58 @@ class ToolsActionsState extends ChangeNotifier {
     customNotifyListener();
   }
 
+  Future<void> decryptSelectedFile({
+    required List<InputFileModel> files,
+    String? password,
+  }) async {
+    updateActionErrorStatus(false);
+    updateActionProcessingStatus(true);
+    String nameOfFileToDecrypt = files[0].fileName;
+    String extensionOfFileToDecrypt =
+        getFileNameExtension(fileName: nameOfFileToDecrypt);
+    String nameOfFileToDecryptWithoutExtension =
+        getFileNameWithoutExtension(fileName: nameOfFileToDecrypt);
+    String uriPathOfFileToDecrypt = files[0].fileUri;
+    String? result;
+    String outputFileName = "Unknown File$extensionOfFileToDecrypt";
+    try {
+      updateActionType(ToolsActions.decrypt);
+      result = await PdfManipulator().pdfDecryption(
+          params: PDFDecryptionParams(
+        pdfPath: uriPathOfFileToDecrypt,
+        password: password ?? "",
+      ));
+      if (result != null) {
+        DateTime currentDateTime = DateTime.now();
+        outputFileName =
+            "$nameOfFileToDecryptWithoutExtension - Decrypted - $currentDateTime$extensionOfFileToDecrypt";
+      }
+    } on PlatformException catch (e) {
+      log(e.toString());
+    } catch (e) {
+      log(e.toString());
+    }
+    if (result != null && result.isNotEmpty) {
+      outputFiles.clear();
+      OutputFileModel file = await getOutputFileModelFromPath(path: result);
+      file = OutputFileModel(
+          fileName: outputFileName,
+          fileDate: file.fileDate,
+          fileTime: file.fileTime,
+          fileSize: file.fileSize,
+          filePath: file.filePath);
+      outputFiles.add(file);
+    } else {
+      updateActionErrorStatus(true);
+
+      // We can use this place to get the exact time of cancellation action.
+      // But don't just put clear cache here as at this state user may have started another task.
+      // So we avoid clearing cache here as we don't want the user to wait till cancellation for next task will.
+    }
+    updateActionProcessingStatus(false);
+    customNotifyListener();
+  }
+
   void cancelAction() {
     clearCache(clearCacheCommandFrom: "Cancel Running Action");
     updateActionProcessingStatus(true);

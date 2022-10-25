@@ -6,10 +6,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:files_tools/route/route.dart' as route;
 
 class EncryptPDF extends StatelessWidget {
-  const EncryptPDF({Key? key, required this.pdfPageCount, required this.file})
-      : super(key: key);
+  const EncryptPDF({Key? key, required this.file}) : super(key: key);
 
-  final int pdfPageCount;
   final InputFileModel file;
 
   @override
@@ -17,18 +15,15 @@ class EncryptPDF extends StatelessWidget {
     return ListView(
       children: [
         const SizedBox(height: 16),
-        EncryptPDFActionCard(pdfPageCount: pdfPageCount, file: file),
+        EncryptPDFActionCard(file: file),
       ],
     );
   }
 }
 
 class EncryptPDFActionCard extends StatefulWidget {
-  const EncryptPDFActionCard(
-      {Key? key, required this.pdfPageCount, required this.file})
-      : super(key: key);
+  const EncryptPDFActionCard({Key? key, required this.file}) : super(key: key);
 
-  final int pdfPageCount;
   final InputFileModel file;
 
   @override

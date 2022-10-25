@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pick_or_save/pick_or_save.dart';
 import 'package:files_tools/route/route.dart' as route;
-import 'package:files_tools/ui/screens/pdf_tools_screens/encrypt_decrypt_pdf/encrypt_pdf_tools_screen.dart';
+import 'package:files_tools/ui/screens/pdf_tools_screens/encrypt_pdf/encrypt_pdf_tools_screen.dart';
 
 class EncryptPDFPage extends StatefulWidget {
   const EncryptPDFPage({Key? key}) : super(key: key);
