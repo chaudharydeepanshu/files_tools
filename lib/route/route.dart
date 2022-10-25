@@ -16,6 +16,9 @@ import 'package:files_tools/ui/screens/homescreen/homescreen.dart';
 import 'package:files_tools/ui/screens/homescreen/pages/components/pdf_tools_section.dart';
 import 'package:files_tools/ui/screens/pdf_tools_screens/merge_pdfs_screen.dart';
 
+import '../ui/screens/pdf_tools_screens/encrypt_decrypt_pdf/encrypt_pdf_screen.dart';
+import '../ui/screens/pdf_tools_screens/encrypt_decrypt_pdf/encrypt_pdf_tools_screen.dart';
+
 // Note: When using path "/" in routes then the initial route will always have to be "/".
 
 // Route Names
@@ -29,12 +32,14 @@ const String modifyPDFPage = '/modifyPDF';
 const String convertPDFPage = '/convertPDF';
 const String compressPDFPage = '/CompressPDF';
 const String watermarkPDFPage = '/WatermarkPDF';
+const String encryptPDFPage = '/EncryptPDF';
 const String resultPage = '/Result';
 const String splitPDFToolsPage = '/SplitPDFTools';
 const String modifyPDFToolsPage = '/ModifyPDFTools';
 const String convertPDFToolsPage = '/ConvertPDFTools';
 const String compressPDFToolsPage = '/CompressPDFTools';
 const String watermarkPDFToolsPage = '/WatermarkPDFTools';
+const String encryptPDFToolsPage = '/EncryptPDFTools';
 
 // Control our page route flow
 Route<dynamic> controller(RouteSettings settings) {
@@ -106,6 +111,15 @@ Route<dynamic> controller(RouteSettings settings) {
       return MaterialPageRoute(
           builder: (context) => WatermarkPDFToolsPage(
               arguments: settings.arguments as WatermarkPDFToolsPageArguments),
+          settings: RouteSettings(name: settings.name));
+    case encryptPDFPage:
+      return MaterialPageRoute(
+          builder: (context) => const EncryptPDFPage(),
+          settings: RouteSettings(name: settings.name));
+    case encryptPDFToolsPage:
+      return MaterialPageRoute(
+          builder: (context) => EncryptPDFToolsPage(
+              arguments: settings.arguments as EncryptPDFToolsPageArguments),
           settings: RouteSettings(name: settings.name));
     case resultPage:
       return MaterialPageRoute(

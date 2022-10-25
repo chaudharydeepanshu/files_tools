@@ -148,9 +148,23 @@ class PDFToolsSection extends StatelessWidget {
       ),
       GridCardDetail(
         cardIcon: const Icon(Icons.lock),
-        cardTitle: 'Secure PDF',
-        cardOnTap: null,
-        // () {},
+        cardTitle: 'Encrypt PDF',
+        cardOnTap: () {
+          Navigator.pushNamed(
+            context,
+            route.encryptPDFPage,
+          );
+        },
+      ),
+      GridCardDetail(
+        cardIcon: const Icon(Icons.lock_open),
+        cardTitle: 'Decrypt PDF',
+        cardOnTap: () {
+          Navigator.pushNamed(
+            context,
+            route.encryptPDFPage,
+          );
+        },
       ),
     ];
 

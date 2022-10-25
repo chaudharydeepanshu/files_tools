@@ -24,6 +24,8 @@ enum ToolsActions {
   convertToImage,
   compress,
   watermark,
+  encrypt,
+  decrypt,
 }
 
 class ToolsActionsState extends ChangeNotifier {
@@ -418,6 +420,88 @@ class ToolsActionsState extends ChangeNotifier {
         DateTime currentDateTime = DateTime.now();
         outputFileName =
             "$nameOfFileToWatermarkWithoutExtension - Watermarked - $currentDateTime$extensionOfFileToWatermark";
+      }
+    } on PlatformException catch (e) {
+      log(e.toString());
+    } catch (e) {
+      log(e.toString());
+    }
+    if (result != null && result.isNotEmpty) {
+      outputFiles.clear();
+      OutputFileModel file = await getOutputFileModelFromPath(path: result);
+      file = OutputFileModel(
+          fileName: outputFileName,
+          fileDate: file.fileDate,
+          fileTime: file.fileTime,
+          fileSize: file.fileSize,
+          filePath: file.filePath);
+      outputFiles.add(file);
+    } else {
+      updateActionErrorStatus(true);
+
+      // We can use this place to get the exact time of cancellation action.
+      // But don't just put clear cache here as at this state user may have started another task.
+      // So we avoid clearing cache here as we don't want the user to wait till cancellation for next task will.
+    }
+    updateActionProcessingStatus(false);
+    customNotifyListener();
+  }
+
+  Future<void> encryptSelectedFile({
+    required List<InputFileModel> files,
+    String? ownerPassword,
+    String? userPassword,
+    bool? allowPrinting,
+    bool? allowModifyContents,
+    bool? allowCopy,
+    bool? allowModifyAnnotations,
+    bool? allowFillIn,
+    bool? allowScreenReaders,
+    bool? allowAssembly,
+    bool? allowDegradedPrinting,
+    bool? standardEncryptionAES40,
+    bool? standardEncryptionAES128,
+    bool? encryptionAES128,
+    bool? encryptionAES256,
+    bool? encryptEmbeddedFilesOnly,
+    bool? doNotEncryptMetadata,
+  }) async {
+    updateActionErrorStatus(false);
+    updateActionProcessingStatus(true);
+    String nameOfFileToEncrypt = files[0].fileName;
+    String extensionOfFileToEncrypt =
+        getFileNameExtension(fileName: nameOfFileToEncrypt);
+    String nameOfFileToEncryptWithoutExtension =
+        getFileNameWithoutExtension(fileName: nameOfFileToEncrypt);
+    String uriPathOfFileToEncrypt = files[0].fileUri;
+    String? result;
+    String outputFileName = "Unknown File$extensionOfFileToEncrypt";
+    try {
+      updateActionType(ToolsActions.encrypt);
+      result = await PdfManipulator().pdfEncryption(
+          params: PDFEncryptionParams(
+        pdfPath: uriPathOfFileToEncrypt,
+        ownerPassword: ownerPassword ?? "",
+        userPassword: userPassword ?? "",
+        allowPrinting: allowPrinting ?? false,
+        allowModifyContents: allowModifyContents ?? false,
+        allowCopy: allowCopy ?? false,
+        allowModifyAnnotations: allowModifyAnnotations ?? false,
+        allowFillIn: allowFillIn ?? false,
+        allowScreenReaders: allowScreenReaders ?? false,
+        allowAssembly: allowAssembly ?? false,
+        allowDegradedPrinting: allowDegradedPrinting ?? false,
+        standardEncryptionAES40: standardEncryptionAES40 ?? false,
+        standardEncryptionAES128: standardEncryptionAES128 ?? false,
+        encryptionAES128: encryptionAES128 ?? false,
+        encryptionAES256: encryptionAES256 ?? false,
+        encryptEmbeddedFilesOnly: encryptEmbeddedFilesOnly ?? false,
+        doNotEncryptMetadata: doNotEncryptMetadata ?? false,
+      ));
+      if (result != null) {
+        DateTime currentDateTime = DateTime.now();
+        outputFileName =
+            "$nameOfFileToEncryptWithoutExtension - Encrypted - $currentDateTime$extensionOfFileToEncrypt";
       }
     } on PlatformException catch (e) {
       log(e.toString());

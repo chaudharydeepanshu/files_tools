@@ -136,9 +136,9 @@ class ResultBody extends StatelessWidget {
       final List<OutputFileModel> outputFiles = ref.watch(
           toolsActionsStateProvider.select((value) => value.outputFiles));
       if (outputFiles.length == 1) {
-        return SavingSingleFile(file: outputFiles[0]);
+        return SavingSingleFile(file: outputFiles[0], actionType: actionType);
       } else if (outputFiles.length > 1) {
-        return SavingMultipleFiles(files: outputFiles);
+        return SavingMultipleFiles(files: outputFiles, actionType: actionType);
       } else {
         return const Text("No save for action.");
       }
@@ -220,9 +220,12 @@ class ProcessingResult extends StatelessWidget {
 }
 
 class SavingSingleFile extends StatelessWidget {
-  const SavingSingleFile({Key? key, required this.file}) : super(key: key);
+  const SavingSingleFile(
+      {Key? key, required this.file, required this.actionType})
+      : super(key: key);
 
   final OutputFileModel file;
+  final ToolsActions actionType;
 
   @override
   Widget build(BuildContext context) {
@@ -237,12 +240,17 @@ class SavingSingleFile extends StatelessWidget {
             // const Icon(Icons.looks_3),
             const Flexible(child: SuccessAnimation()),
             const Divider(),
-            OutputFileTile(file: file),
-            const SizedBox(height: 10),
-            Text(
-              'To view files click over them.',
-              style: Theme.of(context).textTheme.bodySmall,
-            ),
+            OutputFileTile(file: file, actionType: actionType),
+            if (actionType != ToolsActions.encrypt)
+              Column(
+                children: [
+                  const SizedBox(height: 10),
+                  Text(
+                    'To view files click over them.',
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
+                ],
+              ),
             const Divider(),
             Consumer(
               builder: (BuildContext context, WidgetRef ref, Widget? child) {
@@ -299,9 +307,12 @@ class SavingSingleFile extends StatelessWidget {
 }
 
 class SavingMultipleFiles extends StatelessWidget {
-  const SavingMultipleFiles({Key? key, required this.files}) : super(key: key);
+  const SavingMultipleFiles(
+      {Key? key, required this.files, required this.actionType})
+      : super(key: key);
 
   final List<OutputFileModel> files;
+  final ToolsActions actionType;
 
   @override
   Widget build(BuildContext context) {
@@ -326,12 +337,20 @@ class SavingMultipleFiles extends StatelessWidget {
               // const Icon(Icons.looks_3),
               const Flexible(child: SuccessAnimation()),
               const Divider(),
-              Flexible(child: NonReorderableFilesListView(files: files)),
+              Flexible(
+                  child: NonReorderableFilesListView(
+                      files: files, actionType: actionType)),
               const SizedBox(height: 10),
-              Text(
-                'To view files click over them.',
-                style: Theme.of(context).textTheme.bodySmall,
-              ),
+              if (actionType != ToolsActions.encrypt)
+                Column(
+                  children: [
+                    const SizedBox(height: 10),
+                    Text(
+                      'To view files click over them.',
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
+                  ],
+                ),
               const Divider(),
               Consumer(
                 builder: (BuildContext context, WidgetRef ref, Widget? child) {
@@ -405,9 +424,11 @@ class SuccessAnimation extends StatelessWidget {
 }
 
 class OutputFileTile extends StatelessWidget {
-  const OutputFileTile({Key? key, required this.file}) : super(key: key);
+  const OutputFileTile({Key? key, required this.file, required this.actionType})
+      : super(key: key);
 
   final OutputFileModel file;
+  final ToolsActions actionType;
 
   @override
   Widget build(BuildContext context) {
@@ -419,28 +440,31 @@ class OutputFileTile extends StatelessWidget {
       minVerticalPadding: 0,
       visualDensity: VisualDensity.comfortable,
       dense: true,
-      onTap: () {
-        String fileExtension = getFileNameExtension(fileName: file.fileName);
-        if (fileExtension.toLowerCase() == ".pdf") {
-          Navigator.pushNamed(
-            context,
-            route.pdfViewer,
-            arguments: PdfViewerArguments(
-                fileName: file.fileName, filePath: file.filePath),
-          );
-        } else if (fileExtension.toLowerCase() == ".png" ||
-            fileExtension.toLowerCase() == ".jpg" ||
-            fileExtension.toLowerCase() == ".jpeg") {
-          Navigator.pushNamed(
-            context,
-            route.imageViewer,
-            arguments: ImageViewerArguments(
-                fileName: file.fileName, filePath: file.filePath),
-          );
-        } else {
-          log("No action found for opening file with extension $fileExtension");
-        }
-      },
+      onTap: actionType != ToolsActions.encrypt
+          ? () {
+              String fileExtension =
+                  getFileNameExtension(fileName: file.fileName);
+              if (fileExtension.toLowerCase() == ".pdf") {
+                Navigator.pushNamed(
+                  context,
+                  route.pdfViewer,
+                  arguments: PdfViewerArguments(
+                      fileName: file.fileName, filePath: file.filePath),
+                );
+              } else if (fileExtension.toLowerCase() == ".png" ||
+                  fileExtension.toLowerCase() == ".jpg" ||
+                  fileExtension.toLowerCase() == ".jpeg") {
+                Navigator.pushNamed(
+                  context,
+                  route.imageViewer,
+                  arguments: ImageViewerArguments(
+                      fileName: file.fileName, filePath: file.filePath),
+                );
+              } else {
+                log("No action found for opening file with extension $fileExtension");
+              }
+            }
+          : null,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(12)),
       ),
@@ -496,10 +520,12 @@ class OutputFileTile extends StatelessWidget {
 }
 
 class NonReorderableFilesListView extends StatelessWidget {
-  const NonReorderableFilesListView({Key? key, required this.files})
+  const NonReorderableFilesListView(
+      {Key? key, required this.files, required this.actionType})
       : super(key: key);
 
   final List<OutputFileModel> files;
+  final ToolsActions actionType;
 
   @override
   Widget build(BuildContext context) {
@@ -511,7 +537,7 @@ class NonReorderableFilesListView extends StatelessWidget {
       itemBuilder: (BuildContext context, int index) {
         return Material(
             color: Colors.transparent,
-            child: OutputFileTile(file: files[index]));
+            child: OutputFileTile(file: files[index], actionType: actionType));
       },
       itemCount: files.length,
     );
