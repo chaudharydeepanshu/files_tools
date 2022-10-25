@@ -55,6 +55,7 @@ class _PdfViewerState extends State<PdfViewer> {
 
   @override
   Widget build(BuildContext context) {
+    setState(() {});
     return GestureDetector(
       onTap: () {
         FocusManager.instance.primaryFocus?.unfocus();
@@ -70,7 +71,33 @@ class _PdfViewerState extends State<PdfViewer> {
             ),
           ],
         ),
-        body: FutureBuilder<bool>(
+        body:
+            // Column(
+            //   mainAxisSize: MainAxisSize.min,
+            //   children: [
+            //     Flexible(
+            //       child: Image.memory(
+            //         pdfPages[1].pageBytes!,
+            //         // frameBuilder: ((context, child, frame, wasSynchronouslyLoaded) {
+            //         //   if (wasSynchronouslyLoaded) {
+            //         //     return ImageChild(pageIndex: 1, child: child);
+            //         //   } else {
+            //         //     return AnimatedSwitcher(
+            //         //       duration: const Duration(milliseconds: 200),
+            //         //       child: frame != null
+            //         //           ? ImageChild(pageIndex: 1, child: child)
+            //         //           : LoadingPage(pageIndex: 1),
+            //         //     );
+            //         //   }
+            //         // }),
+            //         fit: BoxFit.contain,
+            //       ),
+            //     ),
+            //     const SizedBox(height: 16),
+            //     PageNumber(pageIndex: 1),
+            //   ],
+            // )
+            FutureBuilder<bool>(
           future: initPdfPages, // async work
           builder: (context, AsyncSnapshot<bool> snapshot) {
             switch (snapshot.connectionState) {
@@ -165,13 +192,17 @@ class ImageChild extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Container(color: Colors.white, child: child),
-        const SizedBox(height: 16),
-        PageNumber(pageIndex: pageIndex),
-      ],
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Expanded(child: child),
+          const SizedBox(height: 8),
+          PageNumber(pageIndex: pageIndex),
+        ],
+      ),
     );
   }
 }

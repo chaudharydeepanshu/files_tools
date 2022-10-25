@@ -412,10 +412,10 @@ packages:
     dependency: "direct main"
     description:
       name: pdf_bitmaps
-      sha256: "9a74891dc841a10a15390000bc8bcb8a863db2a1a1637075cc9e8aaa8704cb11"
+      sha256: b97271d0aa7df1e1e963f572976e877c6e5b20227bf92aa63c02b2c55be80747
       url: "https://pub.dev"
     source: hosted
-    version: "0.2.4"
+    version: "0.2.5"
   pdf_manipulator:
     dependency: "direct main"
     description:

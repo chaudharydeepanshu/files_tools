@@ -28,7 +28,7 @@ class RotateDeleteReorderPages extends StatefulWidget {
 class _RotateDeleteReorderPagesState extends State<RotateDeleteReorderPages> {
   bool isPageProcessing = false;
 
-  late List<PdfPageModel> pdfPages = widget.pdfPages;
+  late List<PdfPageModel> pdfPages = List.from(widget.pdfPages);
 
   void updatePdfPages({required int index}) async {
     if (pdfPages[index].pageBytes == null &&
