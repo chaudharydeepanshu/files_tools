@@ -27,59 +27,76 @@ class _MergePDFsPageState extends State<MergePDFsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
+    return WillPopScope(
+      onWillPop: () async {
+        // Removing any snack bar or keyboard
         FocusManager.instance.primaryFocus?.unfocus();
         ScaffoldMessenger.of(context).hideCurrentSnackBar();
+        // Returning true allows the pop to happen, returning false prevents it.
+        return true;
       },
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text("Merge PDFs"),
-          centerTitle: true,
-        ),
-        body: Consumer(
-          builder: (BuildContext context, WidgetRef ref, Widget? child) {
-            final ToolScreenState watchToolScreenStateProviderValue =
-                ref.watch(toolScreenStateProvider);
-            final List<InputFileModel> selectedFiles = ref.watch(
-                toolScreenStateProvider.select((value) => value.selectedFiles));
-            final ToolsActionsState watchToolsActionsStateProviderValue =
-                ref.watch(toolsActionsStateProvider);
-            return ListView(
-              children: [
-                const SizedBox(height: 16),
-                SelectFilesCard(
-                  selectFileType: SelectFileType.multiple,
-                  files: watchToolScreenStateProviderValue.selectedFiles,
-                  filePickerParams: const FilePickerParams(
-                    copyFileToCacheDir: false,
-                    filePickingType: FilePickingType.multiple,
-                    mimeTypeFilter: ["application/pdf"],
-                    allowedExtensions: [".pdf"],
-                  ),
-                ),
-                const SizedBox(height: 16),
-                ToolActionsCard(
-                  toolActions: [
-                    ToolActionsModel(
-                      actionText: "Merge into one PDF",
-                      actionOnTap: selectedFiles.length >= 2
-                          ? () {
-                              watchToolsActionsStateProviderValue
-                                  .mergeSelectedFiles(files: selectedFiles);
-
-                              Navigator.pushNamed(
-                                context,
-                                route.resultPage,
-                              );
-                            }
-                          : null,
+      child: GestureDetector(
+        onTap: () {
+          FocusManager.instance.primaryFocus?.unfocus();
+          ScaffoldMessenger.of(context).hideCurrentSnackBar();
+        },
+        child: Scaffold(
+          appBar: AppBar(
+            title: const Text("Merge PDFs"),
+            centerTitle: true,
+          ),
+          body: Consumer(
+            builder: (BuildContext context, WidgetRef ref, Widget? child) {
+              final ToolScreenState watchToolScreenStateProviderValue =
+                  ref.watch(toolScreenStateProvider);
+              final List<InputFileModel> selectedFiles = ref.watch(
+                  toolScreenStateProvider
+                      .select((value) => value.selectedFiles));
+              final ToolsActionsState watchToolsActionsStateProviderValue =
+                  ref.watch(toolsActionsStateProvider);
+              return ListView(
+                children: [
+                  const SizedBox(height: 16),
+                  SelectFilesCard(
+                    selectFileType: SelectFileType.multiple,
+                    files: watchToolScreenStateProviderValue.selectedFiles,
+                    filePickerParams: const FilePickerParams(
+                      copyFileToCacheDir: false,
+                      filePickingType: FilePickingType.multiple,
+                      mimeTypeFilter: ["application/pdf"],
+                      allowedExtensions: [".pdf"],
                     ),
-                  ],
-                ),
-              ],
-            );
-          },
+                    discardInvalidPdfFiles: true,
+                    discardProtectedPdfFiles: true,
+                  ),
+                  const SizedBox(height: 16),
+                  ToolActionsCard(
+                    toolActions: [
+                      ToolActionsModel(
+                        actionText: "Merge into one PDF",
+                        actionOnTap: selectedFiles.length >= 2
+                            ? () {
+                                // Removing any snack bar or keyboard
+                                FocusManager.instance.primaryFocus?.unfocus();
+                                ScaffoldMessenger.of(context)
+                                    .hideCurrentSnackBar();
+
+                                watchToolsActionsStateProviderValue
+                                    .mergeSelectedFiles(files: selectedFiles);
+
+                                Navigator.pushNamed(
+                                  context,
+                                  route.resultPage,
+                                );
+                              }
+                            : null,
+                      ),
+                    ],
+                  ),
+                ],
+              );
+            },
+          ),
         ),
       ),
     );

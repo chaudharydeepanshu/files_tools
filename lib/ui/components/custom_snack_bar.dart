@@ -6,6 +6,7 @@ ScaffoldFeatureController<SnackBar, SnackBarClosedReason>? showCustomSnackBar(
     Duration? duration,
     IconData? iconData,
     Color? iconAndTextColor,
+    TextStyle? textStyle,
     required BuildContext context}) {
   ScaffoldMessenger.of(context).hideCurrentSnackBar();
 
@@ -45,10 +46,15 @@ ScaffoldFeatureController<SnackBar, SnackBarClosedReason>? showCustomSnackBar(
               Expanded(
                 child: Text(
                   contentText,
-                  style: const TextStyle().copyWith(
-                    color: iconAndTextColor ??
-                        Theme.of(context).colorScheme.surface,
-                  ),
+                  style: textStyle != null
+                      ? textStyle.copyWith(
+                          color: iconAndTextColor ??
+                              Theme.of(context).colorScheme.surface,
+                        )
+                      : const TextStyle().copyWith(
+                          color: iconAndTextColor ??
+                              Theme.of(context).colorScheme.surface,
+                        ),
                 ),
               ),
             ],

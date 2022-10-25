@@ -18,12 +18,16 @@ class SelectFilesCard extends StatelessWidget {
       {Key? key,
       required this.selectFileType,
       required this.files,
-      required this.filePickerParams})
+      required this.filePickerParams,
+      this.discardInvalidPdfFiles = false,
+      this.discardProtectedPdfFiles = false})
       : super(key: key);
 
   final SelectFileType selectFileType;
   final List<InputFileModel> files;
   final FilePickerParams filePickerParams;
+  final bool discardInvalidPdfFiles;
+  final bool discardProtectedPdfFiles;
 
   @override
   Widget build(BuildContext context) {
@@ -50,13 +54,19 @@ class SelectFilesCard extends StatelessWidget {
               files.isNotEmpty
                   ? Flexible(
                       child: FilesSelected(
-                          selectFileType: selectFileType,
-                          files: files,
-                          filePickerParams: filePickerParams),
+                        selectFileType: selectFileType,
+                        files: files,
+                        filePickerParams: filePickerParams,
+                        discardInvalidPdfFiles: discardInvalidPdfFiles,
+                        discardProtectedPdfFiles: discardProtectedPdfFiles,
+                      ),
                     )
                   : NoFilesSelected(
                       selectFileType: selectFileType,
-                      filePickerParams: filePickerParams),
+                      filePickerParams: filePickerParams,
+                      discardInvalidPdfFiles: discardInvalidPdfFiles,
+                      discardProtectedPdfFiles: discardProtectedPdfFiles,
+                    ),
             ],
           ),
         ),
@@ -70,12 +80,16 @@ class FilesSelected extends StatelessWidget {
       {Key? key,
       required this.selectFileType,
       required this.files,
-      required this.filePickerParams})
+      required this.filePickerParams,
+      required this.discardInvalidPdfFiles,
+      required this.discardProtectedPdfFiles})
       : super(key: key);
 
   final SelectFileType selectFileType;
   final List<InputFileModel> files;
   final FilePickerParams filePickerParams;
+  final bool discardInvalidPdfFiles;
+  final bool discardProtectedPdfFiles;
 
   @override
   Widget build(BuildContext context) {
@@ -147,8 +161,15 @@ class FilesSelected extends StatelessWidget {
                     ).copyWith(elevation: ButtonStyleButton.allOrNull(0.0)),
                     onPressed: !isPickingFile
                         ? () {
+                            // Removing any snack bar or keyboard
+                            FocusManager.instance.primaryFocus?.unfocus();
+                            ScaffoldMessenger.of(context).hideCurrentSnackBar();
+
                             readToolScreenStateProviderValue.selectFiles(
                               params: filePickerParams,
+                              discardInvalidPdfFiles: discardInvalidPdfFiles,
+                              discardProtectedPdfFiles:
+                                  discardProtectedPdfFiles,
                             );
                           }
                         : null,
@@ -162,6 +183,10 @@ class FilesSelected extends StatelessWidget {
                   ).copyWith(elevation: ButtonStyleButton.allOrNull(0.0)),
                   onPressed: !isPickingFile
                       ? () {
+                          // Removing any snack bar or keyboard
+                          FocusManager.instance.primaryFocus?.unfocus();
+                          ScaffoldMessenger.of(context).hideCurrentSnackBar();
+
                           readToolScreenStateProviderValue.updateSelectedFiles(
                             files: [],
                           );
@@ -183,11 +208,17 @@ class FilesSelected extends StatelessWidget {
 
 class NoFilesSelected extends StatelessWidget {
   const NoFilesSelected(
-      {Key? key, required this.selectFileType, required this.filePickerParams})
+      {Key? key,
+      required this.selectFileType,
+      required this.filePickerParams,
+      required this.discardInvalidPdfFiles,
+      required this.discardProtectedPdfFiles})
       : super(key: key);
 
   final SelectFileType selectFileType;
   final FilePickerParams filePickerParams;
+  final bool discardInvalidPdfFiles;
+  final bool discardProtectedPdfFiles;
 
   @override
   Widget build(BuildContext context) {
@@ -214,20 +245,27 @@ class NoFilesSelected extends StatelessWidget {
                 ref.watch(toolScreenStateProvider);
             final bool isPickingFile =
                 ref.watch(toolScreenStateProvider).isPickingFile;
-            return ElevatedButton(
+            return ElevatedButton.icon(
               style: ElevatedButton.styleFrom(
                 foregroundColor: Theme.of(context).colorScheme.onPrimary,
                 backgroundColor: Theme.of(context).colorScheme.primary,
               ).copyWith(elevation: ButtonStyleButton.allOrNull(0.0)),
               onPressed: !isPickingFile
                   ? () {
+                      // Removing any snack bar or keyboard
+                      FocusManager.instance.primaryFocus?.unfocus();
+                      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+
                       readToolScreenStateProviderValue.selectFiles(
                         params: filePickerParams,
+                        discardInvalidPdfFiles: discardInvalidPdfFiles,
+                        discardProtectedPdfFiles: discardProtectedPdfFiles,
                       );
                     }
                   : null,
-              child: Text(
+              label: Text(
                   'Select ${selectFileType == SelectFileType.multiple || selectFileType == SelectFileType.both ? "files" : "file"}'),
+              icon: const Icon(Icons.upload_file),
             );
           },
         ),

@@ -43,16 +43,16 @@ dependencies:
 
   # For firebase packages. After installing new firebase package run ```flutterfire configure```.
   # https://stackoverflow.com/questions/71803062/flutterfire-cli-how-to-switch-between-separate-firebase-consoles
-  firebase_core: ^1.24.0
+  firebase_core: ^2.1.0
 
   # For logging errors.
-  firebase_crashlytics: ^2.9.0
+  firebase_crashlytics: ^3.0.2
 
   # For logging usage and behavior data.
-  firebase_analytics: ^9.3.8
+  firebase_analytics: ^10.0.2
 
   # For splash screen.
-  flutter_native_splash: ^2.2.11
+  flutter_native_splash: ^2.2.12
 
   # For custom animations.
   rive: ^0.9.1
@@ -64,11 +64,11 @@ dependencies:
   pick_or_save: ^0.1.1
 
   # For pdf bitmaps and page count.
-  pdf_bitmaps: ^0.2.3
+  pdf_bitmaps: ^0.2.4
 #  flutter_pdfview: ^1.2.5 it accepts URI so look into it in future
 
   # For pdf manipulations.
-  pdf_manipulator: ^0.4.3
+  pdf_manipulator: ^0.4.4
 
   # For draggable gridview.
   reorderable_grid_view: ^2.2.5
@@ -83,7 +83,7 @@ dependencies:
   flex_color_picker: ^2.6.1
 
   # For clearing cache.
-  flutter_cache_manager: ^3.3.0
+#  flutter_cache_manager: ^3.3.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

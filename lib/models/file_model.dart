@@ -15,6 +15,27 @@ class InputFileModel {
     required this.fileUri,
   });
 
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is InputFileModel &&
+          runtimeType == other.runtimeType &&
+          fileName == other.fileName &&
+          fileDate == other.fileDate &&
+          fileTime == other.fileTime &&
+          fileSizeFormatBytes == other.fileSizeFormatBytes &&
+          fileSizeBytes == other.fileSizeBytes &&
+          fileUri == other.fileUri;
+
+  @override
+  int get hashCode =>
+      fileName.hashCode ^
+      fileDate.hashCode ^
+      fileTime.hashCode ^
+      fileSizeFormatBytes.hashCode ^
+      fileSizeBytes.hashCode ^
+      fileUri.hashCode;
+
   // Implement toString to make it easier to see information
   // when using the print statement.
   @override
@@ -37,6 +58,25 @@ class OutputFileModel {
     required this.fileSize,
     required this.filePath,
   });
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is OutputFileModel &&
+          runtimeType == other.runtimeType &&
+          fileName == other.fileName &&
+          fileDate == other.fileDate &&
+          fileTime == other.fileTime &&
+          fileSize == other.fileSize &&
+          filePath == other.filePath;
+
+  @override
+  int get hashCode =>
+      fileName.hashCode ^
+      fileDate.hashCode ^
+      fileTime.hashCode ^
+      fileSize.hashCode ^
+      filePath.hashCode;
 
   // Implement toString to make it easier to see information
   // when using the print statement.

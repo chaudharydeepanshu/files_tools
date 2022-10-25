@@ -1,16 +1,22 @@
 import 'dart:developer';
 import 'dart:io';
-import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:path_provider/path_provider.dart';
 
 Future<void> clearCache({required String clearCacheCommandFrom}) async {
-  await DefaultCacheManager().emptyCache();
-  // var appDir = (await getTemporaryDirectory()).path;
-  // Directory(appDir).delete(recursive: true);
-  log("Cache emptied $clearCacheCommandFrom");
+  // await DefaultCacheManager().emptyCache();
+  var appDir = (await getTemporaryDirectory()).path;
+  Directory directory = Directory(appDir);
+  // await directory.delete(recursive: true);
+  final List<FileSystemEntity> entities = await directory.list().toList();
+  for (var entity in entities) {
+    if (entity.existsSync()) {
+      entity.deleteSync(recursive: true);
+    }
+  }
+  log("Cache emptied by $clearCacheCommandFrom");
   // if (!(await Directory(appDir).exists())) {
   //   Directory(appDir).create();
-  //   log("Creating cache directory");
+  //   log("Created cache directory");
   // }
 }
 

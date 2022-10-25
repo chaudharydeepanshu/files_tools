@@ -569,6 +569,6 @@ String getFileNameWithoutExtension({required String fileName}) {
 }
 
 String getFileNameExtension({required String fileName}) {
-  String fileExt = fileName.substring(fileName.lastIndexOf('.'));
+  String fileExt = fileName.substring(fileName.lastIndexOf('.')).toLowerCase();
   return fileExt;
 }
