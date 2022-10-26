@@ -241,16 +241,11 @@ class SavingSingleFile extends StatelessWidget {
             const Flexible(child: SuccessAnimation()),
             const Divider(),
             OutputFileTile(file: file, actionType: actionType),
-            if (actionType != ToolsActions.encrypt)
-              Column(
-                children: [
-                  const SizedBox(height: 10),
-                  Text(
-                    'To view files click over them.',
-                    style: Theme.of(context).textTheme.bodySmall,
-                  ),
-                ],
-              ),
+            const SizedBox(height: 10),
+            Text(
+              'To view files click over them.',
+              style: Theme.of(context).textTheme.bodySmall,
+            ),
             const Divider(),
             Consumer(
               builder: (BuildContext context, WidgetRef ref, Widget? child) {
@@ -341,16 +336,11 @@ class SavingMultipleFiles extends StatelessWidget {
                   child: NonReorderableFilesListView(
                       files: files, actionType: actionType)),
               const SizedBox(height: 10),
-              if (actionType != ToolsActions.encrypt)
-                Column(
-                  children: [
-                    const SizedBox(height: 10),
-                    Text(
-                      'To view files click over them.',
-                      style: Theme.of(context).textTheme.bodySmall,
-                    ),
-                  ],
-                ),
+              const SizedBox(height: 10),
+              Text(
+                'To view files click over them.',
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
               const Divider(),
               Consumer(
                 builder: (BuildContext context, WidgetRef ref, Widget? child) {
@@ -440,31 +430,28 @@ class OutputFileTile extends StatelessWidget {
       minVerticalPadding: 0,
       visualDensity: VisualDensity.comfortable,
       dense: true,
-      onTap: actionType != ToolsActions.encrypt
-          ? () {
-              String fileExtension =
-                  getFileNameExtension(fileName: file.fileName);
-              if (fileExtension.toLowerCase() == ".pdf") {
-                Navigator.pushNamed(
-                  context,
-                  route.pdfViewer,
-                  arguments: PdfViewerArguments(
-                      fileName: file.fileName, filePath: file.filePath),
-                );
-              } else if (fileExtension.toLowerCase() == ".png" ||
-                  fileExtension.toLowerCase() == ".jpg" ||
-                  fileExtension.toLowerCase() == ".jpeg") {
-                Navigator.pushNamed(
-                  context,
-                  route.imageViewer,
-                  arguments: ImageViewerArguments(
-                      fileName: file.fileName, filePath: file.filePath),
-                );
-              } else {
-                log("No action found for opening file with extension $fileExtension");
-              }
-            }
-          : null,
+      onTap: () {
+        String fileExtension = getFileNameExtension(fileName: file.fileName);
+        if (fileExtension.toLowerCase() == ".pdf") {
+          Navigator.pushNamed(
+            context,
+            route.pdfViewer,
+            arguments: PdfViewerArguments(
+                fileName: file.fileName, filePath: file.filePath),
+          );
+        } else if (fileExtension.toLowerCase() == ".png" ||
+            fileExtension.toLowerCase() == ".jpg" ||
+            fileExtension.toLowerCase() == ".jpeg") {
+          Navigator.pushNamed(
+            context,
+            route.imageViewer,
+            arguments: ImageViewerArguments(
+                fileName: file.fileName, filePath: file.filePath),
+          );
+        } else {
+          log("No action found for opening file with extension $fileExtension");
+        }
+      },
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(12)),
       ),

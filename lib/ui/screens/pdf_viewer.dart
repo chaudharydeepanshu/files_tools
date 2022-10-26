@@ -5,6 +5,7 @@ import 'package:files_tools/models/pdf_page_model.dart';
 import 'package:files_tools/utils/get_pdf_bitmaps.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:pdf_bitmaps/pdf_bitmaps.dart';
 
 class PdfViewer extends StatefulWidget {
   const PdfViewer({Key? key, required this.arguments}) : super(key: key);
@@ -42,7 +43,21 @@ class _PdfViewerState extends State<PdfViewer> {
   late Future<bool> initPdfPages;
   Future<bool> initPdfPagesState() async {
     Stopwatch stopwatch = Stopwatch()..start();
+    PdfValidityAndProtection? pdfValidityAndProtectionInfo = await PdfBitmaps()
+        .pdfValidityAndProtection(
+            params: PDFValidityAndProtectionParams(
+                pdfPath: widget.arguments.filePath));
+    if (pdfValidityAndProtectionInfo == null) {
+      throw "Failed to verify pdf validity.";
+    } else if (pdfValidityAndProtectionInfo.isPDFValid == false) {
+      throw "Pdf is found to be invalid.";
+    } else if (pdfValidityAndProtectionInfo.isOpenPasswordProtected == true) {
+      throw "Pdf is found to be password protected.";
+    }
     pdfPages = await generatePdfPagesList(pdfPath: widget.arguments.filePath);
+    if (pdfPages.isEmpty) {
+      throw "No pages found for the pdf.";
+    }
     log('initPdfPagesState Executed in ${stopwatch.elapsed}');
     return true;
   }
@@ -71,33 +86,7 @@ class _PdfViewerState extends State<PdfViewer> {
             ),
           ],
         ),
-        body:
-            // Column(
-            //   mainAxisSize: MainAxisSize.min,
-            //   children: [
-            //     Flexible(
-            //       child: Image.memory(
-            //         pdfPages[1].pageBytes!,
-            //         // frameBuilder: ((context, child, frame, wasSynchronouslyLoaded) {
-            //         //   if (wasSynchronouslyLoaded) {
-            //         //     return ImageChild(pageIndex: 1, child: child);
-            //         //   } else {
-            //         //     return AnimatedSwitcher(
-            //         //       duration: const Duration(milliseconds: 200),
-            //         //       child: frame != null
-            //         //           ? ImageChild(pageIndex: 1, child: child)
-            //         //           : LoadingPage(pageIndex: 1),
-            //         //     );
-            //         //   }
-            //         // }),
-            //         fit: BoxFit.contain,
-            //       ),
-            //     ),
-            //     const SizedBox(height: 16),
-            //     PageNumber(pageIndex: 1),
-            //   ],
-            // )
-            FutureBuilder<bool>(
+        body: FutureBuilder<bool>(
           future: initPdfPages, // async work
           builder: (context, AsyncSnapshot<bool> snapshot) {
             switch (snapshot.connectionState) {
@@ -106,10 +95,8 @@ class _PdfViewerState extends State<PdfViewer> {
               default:
                 if (snapshot.hasError) {
                   log(snapshot.error.toString());
-                  return const PdfLoadingError();
-                } else if (pdfPages.isEmpty) {
-                  log(snapshot.error.toString());
-                  return const PdfLoadingError();
+                  return PdfLoadingError(
+                      errorMessage: snapshot.error.toString());
                 } else {
                   return PageView.builder(
                     scrollDirection: Axis.vertical,
@@ -118,7 +105,6 @@ class _PdfViewerState extends State<PdfViewer> {
                     itemBuilder: (BuildContext context, int index) {
                       updatePdfPages(index: index);
                       if (pdfPages[index].pageErrorStatus) {
-                        log(snapshot.error.toString());
                         return PageError(pageIndex: index);
                       } else if (pdfPages[index].pageBytes != null) {
                         return PDFPageView(
@@ -314,7 +300,10 @@ class PageError extends StatelessWidget {
 }
 
 class PdfLoadingError extends StatelessWidget {
-  const PdfLoadingError({Key? key}) : super(key: key);
+  const PdfLoadingError({Key? key, required this.errorMessage})
+      : super(key: key);
+
+  final String errorMessage;
 
   @override
   Widget build(BuildContext context) {
@@ -326,6 +315,13 @@ class PdfLoadingError extends StatelessWidget {
           const SizedBox(height: 16),
           Text(
             "Failed to load pdf",
+            style: Theme.of(context)
+                .textTheme
+                .bodySmall
+                ?.copyWith(color: Theme.of(context).colorScheme.error),
+          ),
+          Text(
+            errorMessage,
             style: Theme.of(context)
                 .textTheme
                 .bodySmall
