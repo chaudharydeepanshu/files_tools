@@ -30,13 +30,15 @@ class _PdfViewerState extends State<PdfViewer> {
       isPageProcessing = true;
       PdfPageModel updatedPdfPage = await getUpdatedPdfPage(
         index: index,
-        pdfPath: widget.arguments.filePath,
+        pdfPath: widget.arguments.filePathOrUri,
         pdfPageModel: pdfPages[index],
       );
-      setState(() {
-        pdfPages[index] = updatedPdfPage;
-        isPageProcessing = false;
-      });
+      if (mounted) {
+        setState(() {
+          pdfPages[index] = updatedPdfPage;
+          isPageProcessing = false;
+        });
+      }
     }
   }
 
@@ -46,7 +48,7 @@ class _PdfViewerState extends State<PdfViewer> {
     PdfValidityAndProtection? pdfValidityAndProtectionInfo = await PdfBitmaps()
         .pdfValidityAndProtection(
             params: PDFValidityAndProtectionParams(
-                pdfPath: widget.arguments.filePath));
+                pdfPath: widget.arguments.filePathOrUri));
     if (pdfValidityAndProtectionInfo == null) {
       throw "Failed to verify pdf validity.";
     } else if (pdfValidityAndProtectionInfo.isPDFValid == false) {
@@ -54,7 +56,8 @@ class _PdfViewerState extends State<PdfViewer> {
     } else if (pdfValidityAndProtectionInfo.isOpenPasswordProtected == true) {
       throw "Pdf is found to be password protected.";
     }
-    pdfPages = await generatePdfPagesList(pdfPath: widget.arguments.filePath);
+    pdfPages =
+        await generatePdfPagesList(pdfPath: widget.arguments.filePathOrUri);
     if (pdfPages.isEmpty) {
       throw "No pages found for the pdf.";
     }
@@ -134,9 +137,9 @@ class _PdfViewerState extends State<PdfViewer> {
 
 class PdfViewerArguments {
   final String fileName;
-  final String filePath;
+  final String filePathOrUri;
 
-  PdfViewerArguments({required this.fileName, required this.filePath});
+  PdfViewerArguments({required this.fileName, required this.filePathOrUri});
 }
 
 class PageImageView extends StatelessWidget {
@@ -307,27 +310,31 @@ class PdfLoadingError extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(Icons.error, color: Theme.of(context).colorScheme.error),
-          const SizedBox(height: 16),
-          Text(
-            "Failed to load pdf",
-            style: Theme.of(context)
-                .textTheme
-                .bodySmall
-                ?.copyWith(color: Theme.of(context).colorScheme.error),
-          ),
-          Text(
-            errorMessage,
-            style: Theme.of(context)
-                .textTheme
-                .bodySmall
-                ?.copyWith(color: Theme.of(context).colorScheme.error),
-          ),
-        ],
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.error, color: Theme.of(context).colorScheme.error),
+            const SizedBox(height: 16),
+            Text(
+              "Failed to load pdf",
+              style: Theme.of(context)
+                  .textTheme
+                  .bodySmall
+                  ?.copyWith(color: Theme.of(context).colorScheme.error),
+            ),
+            const SizedBox(height: 16),
+            Text(
+              errorMessage,
+              style: Theme.of(context)
+                  .textTheme
+                  .bodySmall
+                  ?.copyWith(color: Theme.of(context).colorScheme.error),
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -1,9 +1,11 @@
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:extended_image/extended_image.dart';
 import 'package:files_tools/models/file_model.dart';
 import 'package:files_tools/models/pdf_page_model.dart';
 import 'package:files_tools/utils/clear_cache.dart';
+import 'package:files_tools/utils/edit_image.dart';
 import 'package:files_tools/utils/get_pdf_bitmaps.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -26,6 +28,7 @@ enum ToolsActions {
   watermark,
   encrypt,
   decrypt,
+  imageToPDF,
 }
 
 class ToolsActionsState extends ChangeNotifier {
@@ -581,6 +584,91 @@ class ToolsActionsState extends ChangeNotifier {
     customNotifyListener();
   }
 
+  Future<void> imageToPdf({
+    required List<InputFileModel> files,
+    required bool createSinglePdf,
+    required List<GlobalKey<ExtendedImageEditorState>> editorKeys,
+  }) async {
+    updateActionErrorStatus(false);
+    updateActionProcessingStatus(true);
+    updateActionType(ToolsActions.imageToPDF);
+    List<String>? result;
+    List<String> outputFilesNames = [];
+    try {
+      List<InputFileModel> images = [];
+      for (int i = 0; i < files.length; i++) {
+        ExtendedImageEditorState? currentState = editorKeys[i].currentState;
+        InputFileModel image = files[i];
+        if (currentState != null) {
+          Uint8List? imageData = await modifyImage(currentState);
+          Directory tempDir = await getTemporaryDirectory();
+          String tempPath = tempDir.path;
+          // Directory appDocDir = await getApplicationDocumentsDirectory();
+          // String appDocPath = appDocDir.path;
+          String nameOfFile = image.fileName;
+          String imageTypeExtension =
+              getFileNameExtension(fileName: nameOfFile);
+          DateTime currentDateTime = DateTime.now();
+          File file = File('$tempPath/$currentDateTime$imageTypeExtension');
+          await file.writeAsBytes(imageData!.buffer
+              .asUint8List(imageData.offsetInBytes, imageData.lengthInBytes));
+          image = InputFileModel(
+              fileName: image.fileName,
+              fileDate: image.fileDate,
+              fileTime: image.fileTime,
+              fileSizeFormatBytes: image.fileSizeFormatBytes,
+              fileSizeBytes: image.fileSizeBytes,
+              fileUri: file.path);
+        }
+        images.add(image);
+      }
+
+      List<String> uriPathsOfImages = List<String>.generate(
+          images.length, (int index) => images[index].fileUri);
+
+      result = await PdfManipulator().imagesToPdfs(
+          params: ImagesToPDFsParams(
+        imagesPaths: uriPathsOfImages,
+        createSinglePdf: createSinglePdf,
+      ));
+      if (result != null) {
+        DateTime currentDateTime = DateTime.now();
+        outputFilesNames = List.generate(result.length, (index) {
+          String nameOfFile = files[index].fileName;
+          String nameOfFileWithoutExtension =
+              getFileNameWithoutExtension(fileName: nameOfFile);
+          return "$nameOfFileWithoutExtension - $currentDateTime.pdf";
+        });
+      }
+    } on PlatformException catch (e) {
+      log(e.toString());
+    } catch (e) {
+      log(e.toString());
+    }
+    if (result != null && result.isNotEmpty) {
+      outputFiles.clear();
+      for (int i = 0; i < result.length; i++) {
+        OutputFileModel file =
+            await getOutputFileModelFromPath(path: result[i]);
+        file = OutputFileModel(
+            fileName: outputFilesNames[i],
+            fileDate: file.fileDate,
+            fileTime: file.fileTime,
+            fileSize: file.fileSize,
+            filePath: file.filePath);
+        outputFiles.add(file);
+      }
+    } else {
+      updateActionErrorStatus(true);
+
+      // We can use this place to get the exact time of cancellation action.
+      // But don't just put clear cache here as at this state user may have started another task.
+      // So we avoid clearing cache here as we don't want the user to wait till cancellation for next task will.
+    }
+    updateActionProcessingStatus(false);
+    customNotifyListener();
+  }
+
   void cancelAction() {
     clearCache(clearCacheCommandFrom: "Cancel Running Action");
     updateActionProcessingStatus(true);
@@ -639,16 +727,15 @@ class ToolsActionsState extends ChangeNotifier {
       {required List<OutputFileModel> files,
       required List<String>? mimeTypeFilter}) async {
     updateSaveProcessingStatus(true);
-    List<String> pathsOfFilesToSave = List<String>.generate(
-        files.length, (int index) => files[index].filePath);
-    List<String> namesOfFilesToSave = List<String>.generate(
-        files.length, (int index) => files[index].fileName);
+    List<SaveFileInfo> saveFiles = List<SaveFileInfo>.generate(
+        files.length,
+        (int index) => SaveFileInfo(
+            filePath: files[index].filePath, fileName: files[index].fileName));
     List<String>? result;
     try {
       result = await PickOrSave().fileSaver(
           params: FileSaverParams(
-        filesNames: namesOfFilesToSave,
-        sourceFilesPaths: pathsOfFilesToSave,
+        saveFiles: saveFiles,
         mimeTypeFilter: mimeTypeFilter,
       ));
     } on PlatformException catch (e) {
@@ -705,6 +792,11 @@ String getFileNameWithoutExtension({required String fileName}) {
 }
 
 String getFileNameExtension({required String fileName}) {
-  String fileExt = fileName.substring(fileName.lastIndexOf('.')).toLowerCase();
-  return fileExt;
+  int indexOfLastDot = fileName.lastIndexOf('.');
+  if (indexOfLastDot == -1) {
+    return "";
+  } else {
+    String fileExt = fileName.substring(indexOfLastDot).toLowerCase();
+    return fileExt;
+  }
 }

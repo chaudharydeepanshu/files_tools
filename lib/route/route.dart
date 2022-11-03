@@ -3,6 +3,8 @@ import 'package:files_tools/ui/screens/pdf_tools_screens/compress_pdf/compress_p
 import 'package:files_tools/ui/screens/pdf_tools_screens/compress_pdf/compress_pdf_tool_screen.dart';
 import 'package:files_tools/ui/screens/pdf_tools_screens/decrypt_pdf/decrypt_pdf_screen.dart';
 import 'package:files_tools/ui/screens/pdf_tools_screens/decrypt_pdf/decrypt_pdf_tools_screen.dart';
+import 'package:files_tools/ui/screens/pdf_tools_screens/image_to_pdf/image_to_pdf_screen.dart';
+import 'package:files_tools/ui/screens/pdf_tools_screens/image_to_pdf/image_to_pdf_tools_screen.dart';
 import 'package:files_tools/ui/screens/pdf_tools_screens/watermark_pdf/watermark_pdf_screen.dart';
 import 'package:files_tools/ui/screens/pdf_tools_screens/watermark_pdf/watermark_pdf_tool_screen.dart';
 import 'package:files_tools/ui/screens/pdf_viewer.dart';
@@ -35,6 +37,7 @@ const String compressPDFPage = '/CompressPDF';
 const String watermarkPDFPage = '/WatermarkPDF';
 const String encryptPDFPage = '/EncryptPDF';
 const String decryptPDFPage = '/DecryptPDF';
+const String imageToPDFPage = '/ImageToPDF';
 const String resultPage = '/Result';
 const String splitPDFToolsPage = '/SplitPDFTools';
 const String modifyPDFToolsPage = '/ModifyPDFTools';
@@ -43,6 +46,7 @@ const String compressPDFToolsPage = '/CompressPDFTools';
 const String watermarkPDFToolsPage = '/WatermarkPDFTools';
 const String encryptPDFToolsPage = '/EncryptPDFTools';
 const String decryptPDFToolsPage = '/DecryptPDFTools';
+const String imageToPDFToolsPage = '/ImageToPDFTools';
 
 // Control our page route flow
 Route<dynamic> controller(RouteSettings settings) {
@@ -132,6 +136,15 @@ Route<dynamic> controller(RouteSettings settings) {
       return MaterialPageRoute(
           builder: (context) => DecryptPDFToolsPage(
               arguments: settings.arguments as DecryptPDFToolsPageArguments),
+          settings: RouteSettings(name: settings.name));
+    case imageToPDFPage:
+      return MaterialPageRoute(
+          builder: (context) => const ImageToPDFPage(),
+          settings: RouteSettings(name: settings.name));
+    case imageToPDFToolsPage:
+      return MaterialPageRoute(
+          builder: (context) => ImageToPDFToolsPage(
+              arguments: settings.arguments as ImageToPDFToolsPageArguments),
           settings: RouteSettings(name: settings.name));
     case resultPage:
       return MaterialPageRoute(

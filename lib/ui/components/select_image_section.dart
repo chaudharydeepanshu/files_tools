@@ -10,27 +10,22 @@ import 'package:files_tools/ui/screens/pdf_viewer.dart';
 import 'package:files_tools/utils/clear_cache.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pick_or_save/pick_or_save.dart';
 import 'package:rive/rive.dart';
 import 'package:files_tools/route/route.dart' as route;
 
-enum SelectFileType { single, multiple, both }
+enum SelectImageType { single, multiple, both }
 
-class SelectFilesCard extends StatelessWidget {
-  const SelectFilesCard(
-      {Key? key,
-      required this.selectFileType,
-      required this.files,
-      required this.filePickerParams,
-      this.discardInvalidPdfFiles = false,
-      this.discardProtectedPdfFiles = false})
-      : super(key: key);
+class SelectImagesCard extends StatelessWidget {
+  const SelectImagesCard({
+    Key? key,
+    required this.selectImageType,
+    required this.images,
+    this.allowedExtensions,
+  }) : super(key: key);
 
-  final SelectFileType selectFileType;
-  final List<InputFileModel> files;
-  final FilePickerParams filePickerParams;
-  final bool discardInvalidPdfFiles;
-  final bool discardProtectedPdfFiles;
+  final SelectImageType selectImageType;
+  final List<InputFileModel> images;
+  final List<String>? allowedExtensions;
 
   @override
   Widget build(BuildContext context) {
@@ -54,21 +49,17 @@ class SelectFilesCard extends StatelessWidget {
             children: [
               const Icon(Icons.looks_one),
               const Divider(),
-              files.isNotEmpty
+              images.isNotEmpty
                   ? Flexible(
-                      child: FilesSelected(
-                        selectFileType: selectFileType,
-                        files: files,
-                        filePickerParams: filePickerParams,
-                        discardInvalidPdfFiles: discardInvalidPdfFiles,
-                        discardProtectedPdfFiles: discardProtectedPdfFiles,
+                      child: ImagesSelected(
+                        selectImageType: selectImageType,
+                        images: images,
+                        allowedExtensions: allowedExtensions,
                       ),
                     )
-                  : NoFilesSelected(
-                      selectFileType: selectFileType,
-                      filePickerParams: filePickerParams,
-                      discardInvalidPdfFiles: discardInvalidPdfFiles,
-                      discardProtectedPdfFiles: discardProtectedPdfFiles,
+                  : NoImagesSelected(
+                      selectImageType: selectImageType,
+                      allowedExtensions: allowedExtensions,
                     ),
             ],
           ),
@@ -78,21 +69,17 @@ class SelectFilesCard extends StatelessWidget {
   }
 }
 
-class FilesSelected extends StatelessWidget {
-  const FilesSelected(
+class ImagesSelected extends StatelessWidget {
+  const ImagesSelected(
       {Key? key,
-      required this.selectFileType,
-      required this.files,
-      required this.filePickerParams,
-      required this.discardInvalidPdfFiles,
-      required this.discardProtectedPdfFiles})
+      required this.selectImageType,
+      required this.images,
+      this.allowedExtensions})
       : super(key: key);
 
-  final SelectFileType selectFileType;
-  final List<InputFileModel> files;
-  final FilePickerParams filePickerParams;
-  final bool discardInvalidPdfFiles;
-  final bool discardProtectedPdfFiles;
+  final SelectImageType selectImageType;
+  final List<InputFileModel> images;
+  final List<String>? allowedExtensions;
 
   @override
   Widget build(BuildContext context) {
@@ -100,28 +87,29 @@ class FilesSelected extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         Flexible(
-            child: files.length > 1
-                ? ReorderableFilesListView(files: files)
-                : SelectedFileTile(file: files[0])),
+            child: images.length > 1
+                ? ReorderableImagesListView(images: images)
+                : SelectedImageTile(image: images[0])),
         Consumer(
           builder: (BuildContext context, WidgetRef ref, Widget? child) {
-            final bool isPickingFile =
-                ref.watch(toolScreenStateProvider).isPickingFile;
-            return isPickingFile
+            final bool isPickingImage =
+                ref.watch(toolScreenStateProvider).isPickingImage;
+            return isPickingImage
                 ? Column(
                     children: [
                       const SizedBox(height: 10),
-                      Text('Picking files please wait ...',
+                      Text('Picking images please wait ...',
                           style: Theme.of(context).textTheme.bodySmall),
                       const Divider()
                     ],
                   )
-                : selectFileType == SelectFileType.multiple && files.length == 1
+                : selectImageType == SelectImageType.multiple &&
+                        images.length == 1
                     ? Column(
                         children: [
                           const SizedBox(height: 10),
                           Text(
-                            'Please select at least one more file',
+                            'Please select at least one more image',
                             style: Theme.of(context)
                                 .textTheme
                                 .bodySmall
@@ -131,14 +119,13 @@ class FilesSelected extends StatelessWidget {
                           const Divider()
                         ],
                       )
-                    : selectFileType == SelectFileType.multiple ||
-                            selectFileType == SelectFileType.both &&
-                                files.length > 1
+                    : selectImageType == SelectImageType.multiple &&
+                            images.length > 1
                         ? Column(
                             children: [
                               const SizedBox(height: 10),
                               Text(
-                                'Long press on files to reorder them',
+                                'Long press on images to reorder them',
                                 style: Theme.of(context).textTheme.bodySmall,
                               ),
                               const Divider()
@@ -151,30 +138,27 @@ class FilesSelected extends StatelessWidget {
           builder: (BuildContext context, WidgetRef ref, Widget? child) {
             final ToolScreenState readToolScreenStateProviderValue =
                 ref.watch(toolScreenStateProvider);
-            final bool isPickingFile =
-                ref.watch(toolScreenStateProvider).isPickingFile;
+            final bool isPickingImage =
+                ref.watch(toolScreenStateProvider).isPickingImage;
             return Wrap(
               spacing: 10,
               children: [
-                if (selectFileType == SelectFileType.multiple ||
-                    selectFileType == SelectFileType.both)
+                if (selectImageType == SelectImageType.multiple ||
+                    selectImageType == SelectImageType.both)
                   ElevatedButton.icon(
                     style: ElevatedButton.styleFrom(
                       foregroundColor: Theme.of(context).colorScheme.onPrimary,
                       backgroundColor: Theme.of(context).colorScheme.primary,
                     ).copyWith(elevation: ButtonStyleButton.allOrNull(0.0)),
-                    onPressed: !isPickingFile
+                    onPressed: !isPickingImage
                         ? () {
                             // Removing any snack bar or keyboard
                             FocusManager.instance.primaryFocus?.unfocus();
                             ScaffoldMessenger.of(context).hideCurrentSnackBar();
 
-                            readToolScreenStateProviderValue.selectFiles(
-                              params: filePickerParams,
-                              discardInvalidPdfFiles: discardInvalidPdfFiles,
-                              discardProtectedPdfFiles:
-                                  discardProtectedPdfFiles,
-                            );
+                            readToolScreenStateProviderValue.selectImages(
+                                selectImageType: selectImageType,
+                                allowedExtensions: allowedExtensions);
                           }
                         : null,
                     label: const Text('Select More'),
@@ -185,17 +169,17 @@ class FilesSelected extends StatelessWidget {
                     foregroundColor: Theme.of(context).colorScheme.onPrimary,
                     backgroundColor: Theme.of(context).colorScheme.primary,
                   ).copyWith(elevation: ButtonStyleButton.allOrNull(0.0)),
-                  onPressed: !isPickingFile
+                  onPressed: !isPickingImage
                       ? () {
                           // Removing any snack bar or keyboard
                           FocusManager.instance.primaryFocus?.unfocus();
                           ScaffoldMessenger.of(context).hideCurrentSnackBar();
 
-                          readToolScreenStateProviderValue.updateSelectedFiles(
-                            files: [],
+                          readToolScreenStateProviderValue.updateSelectedImages(
+                            images: [],
                           );
                           clearCache(
-                              clearCacheCommandFrom: "Clear File Selection");
+                              clearCacheCommandFrom: "Clear Image Selection");
                         }
                       : null,
                   label: const Text('Clear Selection'),
@@ -210,19 +194,13 @@ class FilesSelected extends StatelessWidget {
   }
 }
 
-class NoFilesSelected extends StatelessWidget {
-  const NoFilesSelected(
-      {Key? key,
-      required this.selectFileType,
-      required this.filePickerParams,
-      required this.discardInvalidPdfFiles,
-      required this.discardProtectedPdfFiles})
+class NoImagesSelected extends StatelessWidget {
+  const NoImagesSelected(
+      {Key? key, required this.selectImageType, this.allowedExtensions})
       : super(key: key);
 
-  final SelectFileType selectFileType;
-  final FilePickerParams filePickerParams;
-  final bool discardInvalidPdfFiles;
-  final bool discardProtectedPdfFiles;
+  final SelectImageType selectImageType;
+  final List<String>? allowedExtensions;
 
   @override
   Widget build(BuildContext context) {
@@ -240,35 +218,34 @@ class NoFilesSelected extends StatelessWidget {
           ),
         ),
         Text(
-          'Please select ${selectFileType == SelectFileType.multiple || selectFileType == SelectFileType.both ? "some files" : "a file"}',
+          'Please select ${selectImageType == SelectImageType.multiple || selectImageType == SelectImageType.both ? "some images" : "a image"}',
           style: Theme.of(context).textTheme.bodySmall,
         ),
         Consumer(
           builder: (BuildContext context, WidgetRef ref, Widget? child) {
             final ToolScreenState readToolScreenStateProviderValue =
                 ref.watch(toolScreenStateProvider);
-            final bool isPickingFile =
-                ref.watch(toolScreenStateProvider).isPickingFile;
+            final bool isPickingImage =
+                ref.watch(toolScreenStateProvider).isPickingImage;
             return ElevatedButton.icon(
               style: ElevatedButton.styleFrom(
                 foregroundColor: Theme.of(context).colorScheme.onPrimary,
                 backgroundColor: Theme.of(context).colorScheme.primary,
               ).copyWith(elevation: ButtonStyleButton.allOrNull(0.0)),
-              onPressed: !isPickingFile
+              onPressed: !isPickingImage
                   ? () {
                       // Removing any snack bar or keyboard
                       FocusManager.instance.primaryFocus?.unfocus();
                       ScaffoldMessenger.of(context).hideCurrentSnackBar();
 
-                      readToolScreenStateProviderValue.selectFiles(
-                        params: filePickerParams,
-                        discardInvalidPdfFiles: discardInvalidPdfFiles,
-                        discardProtectedPdfFiles: discardProtectedPdfFiles,
+                      readToolScreenStateProviderValue.selectImages(
+                        selectImageType: selectImageType,
+                        allowedExtensions: allowedExtensions,
                       );
                     }
                   : null,
               label: Text(
-                  'Select ${selectFileType == SelectFileType.multiple || selectFileType == SelectFileType.both ? "files" : "file"}'),
+                  'Select ${selectImageType == SelectImageType.multiple || selectImageType == SelectImageType.both ? "images" : "image"}'),
               icon: const Icon(Icons.upload_file),
             );
           },
@@ -278,10 +255,10 @@ class NoFilesSelected extends StatelessWidget {
   }
 }
 
-class SelectedFileTile extends StatelessWidget {
-  const SelectedFileTile({Key? key, required this.file}) : super(key: key);
+class SelectedImageTile extends StatelessWidget {
+  const SelectedImageTile({Key? key, required this.image}) : super(key: key);
 
-  final InputFileModel file;
+  final InputFileModel image;
 
   @override
   Widget build(BuildContext context) {
@@ -294,22 +271,23 @@ class SelectedFileTile extends StatelessWidget {
       visualDensity: VisualDensity.comfortable,
       dense: true,
       onTap: () {
-        String fileExtension = getFileNameExtension(fileName: file.fileName);
+        String fileExtension = getFileNameExtension(fileName: image.fileName);
         if (fileExtension.toLowerCase() == ".pdf") {
           Navigator.pushNamed(
             context,
             route.pdfViewer,
             arguments: PdfViewerArguments(
-                fileName: file.fileName, filePathOrUri: file.fileUri),
+                fileName: image.fileName, filePathOrUri: image.fileUri),
           );
         } else if (fileExtension.toLowerCase() == ".png" ||
             fileExtension.toLowerCase() == ".jpg" ||
-            fileExtension.toLowerCase() == ".jpeg") {
+            fileExtension.toLowerCase() == ".jpeg" ||
+            fileExtension.toLowerCase() == ".webp") {
           Navigator.pushNamed(
             context,
             route.imageViewer,
             arguments: ImageViewerArguments(
-                fileName: file.fileName, filePath: null, fileUri: file.fileUri),
+                fileName: image.fileName, filePath: image.fileUri),
           );
         } else {
           log("No action found for opening file with extension $fileExtension");
@@ -327,7 +305,7 @@ class SelectedFileTile extends StatelessWidget {
         ),
       ),
       title: Text(
-        file.fileName,
+        image.fileName,
         overflow: TextOverflow.ellipsis,
         maxLines: 2,
       ),
@@ -338,7 +316,7 @@ class SelectedFileTile extends StatelessWidget {
           children: [
             Expanded(
               flex: 6,
-              child: Text(file.fileDate,
+              child: Text(image.fileDate,
                   style: Theme.of(context).textTheme.bodySmall,
                   overflow: TextOverflow.ellipsis),
             ),
@@ -346,7 +324,7 @@ class SelectedFileTile extends StatelessWidget {
             Expanded(
               flex: 3,
               child: Text(
-                file.fileTime,
+                image.fileTime,
                 style: Theme.of(context).textTheme.bodySmall,
                 overflow: TextOverflow.ellipsis,
                 textAlign: TextAlign.center,
@@ -356,7 +334,7 @@ class SelectedFileTile extends StatelessWidget {
             Expanded(
               flex: 5,
               child: Text(
-                file.fileSizeFormatBytes,
+                image.fileSizeFormatBytes,
                 style: Theme.of(context).textTheme.bodySmall,
                 overflow: TextOverflow.ellipsis,
                 textAlign: TextAlign.center,
@@ -377,11 +355,11 @@ class SelectedFileTile extends StatelessWidget {
                 // tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                 ),
             onPressed: () {
-              final List<InputFileModel> selectedFiles =
-                  ref.watch(toolScreenStateProvider).selectedFiles;
-              selectedFiles.remove(file);
-              readToolScreenStateProviderValue.updateSelectedFiles(
-                files: selectedFiles,
+              final List<InputFileModel> selectedImages =
+                  ref.watch(toolScreenStateProvider).selectedImages;
+              selectedImages.remove(image);
+              readToolScreenStateProviderValue.updateSelectedImages(
+                images: selectedImages,
               );
             },
             icon: const SizedBox(
@@ -398,24 +376,24 @@ class SelectedFileTile extends StatelessWidget {
   }
 }
 
-class ReorderableFilesListView extends StatefulWidget {
-  const ReorderableFilesListView({super.key, required this.files});
+class ReorderableImagesListView extends StatefulWidget {
+  const ReorderableImagesListView({super.key, required this.images});
 
-  final List<InputFileModel> files;
+  final List<InputFileModel> images;
 
   @override
-  State<ReorderableFilesListView> createState() =>
-      _ReorderableFilesListViewState();
+  State<ReorderableImagesListView> createState() =>
+      _ReorderableImagesListViewState();
 }
 
-class _ReorderableFilesListViewState extends State<ReorderableFilesListView> {
-  late List<InputFileModel> _files = widget.files;
+class _ReorderableImagesListViewState extends State<ReorderableImagesListView> {
+  late List<InputFileModel> _images = widget.images;
 
   @override
-  void didUpdateWidget(covariant ReorderableFilesListView oldWidget) {
-    if (widget.files != oldWidget.files) {
+  void didUpdateWidget(covariant ReorderableImagesListView oldWidget) {
+    if (widget.images != oldWidget.images) {
       setState(() {
-        _files = widget.files;
+        _images = widget.images;
       });
     }
     super.didUpdateWidget(oldWidget);
@@ -458,17 +436,17 @@ class _ReorderableFilesListViewState extends State<ReorderableFilesListView> {
     }
 
     return ReorderableListView.builder(
-      shrinkWrap: _files.length < 10,
+      shrinkWrap: _images.length < 10,
       proxyDecorator: proxyDecorator,
-      itemCount: _files.length,
+      itemCount: _images.length,
       itemBuilder: (BuildContext context, int index) {
         return Column(
           key: Key('$index'),
           children: [
             Material(
                 color: Colors.transparent,
-                child: SelectedFileTile(file: _files[index])),
-            index != _files.length - 1
+                child: SelectedImageTile(image: _images[index])),
+            index != _images.length - 1
                 ? const SizedBox(height: 10)
                 : const SizedBox(),
           ],
@@ -479,8 +457,8 @@ class _ReorderableFilesListViewState extends State<ReorderableFilesListView> {
           if (oldIndex < newIndex) {
             newIndex -= 1;
           }
-          final InputFileModel item = _files.removeAt(oldIndex);
-          _files.insert(newIndex, item);
+          final InputFileModel item = _images.removeAt(oldIndex);
+          _images.insert(newIndex, item);
         });
       },
     );

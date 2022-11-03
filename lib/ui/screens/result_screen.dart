@@ -437,7 +437,7 @@ class OutputFileTile extends StatelessWidget {
             context,
             route.pdfViewer,
             arguments: PdfViewerArguments(
-                fileName: file.fileName, filePath: file.filePath),
+                fileName: file.fileName, filePathOrUri: file.filePath),
           );
         } else if (fileExtension.toLowerCase() == ".png" ||
             fileExtension.toLowerCase() == ".jpg" ||

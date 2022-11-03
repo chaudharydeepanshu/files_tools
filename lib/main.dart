@@ -77,4 +77,5 @@ class MyApp extends StatelessWidget {
   }
 }
 
-// Todo: Clearing result cache files on failure or on cancel of operation. Note input files are just uris not cached files.
+// Todo: Use the same widget for showing loading and error messages everywhere.
+// Todo: Use image mode instead of file mode for images selection in application such as images to pdf function. To do that improve the pick or save plugin.

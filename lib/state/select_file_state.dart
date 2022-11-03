@@ -2,8 +2,10 @@ import 'dart:developer';
 
 import 'package:files_tools/models/file_model.dart';
 import 'package:files_tools/state/tools_actions_state.dart';
+import 'package:files_tools/ui/components/select_image_section.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:pdf_bitmaps/pdf_bitmaps.dart';
 import 'package:pick_or_save/pick_or_save.dart';
 import '../main.dart';
@@ -18,6 +20,14 @@ class ToolScreenState extends ChangeNotifier {
 
   bool _isPickingFile = false;
   bool get isPickingFile => _isPickingFile;
+
+  List<InputFileModel> removedImages = [];
+
+  List<InputFileModel> _selectedImages = [];
+  List<InputFileModel> get selectedImages => _selectedImages;
+
+  bool _isPickingImage = false;
+  bool get isPickingImage => _isPickingImage;
 
   updateSelectedFiles({required List<InputFileModel> files}) {
     _selectedFiles = files;
@@ -97,6 +107,95 @@ class ToolScreenState extends ChangeNotifier {
 
     updateFilePickingStatus(status: false);
   }
+
+  updateSelectedImages({required List<InputFileModel> images}) {
+    _selectedImages = images;
+    notifyListeners();
+  }
+
+  Future<List<InputFileModel>> _imagePicker(
+      SelectImageType selectImageType) async {
+    List<XFile>? result;
+    try {
+      updateImagePickingStatus(status: true);
+      _isPickingImage = true;
+      final ImagePicker picker = ImagePicker();
+      if (selectImageType == SelectImageType.single) {
+        XFile? pickedImage =
+            await picker.pickImage(source: ImageSource.gallery);
+        if (pickedImage == null) {
+          result = null;
+        } else {
+          result = [pickedImage];
+        }
+      } else {
+        result = await picker.pickMultiImage();
+      }
+      // log(result.toString());
+    } on PlatformException catch (e) {
+      log(e.toString());
+    } catch (e) {
+      log(e.toString());
+    }
+    List<InputFileModel> files = [];
+    if (result != null && result.isNotEmpty) {
+      for (int i = 0; i < result.length; i++) {
+        InputFileModel file =
+            await getInputFileModelFromUri(path: result[i].path);
+        files.add(file);
+      }
+    }
+    return files;
+  }
+
+  updateImagePickingStatus({required bool status}) {
+    _isPickingImage = status;
+
+    BuildContext? context = navigatorKey.currentState?.context;
+    if (context != null) {
+      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+      if (removedImages.isNotEmpty) {
+        String? contentText =
+            "Discarded invalid or unsupported images:\n${List<String>.generate(removedImages.length, (int index) => removedImages[index].fileName).join("\n")}";
+        //'Oh...No! There is no old data available.';
+        Color? backgroundColor = Theme.of(context).colorScheme.errorContainer;
+        Duration? duration = const Duration(seconds: 20);
+        IconData? iconData = Icons.warning;
+        Color? iconAndTextColor = Theme.of(context).colorScheme.error;
+        TextStyle? textStyle = Theme.of(context).textTheme.bodySmall;
+
+        showCustomSnackBar(
+          context: context,
+          contentText: contentText,
+          backgroundColor: backgroundColor,
+          duration: duration,
+          iconData: iconData,
+          iconAndTextColor: iconAndTextColor,
+          textStyle: textStyle,
+        );
+      }
+    }
+
+    notifyListeners();
+  }
+
+  selectImages(
+      {required SelectImageType selectImageType,
+      List<String>? allowedExtensions}) async {
+    removedImages = [];
+
+    _selectedImages = _selectedImages + await _imagePicker(selectImageType);
+
+    removedImages = await imagesFiltering(
+        images: _selectedImages, allowedExtensions: allowedExtensions ?? []);
+
+    _selectedImages.removeWhere((element) =>
+        removedImages.map((e) => e.fileUri).contains(element.fileUri));
+
+    updateSelectedImages(images: _selectedImages);
+
+    updateImagePickingStatus(status: false);
+  }
 }
 
 Future<List<InputFileModel>> fileFiltering(
@@ -112,7 +211,14 @@ Future<List<InputFileModel>> fileFiltering(
           await PdfBitmaps().pdfValidityAndProtection(
               params: PDFValidityAndProtectionParams(pdfPath: element.fileUri));
       if (pdfValidityAndProtectionInfo == null) {
-        filesToRemoveFromSelection.add(element);
+        InputFileModel temp = InputFileModel(
+            fileName: "${element.fileName} (Invalid)",
+            fileDate: element.fileDate,
+            fileTime: element.fileTime,
+            fileSizeFormatBytes: element.fileSizeFormatBytes,
+            fileSizeBytes: element.fileSizeBytes,
+            fileUri: element.fileUri);
+        filesToRemoveFromSelection.add(temp);
       } else if (pdfValidityAndProtectionInfo.isPDFValid == false &&
           discardInvalidPdfFiles) {
         InputFileModel temp = InputFileModel(
@@ -140,10 +246,42 @@ Future<List<InputFileModel>> fileFiltering(
   return filesToRemoveFromSelection;
 }
 
-Future<InputFileModel> getInputFileModelFromUri({required String uri}) async {
+Future<List<InputFileModel>> imagesFiltering(
+    {required List<InputFileModel> images,
+    required List<String> allowedExtensions}) async {
+  List<InputFileModel> filesToRemoveFromSelection = [];
+  for (var element in images) {
+    String extensionOfFile =
+        getFileNameExtension(fileName: element.fileName).toLowerCase();
+    allowedExtensions = allowedExtensions.map((e) => e.toLowerCase()).toList();
+
+    if (allowedExtensions.isNotEmpty &&
+        !allowedExtensions.contains(extensionOfFile)) {
+      InputFileModel temp = InputFileModel(
+          fileName: "${element.fileName} (Unsupported File Type)",
+          fileDate: element.fileDate,
+          fileTime: element.fileTime,
+          fileSizeFormatBytes: element.fileSizeFormatBytes,
+          fileSizeBytes: element.fileSizeBytes,
+          fileUri: element.fileUri);
+      filesToRemoveFromSelection.add(temp);
+    }
+  }
+
+  return filesToRemoveFromSelection;
+}
+
+Future<InputFileModel> getInputFileModelFromUri(
+    {String? uri, String? path}) async {
   InputFileModel file;
-  FileMetadata fileMetadata = await PickOrSave()
-      .fileMetaData(params: FileMetadataParams(sourceFileUri: uri));
+  FileMetadata fileMetadata;
+  if (uri != null) {
+    fileMetadata = await PickOrSave()
+        .fileMetaData(params: FileMetadataParams(sourceFileUri: uri));
+  } else {
+    fileMetadata = await PickOrSave()
+        .fileMetaData(params: FileMetadataParams(sourceFilePath: path));
+  }
   final String fileName = fileMetadata.displayName ?? "Unknown";
   final DateTime? lastModifiedDateTime;
   if (fileMetadata.lastModified != null &&
@@ -172,6 +310,6 @@ Future<InputFileModel> getInputFileModelFromUri({required String uri}) async {
       fileTime: fileTime,
       fileSizeFormatBytes: fileSizeFormatBytes,
       fileSizeBytes: fileSizeBytes,
-      fileUri: uri);
+      fileUri: uri ?? path!);
   return file;
 }
