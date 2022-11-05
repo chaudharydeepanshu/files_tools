@@ -285,7 +285,6 @@ class SavingSingleFile extends StatelessWidget {
                       : () {
                           ref.read(toolsActionsStateProvider).saveFile(
                             files: [file],
-                            mimeTypeFilter: ["application/pdf"],
                           );
                         },
                   child: isSaveProcessing
@@ -379,9 +378,8 @@ class SavingMultipleFiles extends StatelessWidget {
                         ? null
                         : () {
                             ref.read(toolsActionsStateProvider).saveFile(
-                              files: files,
-                              mimeTypeFilter: ["application/pdf"],
-                            );
+                                  files: files,
+                                );
                           },
                     child: isSaveProcessing
                         ? const Text("Saving Files. Please wait")

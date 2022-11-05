@@ -66,7 +66,7 @@ class _ImageToPDFPageState extends State<ImageToPDFPage> {
                     filePickerParams: const FilePickerParams(
                       copyFileToCacheDir: false,
                       filePickingType: FilePickingType.multiple,
-                      mimeTypeFilter: [
+                      mimeTypesFilter: [
                         // "image/*",
                         "image/png",
                         "image/gif",

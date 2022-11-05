@@ -725,7 +725,7 @@ class ToolsActionsState extends ChangeNotifier {
 
   Future<void> saveFile(
       {required List<OutputFileModel> files,
-      required List<String>? mimeTypeFilter}) async {
+      List<String>? mimeTypesFilter}) async {
     updateSaveProcessingStatus(true);
     List<SaveFileInfo> saveFiles = List<SaveFileInfo>.generate(
         files.length,
@@ -736,7 +736,7 @@ class ToolsActionsState extends ChangeNotifier {
       result = await PickOrSave().fileSaver(
           params: FileSaverParams(
         saveFiles: saveFiles,
-        mimeTypeFilter: mimeTypeFilter,
+        mimeTypesFilter: mimeTypesFilter,
       ));
     } on PlatformException catch (e) {
       log(e.toString());

@@ -63,7 +63,7 @@ class _MergePDFsPageState extends State<MergePDFsPage> {
                     filePickerParams: const FilePickerParams(
                       copyFileToCacheDir: false,
                       filePickingType: FilePickingType.multiple,
-                      mimeTypeFilter: ["application/pdf"],
+                      mimeTypesFilter: ["application/pdf"],
                       allowedExtensions: [".pdf"],
                     ),
                     discardInvalidPdfFiles: true,

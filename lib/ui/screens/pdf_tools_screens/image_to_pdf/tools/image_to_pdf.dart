@@ -137,7 +137,7 @@ class _ImageToPDFState extends State<ImageToPDF> {
                                               case LoadState.loading:
                                                 return const LoadingImage();
                                               case LoadState.failed:
-                                                // Todo: Should remove images from processing that failed to load.
+                                                // Todo: Should remove images from processing that failed to load. But first verify if they are capable of loading without waiting for user to load them.
                                                 return const ImageLoadingError(
                                                     errorMessage:
                                                         'Image viewer failed to load image');

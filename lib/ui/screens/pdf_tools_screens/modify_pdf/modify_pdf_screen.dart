@@ -62,7 +62,7 @@ class _ModifyPDFPageState extends State<ModifyPDFPage> {
                     filePickerParams: const FilePickerParams(
                       copyFileToCacheDir: false,
                       filePickingType: FilePickingType.single,
-                      mimeTypeFilter: ["application/pdf"],
+                      mimeTypesFilter: ["application/pdf"],
                       allowedExtensions: [".pdf"],
                     ),
                     discardInvalidPdfFiles: true,

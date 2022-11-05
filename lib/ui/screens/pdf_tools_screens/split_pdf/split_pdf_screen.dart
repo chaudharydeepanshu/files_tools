@@ -62,7 +62,7 @@ class _SplitPDFPageState extends State<SplitPDFPage> {
                     filePickerParams: const FilePickerParams(
                       copyFileToCacheDir: false,
                       filePickingType: FilePickingType.single,
-                      mimeTypeFilter: ["application/pdf"],
+                      mimeTypesFilter: ["application/pdf"],
                       allowedExtensions: [".pdf"],
                     ),
                     discardInvalidPdfFiles: true,
