@@ -59,9 +59,10 @@ class _DecryptPDFPageState extends State<DecryptPDFPage> {
                   SelectFilesCard(
                     selectFileType: SelectFileType.single,
                     files: watchToolScreenStateProviderValue.selectedFiles,
-                    filePickerParams: const FilePickerParams(
+                    filePickerParams: FilePickerParams(
                       copyFileToCacheDir: false,
-                      filePickingType: FilePickingType.single,
+                      pickerType: PickerType.file,
+                      enableMultipleSelection: false,
                       mimeTypesFilter: ["application/pdf"],
                       allowedExtensions: [".pdf"],
                     ),

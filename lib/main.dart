@@ -78,7 +78,5 @@ class MyApp extends StatelessWidget {
 }
 
 // Todo: Add extraction of pages from selection and splitting on the basis of ranges.
-// Todo: Use the same widget for showing loading and error messages everywhere.
-// Todo: Use image mode instead of file mode for images selection in application such as images to pdf function. To do that improve the pick or save plugin.
+// Todo: Use image mode instead of file mode for images selection in application such as images to pdf function. Can't do it due to https://issuetracker.google.com/issues/257642029.
 // Todo: Check on watermarking is failing for some large pdfs.
-// Todo: Show error messages or stacktrace for errors everywhere.

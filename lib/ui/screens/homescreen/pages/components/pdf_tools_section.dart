@@ -147,6 +147,23 @@ class PDFToolsSection extends StatelessWidget {
         },
       ),
       GridCardDetail(
+        cardIcon: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: const [
+            Icon(Icons.image),
+            Icon(Icons.arrow_forward),
+            Icon(Icons.picture_as_pdf),
+          ],
+        ),
+        cardTitle: 'Image To PDF',
+        cardOnTap: () {
+          Navigator.pushNamed(
+            context,
+            route.imageToPDFPage,
+          );
+        },
+      ),
+      GridCardDetail(
         cardIcon: const Icon(Icons.lock),
         cardTitle: 'Encrypt PDF',
         cardOnTap: () {
@@ -163,23 +180,6 @@ class PDFToolsSection extends StatelessWidget {
           Navigator.pushNamed(
             context,
             route.decryptPDFPage,
-          );
-        },
-      ),
-      GridCardDetail(
-        cardIcon: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: const [
-            Icon(Icons.image),
-            Icon(Icons.arrow_forward),
-            Icon(Icons.picture_as_pdf),
-          ],
-        ),
-        cardTitle: 'Image To PDF',
-        cardOnTap: () {
-          Navigator.pushNamed(
-            context,
-            route.imageToPDFPage,
           );
         },
       ),

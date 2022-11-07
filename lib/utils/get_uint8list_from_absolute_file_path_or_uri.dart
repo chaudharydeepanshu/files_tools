@@ -12,7 +12,7 @@ Future<Uint8List> getBytesFromFilePathOrUri(
     if (tempFile.existsSync()) {
       filedData = tempFile.readAsBytesSync();
     } else {
-      throw "File path didn't have the file.";
+      throw Exception('File not found at file path.');
     }
   } else if (fileUri != null) {
     String? path = await PickOrSave().cacheFilePathFromUri(
@@ -22,13 +22,13 @@ Future<Uint8List> getBytesFromFilePathOrUri(
       filedData = tempFile.readAsBytesSync();
       tempFile.deleteSync();
     } else {
-      throw "File cached file path from Uri was null.";
+      throw Exception('File cached file path from Uri was null.');
     }
   } else {
-    throw "File path and file uri both are null.";
+    throw Exception('File path and file uri both are null.');
   }
   if (filedData.isEmpty) {
-    throw "File byte data is empty.";
+    throw Exception('File byte data is empty.');
   }
 
   return filedData;

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:files_tools/models/pdf_page_model.dart';
+import 'package:files_tools/ui/components/view_error.dart';
 import 'package:files_tools/utils/get_pdf_bitmaps.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -50,16 +51,16 @@ class _PdfViewerState extends State<PdfViewer> {
             params: PDFValidityAndProtectionParams(
                 pdfPath: widget.arguments.filePathOrUri));
     if (pdfValidityAndProtectionInfo == null) {
-      throw "Failed to verify pdf validity.";
+      throw Exception("Failed to verify pdf validity.");
     } else if (pdfValidityAndProtectionInfo.isPDFValid == false) {
-      throw "Pdf is found to be invalid.";
+      throw Exception("Pdf is found to be invalid.");
     } else if (pdfValidityAndProtectionInfo.isOpenPasswordProtected == true) {
-      throw "Pdf is found to be password protected.";
+      throw Exception("Pdf is found to be password protected.");
     }
     pdfPages =
         await generatePdfPagesList(pdfPath: widget.arguments.filePathOrUri);
     if (pdfPages.isEmpty) {
-      throw "No pages found for the pdf.";
+      throw Exception("No pages found for the pdf.");
     }
     log('initPdfPagesState Executed in ${stopwatch.elapsed}');
     return true;
@@ -98,8 +99,10 @@ class _PdfViewerState extends State<PdfViewer> {
               default:
                 if (snapshot.hasError) {
                   log(snapshot.error.toString());
-                  return PdfLoadingError(
-                      errorMessage: snapshot.error.toString());
+                  return ShowError(
+                    taskMessage: "Failed to load pdf",
+                    errorMessage: snapshot.error.toString(),
+                  );
                 } else {
                   return PageView.builder(
                     scrollDirection: Axis.vertical,
@@ -298,44 +301,6 @@ class PageError extends StatelessWidget {
         const SizedBox(height: 16),
         PageNumber(pageIndex: pageIndex),
       ],
-    );
-  }
-}
-
-class PdfLoadingError extends StatelessWidget {
-  const PdfLoadingError({Key? key, required this.errorMessage})
-      : super(key: key);
-
-  final String errorMessage;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.error, color: Theme.of(context).colorScheme.error),
-            const SizedBox(height: 16),
-            Text(
-              "Failed to load pdf",
-              style: Theme.of(context)
-                  .textTheme
-                  .bodySmall
-                  ?.copyWith(color: Theme.of(context).colorScheme.error),
-            ),
-            const SizedBox(height: 16),
-            Text(
-              errorMessage,
-              style: Theme.of(context)
-                  .textTheme
-                  .bodySmall
-                  ?.copyWith(color: Theme.of(context).colorScheme.error),
-            ),
-          ],
-        ),
-      ),
     );
   }
 }

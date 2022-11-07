@@ -1,9 +1,11 @@
 import 'dart:developer';
 
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:files_tools/models/file_model.dart';
 import 'package:files_tools/state/providers.dart';
 import 'package:files_tools/state/tools_actions_state.dart';
 import 'package:files_tools/ui/components/custom_snack_bar.dart';
+import 'package:files_tools/ui/components/view_error.dart';
 import 'package:files_tools/ui/screens/image_viewer.dart';
 import 'package:files_tools/ui/screens/pdf_viewer.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +14,7 @@ import 'package:rive/rive.dart';
 
 import 'package:files_tools/route/route.dart' as route;
 import 'package:files_tools/utils/clear_cache.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ResultPage extends StatelessWidget {
   const ResultPage({Key? key}) : super(key: key);
@@ -52,7 +55,9 @@ class ResultPage extends StatelessWidget {
                   if (isActionProcessing) {
                     return const ProcessingResult();
                   } else if (actionErrorStatus) {
-                    return const ProcessingResultError();
+                    return const ProcessingError(
+                      taskMessage: "Sorry, failed to complete the processing.",
+                    );
                   } else {
                     return SingleChildScrollView(
                         padding: const EdgeInsets.symmetric(vertical: 16.0),
@@ -143,41 +148,6 @@ class ResultBody extends StatelessWidget {
         return const Text("No save for action.");
       }
     });
-  }
-}
-
-class ProcessingResultError extends StatelessWidget {
-  const ProcessingResultError({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(Icons.error, color: Theme.of(context).colorScheme.error),
-          const SizedBox(height: 16),
-          Text(
-            "Sorry, failed to complete the processing.",
-            style: Theme.of(context)
-                .textTheme
-                .bodySmall
-                ?.copyWith(color: Theme.of(context).colorScheme.error),
-          ),
-          Consumer(
-            builder: (BuildContext context, WidgetRef ref, Widget? child) {
-              return TextButton(
-                onPressed: () {
-                  ref.read(toolsActionsStateProvider).cancelAction();
-                  Navigator.pop(context);
-                },
-                child: const Text('Go back'),
-              );
-            },
-          ),
-        ],
-      ),
-    );
   }
 }
 
@@ -525,6 +495,88 @@ class NonReorderableFilesListView extends StatelessWidget {
             child: OutputFileTile(file: files[index], actionType: actionType));
       },
       itemCount: files.length,
+    );
+  }
+}
+
+class ProcessingError extends StatelessWidget {
+  const ProcessingError({Key? key, required this.taskMessage})
+      : super(key: key);
+
+  final String taskMessage;
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Consumer(
+        builder: (BuildContext context, WidgetRef ref, Widget? child) {
+          String errorMessage =
+              ref.watch(toolsActionsStateProvider).errorMessage;
+
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ShowError(taskMessage: taskMessage, errorMessage: errorMessage),
+              const SizedBox(height: 16),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  FilledButton(
+                    onPressed: () {
+                      ref.read(toolsActionsStateProvider).cancelAction();
+                      Navigator.pop(context);
+                    },
+                    child: const Text('Go back'),
+                  ),
+                  TextButton(
+                    onPressed: () async {
+                      DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+
+                      AndroidDeviceInfo androidDeviceInfo =
+                          await deviceInfo.androidInfo;
+
+                      String userDeviceInfo =
+                          '''version.securityPatch: ${androidDeviceInfo.version.securityPatch}
+                          version.sdkInt: ${androidDeviceInfo.version.sdkInt}
+                          version.release: ${androidDeviceInfo.version.release}
+                          version.previewSdkInt: ${androidDeviceInfo.version.previewSdkInt}
+                          version.incrementa: ${androidDeviceInfo.version.incremental}
+                          version.codename: ${androidDeviceInfo.version.codename}
+                          version.baseOS: ${androidDeviceInfo.version.baseOS}
+                          board: ${androidDeviceInfo.board}
+                          bootloader: ${androidDeviceInfo.bootloader}
+                          brand: ${androidDeviceInfo.brand}
+                          device: ${androidDeviceInfo.device}
+                          display: ${androidDeviceInfo.display}
+                          fingerprint: ${androidDeviceInfo.fingerprint}
+                          hardware: ${androidDeviceInfo.hardware}
+                          host: ${androidDeviceInfo.host}
+                          id: ${androidDeviceInfo.id}
+                          manufacturer: ${androidDeviceInfo.manufacturer}
+                          model: ${androidDeviceInfo.model}
+                          product: ${androidDeviceInfo.product}
+                          supported32BitAbis: ${androidDeviceInfo.supported32BitAbis}
+                          supported64BitAbis: ${androidDeviceInfo.supported64BitAbis}
+                          supportedAbis: ${androidDeviceInfo.supportedAbis}
+                          tags: ${androidDeviceInfo.tags}
+                          type: ${androidDeviceInfo.type}
+                          isPhysicalDevice: ${androidDeviceInfo.isPhysicalDevice}
+                          systemFeatures: ${androidDeviceInfo.systemFeatures}
+                          ''';
+
+                      var url =
+                          'mailto:pureinfoapps@gmail.com?subject=Files Tools Bug Report&body=Error Message:\n$errorMessage\n\nUser Device Info:\n$userDeviceInfo';
+
+                      await launchUrl(Uri.parse(url));
+                    },
+                    child: const Text('Report Error'),
+                  ),
+                ],
+              ),
+            ],
+          );
+        },
+      ),
     );
   }
 }

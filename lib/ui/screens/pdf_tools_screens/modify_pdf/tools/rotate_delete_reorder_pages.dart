@@ -277,6 +277,7 @@ class _RotateDeleteReorderPagesState extends State<RotateDeleteReorderPages> {
                                             .error)),
                               ),
                             ),
+                            const VerticalDivider(width: 1),
                             Expanded(
                               flex: 2,
                               child: Consumer(
@@ -342,7 +343,7 @@ class _RotateDeleteReorderPagesState extends State<RotateDeleteReorderPages> {
                                           },
                                     child: SizedBox.expand(
                                       child: Center(
-                                        child: Row(
+                                        child: Column(
                                           mainAxisSize: MainAxisSize.min,
                                           children: const [
                                             Icon(Icons.check),

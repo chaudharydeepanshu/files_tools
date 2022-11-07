@@ -38,6 +38,9 @@ class ToolsActionsState extends ChangeNotifier {
   bool _actionErrorStatus = false;
   bool get actionErrorStatus => _actionErrorStatus;
 
+  String _errorMessage = "Unknown error";
+  String get errorMessage => _errorMessage;
+
   bool _isActionProcessing = false;
   bool get isActionProcessing => _isActionProcessing;
 
@@ -73,8 +76,10 @@ class ToolsActionsState extends ChangeNotifier {
       ));
     } on PlatformException catch (e) {
       log(e.toString());
+      _errorMessage = e.toString();
     } catch (e) {
       log(e.toString());
+      _errorMessage = e.toString();
     }
     if (result != null) {
       OutputFileModel file = await getOutputFileModelFromPath(path: result);
@@ -179,8 +184,10 @@ class ToolsActionsState extends ChangeNotifier {
       }
     } on PlatformException catch (e) {
       log(e.toString());
+      _errorMessage = e.toString();
     } catch (e) {
       log(e.toString());
+      _errorMessage = e.toString();
     }
     if (result != null && result.isNotEmpty) {
       outputFiles.clear();
@@ -239,8 +246,10 @@ class ToolsActionsState extends ChangeNotifier {
       }
     } on PlatformException catch (e) {
       log(e.toString());
+      _errorMessage = e.toString();
     } catch (e) {
       log(e.toString());
+      _errorMessage = e.toString();
     }
     if (result != null && result.isNotEmpty) {
       outputFiles.clear();
@@ -303,8 +312,10 @@ class ToolsActionsState extends ChangeNotifier {
       }
     } on PlatformException catch (e) {
       log(e.toString());
+      _errorMessage = e.toString();
     } catch (e) {
       log(e.toString());
+      _errorMessage = e.toString();
     }
     if (result.isNotEmpty) {
       outputFiles.clear();
@@ -362,8 +373,10 @@ class ToolsActionsState extends ChangeNotifier {
       }
     } on PlatformException catch (e) {
       log(e.toString());
+      _errorMessage = e.toString();
     } catch (e) {
       log(e.toString());
+      _errorMessage = e.toString();
     }
     if (result != null && result.isNotEmpty) {
       outputFiles.clear();
@@ -426,8 +439,10 @@ class ToolsActionsState extends ChangeNotifier {
       }
     } on PlatformException catch (e) {
       log(e.toString());
+      _errorMessage = e.toString();
     } catch (e) {
       log(e.toString());
+      _errorMessage = e.toString();
     }
     if (result != null && result.isNotEmpty) {
       outputFiles.clear();
@@ -508,8 +523,10 @@ class ToolsActionsState extends ChangeNotifier {
       }
     } on PlatformException catch (e) {
       log(e.toString());
+      _errorMessage = e.toString();
     } catch (e) {
       log(e.toString());
+      _errorMessage = e.toString();
     }
     if (result != null && result.isNotEmpty) {
       outputFiles.clear();
@@ -560,8 +577,14 @@ class ToolsActionsState extends ChangeNotifier {
       }
     } on PlatformException catch (e) {
       log(e.toString());
+      if (e.toString().contains("BadPasswordException")) {
+        _errorMessage = "Password provided was wrong";
+      } else {
+        _errorMessage = e.toString();
+      }
     } catch (e) {
       log(e.toString());
+      _errorMessage = e.toString();
     }
     if (result != null && result.isNotEmpty) {
       outputFiles.clear();
@@ -575,7 +598,6 @@ class ToolsActionsState extends ChangeNotifier {
       outputFiles.add(file);
     } else {
       updateActionErrorStatus(true);
-
       // We can use this place to get the exact time of cancellation action.
       // But don't just put clear cache here as at this state user may have started another task.
       // So we avoid clearing cache here as we don't want the user to wait till cancellation for next task will.
@@ -642,8 +664,10 @@ class ToolsActionsState extends ChangeNotifier {
       }
     } on PlatformException catch (e) {
       log(e.toString());
+      _errorMessage = e.toString();
     } catch (e) {
       log(e.toString());
+      _errorMessage = e.toString();
     }
     if (result != null && result.isNotEmpty) {
       outputFiles.clear();
@@ -676,8 +700,10 @@ class ToolsActionsState extends ChangeNotifier {
       PdfManipulator().cancelManipulations();
     } on PlatformException catch (e) {
       log(e.toString());
+      _errorMessage = e.toString();
     } catch (e) {
       log(e.toString());
+      _errorMessage = e.toString();
     }
     updateActionProcessingStatus(false);
     customNotifyListener();
@@ -688,8 +714,10 @@ class ToolsActionsState extends ChangeNotifier {
       PickOrSave().cancelFilesSaving();
     } on PlatformException catch (e) {
       log(e.toString());
+      _errorMessage = e.toString();
     } catch (e) {
       log(e.toString());
+      _errorMessage = e.toString();
     }
     updateSaveProcessingStatus(false);
     customNotifyListener();
@@ -740,8 +768,10 @@ class ToolsActionsState extends ChangeNotifier {
       ));
     } on PlatformException catch (e) {
       log(e.toString());
+      _errorMessage = e.toString();
     } catch (e) {
       log(e.toString());
+      _errorMessage = e.toString();
     }
     if (result != null) {
     } else {

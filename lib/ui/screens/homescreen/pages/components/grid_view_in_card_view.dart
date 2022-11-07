@@ -75,9 +75,9 @@ class GridViewInCardSection extends StatelessWidget {
                           mainAxisSpacing: 8,
                           crossAxisSpacing: 8,
                         ),
-                        itemCount: gridCardsDetails.length <= 6
+                        itemCount: gridCardsDetails.length <= 8
                             ? gridCardsDetails.length
-                            : 6,
+                            : 8,
                         itemBuilder: (BuildContext context, int index) {
                           return GridViewCard(
                             gridCardDetail: gridCardsDetails[index],
@@ -90,7 +90,7 @@ class GridViewInCardSection extends StatelessWidget {
                         ],
                       ),
               ),
-              gridCardsDetails.length > 6
+              gridCardsDetails.length > 8
                   ? Column(
                       children: [
                         const Divider(

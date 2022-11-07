@@ -63,9 +63,10 @@ class _ImageToPDFPageState extends State<ImageToPDFPage> {
                   SelectFilesCard(
                     selectFileType: SelectFileType.both,
                     files: watchToolScreenStateProviderValue.selectedFiles,
-                    filePickerParams: const FilePickerParams(
+                    filePickerParams: FilePickerParams(
                       copyFileToCacheDir: false,
-                      filePickingType: FilePickingType.multiple,
+                      pickerType: PickerType.file,
+                      enableMultipleSelection: true,
                       mimeTypesFilter: [
                         // "image/*",
                         "image/png",

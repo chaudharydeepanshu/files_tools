@@ -7,12 +7,14 @@ import 'package:files_tools/models/file_model.dart';
 import 'package:files_tools/models/image_model.dart';
 import 'package:files_tools/state/providers.dart';
 import 'package:files_tools/state/tools_actions_state.dart';
-import 'package:files_tools/ui/screens/image_viewer.dart';
+import 'package:files_tools/ui/components/loading.dart';
 import 'package:files_tools/utils/edit_image.dart';
 import 'package:files_tools/utils/get_uint8list_from_absolute_file_path_or_uri.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:files_tools/route/route.dart' as route;
+
+import 'package:files_tools/ui/components/view_error.dart';
 
 class ImageToPDF extends StatefulWidget {
   const ImageToPDF({Key? key, required this.files}) : super(key: key);
@@ -100,13 +102,16 @@ class _ImageToPDFState extends State<ImageToPDF> {
           builder: (context, AsyncSnapshot<bool> snapshot) {
             switch (snapshot.connectionState) {
               case ConnectionState.waiting:
-                return const Expanded(child: LoadingImages());
+                return const Expanded(
+                    child: Loading(loadingText: "Loading images..."));
               default:
                 if (snapshot.hasError) {
                   log(snapshot.error.toString());
                   return Expanded(
-                    child: ImagesLoadingError(
-                        errorMessage: snapshot.error.toString()),
+                    child: ShowError(
+                      taskMessage: 'Sorry! Failed to get images data',
+                      errorMessage: snapshot.error.toString(),
+                    ),
                   );
                 } else {
                   return Expanded(
@@ -135,12 +140,18 @@ class _ImageToPDFState extends State<ImageToPDF> {
                                             switch (
                                                 state.extendedImageLoadState) {
                                               case LoadState.loading:
-                                                return const LoadingImage();
+                                                return const Loading(
+                                                  loadingText:
+                                                      'Loading image...',
+                                                );
                                               case LoadState.failed:
                                                 // Todo: Should remove images from processing that failed to load. But first verify if they are capable of loading without waiting for user to load them.
-                                                return const ImageLoadingError(
-                                                    errorMessage:
-                                                        'Image viewer failed to load image');
+                                                return const ShowError(
+                                                  taskMessage:
+                                                      'Sorry! Failed to show image',
+                                                  errorMessage:
+                                                      'Image viewer failed to load image',
+                                                );
                                               case LoadState.completed:
                                                 return null;
                                             }
@@ -162,9 +173,12 @@ class _ImageToPDFState extends State<ImageToPDF> {
                                           },
                                           cacheRawData: true,
                                         )
-                                      : ImageLoadingError(
+                                      : ShowError(
+                                          taskMessage:
+                                              'Sorry! Failed to get image data',
                                           errorMessage:
-                                              imagesInfo[index].imageError),
+                                              imagesInfo[index].imageError,
+                                        ),
                                   key: ValueKey<InputFileModel>(
                                       widget.files[index]),
                                 );
@@ -278,6 +292,7 @@ class _ImageToPDFState extends State<ImageToPDF> {
                                               child: Icon(Icons.restart_alt)),
                                         ),
                                       ),
+                                      const VerticalDivider(width: 1),
                                       Expanded(
                                         flex: 2,
                                         child: Consumer(
@@ -375,100 +390,5 @@ class _KeepAliveState extends State<KeepAlive>
   Widget build(BuildContext context) {
     super.build(context);
     return widget.widget;
-  }
-}
-
-class LoadingImages extends StatelessWidget {
-  const LoadingImages({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const CircularProgressIndicator(),
-          const SizedBox(height: 16),
-          Text("Loading images...",
-              style: Theme.of(context).textTheme.bodySmall),
-        ],
-      ),
-    );
-  }
-}
-
-class ImagesLoadingError extends StatelessWidget {
-  const ImagesLoadingError({Key? key, required this.errorMessage})
-      : super(key: key);
-
-  final String errorMessage;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.error, color: Theme.of(context).colorScheme.error),
-            const SizedBox(height: 16),
-            Text(
-              "Failed to load images",
-              style: Theme.of(context)
-                  .textTheme
-                  .bodySmall
-                  ?.copyWith(color: Theme.of(context).colorScheme.error),
-            ),
-            const SizedBox(height: 16),
-            Text(
-              errorMessage,
-              style: Theme.of(context)
-                  .textTheme
-                  .bodySmall
-                  ?.copyWith(color: Theme.of(context).colorScheme.error),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class ImageLoadingError extends StatelessWidget {
-  const ImageLoadingError({Key? key, required this.errorMessage})
-      : super(key: key);
-
-  final String errorMessage;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.error, color: Theme.of(context).colorScheme.error),
-            const SizedBox(height: 16),
-            Text(
-              "This image will not be processed as it failed to load",
-              style: Theme.of(context)
-                  .textTheme
-                  .bodySmall
-                  ?.copyWith(color: Theme.of(context).colorScheme.error),
-            ),
-            const SizedBox(height: 16),
-            Text(
-              errorMessage,
-              style: Theme.of(context)
-                  .textTheme
-                  .bodySmall
-                  ?.copyWith(color: Theme.of(context).colorScheme.error),
-            ),
-          ],
-        ),
-      ),
-    );
   }
 }
