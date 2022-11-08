@@ -106,7 +106,7 @@ class _CropRotateFlipImagesPageState extends State<CropRotateFlipImagesPage> {
                                   arguments:
                                       CropRotateFlipImagesToolsPageArguments(
                                           actionType:
-                                              ToolsActions.rotateCropFlipImages,
+                                              ToolsActions.cropRotateFlipImages,
                                           files: selectedFiles),
                                 );
                               }

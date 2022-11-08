@@ -60,7 +60,7 @@ class ModifyImageToolsBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (actionType == ToolsActions.rotateCropFlipImages) {
+    if (actionType == ToolsActions.cropRotateFlipImages) {
       return CropRotateFlipImages(files: files);
     } else {
       return Container();
@@ -70,7 +70,7 @@ class ModifyImageToolsBody extends StatelessWidget {
 
 String getAppBarTitleForActionType({required ToolsActions actionType}) {
   String title = "Action Successful";
-  if (actionType == ToolsActions.rotateCropFlipImages) {
+  if (actionType == ToolsActions.cropRotateFlipImages) {
     title = "Edit Images";
   }
   return title;

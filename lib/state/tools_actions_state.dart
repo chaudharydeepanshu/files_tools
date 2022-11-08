@@ -25,7 +25,8 @@ enum ToolsActions {
   splitPdfByByteSize,
   splitPdfByPageNumbers,
   splitPdfByPageRanges,
-  splitPdfByPageRange,
+  extractPdfByPageRange,
+  extractPdfByPageSelection,
   modifyPdf,
   convertPdfToImage,
   compressPdf,
@@ -34,7 +35,7 @@ enum ToolsActions {
   decryptPdf,
   // Actions for Image
   compressImages,
-  rotateCropFlipImages,
+  cropRotateFlipImages,
   // Actions for both Image and PDF
   imageToPdf,
 }
@@ -171,7 +172,7 @@ class ToolsActionsState extends ChangeNotifier {
           }, growable: false);
         }
       } else if (pageRange != null) {
-        updateActionType(ToolsActions.splitPdfByPageRange);
+        updateActionType(ToolsActions.extractPdfByPageRange);
         result = await PdfManipulator().splitPDF(
             params: PDFSplitterParams(
           pdfPath: uriPathOfFileToSplit,
@@ -798,7 +799,7 @@ class ToolsActionsState extends ChangeNotifier {
   }) async {
     updateActionErrorStatus(false);
     updateActionProcessingStatus(true);
-    updateActionType(ToolsActions.imageToPdf);
+    updateActionType(ToolsActions.cropRotateFlipImages);
     List<String> result = [];
     List<String> outputFilesNames = [];
     try {

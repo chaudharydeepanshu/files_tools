@@ -73,6 +73,26 @@ class _SplitPDFPageState extends State<SplitPDFPage> {
                   ToolActionsCard(
                     toolActions: [
                       ToolActionsModel(
+                        actionText: "Extract PDF by page selection",
+                        actionOnTap: selectedFiles.length == 1
+                            ? () {
+                                // Removing any snack bar or keyboard
+                                FocusManager.instance.primaryFocus?.unfocus();
+                                ScaffoldMessenger.of(context)
+                                    .hideCurrentSnackBar();
+
+                                Navigator.pushNamed(
+                                  context,
+                                  route.splitPDFToolsPage,
+                                  arguments: SplitPDFToolsPageArguments(
+                                      actionType: ToolsActions
+                                          .extractPdfByPageSelection,
+                                      file: selectedFiles[0]),
+                                );
+                              }
+                            : null,
+                      ),
+                      ToolActionsModel(
                         actionText: "Split PDF by page count",
                         actionOnTap: selectedFiles.length == 1
                             ? () {
@@ -146,7 +166,7 @@ class _SplitPDFPageState extends State<SplitPDFPage> {
                                   route.splitPDFToolsPage,
                                   arguments: SplitPDFToolsPageArguments(
                                       actionType:
-                                          ToolsActions.splitPdfByPageRange,
+                                          ToolsActions.extractPdfByPageRange,
                                       file: selectedFiles[0]),
                                 );
                               }

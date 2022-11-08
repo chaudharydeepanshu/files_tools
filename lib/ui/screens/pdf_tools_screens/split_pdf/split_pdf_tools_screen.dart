@@ -1,12 +1,14 @@
 import 'dart:developer';
 
 import 'package:files_tools/models/file_model.dart';
+import 'package:files_tools/models/pdf_page_model.dart';
 import 'package:files_tools/state/tools_actions_state.dart';
 import 'package:files_tools/ui/screens/components/tools_error_body.dart';
 import 'package:files_tools/ui/screens/components/tools_processing_body.dart';
+import 'package:files_tools/ui/screens/pdf_tools_screens/split_pdf/tools/extract_pages.dart';
 import 'package:files_tools/ui/screens/pdf_tools_screens/split_pdf/tools/split_by_page_count.dart';
 import 'package:files_tools/ui/screens/pdf_tools_screens/split_pdf/tools/split_by_page_numbers.dart';
-import 'package:files_tools/ui/screens/pdf_tools_screens/split_pdf/tools/split_by_page_range.dart';
+import 'package:files_tools/ui/screens/pdf_tools_screens/split_pdf/tools/extract_by_page_range.dart';
 import 'package:files_tools/ui/screens/pdf_tools_screens/split_pdf/tools/split_by_page_ranges.dart';
 import 'package:files_tools/ui/screens/pdf_tools_screens/split_pdf/tools/split_by_size.dart';
 import 'package:files_tools/utils/get_pdf_bitmaps.dart';
@@ -23,18 +25,20 @@ class SplitPDFToolsPage extends StatefulWidget {
 }
 
 class _SplitPDFToolsPageState extends State<SplitPDFToolsPage> {
-  late Future<bool> initPageCount;
-  int? pdfPageCount;
+  List<PdfPageModel> pdfPages = [];
 
-  Future<bool> initPdfPageCount() async {
-    pdfPageCount =
-        await getPdfPageCount(pdfPath: widget.arguments.file.fileUri);
+  late Future<bool> initPdfPages;
+  Future<bool> initPdfPagesState() async {
+    Stopwatch stopwatch = Stopwatch()..start();
+    pdfPages =
+        await generatePdfPagesList(pdfPath: widget.arguments.file.fileUri);
+    log('initPdfPagesState Executed in ${stopwatch.elapsed}');
     return true;
   }
 
   @override
   void initState() {
-    initPageCount = initPdfPageCount();
+    initPdfPages = initPdfPagesState();
     super.initState();
   }
 
@@ -52,7 +56,7 @@ class _SplitPDFToolsPageState extends State<SplitPDFToolsPage> {
           centerTitle: true,
         ),
         body: FutureBuilder<bool>(
-          future: initPageCount, // async work
+          future: initPdfPages, // async work
           builder: (context, AsyncSnapshot<bool> snapshot) {
             switch (snapshot.connectionState) {
               case ConnectionState.waiting:
@@ -61,14 +65,14 @@ class _SplitPDFToolsPageState extends State<SplitPDFToolsPage> {
                 if (snapshot.hasError) {
                   log(snapshot.error.toString());
                   return const ErrorBody();
-                } else if (pdfPageCount == null) {
+                } else if (pdfPages.isEmpty) {
                   log(snapshot.error.toString());
                   return const ErrorBody();
                 } else {
                   return SplitPDFToolsBody(
                       actionType: widget.arguments.actionType,
                       file: widget.arguments.file,
-                      pdfPageCount: pdfPageCount!);
+                      pdfPages: pdfPages);
                 }
             }
           },
@@ -90,25 +94,27 @@ class SplitPDFToolsBody extends StatelessWidget {
       {Key? key,
       required this.actionType,
       required this.file,
-      required this.pdfPageCount})
+      required this.pdfPages})
       : super(key: key);
 
   final ToolsActions actionType;
   final InputFileModel file;
-  final int pdfPageCount;
+  final List<PdfPageModel> pdfPages;
 
   @override
   Widget build(BuildContext context) {
-    if (actionType == ToolsActions.splitPdfByPageCount) {
-      return SplitByPageCount(pdfPageCount: pdfPageCount, file: file);
+    if (actionType == ToolsActions.extractPdfByPageSelection) {
+      return ExtractByPageSelection(pdfPages: pdfPages, file: file);
+    } else if (actionType == ToolsActions.splitPdfByPageCount) {
+      return SplitByPageCount(pdfPageCount: pdfPages.length, file: file);
     } else if (actionType == ToolsActions.splitPdfByByteSize) {
-      return SplitBySize(pdfPageCount: pdfPageCount, file: file);
+      return SplitBySize(pdfPageCount: pdfPages.length, file: file);
     } else if (actionType == ToolsActions.splitPdfByPageNumbers) {
-      return SplitByPageNumbers(pdfPageCount: pdfPageCount, file: file);
-    } else if (actionType == ToolsActions.splitPdfByPageRange) {
-      return SplitByPageRange(pdfPageCount: pdfPageCount, file: file);
+      return SplitByPageNumbers(pdfPageCount: pdfPages.length, file: file);
+    } else if (actionType == ToolsActions.extractPdfByPageRange) {
+      return ExtractByPageRange(pdfPageCount: pdfPages.length, file: file);
     } else if (actionType == ToolsActions.splitPdfByPageRanges) {
-      return SplitByPageRanges(pdfPageCount: pdfPageCount, file: file);
+      return SplitByPageRanges(pdfPageCount: pdfPages.length, file: file);
     } else {
       return Container();
     }
@@ -117,7 +123,9 @@ class SplitPDFToolsBody extends StatelessWidget {
 
 String getAppBarTitleForActionType({required ToolsActions actionType}) {
   String title = "Action Successful";
-  if (actionType == ToolsActions.splitPdfByPageCount) {
+  if (actionType == ToolsActions.extractPdfByPageSelection) {
+    title = "Select Pages To Extract";
+  } else if (actionType == ToolsActions.splitPdfByPageCount) {
     title = "Provide Page Count";
   } else if (actionType == ToolsActions.splitPdfByByteSize) {
     title = "Provide Size";
@@ -125,7 +133,7 @@ String getAppBarTitleForActionType({required ToolsActions actionType}) {
     title = "Provide Page Numbers";
   } else if (actionType == ToolsActions.splitPdfByPageRanges) {
     title = "Provide Page Ranges";
-  } else if (actionType == ToolsActions.splitPdfByPageRange) {
+  } else if (actionType == ToolsActions.extractPdfByPageRange) {
     title = "Provide Page Range";
   }
   return title;

@@ -7,8 +7,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:files_tools/route/route.dart' as route;
 
-class SplitByPageRange extends StatelessWidget {
-  const SplitByPageRange(
+class ExtractByPageRange extends StatelessWidget {
+  const ExtractByPageRange(
       {Key? key, required this.pdfPageCount, required this.file})
       : super(key: key);
 
@@ -20,7 +20,7 @@ class SplitByPageRange extends StatelessWidget {
     return ListView(
       children: [
         const SizedBox(height: 16),
-        SplitByPageRangeActionCard(pdfPageCount: pdfPageCount, file: file),
+        ExtractByPageRangeActionCard(pdfPageCount: pdfPageCount, file: file),
         const SizedBox(height: 16),
         const AboutActionCard(
           aboutText:
@@ -32,8 +32,8 @@ class SplitByPageRange extends StatelessWidget {
   }
 }
 
-class SplitByPageRangeActionCard extends StatefulWidget {
-  const SplitByPageRangeActionCard(
+class ExtractByPageRangeActionCard extends StatefulWidget {
+  const ExtractByPageRangeActionCard(
       {Key? key, required this.pdfPageCount, required this.file})
       : super(key: key);
 
@@ -41,12 +41,12 @@ class SplitByPageRangeActionCard extends StatefulWidget {
   final InputFileModel file;
 
   @override
-  State<SplitByPageRangeActionCard> createState() =>
-      _SplitByPageRangeActionCardState();
+  State<ExtractByPageRangeActionCard> createState() =>
+      _ExtractByPageRangeActionCardState();
 }
 
-class _SplitByPageRangeActionCardState
-    extends State<SplitByPageRangeActionCard> {
+class _ExtractByPageRangeActionCardState
+    extends State<ExtractByPageRangeActionCard> {
   final _formKey = GlobalKey<FormState>();
 
   TextEditingController pageNumbersController = TextEditingController();
