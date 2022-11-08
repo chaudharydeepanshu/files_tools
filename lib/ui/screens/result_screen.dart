@@ -1,20 +1,15 @@
-import 'dart:developer';
-
-import 'package:device_info_plus/device_info_plus.dart';
 import 'package:files_tools/models/file_model.dart';
 import 'package:files_tools/state/providers.dart';
 import 'package:files_tools/state/tools_actions_state.dart';
 import 'package:files_tools/ui/components/custom_snack_bar.dart';
+import 'package:files_tools/ui/components/input_output_list_tile.dart';
 import 'package:files_tools/ui/components/view_error.dart';
-import 'package:files_tools/ui/screens/image_viewer.dart';
-import 'package:files_tools/ui/screens/pdf_viewer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rive/rive.dart';
 
 import 'package:files_tools/route/route.dart' as route;
 import 'package:files_tools/utils/clear_cache.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class ResultPage extends StatelessWidget {
   const ResultPage({Key? key}) : super(key: key);
@@ -120,10 +115,10 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
 
 String getAppBarTitleForActionType({required ToolsActions actionType}) {
   String title = "Action Successful";
-  if (actionType == ToolsActions.merge) {
+  if (actionType == ToolsActions.mergePdfs) {
     title = "Successfully Merged Files";
-  } else if (actionType == ToolsActions.splitByPageCount ||
-      actionType == ToolsActions.splitByByteSize) {
+  } else if (actionType == ToolsActions.splitPdfByPageCount ||
+      actionType == ToolsActions.splitPdfByByteSize) {
     title = "Successfully Split File";
   }
   return title;
@@ -210,7 +205,12 @@ class SavingSingleFile extends StatelessWidget {
             // const Icon(Icons.looks_3),
             const Flexible(child: SuccessAnimation()),
             const Divider(),
-            OutputFileTile(file: file, actionType: actionType),
+            FileTile(
+                fileName: file.fileName,
+                fileTime: file.fileTime,
+                fileDate: file.fileDate,
+                filePath: file.filePath,
+                fileSize: file.fileSizeFormatBytes),
             const SizedBox(height: 10),
             Text(
               'To view files click over them.',
@@ -381,99 +381,6 @@ class SuccessAnimation extends StatelessWidget {
   }
 }
 
-class OutputFileTile extends StatelessWidget {
-  const OutputFileTile({Key? key, required this.file, required this.actionType})
-      : super(key: key);
-
-  final OutputFileModel file;
-  final ToolsActions actionType;
-
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      style: ListTileStyle.list,
-      contentPadding: EdgeInsets.zero,
-      horizontalTitleGap: 0,
-      minLeadingWidth: 0,
-      minVerticalPadding: 0,
-      visualDensity: VisualDensity.comfortable,
-      dense: true,
-      onTap: () {
-        String fileExtension = getFileNameExtension(fileName: file.fileName);
-        if (fileExtension.toLowerCase() == ".pdf") {
-          Navigator.pushNamed(
-            context,
-            route.pdfViewer,
-            arguments: PdfViewerArguments(
-                fileName: file.fileName, filePathOrUri: file.filePath),
-          );
-        } else if (fileExtension.toLowerCase() == ".png" ||
-            fileExtension.toLowerCase() == ".jpg" ||
-            fileExtension.toLowerCase() == ".jpeg") {
-          Navigator.pushNamed(
-            context,
-            route.imageViewer,
-            arguments: ImageViewerArguments(
-                fileName: file.fileName, filePath: file.filePath),
-          );
-        } else {
-          log("No action found for opening file with extension $fileExtension");
-        }
-      },
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(12)),
-      ),
-      tileColor: Theme.of(context).colorScheme.secondaryContainer,
-      leading: const Padding(
-        padding: EdgeInsets.symmetric(horizontal: 8.0),
-        child: SizedBox(
-          height: double.infinity,
-          child: Icon(Icons.description),
-        ),
-      ),
-      title: Text(
-        file.fileName,
-        overflow: TextOverflow.ellipsis,
-        maxLines: 2,
-      ),
-      subtitle: IntrinsicHeight(
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Expanded(
-              flex: 6,
-              child: Text(file.fileDate,
-                  style: Theme.of(context).textTheme.bodySmall,
-                  overflow: TextOverflow.ellipsis),
-            ),
-            const VerticalDivider(),
-            Expanded(
-              flex: 3,
-              child: Text(
-                file.fileTime,
-                style: Theme.of(context).textTheme.bodySmall,
-                overflow: TextOverflow.ellipsis,
-                textAlign: TextAlign.center,
-              ),
-            ),
-            const VerticalDivider(),
-            Expanded(
-              flex: 5,
-              child: Text(
-                file.fileSize,
-                style: Theme.of(context).textTheme.bodySmall,
-                overflow: TextOverflow.ellipsis,
-                textAlign: TextAlign.center,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
 class NonReorderableFilesListView extends StatelessWidget {
   const NonReorderableFilesListView(
       {Key? key, required this.files, required this.actionType})
@@ -491,8 +398,14 @@ class NonReorderableFilesListView extends StatelessWidget {
       },
       itemBuilder: (BuildContext context, int index) {
         return Material(
-            color: Colors.transparent,
-            child: OutputFileTile(file: files[index], actionType: actionType));
+          color: Colors.transparent,
+          child: FileTile(
+              fileName: files[index].fileName,
+              fileTime: files[index].fileTime,
+              fileDate: files[index].fileDate,
+              filePath: files[index].filePath,
+              fileSize: files[index].fileSizeFormatBytes),
+        );
       },
       itemCount: files.length,
     );
@@ -517,61 +430,12 @@ class ProcessingError extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               ShowError(taskMessage: taskMessage, errorMessage: errorMessage),
-              const SizedBox(height: 16),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  FilledButton(
-                    onPressed: () {
-                      ref.read(toolsActionsStateProvider).cancelAction();
-                      Navigator.pop(context);
-                    },
-                    child: const Text('Go back'),
-                  ),
-                  TextButton(
-                    onPressed: () async {
-                      DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
-
-                      AndroidDeviceInfo androidDeviceInfo =
-                          await deviceInfo.androidInfo;
-
-                      String userDeviceInfo =
-                          '''version.securityPatch: ${androidDeviceInfo.version.securityPatch}
-                          version.sdkInt: ${androidDeviceInfo.version.sdkInt}
-                          version.release: ${androidDeviceInfo.version.release}
-                          version.previewSdkInt: ${androidDeviceInfo.version.previewSdkInt}
-                          version.incrementa: ${androidDeviceInfo.version.incremental}
-                          version.codename: ${androidDeviceInfo.version.codename}
-                          version.baseOS: ${androidDeviceInfo.version.baseOS}
-                          board: ${androidDeviceInfo.board}
-                          bootloader: ${androidDeviceInfo.bootloader}
-                          brand: ${androidDeviceInfo.brand}
-                          device: ${androidDeviceInfo.device}
-                          display: ${androidDeviceInfo.display}
-                          fingerprint: ${androidDeviceInfo.fingerprint}
-                          hardware: ${androidDeviceInfo.hardware}
-                          host: ${androidDeviceInfo.host}
-                          id: ${androidDeviceInfo.id}
-                          manufacturer: ${androidDeviceInfo.manufacturer}
-                          model: ${androidDeviceInfo.model}
-                          product: ${androidDeviceInfo.product}
-                          supported32BitAbis: ${androidDeviceInfo.supported32BitAbis}
-                          supported64BitAbis: ${androidDeviceInfo.supported64BitAbis}
-                          supportedAbis: ${androidDeviceInfo.supportedAbis}
-                          tags: ${androidDeviceInfo.tags}
-                          type: ${androidDeviceInfo.type}
-                          isPhysicalDevice: ${androidDeviceInfo.isPhysicalDevice}
-                          systemFeatures: ${androidDeviceInfo.systemFeatures}
-                          ''';
-
-                      var url =
-                          'mailto:pureinfoapps@gmail.com?subject=Files Tools Bug Report&body=Error Message:\n$errorMessage\n\nUser Device Info:\n$userDeviceInfo';
-
-                      await launchUrl(Uri.parse(url));
-                    },
-                    child: const Text('Report Error'),
-                  ),
-                ],
+              FilledButton(
+                onPressed: () {
+                  ref.read(toolsActionsStateProvider).cancelAction();
+                  Navigator.pop(context);
+                },
+                child: const Text('Go back'),
               ),
             ],
           );

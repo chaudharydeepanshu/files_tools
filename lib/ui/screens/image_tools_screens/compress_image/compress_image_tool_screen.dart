@@ -1,19 +1,19 @@
 import 'package:files_tools/models/file_model.dart';
 import 'package:files_tools/state/tools_actions_state.dart';
-import 'package:files_tools/ui/screens/pdf_tools_screens/image_to_pdf/tools/image_to_pdf.dart';
+import 'package:files_tools/ui/screens/image_tools_screens/compress_image/tools/compress_image.dart';
 import 'package:flutter/material.dart';
 
-class ImageToPDFToolsPage extends StatefulWidget {
-  const ImageToPDFToolsPage({Key? key, required this.arguments})
+class CompressImageToolsPage extends StatefulWidget {
+  const CompressImageToolsPage({Key? key, required this.arguments})
       : super(key: key);
 
-  final ImageToPDFToolsPageArguments arguments;
+  final CompressImageToolsPageArguments arguments;
 
   @override
-  State<ImageToPDFToolsPage> createState() => _ImageToPDFToolsPageState();
+  State<CompressImageToolsPage> createState() => _CompressPDFToolsPageState();
 }
 
-class _ImageToPDFToolsPageState extends State<ImageToPDFToolsPage> {
+class _CompressPDFToolsPageState extends State<CompressImageToolsPage> {
   @override
   void initState() {
     super.initState();
@@ -32,23 +32,25 @@ class _ImageToPDFToolsPageState extends State<ImageToPDFToolsPage> {
               actionType: widget.arguments.actionType)),
           centerTitle: true,
         ),
-        body: ImageToPDFToolsBody(
-            actionType: widget.arguments.actionType,
-            files: widget.arguments.files),
+        body: CompressImageToolsBody(
+          actionType: widget.arguments.actionType,
+          files: widget.arguments.files,
+        ),
       ),
     );
   }
 }
 
-class ImageToPDFToolsPageArguments {
+class CompressImageToolsPageArguments {
   final ToolsActions actionType;
   final List<InputFileModel> files;
 
-  ImageToPDFToolsPageArguments({required this.actionType, required this.files});
+  CompressImageToolsPageArguments(
+      {required this.actionType, required this.files});
 }
 
-class ImageToPDFToolsBody extends StatelessWidget {
-  const ImageToPDFToolsBody(
+class CompressImageToolsBody extends StatelessWidget {
+  const CompressImageToolsBody(
       {Key? key, required this.actionType, required this.files})
       : super(key: key);
 
@@ -57,8 +59,8 @@ class ImageToPDFToolsBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (actionType == ToolsActions.imageToPdf) {
-      return ImageToPDF(files: files);
+    if (actionType == ToolsActions.compressImages) {
+      return CompressImage(files: files);
     } else {
       return Container();
     }
@@ -67,8 +69,8 @@ class ImageToPDFToolsBody extends StatelessWidget {
 
 String getAppBarTitleForActionType({required ToolsActions actionType}) {
   String title = "Action Successful";
-  if (actionType == ToolsActions.imageToPdf) {
-    title = "Edit Images";
+  if (actionType == ToolsActions.compressImages) {
+    title = "Select Compress Config";
   }
   return title;
 }

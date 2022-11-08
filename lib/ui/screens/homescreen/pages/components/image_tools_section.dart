@@ -3,10 +3,10 @@ import 'package:files_tools/route/route.dart' as route;
 
 import 'grid_view_in_card_view.dart';
 
-class PDFToolsPage extends StatelessWidget {
-  const PDFToolsPage({Key? key, required this.arguments}) : super(key: key);
+class ImageToolsPage extends StatelessWidget {
+  const ImageToolsPage({Key? key, required this.arguments}) : super(key: key);
 
-  final PDFToolsPageArguments arguments;
+  final ImageToolsPageArguments arguments;
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +14,7 @@ class PDFToolsPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("PDF Tools"),
+        title: const Text("Image Tools"),
         centerTitle: true,
       ),
       body: Padding(
@@ -39,35 +39,25 @@ class PDFToolsPage extends StatelessWidget {
   }
 }
 
-class PDFToolsPageArguments {
+class ImageToolsPageArguments {
   final List<GridCardDetail> cardsDetails;
 
-  PDFToolsPageArguments({required this.cardsDetails});
+  ImageToolsPageArguments({required this.cardsDetails});
 }
 
-class PDFToolsSection extends StatelessWidget {
-  const PDFToolsSection({Key? key}) : super(key: key);
+class ImageToolsSection extends StatelessWidget {
+  const ImageToolsSection({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final List<GridCardDetail> exploreCardsDetails = [
       GridCardDetail(
-        cardIcon: const Icon(Icons.merge),
-        cardTitle: 'Merge PDF',
+        cardIcon: const Icon(Icons.compress),
+        cardTitle: 'Compress Image',
         cardOnTap: () {
           Navigator.pushNamed(
             context,
-            route.mergePDFsPage,
-          );
-        },
-      ),
-      GridCardDetail(
-        cardIcon: const Icon(Icons.call_split),
-        cardTitle: 'Split PDF',
-        cardOnTap: () {
-          Navigator.pushNamed(
-            context,
-            route.splitPDFPage,
+            route.compressImagePage,
           );
         },
       ),
@@ -76,6 +66,16 @@ class PDFToolsSection extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              Column(
+                children: const [
+                  Icon(Icons.crop),
+                  Text(
+                    "Crop",
+                    style: TextStyle(fontSize: 8),
+                  ),
+                ],
+              ),
+              const VerticalDivider(),
               Column(
                 children: const [
                   Icon(Icons.rotate_right),
@@ -88,19 +88,9 @@ class PDFToolsSection extends StatelessWidget {
               const VerticalDivider(),
               Column(
                 children: const [
-                  Icon(Icons.delete),
+                  Icon(Icons.flip),
                   Text(
-                    "Delete",
-                    style: TextStyle(fontSize: 8),
-                  ),
-                ],
-              ),
-              const VerticalDivider(),
-              Column(
-                children: const [
-                  Icon(Icons.reorder),
-                  Text(
-                    "Reorder",
+                    "Flip",
                     style: TextStyle(fontSize: 8),
                   ),
                 ],
@@ -108,92 +98,64 @@ class PDFToolsSection extends StatelessWidget {
             ],
           ),
         ),
-        cardTitle: 'Modify PDF',
+        cardTitle: 'Image',
         cardOnTap: () {
           Navigator.pushNamed(
             context,
-            route.modifyPDFPage,
+            route.cropRotateFlipImagesPage,
           );
         },
       ),
       GridCardDetail(
         cardIcon: const Icon(Icons.cached),
-        cardTitle: 'Convert PDF',
-        cardOnTap: () {
-          Navigator.pushNamed(
-            context,
-            route.convertPDFPage,
-          );
-        },
-      ),
-      GridCardDetail(
-        cardIcon: const Icon(Icons.compress),
-        cardTitle: 'Compress PDF',
-        cardOnTap: () {
-          Navigator.pushNamed(
-            context,
-            route.compressPDFPage,
-          );
-        },
+        cardTitle: 'Convert Image',
+        cardOnTap: null,
+        //     () {
+        //   Navigator.pushNamed(
+        //     context,
+        //     route.convertPDFPage,
+        //   );
+        // },
       ),
       GridCardDetail(
         cardIcon: const Icon(Icons.branding_watermark),
-        cardTitle: 'Watermark PDF',
-        cardOnTap: () {
-          Navigator.pushNamed(
-            context,
-            route.watermarkPDFPage,
-          );
-        },
+        cardTitle: 'Watermark Image',
+        cardOnTap: null,
+        //     () {
+        //   Navigator.pushNamed(
+        //     context,
+        //     route.watermarkPDFPage,
+        //   );
+        // },
       ),
       GridCardDetail(
         cardIcon: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: const [
-            Icon(Icons.image),
-            Icon(Icons.arrow_forward),
             Icon(Icons.picture_as_pdf),
+            Icon(Icons.arrow_forward),
+            Icon(Icons.image),
           ],
         ),
-        cardTitle: 'Image To PDF',
+        cardTitle: 'PDF To Image',
         cardOnTap: () {
           Navigator.pushNamed(
             context,
-            route.imageToPDFPage,
-          );
-        },
-      ),
-      GridCardDetail(
-        cardIcon: const Icon(Icons.lock),
-        cardTitle: 'Encrypt PDF',
-        cardOnTap: () {
-          Navigator.pushNamed(
-            context,
-            route.encryptPDFPage,
-          );
-        },
-      ),
-      GridCardDetail(
-        cardIcon: const Icon(Icons.lock_open),
-        cardTitle: 'Decrypt PDF',
-        cardOnTap: () {
-          Navigator.pushNamed(
-            context,
-            route.decryptPDFPage,
+            route.pdfToImagePage,
           );
         },
       ),
     ];
 
     return GridViewInCardSection(
-      sectionTitle: 'PDF Tools',
+      sectionTitle: 'Image Tools',
       emptySectionText: 'No tools found',
       gridCardsDetails: exploreCardsDetails,
       cardShowAllOnTap: () {
         Navigator.pushNamed(
           context,
-          route.pdfToolsPage,
-          arguments: PDFToolsPageArguments(cardsDetails: exploreCardsDetails),
+          route.imageToolsPage,
+          arguments: ImageToolsPageArguments(cardsDetails: exploreCardsDetails),
         );
       },
     );

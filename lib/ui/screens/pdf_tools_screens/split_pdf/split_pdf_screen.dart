@@ -85,7 +85,8 @@ class _SplitPDFPageState extends State<SplitPDFPage> {
                                   context,
                                   route.splitPDFToolsPage,
                                   arguments: SplitPDFToolsPageArguments(
-                                      actionType: ToolsActions.splitByPageCount,
+                                      actionType:
+                                          ToolsActions.splitPdfByPageCount,
                                       file: selectedFiles[0]),
                                 );
                               }
@@ -104,7 +105,8 @@ class _SplitPDFPageState extends State<SplitPDFPage> {
                                   context,
                                   route.splitPDFToolsPage,
                                   arguments: SplitPDFToolsPageArguments(
-                                      actionType: ToolsActions.splitByByteSize,
+                                      actionType:
+                                          ToolsActions.splitPdfByByteSize,
                                       file: selectedFiles[0]),
                                 );
                               }
@@ -124,7 +126,7 @@ class _SplitPDFPageState extends State<SplitPDFPage> {
                                   route.splitPDFToolsPage,
                                   arguments: SplitPDFToolsPageArguments(
                                       actionType:
-                                          ToolsActions.splitByPageNumbers,
+                                          ToolsActions.splitPdfByPageNumbers,
                                       file: selectedFiles[0]),
                                 );
                               }
@@ -143,7 +145,8 @@ class _SplitPDFPageState extends State<SplitPDFPage> {
                                   context,
                                   route.splitPDFToolsPage,
                                   arguments: SplitPDFToolsPageArguments(
-                                      actionType: ToolsActions.splitByPageRange,
+                                      actionType:
+                                          ToolsActions.splitPdfByPageRange,
                                       file: selectedFiles[0]),
                                 );
                               }

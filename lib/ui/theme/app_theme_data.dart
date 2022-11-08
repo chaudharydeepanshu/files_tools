@@ -23,7 +23,7 @@ class AppThemeData {
     }
 
     return ThemeData(
-      useMaterial3: true,
+      useMaterial3: false,
       colorScheme: colorScheme,
       extensions: [customColors],
       fontFamily: "LexendDeca",

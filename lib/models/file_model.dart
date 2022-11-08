@@ -48,14 +48,16 @@ class OutputFileModel {
   final String fileName;
   final String fileDate;
   final String fileTime;
-  final String fileSize;
+  final String fileSizeFormatBytes;
+  final int fileSizeBytes;
   final String filePath;
 
   OutputFileModel({
     required this.fileName,
     required this.fileDate,
     required this.fileTime,
-    required this.fileSize,
+    required this.fileSizeFormatBytes,
+    required this.fileSizeBytes,
     required this.filePath,
   });
 
@@ -67,7 +69,8 @@ class OutputFileModel {
           fileName == other.fileName &&
           fileDate == other.fileDate &&
           fileTime == other.fileTime &&
-          fileSize == other.fileSize &&
+          fileSizeFormatBytes == other.fileSizeFormatBytes &&
+          fileSizeBytes == other.fileSizeBytes &&
           filePath == other.filePath;
 
   @override
@@ -75,13 +78,14 @@ class OutputFileModel {
       fileName.hashCode ^
       fileDate.hashCode ^
       fileTime.hashCode ^
-      fileSize.hashCode ^
+      fileSizeFormatBytes.hashCode ^
+      fileSizeBytes.hashCode ^
       filePath.hashCode;
 
   // Implement toString to make it easier to see information
   // when using the print statement.
   @override
   String toString() {
-    return 'OutputFileModel{fileName: $fileName, fileDate: $fileDate, fileTime: $fileTime, fileSize: $fileSize, filePath: $filePath}';
+    return 'OutputFileModel{fileName: $fileName, fileDate: $fileDate, fileTime: $fileTime, fileSizeFormatBytes: $fileSizeFormatBytes, fileSizeBytes: $fileSizeBytes, filePath: $filePath}';
   }
 }

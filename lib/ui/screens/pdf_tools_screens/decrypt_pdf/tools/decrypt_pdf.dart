@@ -2,6 +2,7 @@ import 'package:files_tools/models/file_model.dart';
 import 'package:files_tools/state/providers.dart';
 import 'package:files_tools/state/tools_actions_state.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:files_tools/route/route.dart' as route;
 
@@ -61,6 +62,9 @@ class _DecryptPDFActionCardState extends State<DecryptPDFActionCard> {
                       helperText: 'Leave blank if only owner password is set',
                       // enabledBorder: const UnderlineInputBorder(),
                     ),
+                    inputFormatters: [
+                      FilteringTextInputFormatter.deny(RegExp(r'\s')),
+                    ],
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     // The validator receives the text that the user has entered.
                     validator: (value) {

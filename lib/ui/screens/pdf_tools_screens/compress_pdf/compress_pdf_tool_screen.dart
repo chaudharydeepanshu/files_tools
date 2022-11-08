@@ -2,8 +2,8 @@ import 'dart:developer';
 
 import 'package:files_tools/models/file_model.dart';
 import 'package:files_tools/state/tools_actions_state.dart';
-import 'package:files_tools/ui/screens/pdf_tools_screens/components/tools_error_body.dart';
-import 'package:files_tools/ui/screens/pdf_tools_screens/components/tools_processing_body.dart';
+import 'package:files_tools/ui/screens/components/tools_error_body.dart';
+import 'package:files_tools/ui/screens/components/tools_processing_body.dart';
 import 'package:files_tools/ui/screens/pdf_tools_screens/compress_pdf/tools/compress_pdf.dart';
 import 'package:files_tools/utils/get_pdf_bitmaps.dart';
 import 'package:flutter/material.dart';
@@ -95,7 +95,7 @@ class CompressPDFToolsBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (actionType == ToolsActions.compress) {
+    if (actionType == ToolsActions.compressPdf) {
       return CompressPDF(pdfPageCount: pdfPageCount, file: file);
     } else {
       return Container();
@@ -105,7 +105,7 @@ class CompressPDFToolsBody extends StatelessWidget {
 
 String getAppBarTitleForActionType({required ToolsActions actionType}) {
   String title = "Action Successful";
-  if (actionType == ToolsActions.compress) {
+  if (actionType == ToolsActions.compressPdf) {
     title = "Select Compress Config";
   }
   return title;

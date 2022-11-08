@@ -3,8 +3,8 @@ import 'dart:developer';
 import 'package:files_tools/models/file_model.dart';
 import 'package:files_tools/models/pdf_page_model.dart';
 import 'package:files_tools/state/tools_actions_state.dart';
-import 'package:files_tools/ui/screens/pdf_tools_screens/components/tools_error_body.dart';
-import 'package:files_tools/ui/screens/pdf_tools_screens/components/tools_processing_body.dart';
+import 'package:files_tools/ui/screens/components/tools_error_body.dart';
+import 'package:files_tools/ui/screens/components/tools_processing_body.dart';
 import 'package:files_tools/ui/screens/pdf_tools_screens/modify_pdf/tools/rotate_delete_reorder_pages.dart';
 import 'package:files_tools/utils/get_pdf_bitmaps.dart';
 import 'package:flutter/material.dart';
@@ -98,7 +98,7 @@ class ModifyPDFToolsBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (actionType == ToolsActions.modify) {
+    if (actionType == ToolsActions.modifyPdf) {
       return RotateDeleteReorderPages(pdfPages: pdfPages, file: file);
     } else {
       return Container();
@@ -108,7 +108,7 @@ class ModifyPDFToolsBody extends StatelessWidget {
 
 String getAppBarTitleForActionType({required ToolsActions actionType}) {
   String title = "Action Successful";
-  if (actionType == ToolsActions.modify) {
+  if (actionType == ToolsActions.modifyPdf) {
     title = "Rotate, Delete & Reorder";
   }
   return title;

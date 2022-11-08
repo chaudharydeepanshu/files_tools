@@ -85,7 +85,7 @@ class _DecryptPDFPageState extends State<DecryptPDFPage> {
                                   context,
                                   route.decryptPDFToolsPage,
                                   arguments: DecryptPDFToolsPageArguments(
-                                      actionType: ToolsActions.decrypt,
+                                      actionType: ToolsActions.decryptPdf,
                                       file: selectedFiles[0]),
                                 );
                               }

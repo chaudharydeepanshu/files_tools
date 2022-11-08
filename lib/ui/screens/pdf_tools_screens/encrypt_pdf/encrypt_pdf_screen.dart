@@ -85,7 +85,7 @@ class _EncryptPDFPageState extends State<EncryptPDFPage> {
                                   context,
                                   route.encryptPDFToolsPage,
                                   arguments: EncryptPDFToolsPageArguments(
-                                      actionType: ToolsActions.encrypt,
+                                      actionType: ToolsActions.encryptPdf,
                                       file: selectedFiles[0]),
                                 );
                               }

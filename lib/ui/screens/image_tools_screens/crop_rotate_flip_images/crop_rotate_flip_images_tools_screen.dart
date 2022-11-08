@@ -1,19 +1,21 @@
 import 'package:files_tools/models/file_model.dart';
 import 'package:files_tools/state/tools_actions_state.dart';
-import 'package:files_tools/ui/screens/pdf_tools_screens/image_to_pdf/tools/image_to_pdf.dart';
+import 'package:files_tools/ui/screens/image_tools_screens/crop_rotate_flip_images/tools/crop_rotate_flip_images.dart';
 import 'package:flutter/material.dart';
 
-class ImageToPDFToolsPage extends StatefulWidget {
-  const ImageToPDFToolsPage({Key? key, required this.arguments})
+class CropRotateFlipImagesToolsPage extends StatefulWidget {
+  const CropRotateFlipImagesToolsPage({Key? key, required this.arguments})
       : super(key: key);
 
-  final ImageToPDFToolsPageArguments arguments;
+  final CropRotateFlipImagesToolsPageArguments arguments;
 
   @override
-  State<ImageToPDFToolsPage> createState() => _ImageToPDFToolsPageState();
+  State<CropRotateFlipImagesToolsPage> createState() =>
+      _CropRotateFlipImagesToolsPageState();
 }
 
-class _ImageToPDFToolsPageState extends State<ImageToPDFToolsPage> {
+class _CropRotateFlipImagesToolsPageState
+    extends State<CropRotateFlipImagesToolsPage> {
   @override
   void initState() {
     super.initState();
@@ -32,7 +34,7 @@ class _ImageToPDFToolsPageState extends State<ImageToPDFToolsPage> {
               actionType: widget.arguments.actionType)),
           centerTitle: true,
         ),
-        body: ImageToPDFToolsBody(
+        body: ModifyImageToolsBody(
             actionType: widget.arguments.actionType,
             files: widget.arguments.files),
       ),
@@ -40,15 +42,16 @@ class _ImageToPDFToolsPageState extends State<ImageToPDFToolsPage> {
   }
 }
 
-class ImageToPDFToolsPageArguments {
+class CropRotateFlipImagesToolsPageArguments {
   final ToolsActions actionType;
   final List<InputFileModel> files;
 
-  ImageToPDFToolsPageArguments({required this.actionType, required this.files});
+  CropRotateFlipImagesToolsPageArguments(
+      {required this.actionType, required this.files});
 }
 
-class ImageToPDFToolsBody extends StatelessWidget {
-  const ImageToPDFToolsBody(
+class ModifyImageToolsBody extends StatelessWidget {
+  const ModifyImageToolsBody(
       {Key? key, required this.actionType, required this.files})
       : super(key: key);
 
@@ -57,8 +60,8 @@ class ImageToPDFToolsBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (actionType == ToolsActions.imageToPdf) {
-      return ImageToPDF(files: files);
+    if (actionType == ToolsActions.rotateCropFlipImages) {
+      return CropRotateFlipImages(files: files);
     } else {
       return Container();
     }
@@ -67,7 +70,7 @@ class ImageToPDFToolsBody extends StatelessWidget {
 
 String getAppBarTitleForActionType({required ToolsActions actionType}) {
   String title = "Action Successful";
-  if (actionType == ToolsActions.imageToPdf) {
+  if (actionType == ToolsActions.rotateCropFlipImages) {
     title = "Edit Images";
   }
   return title;

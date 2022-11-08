@@ -119,7 +119,7 @@ class _ImageToPDFPageState extends State<ImageToPDFPage> {
                                   context,
                                   route.imageToPDFToolsPage,
                                   arguments: ImageToPDFToolsPageArguments(
-                                      actionType: ToolsActions.imageToPDF,
+                                      actionType: ToolsActions.imageToPdf,
                                       files: selectedFiles),
                                 );
                               }

@@ -85,7 +85,7 @@ class _CompressPDFPageState extends State<CompressPDFPage> {
                                   context,
                                   route.compressPDFToolsPage,
                                   arguments: CompressPDFToolsPageArguments(
-                                      actionType: ToolsActions.compress,
+                                      actionType: ToolsActions.compressPdf,
                                       file: selectedFiles[0]),
                                 );
                               }

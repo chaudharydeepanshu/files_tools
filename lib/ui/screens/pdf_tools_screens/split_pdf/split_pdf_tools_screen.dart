@@ -2,8 +2,8 @@ import 'dart:developer';
 
 import 'package:files_tools/models/file_model.dart';
 import 'package:files_tools/state/tools_actions_state.dart';
-import 'package:files_tools/ui/screens/pdf_tools_screens/components/tools_error_body.dart';
-import 'package:files_tools/ui/screens/pdf_tools_screens/components/tools_processing_body.dart';
+import 'package:files_tools/ui/screens/components/tools_error_body.dart';
+import 'package:files_tools/ui/screens/components/tools_processing_body.dart';
 import 'package:files_tools/ui/screens/pdf_tools_screens/split_pdf/tools/split_by_page_count.dart';
 import 'package:files_tools/ui/screens/pdf_tools_screens/split_pdf/tools/split_by_page_numbers.dart';
 import 'package:files_tools/ui/screens/pdf_tools_screens/split_pdf/tools/split_by_page_range.dart';
@@ -99,15 +99,15 @@ class SplitPDFToolsBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (actionType == ToolsActions.splitByPageCount) {
+    if (actionType == ToolsActions.splitPdfByPageCount) {
       return SplitByPageCount(pdfPageCount: pdfPageCount, file: file);
-    } else if (actionType == ToolsActions.splitByByteSize) {
+    } else if (actionType == ToolsActions.splitPdfByByteSize) {
       return SplitBySize(pdfPageCount: pdfPageCount, file: file);
-    } else if (actionType == ToolsActions.splitByPageNumbers) {
+    } else if (actionType == ToolsActions.splitPdfByPageNumbers) {
       return SplitByPageNumbers(pdfPageCount: pdfPageCount, file: file);
-    } else if (actionType == ToolsActions.splitByPageRange) {
+    } else if (actionType == ToolsActions.splitPdfByPageRange) {
       return SplitByPageRange(pdfPageCount: pdfPageCount, file: file);
-    } else if (actionType == ToolsActions.splitByPageRanges) {
+    } else if (actionType == ToolsActions.splitPdfByPageRanges) {
       return SplitByPageRanges(pdfPageCount: pdfPageCount, file: file);
     } else {
       return Container();
@@ -117,15 +117,15 @@ class SplitPDFToolsBody extends StatelessWidget {
 
 String getAppBarTitleForActionType({required ToolsActions actionType}) {
   String title = "Action Successful";
-  if (actionType == ToolsActions.splitByPageCount) {
+  if (actionType == ToolsActions.splitPdfByPageCount) {
     title = "Provide Page Count";
-  } else if (actionType == ToolsActions.splitByByteSize) {
+  } else if (actionType == ToolsActions.splitPdfByByteSize) {
     title = "Provide Size";
-  } else if (actionType == ToolsActions.splitByPageNumbers) {
+  } else if (actionType == ToolsActions.splitPdfByPageNumbers) {
     title = "Provide Page Numbers";
-  } else if (actionType == ToolsActions.splitByPageRanges) {
+  } else if (actionType == ToolsActions.splitPdfByPageRanges) {
     title = "Provide Page Ranges";
-  } else if (actionType == ToolsActions.splitByPageRange) {
+  } else if (actionType == ToolsActions.splitPdfByPageRange) {
     title = "Provide Page Range";
   }
   return title;

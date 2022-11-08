@@ -80,3 +80,4 @@ class MyApp extends StatelessWidget {
 // Todo: Add extraction of pages from selection and splitting on the basis of ranges.
 // Todo: Use image mode instead of file mode for images selection in application such as images to pdf function. Can't do it due to https://issuetracker.google.com/issues/257642029.
 // Todo: Check on watermarking is failing for some large pdfs.
+// Todo: Add pdf redaction

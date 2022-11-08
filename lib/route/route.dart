@@ -1,3 +1,9 @@
+import 'package:files_tools/ui/screens/homescreen/pages/components/image_tools_section.dart';
+import 'package:files_tools/ui/screens/image_tools_screens/compress_image/compress_image_screen.dart';
+import 'package:files_tools/ui/screens/image_tools_screens/compress_image/compress_image_tool_screen.dart';
+import 'package:files_tools/ui/screens/image_tools_screens/crop_rotate_flip_images/crop_rotate_flip_images_screen.dart';
+import 'package:files_tools/ui/screens/image_tools_screens/crop_rotate_flip_images/crop_rotate_flip_images_tools_screen.dart';
+import 'package:files_tools/ui/screens/image_tools_screens/pdf_to_image/pdf_to_image_screen.dart';
 import 'package:files_tools/ui/screens/image_viewer.dart';
 import 'package:files_tools/ui/screens/pdf_tools_screens/compress_pdf/compress_pdf_screen.dart';
 import 'package:files_tools/ui/screens/pdf_tools_screens/compress_pdf/compress_pdf_tool_screen.dart';
@@ -28,7 +34,7 @@ import 'package:files_tools/ui/screens/pdf_tools_screens/encrypt_pdf/encrypt_pdf
 const String homePage = '/';
 const String pdfViewer = '/pdfViewer';
 const String imageViewer = '/imageViewer';
-const String pdfToolsPagePage = '/explore';
+const String pdfToolsPage = '/pdfTools';
 const String mergePDFsPage = '/mergePDFs';
 const String splitPDFPage = '/splitPDF';
 const String modifyPDFPage = '/modifyPDF';
@@ -38,7 +44,6 @@ const String watermarkPDFPage = '/WatermarkPDF';
 const String encryptPDFPage = '/EncryptPDF';
 const String decryptPDFPage = '/DecryptPDF';
 const String imageToPDFPage = '/ImageToPDF';
-const String resultPage = '/Result';
 const String splitPDFToolsPage = '/SplitPDFTools';
 const String modifyPDFToolsPage = '/ModifyPDFTools';
 const String convertPDFToolsPage = '/ConvertPDFTools';
@@ -47,6 +52,13 @@ const String watermarkPDFToolsPage = '/WatermarkPDFTools';
 const String encryptPDFToolsPage = '/EncryptPDFTools';
 const String decryptPDFToolsPage = '/DecryptPDFTools';
 const String imageToPDFToolsPage = '/ImageToPDFTools';
+const String imageToolsPage = '/imageTools';
+const String compressImagePage = '/CompressImage';
+const String compressImageToolsPage = '/CompressImageTools';
+const String pdfToImagePage = '/pdfToImage';
+const String cropRotateFlipImagesPage = '/CropRotateFlipImages';
+const String cropRotateFlipImagesToolsPage = '/CropRotateFlipImagesTools';
+const String resultPage = '/Result';
 
 // Control our page route flow
 Route<dynamic> controller(RouteSettings settings) {
@@ -65,7 +77,7 @@ Route<dynamic> controller(RouteSettings settings) {
           builder: (context) => ImageViewer(
               arguments: settings.arguments as ImageViewerArguments),
           settings: RouteSettings(name: settings.name));
-    case pdfToolsPagePage:
+    case pdfToolsPage:
       return MaterialPageRoute(
           builder: (context) => PDFToolsPage(
               arguments: settings.arguments as PDFToolsPageArguments),
@@ -145,6 +157,34 @@ Route<dynamic> controller(RouteSettings settings) {
       return MaterialPageRoute(
           builder: (context) => ImageToPDFToolsPage(
               arguments: settings.arguments as ImageToPDFToolsPageArguments),
+          settings: RouteSettings(name: settings.name));
+    case imageToolsPage:
+      return MaterialPageRoute(
+          builder: (context) => ImageToolsPage(
+              arguments: settings.arguments as ImageToolsPageArguments),
+          settings: RouteSettings(name: settings.name));
+    case compressImagePage:
+      return MaterialPageRoute(
+          builder: (context) => const CompressImagePage(),
+          settings: RouteSettings(name: settings.name));
+    case compressImageToolsPage:
+      return MaterialPageRoute(
+          builder: (context) => CompressImageToolsPage(
+              arguments: settings.arguments as CompressImageToolsPageArguments),
+          settings: RouteSettings(name: settings.name));
+    case pdfToImagePage:
+      return MaterialPageRoute(
+          builder: (context) => const PdfToImagePage(),
+          settings: RouteSettings(name: settings.name));
+    case cropRotateFlipImagesPage:
+      return MaterialPageRoute(
+          builder: (context) => const CropRotateFlipImagesPage(),
+          settings: RouteSettings(name: settings.name));
+    case cropRotateFlipImagesToolsPage:
+      return MaterialPageRoute(
+          builder: (context) => CropRotateFlipImagesToolsPage(
+              arguments:
+                  settings.arguments as CropRotateFlipImagesToolsPageArguments),
           settings: RouteSettings(name: settings.name));
     case resultPage:
       return MaterialPageRoute(

@@ -85,7 +85,8 @@ class _ConvertPDFPageState extends State<ConvertPDFPage> {
                                   context,
                                   route.convertPDFToolsPage,
                                   arguments: ConvertPDFToolsPageArguments(
-                                      actionType: ToolsActions.convertToImage,
+                                      actionType:
+                                          ToolsActions.convertPdfToImage,
                                       file: selectedFiles[0]),
                                 );
                               }

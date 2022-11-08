@@ -58,7 +58,7 @@ class EncryptPDFToolsBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (actionType == ToolsActions.encrypt) {
+    if (actionType == ToolsActions.encryptPdf) {
       return EncryptPDF(file: file);
     } else {
       return Container();
@@ -68,7 +68,7 @@ class EncryptPDFToolsBody extends StatelessWidget {
 
 String getAppBarTitleForActionType({required ToolsActions actionType}) {
   String title = "Action Successful";
-  if (actionType == ToolsActions.encrypt) {
+  if (actionType == ToolsActions.encryptPdf) {
     title = "Select Encryption Config";
   }
   return title;

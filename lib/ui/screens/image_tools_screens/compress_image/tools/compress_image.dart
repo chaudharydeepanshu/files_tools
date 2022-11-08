@@ -6,40 +6,37 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:files_tools/route/route.dart' as route;
 
-class CompressPDF extends StatelessWidget {
-  const CompressPDF({Key? key, required this.pdfPageCount, required this.file})
-      : super(key: key);
+class CompressImage extends StatelessWidget {
+  const CompressImage({Key? key, required this.files}) : super(key: key);
 
-  final int pdfPageCount;
-  final InputFileModel file;
+  final List<InputFileModel> files;
 
   @override
   Widget build(BuildContext context) {
     return ListView(
       children: [
         const SizedBox(height: 16),
-        CompressPDFActionCard(pdfPageCount: pdfPageCount, file: file),
+        CompressImageActionCard(files: files),
         const SizedBox(height: 16),
       ],
     );
   }
 }
 
-class CompressPDFActionCard extends StatefulWidget {
-  const CompressPDFActionCard(
-      {Key? key, required this.pdfPageCount, required this.file})
+class CompressImageActionCard extends StatefulWidget {
+  const CompressImageActionCard({Key? key, required this.files})
       : super(key: key);
 
-  final int pdfPageCount;
-  final InputFileModel file;
+  final List<InputFileModel> files;
 
   @override
-  State<CompressPDFActionCard> createState() => _CompressPDFActionCardState();
+  State<CompressImageActionCard> createState() =>
+      _CompressImageActionCardState();
 }
 
 enum CompressionTypes { less, medium, extreme, custom }
 
-class _CompressPDFActionCardState extends State<CompressPDFActionCard> {
+class _CompressImageActionCardState extends State<CompressImageActionCard> {
   final _formKey = GlobalKey<FormState>();
 
   TextEditingController imageScalingController =
@@ -47,7 +44,7 @@ class _CompressPDFActionCardState extends State<CompressPDFActionCard> {
   TextEditingController imageQualityController =
       TextEditingController(text: '70');
 
-  bool isUnEmbedFonts = false;
+  bool removeExifData = false;
 
   CompressionTypes compressionType = CompressionTypes.less;
 
@@ -197,11 +194,12 @@ class _CompressPDFActionCardState extends State<CompressPDFActionCard> {
                 tileColor: Theme.of(context).colorScheme.surfaceVariant,
                 // contentPadding: EdgeInsets.zero,
                 visualDensity: VisualDensity.compact,
-                title: const Text("Remove fonts from pdf"),
-                value: isUnEmbedFonts,
+                title: const Text("Remove exif data"),
+                subtitle: const Text("Only works for jpg format"),
+                value: removeExifData,
                 onChanged: (bool? value) {
                   setState(() {
-                    isUnEmbedFonts = value ?? !isUnEmbedFonts;
+                    removeExifData = value ?? !removeExifData;
                   });
                 }),
             const SizedBox(height: 10),
@@ -244,16 +242,15 @@ class _CompressPDFActionCardState extends State<CompressPDFActionCard> {
                                         ? int.parse(
                                             imageQualityController.value.text)
                                         : 100;
-                        bool unEmbedFonts = isUnEmbedFonts;
 
                         if (compressionType == CompressionTypes.custom &&
                             _formKey.currentState!.validate()) {
                           watchToolsActionsStateProviderValue
-                              .compressSelectedFile(
-                            files: [widget.file],
+                              .compressSelectedImage(
+                            files: widget.files,
                             imageScale: imageScale,
                             imageQuality: imageQuality,
-                            unEmbedFonts: unEmbedFonts,
+                            removeExifData: removeExifData,
                           );
                           Navigator.pushNamed(
                             context,
@@ -261,11 +258,11 @@ class _CompressPDFActionCardState extends State<CompressPDFActionCard> {
                           );
                         } else {
                           watchToolsActionsStateProviderValue
-                              .compressSelectedFile(
-                            files: [widget.file],
+                              .compressSelectedImage(
+                            files: widget.files,
                             imageScale: imageScale,
                             imageQuality: imageQuality,
-                            unEmbedFonts: unEmbedFonts,
+                            removeExifData: removeExifData,
                           );
                           Navigator.pushNamed(
                             context,
@@ -273,7 +270,7 @@ class _CompressPDFActionCardState extends State<CompressPDFActionCard> {
                           );
                         }
                       },
-                      child: const Text("Compress PDF"),
+                      child: const Text("Compress Images"),
                     );
                   },
                 ),

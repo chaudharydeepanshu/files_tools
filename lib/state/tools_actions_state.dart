@@ -6,9 +6,12 @@ import 'package:files_tools/models/file_model.dart';
 import 'package:files_tools/models/pdf_page_model.dart';
 import 'package:files_tools/utils/clear_cache.dart';
 import 'package:files_tools/utils/edit_image.dart';
+import 'package:files_tools/utils/get_absolute_file_path_from_file_uri.dart';
 import 'package:files_tools/utils/get_pdf_bitmaps.dart';
+import 'package:files_tools/utils/get_uint8list_from_absolute_file_path_or_uri.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf_manipulator/pdf_manipulator.dart';
 import 'package:pick_or_save/pick_or_save.dart';
@@ -16,19 +19,24 @@ import 'package:pick_or_save/pick_or_save.dart';
 import '../utils/format_bytes.dart';
 
 enum ToolsActions {
-  merge,
-  splitByPageCount,
-  splitByByteSize,
-  splitByPageNumbers,
-  splitByPageRanges,
-  splitByPageRange,
-  modify,
-  convertToImage,
-  compress,
-  watermark,
-  encrypt,
-  decrypt,
-  imageToPDF,
+  // Actions for PDF
+  mergePdfs,
+  splitPdfByPageCount,
+  splitPdfByByteSize,
+  splitPdfByPageNumbers,
+  splitPdfByPageRanges,
+  splitPdfByPageRange,
+  modifyPdf,
+  convertPdfToImage,
+  compressPdf,
+  watermarkPdf,
+  encryptPdf,
+  decryptPdf,
+  // Actions for Image
+  compressImages,
+  rotateCropFlipImages,
+  // Actions for both Image and PDF
+  imageToPdf,
 }
 
 class ToolsActionsState extends ChangeNotifier {
@@ -65,7 +73,7 @@ class ToolsActionsState extends ChangeNotifier {
   Future<void> mergeSelectedFiles({required List<InputFileModel> files}) async {
     updateActionErrorStatus(false);
     updateActionProcessingStatus(true);
-    updateActionType(ToolsActions.merge);
+    updateActionType(ToolsActions.mergePdfs);
     List<String> uriPathsOfFilesToMerge = List<String>.generate(
         files.length, (int index) => files[index].fileUri);
     String? result;
@@ -89,7 +97,8 @@ class ToolsActionsState extends ChangeNotifier {
             fileName: "Merged File $currentDateTime.pdf",
             fileDate: file.fileDate,
             fileTime: file.fileTime,
-            fileSize: file.fileSize,
+            fileSizeFormatBytes: file.fileSizeFormatBytes,
+            fileSizeBytes: file.fileSizeBytes,
             filePath: file.filePath)
       ];
     } else {
@@ -123,7 +132,7 @@ class ToolsActionsState extends ChangeNotifier {
     List<String> outputFilesNames = [];
     try {
       if (pageCount != null) {
-        updateActionType(ToolsActions.splitByPageCount);
+        updateActionType(ToolsActions.splitPdfByPageCount);
         result = await PdfManipulator().splitPDF(
             params: PDFSplitterParams(
           pdfPath: uriPathOfFileToSplit,
@@ -136,7 +145,7 @@ class ToolsActionsState extends ChangeNotifier {
           }, growable: false);
         }
       } else if (byteSize != null) {
-        updateActionType(ToolsActions.splitByByteSize);
+        updateActionType(ToolsActions.splitPdfByByteSize);
         result = await PdfManipulator().splitPDF(
             params: PDFSplitterParams(
           pdfPath: uriPathOfFileToSplit,
@@ -149,7 +158,7 @@ class ToolsActionsState extends ChangeNotifier {
           }, growable: false);
         }
       } else if (pageNumbers != null) {
-        updateActionType(ToolsActions.splitByPageNumbers);
+        updateActionType(ToolsActions.splitPdfByPageNumbers);
         result = await PdfManipulator().splitPDF(
             params: PDFSplitterParams(
           pdfPath: uriPathOfFileToSplit,
@@ -162,7 +171,7 @@ class ToolsActionsState extends ChangeNotifier {
           }, growable: false);
         }
       } else if (pageRange != null) {
-        updateActionType(ToolsActions.splitByPageRange);
+        updateActionType(ToolsActions.splitPdfByPageRange);
         result = await PdfManipulator().splitPDF(
             params: PDFSplitterParams(
           pdfPath: uriPathOfFileToSplit,
@@ -175,7 +184,7 @@ class ToolsActionsState extends ChangeNotifier {
           }, growable: false);
         }
       } else if (pageRanges != null) {
-        updateActionType(ToolsActions.splitByPageRanges);
+        updateActionType(ToolsActions.splitPdfByPageRanges);
         result = await PdfManipulator().splitPDF(
             params: PDFSplitterParams(
           pdfPath: uriPathOfFileToSplit,
@@ -198,7 +207,8 @@ class ToolsActionsState extends ChangeNotifier {
             fileName: outputFilesNames[i],
             fileDate: file.fileDate,
             fileTime: file.fileTime,
-            fileSize: file.fileSize,
+            fileSizeFormatBytes: file.fileSizeFormatBytes,
+            fileSizeBytes: file.fileSizeBytes,
             filePath: file.filePath);
         outputFiles.add(file);
       }
@@ -230,7 +240,7 @@ class ToolsActionsState extends ChangeNotifier {
     String? result;
     String outputFileName = "Unknown File$extensionOfFileToSplit";
     try {
-      updateActionType(ToolsActions.modify);
+      updateActionType(ToolsActions.modifyPdf);
       result = await PdfManipulator().pdfPageRotatorDeleterReorder(
           params: PDFPageRotatorDeleterReorderParams(
         pdfPath: uriPathOfFileToModify,
@@ -258,7 +268,8 @@ class ToolsActionsState extends ChangeNotifier {
           fileName: outputFileName,
           fileDate: file.fileDate,
           fileTime: file.fileTime,
-          fileSize: file.fileSize,
+          fileSizeFormatBytes: file.fileSizeFormatBytes,
+          fileSizeBytes: file.fileSizeBytes,
           filePath: file.filePath);
       outputFiles.add(file);
     } else {
@@ -290,7 +301,7 @@ class ToolsActionsState extends ChangeNotifier {
     try {
       if (imageScaling != null) {
         String imageTypeExtension = ".png";
-        updateActionType(ToolsActions.convertToImage);
+        updateActionType(ToolsActions.convertPdfToImage);
         String tempPath = (await getTemporaryDirectory()).path;
         for (var page in selectedPages) {
           Uint8List? pageBytes;
@@ -326,7 +337,8 @@ class ToolsActionsState extends ChangeNotifier {
             fileName: outputFilesNames[i],
             fileDate: file.fileDate,
             fileTime: file.fileTime,
-            fileSize: file.fileSize,
+            fileSizeFormatBytes: file.fileSizeFormatBytes,
+            fileSizeBytes: file.fileSizeBytes,
             filePath: file.filePath);
         outputFiles.add(file);
       }
@@ -358,7 +370,7 @@ class ToolsActionsState extends ChangeNotifier {
     String? result;
     String outputFileName = "Unknown File$extensionOfFileToCompress";
     try {
-      updateActionType(ToolsActions.compress);
+      updateActionType(ToolsActions.compressPdf);
       result = await PdfManipulator().pdfCompressor(
           params: PDFCompressorParams(
         pdfPath: uriPathOfFileToCompress,
@@ -385,7 +397,8 @@ class ToolsActionsState extends ChangeNotifier {
           fileName: outputFileName,
           fileDate: file.fileDate,
           fileTime: file.fileTime,
-          fileSize: file.fileSize,
+          fileSizeFormatBytes: file.fileSizeFormatBytes,
+          fileSizeBytes: file.fileSizeBytes,
           filePath: file.filePath);
       outputFiles.add(file);
     } else {
@@ -420,7 +433,7 @@ class ToolsActionsState extends ChangeNotifier {
     String? result;
     String outputFileName = "Unknown File$extensionOfFileToWatermark";
     try {
-      updateActionType(ToolsActions.watermark);
+      updateActionType(ToolsActions.watermarkPdf);
       result = await PdfManipulator().pdfWatermark(
           params: PDFWatermarkParams(
         pdfPath: uriPathOfFileToWatermark,
@@ -451,7 +464,8 @@ class ToolsActionsState extends ChangeNotifier {
           fileName: outputFileName,
           fileDate: file.fileDate,
           fileTime: file.fileTime,
-          fileSize: file.fileSize,
+          fileSizeFormatBytes: file.fileSizeFormatBytes,
+          fileSizeBytes: file.fileSizeBytes,
           filePath: file.filePath);
       outputFiles.add(file);
     } else {
@@ -495,7 +509,7 @@ class ToolsActionsState extends ChangeNotifier {
     String? result;
     String outputFileName = "Unknown File$extensionOfFileToEncrypt";
     try {
-      updateActionType(ToolsActions.encrypt);
+      updateActionType(ToolsActions.encryptPdf);
       result = await PdfManipulator().pdfEncryption(
           params: PDFEncryptionParams(
         pdfPath: uriPathOfFileToEncrypt,
@@ -535,7 +549,8 @@ class ToolsActionsState extends ChangeNotifier {
           fileName: outputFileName,
           fileDate: file.fileDate,
           fileTime: file.fileTime,
-          fileSize: file.fileSize,
+          fileSizeFormatBytes: file.fileSizeFormatBytes,
+          fileSizeBytes: file.fileSizeBytes,
           filePath: file.filePath);
       outputFiles.add(file);
     } else {
@@ -564,7 +579,7 @@ class ToolsActionsState extends ChangeNotifier {
     String? result;
     String outputFileName = "Unknown File$extensionOfFileToDecrypt";
     try {
-      updateActionType(ToolsActions.decrypt);
+      updateActionType(ToolsActions.decryptPdf);
       result = await PdfManipulator().pdfDecryption(
           params: PDFDecryptionParams(
         pdfPath: uriPathOfFileToDecrypt,
@@ -593,7 +608,8 @@ class ToolsActionsState extends ChangeNotifier {
           fileName: outputFileName,
           fileDate: file.fileDate,
           fileTime: file.fileTime,
-          fileSize: file.fileSize,
+          fileSizeFormatBytes: file.fileSizeFormatBytes,
+          fileSizeBytes: file.fileSizeBytes,
           filePath: file.filePath);
       outputFiles.add(file);
     } else {
@@ -613,7 +629,7 @@ class ToolsActionsState extends ChangeNotifier {
   }) async {
     updateActionErrorStatus(false);
     updateActionProcessingStatus(true);
-    updateActionType(ToolsActions.imageToPDF);
+    updateActionType(ToolsActions.imageToPdf);
     List<String>? result;
     List<String> outputFilesNames = [];
     try {
@@ -678,7 +694,166 @@ class ToolsActionsState extends ChangeNotifier {
             fileName: outputFilesNames[i],
             fileDate: file.fileDate,
             fileTime: file.fileTime,
-            fileSize: file.fileSize,
+            fileSizeFormatBytes: file.fileSizeFormatBytes,
+            fileSizeBytes: file.fileSizeBytes,
+            filePath: file.filePath);
+        outputFiles.add(file);
+      }
+    } else {
+      updateActionErrorStatus(true);
+
+      // We can use this place to get the exact time of cancellation action.
+      // But don't just put clear cache here as at this state user may have started another task.
+      // So we avoid clearing cache here as we don't want the user to wait till cancellation for next task will.
+    }
+    updateActionProcessingStatus(false);
+    customNotifyListener();
+  }
+
+  Future<void> compressSelectedImage({
+    required List<InputFileModel> files,
+    double? imageScale,
+    int? imageQuality,
+    bool? removeExifData,
+  }) async {
+    updateActionErrorStatus(false);
+    updateActionProcessingStatus(true);
+    updateActionType(ToolsActions.compressImages);
+    List<String> result = [];
+    List<String> outputFilesNames = [];
+    try {
+      for (int i = 0; i < files.length; i++) {
+        InputFileModel image = files[i];
+        Uint8List? imageData = await getBytesFromFilePathOrUri(
+            filePath: null, fileUri: image.fileUri);
+        var decodedImage = await decodeImageFromList(imageData);
+        Uint8List? compressedImageData =
+            await FlutterImageCompress.compressWithList(
+          imageData,
+          minWidth: (decodedImage.width * imageScale!).toInt(),
+          minHeight: (decodedImage.height * imageScale).toInt(),
+          quality: imageQuality ?? 100,
+          keepExif: removeExifData != null ? !removeExifData : true,
+        );
+        // Using original image if compressed image is larger in bytes then original image.
+        if (imageData.lengthInBytes < compressedImageData.lengthInBytes) {
+          compressedImageData = imageData;
+        }
+        Directory tempDir = await getTemporaryDirectory();
+        String tempPath = tempDir.path;
+        String nameOfFile = image.fileName;
+        String imageTypeExtension = getFileNameExtension(fileName: nameOfFile);
+        DateTime currentDateTime = DateTime.now();
+        File file = File('$tempPath/$currentDateTime$imageTypeExtension');
+        await file.writeAsBytes(compressedImageData.buffer.asUint8List(
+            compressedImageData.offsetInBytes,
+            compressedImageData.lengthInBytes));
+        result.add(file.path);
+      }
+      if (result.isNotEmpty) {
+        DateTime currentDateTime = DateTime.now();
+        outputFilesNames = List.generate(result.length, (index) {
+          String nameOfFile = files[index].fileName;
+          String nameOfFileWithoutExtension =
+              getFileNameWithoutExtension(fileName: nameOfFile);
+          String extensionOfFile = getFileNameExtension(fileName: nameOfFile);
+          return "$nameOfFileWithoutExtension - Compressed - $currentDateTime$extensionOfFile";
+        });
+      }
+    } on PlatformException catch (e) {
+      log(e.toString());
+      _errorMessage = e.toString();
+    } catch (e) {
+      log(e.toString());
+      _errorMessage = e.toString();
+    }
+    if (result.isNotEmpty) {
+      outputFiles.clear();
+      for (int i = 0; i < result.length; i++) {
+        OutputFileModel file =
+            await getOutputFileModelFromPath(path: result[i]);
+        file = OutputFileModel(
+            fileName: outputFilesNames[i],
+            fileDate: file.fileDate,
+            fileTime: file.fileTime,
+            fileSizeFormatBytes: file.fileSizeFormatBytes,
+            fileSizeBytes: file.fileSizeBytes,
+            filePath: file.filePath);
+        outputFiles.add(file);
+      }
+    } else {
+      updateActionErrorStatus(true);
+
+      // We can use this place to get the exact time of cancellation action.
+      // But don't just put clear cache here as at this state user may have started another task.
+      // So we avoid clearing cache here as we don't want the user to wait till cancellation for next task will.
+    }
+    updateActionProcessingStatus(false);
+    customNotifyListener();
+  }
+
+  Future<void> cropRotateFlipImages({
+    required List<InputFileModel> files,
+    required List<GlobalKey<ExtendedImageEditorState>> editorKeys,
+  }) async {
+    updateActionErrorStatus(false);
+    updateActionProcessingStatus(true);
+    updateActionType(ToolsActions.imageToPdf);
+    List<String> result = [];
+    List<String> outputFilesNames = [];
+    try {
+      for (int i = 0; i < files.length; i++) {
+        ExtendedImageEditorState? currentState = editorKeys[i].currentState;
+        InputFileModel image = files[i];
+        if (currentState != null) {
+          Uint8List? imageData = await modifyImage(currentState);
+          Directory tempDir = await getTemporaryDirectory();
+          String tempPath = tempDir.path;
+          // Directory appDocDir = await getApplicationDocumentsDirectory();
+          // String appDocPath = appDocDir.path;
+          String nameOfFile = image.fileName;
+          String imageTypeExtension =
+              getFileNameExtension(fileName: nameOfFile);
+          DateTime currentDateTime = DateTime.now();
+          File file = File('$tempPath/$currentDateTime$imageTypeExtension');
+          await file.writeAsBytes(imageData!.buffer
+              .asUint8List(imageData.offsetInBytes, imageData.lengthInBytes));
+          result.add(file.path);
+        } else {
+          String filePath =
+              await getAbsoluteFilePathFromFileUri(fileUri: image.fileUri);
+          result.add(filePath);
+        }
+      }
+
+      if (result.isNotEmpty) {
+        DateTime currentDateTime = DateTime.now();
+        outputFilesNames = List.generate(result.length, (index) {
+          String nameOfFile = files[index].fileName;
+          String nameOfFileWithoutExtension =
+              getFileNameWithoutExtension(fileName: nameOfFile);
+          String extensionOfFile = getFileNameExtension(fileName: nameOfFile);
+          return "$nameOfFileWithoutExtension - $currentDateTime$extensionOfFile";
+        });
+      }
+    } on PlatformException catch (e) {
+      log(e.toString());
+      _errorMessage = e.toString();
+    } catch (e) {
+      log(e.toString());
+      _errorMessage = e.toString();
+    }
+    if (result.isNotEmpty) {
+      outputFiles.clear();
+      for (int i = 0; i < result.length; i++) {
+        OutputFileModel file =
+            await getOutputFileModelFromPath(path: result[i]);
+        file = OutputFileModel(
+            fileName: outputFilesNames[i],
+            fileDate: file.fileDate,
+            fileTime: file.fileTime,
+            fileSizeFormatBytes: file.fileSizeFormatBytes,
+            fileSizeBytes: file.fileSizeBytes,
             filePath: file.filePath);
         outputFiles.add(file);
       }
@@ -801,15 +976,18 @@ Future<OutputFileModel> getOutputFileModelFromPath(
   final String fileTime = lastModifiedDateTime != null
       ? "${lastModifiedDateTime.hour}:${lastModifiedDateTime.minute}"
       : "Unknown";
-  final String fileSize =
+  final int fileSizeBytes =
       fileMetadata.size != null && fileMetadata.size != "Unknown"
-          ? formatBytes(bytes: int.parse(fileMetadata.size!), decimals: 2)
-          : "Unknown";
+          ? int.parse(fileMetadata.size!)
+          : 0;
+  final String fileSizeFormatBytes =
+      formatBytes(bytes: fileSizeBytes, decimals: 2);
   file = OutputFileModel(
       fileName: fileName,
       fileDate: fileDate,
       fileTime: fileTime,
-      fileSize: fileSize,
+      fileSizeFormatBytes: fileSizeFormatBytes,
+      fileSizeBytes: fileSizeBytes,
       filePath: path);
   return file;
 }

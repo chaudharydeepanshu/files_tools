@@ -85,7 +85,7 @@ class _WatermarkPDFPageState extends State<WatermarkPDFPage> {
                                   context,
                                   route.watermarkPDFToolsPage,
                                   arguments: WatermarkPDFToolsPageArguments(
-                                      actionType: ToolsActions.watermark,
+                                      actionType: ToolsActions.watermarkPdf,
                                       file: selectedFiles[0]),
                                 );
                               }
