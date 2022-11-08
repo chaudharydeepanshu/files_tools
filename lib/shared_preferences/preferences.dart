@@ -19,6 +19,6 @@ class Preferences extends ChangeNotifier {
   ThemeMode get themeMode => ThemeMode.values.firstWhere(
         (element) =>
             element.toString() == sharedPreferences.getString('themeMode'),
-        orElse: () => ThemeMode.system,
+        orElse: () => ThemeMode.light,
       );
 }
