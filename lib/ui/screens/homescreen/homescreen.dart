@@ -1,3 +1,4 @@
+import 'package:files_tools/ui/components/drawer.dart';
 import 'package:files_tools/ui/screens/homescreen/pages/document_tools_page.dart';
 import 'package:files_tools/ui/screens/homescreen/pages/media_tools_page.dart';
 import 'package:files_tools/utils/clear_cache.dart';
@@ -24,6 +25,7 @@ class _HomePageState extends State<HomePage> {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
+        drawer: const AppDrawer(),
         appBar: AppBar(
           title: const Text("Files Tools"),
           centerTitle: true,

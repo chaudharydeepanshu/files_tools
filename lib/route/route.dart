@@ -1,3 +1,4 @@
+import 'package:files_tools/ui/screens/about_page.dart';
 import 'package:files_tools/ui/screens/homescreen/pages/components/image_tools_section.dart';
 import 'package:files_tools/ui/screens/image_tools_screens/compress_image/compress_image_screen.dart';
 import 'package:files_tools/ui/screens/image_tools_screens/compress_image/compress_image_tool_screen.dart';
@@ -32,6 +33,7 @@ import 'package:files_tools/ui/screens/pdf_tools_screens/encrypt_pdf/encrypt_pdf
 
 // Route Names
 const String homePage = '/';
+const String aboutPage = '/about';
 const String pdfViewer = '/pdfViewer';
 const String imageViewer = '/imageViewer';
 const String pdfToolsPage = '/pdfTools';
@@ -66,6 +68,10 @@ Route<dynamic> controller(RouteSettings settings) {
     case homePage:
       return MaterialPageRoute(
           builder: (context) => const HomePage(),
+          settings: RouteSettings(name: settings.name));
+    case aboutPage:
+      return MaterialPageRoute(
+          builder: (context) => const AboutPage(),
           settings: RouteSettings(name: settings.name));
     case pdfViewer:
       return MaterialPageRoute(

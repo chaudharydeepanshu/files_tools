@@ -1,6 +1,6 @@
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:files_tools/ui/components/url_launcher.dart';
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class ShowError extends StatelessWidget {
   const ShowError(
@@ -91,7 +91,7 @@ class ShowError extends StatelessWidget {
               var url =
                   'mailto:pureinfoapps@gmail.com?subject=Files Tools Bug Report&body=Error Message:\n$errorMessage\n\nUser Device Info:\n$userDeviceInfo';
 
-              await launchUrl(Uri.parse(url));
+              await urlLauncher(url);
             },
             child: const Text('Report Error'),
           ),
