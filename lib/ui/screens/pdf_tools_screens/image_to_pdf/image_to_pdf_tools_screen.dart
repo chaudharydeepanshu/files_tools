@@ -68,7 +68,7 @@ class ImageToPDFToolsBody extends StatelessWidget {
 String getAppBarTitleForActionType({required ToolsActions actionType}) {
   String title = "Action Successful";
   if (actionType == ToolsActions.imageToPdf) {
-    title = "Edit Images";
+    title = "Prepare Images For PDF";
   }
   return title;
 }

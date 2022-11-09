@@ -43,7 +43,7 @@ class _PdfToImagePageState extends State<PdfToImagePage> {
         },
         child: Scaffold(
           appBar: AppBar(
-            title: const Text("Convert PDF"),
+            title: const Text("PDF To Images"),
             centerTitle: true,
           ),
           body: Consumer(

@@ -67,8 +67,8 @@ class DecryptPDFToolsBody extends StatelessWidget {
 
 String getAppBarTitleForActionType({required ToolsActions actionType}) {
   String title = "Action Successful";
-  if (actionType == ToolsActions.encryptPdf) {
-    title = "Select Decryption Config";
+  if (actionType == ToolsActions.decryptPdf) {
+    title = "Decryption Config";
   }
   return title;
 }

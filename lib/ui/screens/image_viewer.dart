@@ -43,12 +43,12 @@ class _ImageViewerState extends State<ImageViewer> {
       child: Scaffold(
         appBar: AppBar(
           title: Text(widget.arguments.fileName),
-          actions: <Widget>[
-            IconButton(
-              icon: const Icon(Icons.share),
-              onPressed: () {},
-            ),
-          ],
+          // actions: <Widget>[
+          //   IconButton(
+          //     icon: const Icon(Icons.share),
+          //     onPressed: () {},
+          //   ),
+          // ],
         ),
         body: FutureBuilder<bool>(
           future: initImageData, // async work
