@@ -1,77 +1,65 @@
-## Files Tools Project
+# Project repository for Mini VTOP app
 
-This is a project repository for Files Tools application.
+[![wakatime](https://wakatime.com/badge/user/83f3b15d-49de-4c01-b8de-bbc132f11be1/project/3876495a-70a6-486e-b999-b6854d83bdc9.svg)](https://wakatime.com/badge/user/83f3b15d-49de-4c01-b8de-bbc132f11be1/project/3876495a-70a6-486e-b999-b6854d83bdc9)
 
-Note: "Master" branch will be developed and maintained moving forward. It was rewritten from scratch due to the shortcomings in "V1".
+<a href='https://play.google.com/store/apps/details?id=com.pureinfoapps.android.apps.filestools&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' width='300px'/></a>
 
-### Files Tools application
+**Note: "Master" branch will be developed and maintained moving forward. It was rewritten from scratch due to the shortcomings in "V1".**
 
-| App Icon | Download Link | Feature Image |
-| ------------- | ------------- | ------------- |
-| ![ic_launcher](https://user-images.githubusercontent.com/85361211/128973496-365b0ea2-d777-4423-b86b-416814b586a8.png) | <a href='https://play.google.com/store/apps/details?id=com.pureinfoapps.android.apps.filestools'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' width='300px'/></a> | ![Feature Image](https://user-images.githubusercontent.com/85361211/131718930-111acd41-29ee-443a-93c9-4709dadc2ee7.png) |
+# Table of Contents
+> - [1. Introduction](#introduction)
+> - [2. Files Tools functionalities](#files-tools-provides-functionality-for-the-following-tasks-)
+>   * [📄 PDF Tools](#-for-pdf-)
+>   * [🖼️ Image Tools](#-for-image-)
+>   * [🔜 Tools Coming Soon](#-coming-soon-)
+> - [3. Screenshots](#screenshots-)
+> - [4. 🤔Why I spent time recreating this app?](#why-i-spent-time-recreating-this-app)
 
-Files Tools is an application based on tools, it provides tools to perform various operations on files (documents and media), which helps everyone in their everyday life.
+## Introduction
 
-It offers various features such as:-
+Files Tools provides tools to perform various operations on files (documents and media), which helps everyone in their everyday life. And it aims to do that with the following goals in mind - No Ads🧘- 100% Free🆓- 100% Open Source💚.
 
-**For PDF:-**
+## Files Tools provides functionality for the following tasks:-
 
--  Merge multiple PDFs.
--  Split PDF - Extract select pages, custom ranges, fixed range, extract all pages.
--  Modify PDF - Rotate, delete, reorder PDF pages.
--  Compress PDF.
--  Protect PDF - Encrypt and decrypt PDF.
--  Convert PDF - PDF To Images.
+### 📄 For PDF:-
+- Merge multiple PDFs
+- Split PDF - Extract PDF pages by selecting, Split PDF by page count, Split PDF by Size, Split PDF by page numbers, Extract PDF by page ranges.
+- Modify PDF - Rotate, delete, and reorder PDF pages
+- Convert PDF to images
+- Compress PDF
+- Watermark PDF
+- Convert Images To PDF
+- Encrypt PDF
+- Decrypt PDF
 
-**For Image:-**
+### 🖼️ For Image:-
+- Compress images
+- Crop, rotate and flip images
+- Convert PDF to images
 
--  Convert Images - Images To PDF.
--  Modify Image - This allows you to crop, flip and rotate any image. In crop, there are various options such as 'custom', 'specific' (which allows you to crop in any aspect ratio), and some predefined common aspect ratios ('11', '43', '34', '169').
--  Compress Images.
+### 🔜 Coming Soon:-
+- Watermark images.
+- Change image dimensions.
 
-| Document Tools |
-| :----: |
-|![Document And Media Tools](https://user-images.githubusercontent.com/85361211/131717968-480e56e1-f54c-4ab5-b75e-85be7d9c6e9d.png)|
+Please give the project a star if you liked the app or idea behind it.
 
-| Merge, Split And Compress |
-| :----: |
-|![Merge, Split And Compress](https://user-images.githubusercontent.com/85361211/131718188-967f24e7-f161-4237-94b7-345f6082b046.png)|
+## Screenshots:-
 
-| Modify And Protect |
-| :----: |
-|![Modify And Protect](https://user-images.githubusercontent.com/85361211/131718213-fb8468d0-c3c7-41a7-9c50-e18b888cfb8a.png)|
+|  |  |
+| -------------- | -------------- |
+| <img src="https://user-images.githubusercontent.com/85361211/200834929-0c4ae643-711f-49a1-a396-f8d062ed2d0c.png"> | </img> <img src="https://user-images.githubusercontent.com/85361211/200834937-b12fb5f1-f1f9-432a-bb4a-bb7f56a691af.png"></img> |
+| <img src="https://user-images.githubusercontent.com/85361211/200834942-e6f015af-18ab-4ffc-a582-19ecc1937bfb.png"> | </img> <img src="https://user-images.githubusercontent.com/85361211/200834945-6403f359-f33a-4b8f-9ef1-bb7a64e52c8b.png"></img> |
+| <img src="https://user-images.githubusercontent.com/85361211/200834949-b0752fb1-af94-4952-8088-ba879da256be.png"> | </img> <img src="https://user-images.githubusercontent.com/85361211/200834951-4fa434cc-aaab-4eb1-8654-5423e283447f.png"></img> |
 
-| PDF To Images And Watermark |
-| :----: |
-|![PDF To Images And Watermark](https://user-images.githubusercontent.com/85361211/131718276-892c7f68-cc26-468e-ab96-6bb27990da21.png)|
+## 🤔Why I spent time recreating this app?
 
-| Images To PDF And Compress Images |
-| :----: |
-|![Images To PDF And Compress Images](https://user-images.githubusercontent.com/85361211/131718069-8226f365-5930-4686-8797-1353912cab37.png)|
+I've been making apps for a while now, and over that time, I've learned a lot. After learning about application development and flutter, this was my first project. I was very pleased with what I produced, although it was riddled with mistakes and flaws because I didn't know much at the time. However, I liked the concept behind it, so later, when I had some free time, I recreated it while taking all of the flaws from the old version into account, and it came out far better than the old one. And I have to admit that I learnt a lot more new knowledge during this process.
 
-| Modify Images |
-| :----: |
-|![Modify Images](https://user-images.githubusercontent.com/85361211/131718245-808cf627-54e8-4a50-bd15-428ea748f661.png)|
+Please be aware of the following things as well:-
+- This project utilises itext7 for various operations involving PDFs.
+- Since itext7 AGPL V3 License is used in this project, Files Tools are also licenced under this licence.
+- The project/app developer, the owner of the copyright, and the contributors are not accountable or liable for any damage resulting from this project/app.
 
-**Features that I could implement in near future:-**
+### Contribute
 
-- [ ] PDF features
-    - [ ] PDF to Word
-    - [ ] PDF to Excel
-    - [ ] PDF to Powerpoint
-- [ ] Zip features
-    - [ ] Zip extraction
-    - [ ] Zip creation
-- [ ] Word features
-    - [ ] Word to PDF
-    - [ ] Word to Image
-- [ ] Excel features
-    - [ ] Excel to PDF
-    - [ ] Excel to Image
-- [ ] Powerpoint features
-    - [ ] Powerpoint to PDF
-    - [ ] Powerpoint to Image
-
-### Contributing
-
-To contribute in this project you can reach to me at [Discord](https://discordapp.com/users/546260843902271515/) and we will discuss how you can contribute.
+If you wish to contribute to this project, I will be pleased. You can [email](mailto:0qs8e9yn@duck.com?subject=[GitHub]) me if you have any questions as well.
