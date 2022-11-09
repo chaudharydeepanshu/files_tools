@@ -6,6 +6,7 @@ import 'package:files_tools/ui/theme/app_theme_data.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -30,9 +31,15 @@ void main() async {
       options: DefaultFirebaseOptions.currentPlatform,
     );
 
-    FlutterNativeSplash.remove();
+    if (kDebugMode) {
+      // Force disable Crashlytics collection while doing every day development.
+      await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(false);
+      await FirebaseAnalytics.instance.setUserId(id: 'debugModeId');
+    }
 
     FlutterError.onError = crashlytics.recordFlutterFatalError;
+
+    FlutterNativeSplash.remove();
 
     runApp(const ProviderScope(child: MyApp()));
   },
