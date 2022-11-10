@@ -1,4 +1,4 @@
-# Project repository for Mini VTOP app
+# Project repository for Files Tools app
 
 [![wakatime](https://wakatime.com/badge/user/83f3b15d-49de-4c01-b8de-bbc132f11be1/project/3876495a-70a6-486e-b999-b6854d83bdc9.svg)](https://wakatime.com/badge/user/83f3b15d-49de-4c01-b8de-bbc132f11be1/project/3876495a-70a6-486e-b999-b6854d83bdc9)
 
