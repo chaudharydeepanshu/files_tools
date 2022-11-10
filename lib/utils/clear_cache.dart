@@ -3,16 +3,15 @@ import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 
 Future<void> clearCache({required String clearCacheCommandFrom}) async {
-  // await DefaultCacheManager().emptyCache();
-  var appDir = (await getTemporaryDirectory()).path;
-  Directory directory = Directory(appDir);
-  // await directory.delete(recursive: true);
+  Directory directory = await getTemporaryDirectory();
+  // var appCacheDirPath = directory.path;
   final List<FileSystemEntity> entities = await directory.list().toList();
   for (var entity in entities) {
     if (entity.existsSync()) {
       entity.deleteSync(recursive: true);
     }
   }
+
   log("Cache emptied by $clearCacheCommandFrom");
   // if (!(await Directory(appDir).exists())) {
   //   Directory(appDir).create();

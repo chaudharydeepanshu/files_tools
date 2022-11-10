@@ -141,10 +141,10 @@ packages:
     dependency: "direct main"
     description:
       name: extended_image
-      sha256: "6c729ac4c544575dfcc25b0112d0d11f1e53b2ffdd715749fc78d3b7af30ddb3"
+      sha256: bace1a269edf8d1fe634461ae751824842f95b3cd683c152defabb70487e6a31
       url: "https://pub.dev"
     source: hosted
-    version: "6.3.1"
+    version: "6.3.2"
   extended_image_library:
     dependency: transitive
     description:
@@ -548,10 +548,10 @@ packages:
     dependency: "direct main"
     description:
       name: pdf_manipulator
-      sha256: "86892f7c591fa1f57b3b64efe93aec28b04829abd73e81ad84f486833d0b7faa"
+      sha256: "231d1df432af90df1f2d60371b1e59e4714323650aff005cd6a9b34841e8beba"
       url: "https://pub.dev"
     source: hosted
-    version: "0.5.1"
+    version: "0.5.2"
   petitparser:
     dependency: transitive
     description:
@@ -849,10 +849,10 @@ packages:
     dependency: transitive
     description:
       name: xml
-      sha256: "1a235945f0831980f690291fe7744e440d73acb20fc18b923cea373f391a2837"
+      sha256: "979ee37d622dec6365e2efa4d906c37470995871fe9ae080d967e192d88286b5"
       url: "https://pub.dev"
     source: hosted
-    version: "6.2.0"
+    version: "6.2.2"
   yaml:
     dependency: transitive
     description:
