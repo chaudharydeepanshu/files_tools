@@ -95,7 +95,8 @@ class ToolsActionsState extends ChangeNotifier {
       DateTime currentDateTime = DateTime.now();
       _outputFiles = [
         OutputFileModel(
-            fileName: "Merged File $currentDateTime.pdf",
+            fileName: "Merged File $currentDateTime.pdf"
+                .replaceAll(RegExp("[\\\\/:*?\"<>|\\[\\]]"), "_"),
             fileDate: file.fileDate,
             fileTime: file.fileTime,
             fileSizeFormatBytes: file.fileSizeFormatBytes,
@@ -205,7 +206,8 @@ class ToolsActionsState extends ChangeNotifier {
         OutputFileModel file =
             await getOutputFileModelFromPath(path: result[i]);
         file = OutputFileModel(
-            fileName: outputFilesNames[i],
+            fileName: outputFilesNames[i]
+                .replaceAll(RegExp("[\\\\/:*?\"<>|\\[\\]]"), "_"),
             fileDate: file.fileDate,
             fileTime: file.fileTime,
             fileSizeFormatBytes: file.fileSizeFormatBytes,
@@ -266,7 +268,8 @@ class ToolsActionsState extends ChangeNotifier {
       outputFiles.clear();
       OutputFileModel file = await getOutputFileModelFromPath(path: result);
       file = OutputFileModel(
-          fileName: outputFileName,
+          fileName:
+              outputFileName.replaceAll(RegExp("[\\\\/:*?\"<>|\\[\\]]"), "_"),
           fileDate: file.fileDate,
           fileTime: file.fileTime,
           fileSizeFormatBytes: file.fileSizeFormatBytes,
@@ -312,7 +315,9 @@ class ToolsActionsState extends ChangeNotifier {
               scale: imageScaling,
               rotationAngle: page.pageRotationAngle);
           DateTime currentDateTime = DateTime.now();
-          File file = File('$tempPath/$currentDateTime$imageTypeExtension');
+          String tempFileName = "$currentDateTime$imageTypeExtension"
+              .replaceAll(RegExp("[\\\\/:*?\"<>|\\[\\]]"), "_");
+          File file = File('$tempPath/$tempFileName');
           await file.writeAsBytes(pageBytes!.buffer
               .asUint8List(pageBytes.offsetInBytes, pageBytes.lengthInBytes));
           result.add(file.path);
@@ -335,7 +340,8 @@ class ToolsActionsState extends ChangeNotifier {
         OutputFileModel file =
             await getOutputFileModelFromPath(path: result[i]);
         file = OutputFileModel(
-            fileName: outputFilesNames[i],
+            fileName: outputFilesNames[i]
+                .replaceAll(RegExp("[\\\\/:*?\"<>|\\[\\]]"), "_"),
             fileDate: file.fileDate,
             fileTime: file.fileTime,
             fileSizeFormatBytes: file.fileSizeFormatBytes,
@@ -395,7 +401,8 @@ class ToolsActionsState extends ChangeNotifier {
       outputFiles.clear();
       OutputFileModel file = await getOutputFileModelFromPath(path: result);
       file = OutputFileModel(
-          fileName: outputFileName,
+          fileName:
+              outputFileName.replaceAll(RegExp("[\\\\/:*?\"<>|\\[\\]]"), "_"),
           fileDate: file.fileDate,
           fileTime: file.fileTime,
           fileSizeFormatBytes: file.fileSizeFormatBytes,
@@ -462,7 +469,8 @@ class ToolsActionsState extends ChangeNotifier {
       outputFiles.clear();
       OutputFileModel file = await getOutputFileModelFromPath(path: result);
       file = OutputFileModel(
-          fileName: outputFileName,
+          fileName:
+              outputFileName.replaceAll(RegExp("[\\\\/:*?\"<>|\\[\\]]"), "_"),
           fileDate: file.fileDate,
           fileTime: file.fileTime,
           fileSizeFormatBytes: file.fileSizeFormatBytes,
@@ -547,7 +555,8 @@ class ToolsActionsState extends ChangeNotifier {
       outputFiles.clear();
       OutputFileModel file = await getOutputFileModelFromPath(path: result);
       file = OutputFileModel(
-          fileName: outputFileName,
+          fileName:
+              outputFileName.replaceAll(RegExp("[\\\\/:*?\"<>|\\[\\]]"), "_"),
           fileDate: file.fileDate,
           fileTime: file.fileTime,
           fileSizeFormatBytes: file.fileSizeFormatBytes,
@@ -606,7 +615,8 @@ class ToolsActionsState extends ChangeNotifier {
       outputFiles.clear();
       OutputFileModel file = await getOutputFileModelFromPath(path: result);
       file = OutputFileModel(
-          fileName: outputFileName,
+          fileName:
+              outputFileName.replaceAll(RegExp("[\\\\/:*?\"<>|\\[\\]]"), "_"),
           fileDate: file.fileDate,
           fileTime: file.fileTime,
           fileSizeFormatBytes: file.fileSizeFormatBytes,
@@ -648,7 +658,9 @@ class ToolsActionsState extends ChangeNotifier {
           String imageTypeExtension =
               getFileNameExtension(fileName: nameOfFile);
           DateTime currentDateTime = DateTime.now();
-          File file = File('$tempPath/$currentDateTime$imageTypeExtension');
+          String tempFileName = "$currentDateTime$imageTypeExtension"
+              .replaceAll(RegExp("[\\\\/:*?\"<>|\\[\\]]"), "_");
+          File file = File('$tempPath/$tempFileName');
           await file.writeAsBytes(imageData!.buffer
               .asUint8List(imageData.offsetInBytes, imageData.lengthInBytes));
           image = InputFileModel(
@@ -692,7 +704,8 @@ class ToolsActionsState extends ChangeNotifier {
         OutputFileModel file =
             await getOutputFileModelFromPath(path: result[i]);
         file = OutputFileModel(
-            fileName: outputFilesNames[i],
+            fileName: outputFilesNames[i]
+                .replaceAll(RegExp("[\\\\/:*?\"<>|\\[\\]]"), "_"),
             fileDate: file.fileDate,
             fileTime: file.fileTime,
             fileSizeFormatBytes: file.fileSizeFormatBytes,
@@ -745,7 +758,9 @@ class ToolsActionsState extends ChangeNotifier {
         String nameOfFile = image.fileName;
         String imageTypeExtension = getFileNameExtension(fileName: nameOfFile);
         DateTime currentDateTime = DateTime.now();
-        File file = File('$tempPath/$currentDateTime$imageTypeExtension');
+        String tempFileName = "$currentDateTime$imageTypeExtension"
+            .replaceAll(RegExp("[\\\\/:*?\"<>|\\[\\]]"), "_");
+        File file = File('$tempPath/$tempFileName');
         await file.writeAsBytes(compressedImageData.buffer.asUint8List(
             compressedImageData.offsetInBytes,
             compressedImageData.lengthInBytes));
@@ -774,7 +789,8 @@ class ToolsActionsState extends ChangeNotifier {
         OutputFileModel file =
             await getOutputFileModelFromPath(path: result[i]);
         file = OutputFileModel(
-            fileName: outputFilesNames[i],
+            fileName: outputFilesNames[i]
+                .replaceAll(RegExp("[\\\\/:*?\"<>|\\[\\]]"), "_"),
             fileDate: file.fileDate,
             fileTime: file.fileTime,
             fileSizeFormatBytes: file.fileSizeFormatBytes,
@@ -816,7 +832,9 @@ class ToolsActionsState extends ChangeNotifier {
           String imageTypeExtension =
               getFileNameExtension(fileName: nameOfFile);
           DateTime currentDateTime = DateTime.now();
-          File file = File('$tempPath/$currentDateTime$imageTypeExtension');
+          String tempFileName = "$currentDateTime$imageTypeExtension"
+              .replaceAll(RegExp("[\\\\/:*?\"<>|\\[\\]]"), "_");
+          File file = File('$tempPath/$tempFileName');
           await file.writeAsBytes(imageData!.buffer
               .asUint8List(imageData.offsetInBytes, imageData.lengthInBytes));
           result.add(file.path);
@@ -850,7 +868,8 @@ class ToolsActionsState extends ChangeNotifier {
         OutputFileModel file =
             await getOutputFileModelFromPath(path: result[i]);
         file = OutputFileModel(
-            fileName: outputFilesNames[i],
+            fileName: outputFilesNames[i]
+                .replaceAll(RegExp("[\\\\/:*?\"<>|\\[\\]]"), "_"),
             fileDate: file.fileDate,
             fileTime: file.fileTime,
             fileSizeFormatBytes: file.fileSizeFormatBytes,
