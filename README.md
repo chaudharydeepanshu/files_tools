@@ -1,8 +1,8 @@
-# Project repository for Mini VTOP app
+# Project repository for Files Tools app
 
 [![wakatime](https://wakatime.com/badge/user/83f3b15d-49de-4c01-b8de-bbc132f11be1/project/3876495a-70a6-486e-b999-b6854d83bdc9.svg)](https://wakatime.com/badge/user/83f3b15d-49de-4c01-b8de-bbc132f11be1/project/3876495a-70a6-486e-b999-b6854d83bdc9)
 
-<a href='https://play.google.com/store/apps/details?id=com.pureinfoapps.android.apps.filestools&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' width='300px'/></a>
+<a href='https://play.google.com/store/apps/details?id=com.pureinfoapps.android.apps.filestools&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' height='100px'/> </a> <a href='https://galaxy.store/github'><img alt='Get it on Galaxy Store' src='https://user-images.githubusercontent.com/85361211/201008703-69c34b6e-d2af-4df2-9a6d-8c32cdf06670.png' height='100px'/></a> </a> <a href='https://www.amazon.com/gp/product/B09DGGZ75W'><img alt='Get it on Amazon Store' src='https://user-images.githubusercontent.com/85361211/201009025-2b4b4324-4527-4645-92af-5c8b36178269.png' height='100px'/></a>
 
 **Note: "Master" branch will be developed and maintained moving forward. It was rewritten from scratch due to the shortcomings in "V1".**
 
