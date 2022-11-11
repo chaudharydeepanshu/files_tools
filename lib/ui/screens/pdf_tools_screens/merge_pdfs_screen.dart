@@ -61,7 +61,7 @@ class _MergePDFsPageState extends State<MergePDFsPage> {
                     selectFileType: SelectFileType.multiple,
                     files: watchToolScreenStateProviderValue.selectedFiles,
                     filePickerParams: FilePickerParams(
-                      copyFileToCacheDir: false,
+                      getCachedFilePath: false,
                       pickerType: PickerType.file,
                       enableMultipleSelection: true,
                       mimeTypesFilter: ["application/pdf"],

@@ -60,7 +60,7 @@ class _EncryptPDFPageState extends State<EncryptPDFPage> {
                     selectFileType: SelectFileType.single,
                     files: watchToolScreenStateProviderValue.selectedFiles,
                     filePickerParams: FilePickerParams(
-                      copyFileToCacheDir: false,
+                      getCachedFilePath: false,
                       pickerType: PickerType.file,
                       enableMultipleSelection: false,
                       mimeTypesFilter: ["application/pdf"],

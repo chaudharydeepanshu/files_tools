@@ -49,7 +49,8 @@ class ToolScreenState extends ChangeNotifier {
     List<InputFileModel> files = [];
     if (result != null && result.isNotEmpty) {
       for (int i = 0; i < result.length; i++) {
-        InputFileModel file = await getInputFileModelFromUri(uri: result[i]);
+        InputFileModel file =
+            await getInputFileModelFromUri(filePathOrUri: result[i]);
         files.add(file);
       }
     }
@@ -141,7 +142,7 @@ class ToolScreenState extends ChangeNotifier {
     if (result != null && result.isNotEmpty) {
       for (int i = 0; i < result.length; i++) {
         InputFileModel file =
-            await getInputFileModelFromUri(path: result[i].path);
+            await getInputFileModelFromUri(filePathOrUri: result[i].path);
         files.add(file);
       }
     }
@@ -272,16 +273,11 @@ Future<List<InputFileModel>> imagesFiltering(
 }
 
 Future<InputFileModel> getInputFileModelFromUri(
-    {String? uri, String? path}) async {
+    {required String filePathOrUri}) async {
   InputFileModel file;
   FileMetadata fileMetadata;
-  if (uri != null) {
-    fileMetadata = await PickOrSave()
-        .fileMetaData(params: FileMetadataParams(sourceFileUri: uri));
-  } else {
-    fileMetadata = await PickOrSave()
-        .fileMetaData(params: FileMetadataParams(sourceFilePath: path));
-  }
+  fileMetadata = await PickOrSave()
+      .fileMetaData(params: FileMetadataParams(filePath: filePathOrUri));
   final String fileName = fileMetadata.displayName ?? "Unknown";
   final DateTime? lastModifiedDateTime;
   if (fileMetadata.lastModified != null &&
@@ -310,6 +306,6 @@ Future<InputFileModel> getInputFileModelFromUri(
       fileTime: fileTime,
       fileSizeFormatBytes: fileSizeFormatBytes,
       fileSizeBytes: fileSizeBytes,
-      fileUri: uri ?? path!);
+      fileUri: filePathOrUri);
   return file;
 }

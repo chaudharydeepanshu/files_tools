@@ -16,7 +16,8 @@ class FileTile extends StatelessWidget {
       required this.fileDate,
       this.filePath,
       this.fileUri,
-      required this.fileSize})
+      required this.fileSize,
+      this.onRemove})
       : super(key: key);
 
   final String fileName;
@@ -25,6 +26,7 @@ class FileTile extends StatelessWidget {
   final String? filePath;
   final String? fileUri;
   final String fileSize;
+  final void Function()? onRemove;
 
   @override
   Widget build(BuildContext context) {
@@ -132,6 +134,23 @@ class FileTile extends StatelessWidget {
           ],
         ),
       ),
+      trailing: onRemove != null
+          ? IconButton(
+              style: IconButton.styleFrom(
+                  // minimumSize: Size.zero,
+                  // padding: EdgeInsets.zero,
+                  // tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  ),
+              onPressed: onRemove,
+              icon: const SizedBox(
+                height: double.infinity,
+                child: Icon(
+                  Icons.clear,
+                  size: 24,
+                ),
+              ),
+            )
+          : null,
     );
   }
 }

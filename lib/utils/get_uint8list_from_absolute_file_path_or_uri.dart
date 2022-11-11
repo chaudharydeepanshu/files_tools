@@ -15,8 +15,8 @@ Future<Uint8List> getBytesFromFilePathOrUri(
       throw Exception('File not found at file path.');
     }
   } else if (fileUri != null) {
-    String? path = await PickOrSave().cacheFilePathFromUri(
-        params: CacheFilePathFromUriParams(fileUri: fileUri));
+    String? path = await PickOrSave().cacheFilePathFromPath(
+        params: CacheFilePathFromPathParams(filePath: fileUri));
     if (path != null) {
       File tempFile = File(path);
       filedData = tempFile.readAsBytesSync();

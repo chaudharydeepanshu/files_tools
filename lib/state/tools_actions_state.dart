@@ -92,7 +92,8 @@ class ToolsActionsState extends ChangeNotifier {
       _errorMessage = e.toString();
     }
     if (result != null) {
-      OutputFileModel file = await getOutputFileModelFromPath(path: result);
+      OutputFileModel file =
+          await getOutputFileModelFromPath(filePathOrUri: result);
       DateTime currentDateTime = DateTime.now();
       String outputFileName =
           getCleanedUpFileName("Merged File $currentDateTime.pdf");
@@ -189,7 +190,7 @@ class ToolsActionsState extends ChangeNotifier {
       outputFiles.clear();
       for (int i = 0; i < result.length; i++) {
         OutputFileModel file =
-            await getOutputFileModelFromPath(path: result[i]);
+            await getOutputFileModelFromPath(filePathOrUri: result[i]);
         file = OutputFileModel(
             fileName: outputFilesNames[i],
             fileDate: file.fileDate,
@@ -250,7 +251,8 @@ class ToolsActionsState extends ChangeNotifier {
     }
     if (result != null && result.isNotEmpty) {
       outputFiles.clear();
-      OutputFileModel file = await getOutputFileModelFromPath(path: result);
+      OutputFileModel file =
+          await getOutputFileModelFromPath(filePathOrUri: result);
       file = OutputFileModel(
           fileName: outputFileName,
           fileDate: file.fileDate,
@@ -322,7 +324,7 @@ class ToolsActionsState extends ChangeNotifier {
       outputFiles.clear();
       for (int i = 0; i < result.length; i++) {
         OutputFileModel file =
-            await getOutputFileModelFromPath(path: result[i]);
+            await getOutputFileModelFromPath(filePathOrUri: result[i]);
         file = OutputFileModel(
             fileName: outputFilesNames[i],
             fileDate: file.fileDate,
@@ -382,7 +384,8 @@ class ToolsActionsState extends ChangeNotifier {
     }
     if (result != null && result.isNotEmpty) {
       outputFiles.clear();
-      OutputFileModel file = await getOutputFileModelFromPath(path: result);
+      OutputFileModel file =
+          await getOutputFileModelFromPath(filePathOrUri: result);
       file = OutputFileModel(
           fileName: outputFileName,
           fileDate: file.fileDate,
@@ -449,7 +452,8 @@ class ToolsActionsState extends ChangeNotifier {
     }
     if (result != null && result.isNotEmpty) {
       outputFiles.clear();
-      OutputFileModel file = await getOutputFileModelFromPath(path: result);
+      OutputFileModel file =
+          await getOutputFileModelFromPath(filePathOrUri: result);
       file = OutputFileModel(
           fileName: outputFileName,
           fileDate: file.fileDate,
@@ -534,7 +538,8 @@ class ToolsActionsState extends ChangeNotifier {
     }
     if (result != null && result.isNotEmpty) {
       outputFiles.clear();
-      OutputFileModel file = await getOutputFileModelFromPath(path: result);
+      OutputFileModel file =
+          await getOutputFileModelFromPath(filePathOrUri: result);
       file = OutputFileModel(
           fileName: outputFileName,
           fileDate: file.fileDate,
@@ -593,7 +598,8 @@ class ToolsActionsState extends ChangeNotifier {
     }
     if (result != null && result.isNotEmpty) {
       outputFiles.clear();
-      OutputFileModel file = await getOutputFileModelFromPath(path: result);
+      OutputFileModel file =
+          await getOutputFileModelFromPath(filePathOrUri: result);
       file = OutputFileModel(
           fileName: outputFileName,
           fileDate: file.fileDate,
@@ -682,7 +688,7 @@ class ToolsActionsState extends ChangeNotifier {
       outputFiles.clear();
       for (int i = 0; i < result.length; i++) {
         OutputFileModel file =
-            await getOutputFileModelFromPath(path: result[i]);
+            await getOutputFileModelFromPath(filePathOrUri: result[i]);
         file = OutputFileModel(
             fileName: outputFilesNames[i],
             fileDate: file.fileDate,
@@ -767,7 +773,7 @@ class ToolsActionsState extends ChangeNotifier {
       outputFiles.clear();
       for (int i = 0; i < result.length; i++) {
         OutputFileModel file =
-            await getOutputFileModelFromPath(path: result[i]);
+            await getOutputFileModelFromPath(filePathOrUri: result[i]);
         file = OutputFileModel(
             fileName: outputFilesNames[i],
             fileDate: file.fileDate,
@@ -846,7 +852,7 @@ class ToolsActionsState extends ChangeNotifier {
       outputFiles.clear();
       for (int i = 0; i < result.length; i++) {
         OutputFileModel file =
-            await getOutputFileModelFromPath(path: result[i]);
+            await getOutputFileModelFromPath(filePathOrUri: result[i]);
         file = OutputFileModel(
             fileName: outputFilesNames[i],
             fileDate: file.fileDate,
@@ -957,10 +963,10 @@ class ToolsActionsState extends ChangeNotifier {
 }
 
 Future<OutputFileModel> getOutputFileModelFromPath(
-    {required String path}) async {
+    {required String filePathOrUri}) async {
   OutputFileModel file;
   FileMetadata fileMetadata = await PickOrSave()
-      .fileMetaData(params: FileMetadataParams(sourceFilePath: path));
+      .fileMetaData(params: FileMetadataParams(filePath: filePathOrUri));
   final String fileName = fileMetadata.displayName ?? "Unknown";
   final DateTime? lastModifiedDateTime;
   if (fileMetadata.lastModified != null &&
@@ -987,12 +993,12 @@ Future<OutputFileModel> getOutputFileModelFromPath(
       fileTime: fileTime,
       fileSizeFormatBytes: fileSizeFormatBytes,
       fileSizeBytes: fileSizeBytes,
-      filePath: path);
+      filePath: filePathOrUri);
   return file;
 }
 
 String getFileNameWithoutExtension({required String fileName}) {
-  String fileExt = fileName.substring(fileName.lastIndexOf('.'));
+  String fileExt = getFileNameExtension(fileName: fileName);
   String fileNameWithoutExtension =
       fileName.substring(0, fileName.length - fileExt.length);
   return fileNameWithoutExtension;

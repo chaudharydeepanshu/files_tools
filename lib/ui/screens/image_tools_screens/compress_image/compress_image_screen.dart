@@ -60,7 +60,7 @@ class _CompressPDFPageState extends State<CompressImagePage> {
                     selectFileType: SelectFileType.both,
                     files: watchToolScreenStateProviderValue.selectedFiles,
                     filePickerParams: FilePickerParams(
-                      copyFileToCacheDir: false,
+                      getCachedFilePath: false,
                       pickerType: PickerType.file,
                       enableMultipleSelection: true,
                       mimeTypesFilter: [

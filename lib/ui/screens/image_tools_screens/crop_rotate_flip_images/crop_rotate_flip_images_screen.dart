@@ -65,7 +65,7 @@ class _CropRotateFlipImagesPageState extends State<CropRotateFlipImagesPage> {
                     selectFileType: SelectFileType.both,
                     files: watchToolScreenStateProviderValue.selectedFiles,
                     filePickerParams: FilePickerParams(
-                      copyFileToCacheDir: false,
+                      getCachedFilePath: false,
                       pickerType: PickerType.file,
                       enableMultipleSelection: true,
                       mimeTypesFilter: [

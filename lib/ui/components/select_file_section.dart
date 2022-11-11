@@ -98,12 +98,29 @@ class FilesSelected extends StatelessWidget {
         Flexible(
             child: files.length > 1
                 ? ReorderableFilesListView(files: files)
-                : FileTile(
-                    fileName: files[0].fileName,
-                    fileTime: files[0].fileTime,
-                    fileDate: files[0].fileDate,
-                    fileUri: files[0].fileUri,
-                    fileSize: files[0].fileSizeFormatBytes)),
+                : Consumer(
+                    builder:
+                        (BuildContext context, WidgetRef ref, Widget? child) {
+                      final ToolScreenState readToolScreenStateProviderValue =
+                          ref.watch(toolScreenStateProvider);
+
+                      return FileTile(
+                        fileName: files[0].fileName,
+                        fileTime: files[0].fileTime,
+                        fileDate: files[0].fileDate,
+                        fileUri: files[0].fileUri,
+                        fileSize: files[0].fileSizeFormatBytes,
+                        onRemove: () {
+                          final List<InputFileModel> selectedFiles =
+                              ref.watch(toolScreenStateProvider).selectedFiles;
+                          selectedFiles.remove(files[0]);
+                          readToolScreenStateProviderValue.updateSelectedFiles(
+                            files: selectedFiles,
+                          );
+                        },
+                      );
+                    },
+                  )),
         Consumer(
           builder: (BuildContext context, WidgetRef ref, Widget? child) {
             final bool isPickingFile =
@@ -348,12 +365,29 @@ class _ReorderableFilesListViewState extends State<ReorderableFilesListView> {
           children: [
             Material(
                 color: Colors.transparent,
-                child: FileTile(
-                    fileName: _files[index].fileName,
-                    fileTime: _files[index].fileTime,
-                    fileDate: _files[index].fileDate,
-                    fileUri: _files[index].fileUri,
-                    fileSize: _files[index].fileSizeFormatBytes)),
+                child: Consumer(
+                  builder:
+                      (BuildContext context, WidgetRef ref, Widget? child) {
+                    final ToolScreenState readToolScreenStateProviderValue =
+                        ref.watch(toolScreenStateProvider);
+
+                    return FileTile(
+                      fileName: _files[index].fileName,
+                      fileTime: _files[index].fileTime,
+                      fileDate: _files[index].fileDate,
+                      fileUri: _files[index].fileUri,
+                      fileSize: _files[index].fileSizeFormatBytes,
+                      onRemove: () {
+                        final List<InputFileModel> selectedFiles =
+                            ref.watch(toolScreenStateProvider).selectedFiles;
+                        selectedFiles.remove(_files[index]);
+                        readToolScreenStateProviderValue.updateSelectedFiles(
+                          files: selectedFiles,
+                        );
+                      },
+                    );
+                  },
+                )),
             index != _files.length - 1
                 ? const SizedBox(height: 10)
                 : const SizedBox(),
