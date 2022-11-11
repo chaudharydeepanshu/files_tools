@@ -198,7 +198,7 @@ class _CompressPDFActionCardState extends State<CompressPDFActionCard> {
                 // contentPadding: EdgeInsets.zero,
                 visualDensity: VisualDensity.compact,
                 title: const Text("Remove fonts from pdf"),
-                subtitle: const Text("Experimental"),
+                subtitle: const Text("Could make PDF text unreadable."),
                 value: isUnEmbedFonts,
                 onChanged: (bool? value) {
                   setState(() {
