@@ -213,12 +213,7 @@ class _CompressImageActionCardState extends State<CompressImageActionCard> {
                         watchToolsActionsStateProviderValue =
                         ref.watch(toolsActionsStateProvider);
 
-                    return ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        foregroundColor:
-                            Theme.of(context).colorScheme.onPrimary,
-                        backgroundColor: Theme.of(context).colorScheme.primary,
-                      ).copyWith(elevation: ButtonStyleButton.allOrNull(0.0)),
+                    return FilledButton.icon(
                       onPressed: () async {
                         double imageScale = compressionType ==
                                 CompressionTypes.less
@@ -270,7 +265,8 @@ class _CompressImageActionCardState extends State<CompressImageActionCard> {
                           );
                         }
                       },
-                      child: const Text("Compress Images"),
+                      icon: const Icon(Icons.check),
+                      label: const Text("Compress Images"),
                     );
                   },
                 ),

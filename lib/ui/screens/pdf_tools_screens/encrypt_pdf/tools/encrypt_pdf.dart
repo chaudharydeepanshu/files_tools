@@ -45,11 +45,11 @@ class _EncryptPDFActionCardState extends State<EncryptPDFActionCard> {
   bool allowCopy = false;
   bool allowModifyAnnotations = false;
   bool allowFillIn = false;
-  bool allowScreenReaders = true;
+  bool allowScreenReaders = false;
   bool allowAssembly = false;
   bool allowDegradedPrinting = false;
   bool encryptEmbeddedFilesOnly = false;
-  bool doNotEncryptMetadata = true;
+  bool doNotEncryptMetadata = false;
 
   final List<bool> isSelectedForEncryptionTypes = <bool>[
     false,
@@ -110,14 +110,14 @@ class _EncryptPDFActionCardState extends State<EncryptPDFActionCard> {
                     // The validator receives the text that the user has entered.
                     validator: (value) {
                       if ((value == null || value.isEmpty) &&
-                              allowPrinting == true ||
-                          allowModifyContents == true ||
-                          allowCopy == true ||
-                          allowModifyAnnotations == true ||
-                          allowFillIn == true ||
-                          allowScreenReaders == true ||
-                          allowAssembly == true ||
-                          allowDegradedPrinting == true) {
+                          (allowPrinting == true ||
+                              allowModifyContents == true ||
+                              allowCopy == true ||
+                              allowModifyAnnotations == true ||
+                              allowFillIn == true ||
+                              allowScreenReaders == true ||
+                              allowAssembly == true ||
+                              allowDegradedPrinting == true)) {
                         return 'Please enter owner Password for permissions.';
                       }
                       return null;
@@ -140,7 +140,7 @@ class _EncryptPDFActionCardState extends State<EncryptPDFActionCard> {
                     // The validator receives the text that the user has entered.
                     validator: (value) {
                       if ((value == null || value.isEmpty) &&
-                          ownerPasswordController.value.text.isEmpty) {
+                          (ownerPasswordController.value.text.isEmpty)) {
                         return 'Please provide at least user or owner Password';
                       }
                       return null;
@@ -328,12 +328,7 @@ class _EncryptPDFActionCardState extends State<EncryptPDFActionCard> {
                     final ToolsActionsState
                         watchToolsActionsStateProviderValue =
                         ref.watch(toolsActionsStateProvider);
-                    return ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        foregroundColor:
-                            Theme.of(context).colorScheme.onPrimary,
-                        backgroundColor: Theme.of(context).colorScheme.primary,
-                      ).copyWith(elevation: ButtonStyleButton.allOrNull(0.0)),
+                    return FilledButton.icon(
                       onPressed: () async {
                         if (_formKey.currentState!.validate()) {
                           watchToolsActionsStateProviderValue
@@ -364,7 +359,8 @@ class _EncryptPDFActionCardState extends State<EncryptPDFActionCard> {
                           );
                         }
                       },
-                      child: const Text("Encrypt PDF"),
+                      icon: const Icon(Icons.check),
+                      label: const Text("Encrypt PDF"),
                     );
                   },
                 ),

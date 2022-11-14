@@ -3,6 +3,7 @@ import 'package:files_tools/state/providers.dart';
 import 'package:files_tools/state/tools_actions_state.dart';
 import 'package:files_tools/ui/components/custom_snack_bar.dart';
 import 'package:files_tools/ui/components/input_output_list_tile.dart';
+import 'package:files_tools/ui/components/loading.dart';
 import 'package:files_tools/ui/components/view_error.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -44,14 +45,19 @@ class ResultPage extends StatelessWidget {
                   final bool actionErrorStatus = ref.watch(
                       toolsActionsStateProvider
                           .select((value) => value.actionErrorStatus));
+                  final String errorMessage = ref.watch(
+                      toolsActionsStateProvider
+                          .select((value) => value.errorMessage));
                   final ToolsActions currentActionType = ref.watch(
                       toolsActionsStateProvider
                           .select((value) => value.currentActionType));
                   if (isActionProcessing) {
                     return const ProcessingResult();
                   } else if (actionErrorStatus) {
-                    return const ProcessingError(
+                    return ShowError(
                       taskMessage: "Sorry, failed to complete the processing.",
+                      errorMessage: errorMessage,
+                      allowBack: true,
                     );
                   } else {
                     return SingleChildScrollView(
@@ -155,18 +161,7 @@ class ProcessingResult extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const SizedBox(
-            width: 150,
-            height: 100,
-            child: RiveAnimation.asset(
-              'assets/rive/finger_tapping.riv',
-              fit: BoxFit.contain,
-            ),
-          ),
-          Text(
-            'Processing please wait ...',
-            style: Theme.of(context).textTheme.bodySmall,
-          ),
+          const Loading(loadingText: 'Processing please wait ...'),
           Consumer(
             builder: (BuildContext context, WidgetRef ref, Widget? child) {
               return TextButton(
@@ -245,7 +240,7 @@ class SavingSingleFile extends StatelessWidget {
                 bool isSaveProcessing = ref.watch(toolsActionsStateProvider
                     .select((value) => value.isSaveProcessing));
 
-                return ElevatedButton(
+                return FilledButton.icon(
                   style: ElevatedButton.styleFrom(
                     foregroundColor: Theme.of(context).colorScheme.onPrimary,
                     backgroundColor: Theme.of(context).colorScheme.primary,
@@ -257,9 +252,10 @@ class SavingSingleFile extends StatelessWidget {
                             files: [file],
                           );
                         },
-                  child: isSaveProcessing
+                  label: isSaveProcessing
                       ? const Text("Saving File. Please wait")
                       : const Text("Save File"),
+                  icon: const Icon(Icons.save),
                 );
               },
             ),
@@ -339,7 +335,7 @@ class SavingMultipleFiles extends StatelessWidget {
                   bool isSaveProcessing = ref.watch(toolsActionsStateProvider
                       .select((value) => value.isSaveProcessing));
 
-                  return ElevatedButton(
+                  return FilledButton.icon(
                     style: ElevatedButton.styleFrom(
                       foregroundColor: Theme.of(context).colorScheme.onPrimary,
                       backgroundColor: Theme.of(context).colorScheme.primary,
@@ -351,9 +347,10 @@ class SavingMultipleFiles extends StatelessWidget {
                                   files: files,
                                 );
                           },
-                    child: isSaveProcessing
+                    label: isSaveProcessing
                         ? const Text("Saving Files. Please wait")
                         : const Text("Save Files"),
+                    icon: const Icon(Icons.save),
                   );
                 },
               ),
@@ -408,39 +405,6 @@ class NonReorderableFilesListView extends StatelessWidget {
         );
       },
       itemCount: files.length,
-    );
-  }
-}
-
-class ProcessingError extends StatelessWidget {
-  const ProcessingError({Key? key, required this.taskMessage})
-      : super(key: key);
-
-  final String taskMessage;
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Consumer(
-        builder: (BuildContext context, WidgetRef ref, Widget? child) {
-          String errorMessage =
-              ref.watch(toolsActionsStateProvider).errorMessage;
-
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ShowError(taskMessage: taskMessage, errorMessage: errorMessage),
-              FilledButton(
-                onPressed: () {
-                  ref.read(toolsActionsStateProvider).cancelAction();
-                  Navigator.pop(context);
-                },
-                child: const Text('Go back'),
-              ),
-            ],
-          );
-        },
-      ),
     );
   }
 }

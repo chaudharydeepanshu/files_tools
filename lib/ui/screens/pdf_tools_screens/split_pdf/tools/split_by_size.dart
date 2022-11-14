@@ -3,7 +3,7 @@ import 'dart:math' as math;
 import 'package:files_tools/models/file_model.dart';
 import 'package:files_tools/state/providers.dart';
 import 'package:files_tools/state/tools_actions_state.dart';
-import 'package:files_tools/ui/screens/components/tools_about_card.dart';
+import 'package:files_tools/ui/components/tools_about_card.dart';
 import 'package:files_tools/utils/decimal_text_input_formatter.dart';
 import 'package:files_tools/utils/format_bytes.dart';
 import 'package:flutter/material.dart';
@@ -166,14 +166,7 @@ class _SplitBySizeActionCardState extends State<SplitBySizeActionCard> {
                           final ToolsActionsState
                               watchToolsActionsStateProviderValue =
                               ref.watch(toolsActionsStateProvider);
-                          return ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              foregroundColor:
-                                  Theme.of(context).colorScheme.onPrimary,
-                              backgroundColor:
-                                  Theme.of(context).colorScheme.primary,
-                            ).copyWith(
-                                elevation: ButtonStyleButton.allOrNull(0.0)),
+                          return FilledButton.icon(
                             onPressed: () async {
                               if (_formKey.currentState!.validate()) {
                                 watchToolsActionsStateProviderValue
@@ -200,7 +193,8 @@ class _SplitBySizeActionCardState extends State<SplitBySizeActionCard> {
                                 );
                               }
                             },
-                            child: const Text("Split PDF"),
+                            icon: const Icon(Icons.check),
+                            label: const Text("Split PDF"),
                           );
                         },
                       ),

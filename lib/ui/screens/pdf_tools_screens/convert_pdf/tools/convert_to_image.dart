@@ -2,8 +2,8 @@ import 'package:files_tools/models/file_model.dart';
 import 'package:files_tools/models/pdf_page_model.dart';
 import 'package:files_tools/state/providers.dart';
 import 'package:files_tools/state/tools_actions_state.dart';
-import 'package:files_tools/ui/screens/components/pdf_page_small_bitmap_error.dart';
-import 'package:files_tools/ui/screens/components/pdf_page_small_bitmap_loading.dart';
+import 'package:files_tools/ui/components/loading.dart';
+import 'package:files_tools/ui/components/view_error.dart';
 import 'package:files_tools/utils/get_pdf_bitmaps.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -151,8 +151,7 @@ class _ConvertToImageState extends State<ConvertToImage> {
                   updatePdfPages(index: index);
                   if (pdfPages[index].pageErrorStatus) {
                     return GridElement(
-                        key: Key('$index'),
-                        child: const ErrorPageSmallBitmap());
+                        key: Key('$index'), child: const ErrorIndicator());
                   } else if (pdfPages[index].pageBytes != null) {
                     return GridElement(
                       key: Key('$index'),
@@ -186,8 +185,7 @@ class _ConvertToImageState extends State<ConvertToImage> {
                     );
                   } else {
                     return GridElement(
-                        key: Key('$index'),
-                        child: const LoadingPageSmallBitmap());
+                        key: Key('$index'), child: const LoadingIndicator());
                   }
                 },
               ),
@@ -443,7 +441,7 @@ class PageImageView extends StatelessWidget {
                               ? FittedBox(
                                   child: ImageChild(
                                       pageIndex: pageIndex, child: child))
-                              : const LoadingPageSmallBitmap(),
+                              : const LoadingIndicator(),
                         );
                       }
                     }),

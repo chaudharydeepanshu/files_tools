@@ -407,12 +407,7 @@ class _SplitBySizeActionCardState extends State<SplitBySizeActionCard> {
                         watchToolsActionsStateProviderValue =
                         ref.watch(toolsActionsStateProvider);
 
-                    return ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        foregroundColor:
-                            Theme.of(context).colorScheme.onPrimary,
-                        backgroundColor: Theme.of(context).colorScheme.primary,
-                      ).copyWith(elevation: ButtonStyleButton.allOrNull(0.0)),
+                    return FilledButton.icon(
                       onPressed: () async {
                         if (_formKey.currentState!.validate()) {
                           watchToolsActionsStateProviderValue
@@ -435,7 +430,8 @@ class _SplitBySizeActionCardState extends State<SplitBySizeActionCard> {
                           );
                         }
                       },
-                      child: const Text("Watermark PDF"),
+                      icon: const Icon(Icons.check),
+                      label: const Text("Watermark PDF"),
                     );
                   },
                 ),

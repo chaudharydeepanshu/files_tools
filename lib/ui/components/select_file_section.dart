@@ -176,11 +176,7 @@ class FilesSelected extends StatelessWidget {
               children: [
                 if (selectFileType == SelectFileType.multiple ||
                     selectFileType == SelectFileType.both)
-                  ElevatedButton.icon(
-                    style: ElevatedButton.styleFrom(
-                      foregroundColor: Theme.of(context).colorScheme.onPrimary,
-                      backgroundColor: Theme.of(context).colorScheme.primary,
-                    ).copyWith(elevation: ButtonStyleButton.allOrNull(0.0)),
+                  FilledButton.tonalIcon(
                     onPressed: !isPickingFile
                         ? () {
                             // Removing any snack bar or keyboard
@@ -198,11 +194,7 @@ class FilesSelected extends StatelessWidget {
                     label: const Text('Select More'),
                     icon: const Icon(Icons.upload_file),
                   ),
-                ElevatedButton.icon(
-                  style: ElevatedButton.styleFrom(
-                    foregroundColor: Theme.of(context).colorScheme.onPrimary,
-                    backgroundColor: Theme.of(context).colorScheme.primary,
-                  ).copyWith(elevation: ButtonStyleButton.allOrNull(0.0)),
+                FilledButton.tonalIcon(
                   onPressed: !isPickingFile
                       ? () {
                           // Removing any snack bar or keyboard
@@ -267,11 +259,7 @@ class NoFilesSelected extends StatelessWidget {
                 ref.watch(toolScreenStateProvider);
             final bool isPickingFile =
                 ref.watch(toolScreenStateProvider).isPickingFile;
-            return ElevatedButton.icon(
-              style: ElevatedButton.styleFrom(
-                foregroundColor: Theme.of(context).colorScheme.onPrimary,
-                backgroundColor: Theme.of(context).colorScheme.primary,
-              ).copyWith(elevation: ButtonStyleButton.allOrNull(0.0)),
+            return FilledButton.icon(
               onPressed: !isPickingFile
                   ? () {
                       // Removing any snack bar or keyboard

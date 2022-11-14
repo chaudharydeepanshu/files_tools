@@ -84,12 +84,7 @@ class _DecryptPDFActionCardState extends State<DecryptPDFActionCard> {
                     final ToolsActionsState
                         watchToolsActionsStateProviderValue =
                         ref.watch(toolsActionsStateProvider);
-                    return ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        foregroundColor:
-                            Theme.of(context).colorScheme.onPrimary,
-                        backgroundColor: Theme.of(context).colorScheme.primary,
-                      ).copyWith(elevation: ButtonStyleButton.allOrNull(0.0)),
+                    return FilledButton.icon(
                       onPressed: () async {
                         if (_formKey.currentState!.validate()) {
                           watchToolsActionsStateProviderValue
@@ -103,7 +98,8 @@ class _DecryptPDFActionCardState extends State<DecryptPDFActionCard> {
                           );
                         }
                       },
-                      child: const Text("Decrypt PDF"),
+                      icon: const Icon(Icons.check),
+                      label: const Text("Decrypt PDF"),
                     );
                   },
                 ),

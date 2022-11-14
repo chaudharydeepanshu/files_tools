@@ -182,13 +182,7 @@ class AppAuthor extends StatelessWidget {
                       style: Theme.of(context).textTheme.bodySmall,
                       textAlign: TextAlign.center,
                     ),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        foregroundColor:
-                            Theme.of(context).colorScheme.onSecondaryContainer,
-                        backgroundColor:
-                            Theme.of(context).colorScheme.secondaryContainer,
-                      ).copyWith(elevation: ButtonStyleButton.allOrNull(0.0)),
+                    FilledButton.tonal(
                       onPressed: () {
                         urlLauncher(authorGithubUrl);
                       },
@@ -217,13 +211,7 @@ class AppAuthor extends StatelessWidget {
                       style: Theme.of(context).textTheme.bodySmall,
                       textAlign: TextAlign.center,
                     ),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        foregroundColor:
-                            Theme.of(context).colorScheme.onSecondaryContainer,
-                        backgroundColor:
-                            Theme.of(context).colorScheme.secondaryContainer,
-                      ).copyWith(elevation: ButtonStyleButton.allOrNull(0.0)),
+                    FilledButton.tonal(
                       onPressed: () {
                         urlLauncher(sourceCodeUrl);
                       },

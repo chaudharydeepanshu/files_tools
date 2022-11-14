@@ -134,12 +134,8 @@ class GridViewCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
+    return FilledButton.tonal(
       clipBehavior: Clip.antiAlias,
-      style: ElevatedButton.styleFrom(
-        foregroundColor: Theme.of(context).colorScheme.onSecondaryContainer,
-        backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
-      ).copyWith(elevation: ButtonStyleButton.allOrNull(0.0)),
       onPressed: gridCardDetail.cardOnTap,
       child: Stack(
         alignment: AlignmentDirectional.topCenter,

@@ -13,10 +13,10 @@ packages:
     dependency: transitive
     description:
       name: archive
-      sha256: "3ad98253a850fc6d1bdbfd988f5f9b8b006ad73cdf2e3a37aa23391fb411253d"
+      sha256: "76d919e063a09d19d61f99463a20dba1c1e8d0bc3a5eba91bac2853fac095373"
       url: "https://pub.dev"
     source: hosted
-    version: "3.3.3"
+    version: "3.3.4"
   args:
     dependency: transitive
     description:
@@ -380,10 +380,26 @@ packages:
     dependency: "direct main"
     description:
       name: image_editor
-      sha256: "60690d9f13e4e8cdece4b3e0268bcd043e2eaa5621de946e9b34a5fabf58f36e"
+      sha256: "9877a057b0cd2fafcd9a3dce5279948bd850d53ce76231a83c9678a2c9f186e9"
       url: "https://pub.dev"
     source: hosted
-    version: "1.1.0"
+    version: "1.3.0"
+  image_editor_common:
+    dependency: transitive
+    description:
+      name: image_editor_common
+      sha256: "07fc9bcc16918a8230e132b9d9a9f66bb1cef3ac99f5e2939cf2ad7a6775b511"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.1"
+  image_editor_platform_interface:
+    dependency: transitive
+    description:
+      name: image_editor_platform_interface
+      sha256: "15d4b5bfd22d6a3296c3c9f6d81c0fa2ff3ff2cbac179b32514525a152ca24f4"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0"
   image_picker:
     dependency: "direct main"
     description:
@@ -468,10 +484,10 @@ packages:
     dependency: "direct main"
     description:
       name: package_info_plus
-      sha256: "2d01bd767b987f18e06cc44c529b4e18258f512fbb27507d8a7d7d6ce6f8d566"
+      sha256: f619162573096d428ccde2e33f92e05b5a179cd6f0e3120c1005f181bee8ed16
       url: "https://pub.dev"
     source: hosted
-    version: "3.0.1"
+    version: "3.0.2"
   package_info_plus_platform_interface:
     dependency: transitive
     description:
@@ -548,18 +564,18 @@ packages:
     dependency: "direct main"
     description:
       name: pdf_bitmaps
-      sha256: b97271d0aa7df1e1e963f572976e877c6e5b20227bf92aa63c02b2c55be80747
+      sha256: "962fadb96d25a33bdab938d7e1a3c4496d83e11bfbaeace2019e39b4a4cebd81"
       url: "https://pub.dev"
     source: hosted
-    version: "0.2.5"
+    version: "0.3.2"
   pdf_manipulator:
     dependency: "direct main"
     description:
       name: pdf_manipulator
-      sha256: "231d1df432af90df1f2d60371b1e59e4714323650aff005cd6a9b34841e8beba"
+      sha256: fe811279e72d4cced01b863000b5a6a22047d67e07fba1b6b8d12f065ab61995
       url: "https://pub.dev"
     source: hosted
-    version: "0.5.2"
+    version: "0.5.5"
   petitparser:
     dependency: transitive
     description:
@@ -572,10 +588,10 @@ packages:
     dependency: "direct main"
     description:
       name: pick_or_save
-      sha256: "091bf639c6af2f2a4862ee951a00a6171882b4fb50408dab4bec32e3f1b429cd"
+      sha256: dc5f304a038bdda22c82b1e86cf6dc523850bb6f520744c5e594b4f104cb9314
       url: "https://pub.dev"
     source: hosted
-    version: "2.1.3"
+    version: "2.1.8"
   platform:
     dependency: transitive
     description:

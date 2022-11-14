@@ -2,8 +2,8 @@ import 'dart:developer';
 
 import 'package:files_tools/models/file_model.dart';
 import 'package:files_tools/state/tools_actions_state.dart';
-import 'package:files_tools/ui/screens/components/tools_error_body.dart';
-import 'package:files_tools/ui/screens/components/tools_processing_body.dart';
+import 'package:files_tools/ui/components/loading.dart';
+import 'package:files_tools/ui/components/view_error.dart';
 import 'package:files_tools/ui/screens/pdf_tools_screens/compress_pdf/tools/compress_pdf.dart';
 import 'package:files_tools/utils/get_pdf_bitmaps.dart';
 import 'package:flutter/material.dart';
@@ -52,14 +52,20 @@ class _CompressPDFToolsPageState extends State<CompressPDFToolsPage> {
           builder: (context, AsyncSnapshot<bool> snapshot) {
             switch (snapshot.connectionState) {
               case ConnectionState.waiting:
-                return const ProcessingBody();
+                return const Loading(
+                    loadingText: 'Getting pdf info please wait ...');
               default:
                 if (snapshot.hasError) {
                   log(snapshot.error.toString());
-                  return const ErrorBody();
+                  return ShowError(
+                      taskMessage: "Sorry, failed to process the pdf.",
+                      errorMessage: snapshot.error.toString(),
+                      allowBack: true);
                 } else if (pdfPageCount == null) {
-                  log(snapshot.error.toString());
-                  return const ErrorBody();
+                  return const ShowError(
+                      taskMessage: "Sorry, failed to process the pdf.",
+                      errorMessage: "PDF page count is null",
+                      allowBack: true);
                 } else {
                   return CompressPDFToolsBody(
                       actionType: widget.arguments.actionType,

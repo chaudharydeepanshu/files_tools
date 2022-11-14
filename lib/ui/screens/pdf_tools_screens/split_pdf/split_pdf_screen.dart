@@ -73,7 +73,7 @@ class _SplitPDFPageState extends State<SplitPDFPage> {
                   ToolActionsCard(
                     toolActions: [
                       ToolActionsModel(
-                        actionText: "Extract PDF by page selection",
+                        actionText: "Extract PDF pages by page selection",
                         actionOnTap: selectedFiles.length == 1
                             ? () {
                                 // Removing any snack bar or keyboard
@@ -153,7 +153,7 @@ class _SplitPDFPageState extends State<SplitPDFPage> {
                             : null,
                       ),
                       ToolActionsModel(
-                        actionText: "Extract PDF by page range",
+                        actionText: "Extract PDF pages by page range",
                         actionOnTap: selectedFiles.length == 1
                             ? () {
                                 // Removing any snack bar or keyboard

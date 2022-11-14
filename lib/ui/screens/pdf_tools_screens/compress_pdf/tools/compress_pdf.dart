@@ -216,12 +216,7 @@ class _CompressPDFActionCardState extends State<CompressPDFActionCard> {
                         watchToolsActionsStateProviderValue =
                         ref.watch(toolsActionsStateProvider);
 
-                    return ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        foregroundColor:
-                            Theme.of(context).colorScheme.onPrimary,
-                        backgroundColor: Theme.of(context).colorScheme.primary,
-                      ).copyWith(elevation: ButtonStyleButton.allOrNull(0.0)),
+                    return FilledButton.icon(
                       onPressed: () async {
                         double imageScale = compressionType ==
                                 CompressionTypes.less
@@ -274,7 +269,8 @@ class _CompressPDFActionCardState extends State<CompressPDFActionCard> {
                           );
                         }
                       },
-                      child: const Text("Compress PDF"),
+                      icon: const Icon(Icons.check),
+                      label: const Text("Compress PDF"),
                     );
                   },
                 ),

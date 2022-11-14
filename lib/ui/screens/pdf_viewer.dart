@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:files_tools/models/pdf_page_model.dart';
+import 'package:files_tools/ui/components/loading.dart';
 import 'package:files_tools/ui/components/view_error.dart';
 import 'package:files_tools/utils/get_pdf_bitmaps.dart';
 import 'package:flutter/material.dart';
@@ -230,9 +231,7 @@ class LoadingPage extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const CircularProgressIndicator(),
-        const SizedBox(height: 16),
-        Text("Loading page...", style: Theme.of(context).textTheme.bodySmall),
+        const Loading(loadingText: "Loading page..."),
         const SizedBox(height: 16),
         PageNumber(pageIndex: pageIndex),
       ],
@@ -249,7 +248,7 @@ class LoadingPdf extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const CircularProgressIndicator(),
+          const Loading(loadingText: "Loading page..."),
           const SizedBox(height: 16),
           Text("Loading pdf...", style: Theme.of(context).textTheme.bodySmall),
         ],

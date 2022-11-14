@@ -12,6 +12,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pick_or_save/pick_or_save.dart';
 import 'package:files_tools/route/route.dart' as route;
 
+import '../../../components/tools_about_card.dart';
+
 class CompressImagePage extends StatefulWidget {
   const CompressImagePage({Key? key}) : super(key: key);
 
@@ -94,6 +96,11 @@ class _CompressPDFPageState extends State<CompressImagePage> {
                             : null,
                       ),
                     ],
+                  ),
+                  const SizedBox(height: 16),
+                  const AboutActionCard(
+                    aboutText: 'Currently, we only compress JPG, PNG and WebP.',
+                    exampleText: "",
                   ),
                 ],
               );

@@ -24,11 +24,7 @@ class ToolActionsCard extends StatelessWidget {
                 physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 itemBuilder: (BuildContext context, int index) {
-                  return ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      foregroundColor: Theme.of(context).colorScheme.onPrimary,
-                      backgroundColor: Theme.of(context).colorScheme.primary,
-                    ).copyWith(elevation: ButtonStyleButton.allOrNull(0.0)),
+                  return FilledButton(
                     onPressed: toolActions[index].actionOnTap,
                     child: Text(toolActions[index].actionText),
                   );
