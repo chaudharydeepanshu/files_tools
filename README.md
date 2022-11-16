@@ -47,9 +47,9 @@ Please give the project a star if you liked the app or idea behind it.
 
 |  |  |
 | -------------- | -------------- |
-| <img src="https://user-images.githubusercontent.com/85361211/200834929-0c4ae643-711f-49a1-a396-f8d062ed2d0c.png"> | </img> <img src="https://user-images.githubusercontent.com/85361211/200834937-b12fb5f1-f1f9-432a-bb4a-bb7f56a691af.png"></img> |
-| <img src="https://user-images.githubusercontent.com/85361211/200834942-e6f015af-18ab-4ffc-a582-19ecc1937bfb.png"> | </img> <img src="https://user-images.githubusercontent.com/85361211/200834945-6403f359-f33a-4b8f-9ef1-bb7a64e52c8b.png"></img> |
-| <img src="https://user-images.githubusercontent.com/85361211/200834949-b0752fb1-af94-4952-8088-ba879da256be.png"> | </img> <img src="https://user-images.githubusercontent.com/85361211/200834951-4fa434cc-aaab-4eb1-8654-5423e283447f.png"></img> |
+| <img src="https://user-images.githubusercontent.com/85361211/201923566-3f77f7f3-cea7-4d73-af5a-ec364df73559.png"> | </img> <img src="https://user-images.githubusercontent.com/85361211/201923675-0e4dd753-2491-49f3-ae07-fc57a5e4fb95.png"></img> |
+| <img src="https://user-images.githubusercontent.com/85361211/201923699-6d7f7e77-c25e-486b-8809-56a440475aee.png"> | </img> <img src="https://user-images.githubusercontent.com/85361211/201923720-4ea88067-442d-4573-9229-9e7ca29c7cb8.png"></img> |
+| <img src="https://user-images.githubusercontent.com/85361211/201923745-c66447aa-ce69-4427-9d27-55b87af9e918.png"> | </img> <img src="https://user-images.githubusercontent.com/85361211/201923766-22024bef-21a2-40c0-bb57-bd0aa370fc6e.png"></img> |
 
 ## 🤔Why I spent time recreating this app?
 
