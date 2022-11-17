@@ -5,6 +5,7 @@ import 'package:files_tools/state/tools_actions_state.dart';
 import 'package:files_tools/ui/components/levitating_options_bar.dart';
 import 'package:files_tools/ui/components/loading.dart';
 import 'package:files_tools/ui/components/view_error.dart';
+import 'package:files_tools/utils/decimal_text_input_formatter.dart';
 import 'package:files_tools/utils/get_pdf_bitmaps.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -52,7 +53,7 @@ class _ConvertToImageState extends State<ConvertToImage> {
   bool? isSelectAllEnabled = true;
 
   TextEditingController pdfPagesQualityController =
-      TextEditingController(text: '0.7');
+      TextEditingController(text: '2');
 
   final _formKey = GlobalKey<FormState>();
 
@@ -115,11 +116,12 @@ class _ConvertToImageState extends State<ConvertToImage> {
                 filled: true,
                 labelText: 'Enter Image Scaling',
                 // isDense: true,
-                helperText: 'Example - 0.7 (Recommended)',
+                helperText: 'Higher scaling = Higher quality + More time',
                 // enabledBorder: const UnderlineInputBorder(),
               ),
-              keyboardType: TextInputType.number,
-              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+              keyboardType:
+                  const TextInputType.numberWithOptions(decimal: true),
+              inputFormatters: [DecimalTextInputFormatter(decimalRange: 2)],
               autovalidateMode: AutovalidateMode.onUserInteraction,
               // The validator receives the text that the user has entered.
               validator: (value) {
