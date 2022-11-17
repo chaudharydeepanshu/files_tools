@@ -33,6 +33,9 @@ class _ImageViewerState extends State<ImageViewer> {
     super.initState();
   }
 
+  final TransformationController _transformationController =
+      TransformationController();
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -64,10 +67,49 @@ class _ImageViewerState extends State<ImageViewer> {
                     errorMessage: snapshot.error.toString(),
                   );
                 } else {
-                  return Center(
-                    child: ImageView(
-                      imageData: imageData!,
-                    ),
+                  return Column(
+                    children: [
+                      Expanded(
+                        child: Stack(
+                          fit: StackFit.passthrough,
+                          alignment: Alignment.center,
+                          children: [
+                            ImageView(
+                              imageData: imageData!,
+                              frameBuilder: ((context, child, frame,
+                                  wasSynchronouslyLoaded) {
+                                if (wasSynchronouslyLoaded) {
+                                  return child;
+                                } else {
+                                  return AnimatedSwitcher(
+                                    duration: const Duration(milliseconds: 200),
+                                    child: frame != null
+                                        ? child
+                                        : const Loading(
+                                            loadingText: "Loading image..."),
+                                  );
+                                }
+                              }),
+                              transformationController:
+                                  _transformationController,
+                            ),
+                            Align(
+                              alignment: Alignment.topLeft,
+                              child: IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    _transformationController.value =
+                                        Matrix4.identity();
+                                  });
+                                },
+                                tooltip: 'Zoom out',
+                                icon: const Icon(Icons.zoom_out),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
                   );
                 }
             }
@@ -87,34 +129,56 @@ class ImageViewerArguments {
 }
 
 class ImageView extends StatelessWidget {
-  const ImageView({Key? key, required this.imageData}) : super(key: key);
+  const ImageView(
+      {Key? key,
+      required this.imageData,
+      this.frameBuilder,
+      this.transformationController})
+      : super(key: key);
 
   final Uint8List imageData;
+  final Widget Function(BuildContext, Widget, int?, bool)? frameBuilder;
+  final TransformationController? transformationController;
 
   @override
   Widget build(BuildContext context) {
-    return Image.memory(
-      imageData,
-      frameBuilder: ((context, child, frame, wasSynchronouslyLoaded) {
-        if (wasSynchronouslyLoaded) {
-          return child;
-        } else {
-          return AnimatedSwitcher(
-            duration: const Duration(milliseconds: 200),
-            child: frame != null
-                ? child
-                : const Loading(loadingText: "Loading image..."),
-          );
-        }
+    return InteractiveViewer(
+      panEnabled: true,
+      minScale: 1,
+      maxScale: 5,
+      transformationController: transformationController,
+      child: Image.memory(imageData,
+          frameBuilder: frameBuilder,
+          fit: BoxFit.contain, errorBuilder: (context, error, stackTrace) {
+        return ShowError(
+          taskMessage: 'Sorry! Failed to show image',
+          errorMessage: error.toString(),
+        );
       }),
-      fit: BoxFit.contain,
     );
-    //   ExtendedImage.memory(
-    //   imageData,
-    //   fit: BoxFit.contain,
-    //   mode: ExtendedImageMode.gesture,
-    //   enableLoadState: true,
-    //   cacheRawData: true,
-    // );
+//   ExtendedImage.memory(
+//       imageData,
+//       fit: BoxFit.contain,
+//       mode: ExtendedImageMode.gesture,
+//       enableLoadState: true,
+//       cacheRawData: true,
+//       loadStateChanged: (ExtendedImageState state) {
+//         switch (state.extendedImageLoadState) {
+//           case LoadState.loading:
+//             return const Loading(
+//               loadingText: 'Loading image...',
+//             );
+//           case LoadState.failed:
+//             return const ShowError(
+//               taskMessage: 'Sorry! Failed to show image',
+//               errorMessage: 'Image viewer failed to load image',
+//             );
+//           case LoadState.completed:
+//             return null;
+//         }
+//       },
+//       clearMemoryCacheWhenDispose: true,
+//       clearMemoryCacheIfFailed: true,
+//     );
   }
 }

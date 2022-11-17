@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:files_tools/models/pdf_page_model.dart';
 import 'package:files_tools/ui/components/loading.dart';
 import 'package:files_tools/ui/components/view_error.dart';
+import 'package:files_tools/ui/screens/image_viewer.dart';
 import 'package:files_tools/utils/get_pdf_bitmaps.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -34,6 +35,7 @@ class _PdfViewerState extends State<PdfViewer> {
         index: index,
         pdfPath: widget.arguments.filePathOrUri,
         pdfPageModel: pdfPages[index],
+        scale: 2,
       );
       if (mounted) {
         setState(() {
@@ -116,15 +118,17 @@ class _PdfViewerState extends State<PdfViewer> {
                       } else if (pdfPages[index].pageBytes != null) {
                         return PDFPageView(
                           viewportFraction: pageController.viewportFraction,
-                          page: PageImageView(
+                          imageView: PageImageView(
                             bytes: pdfPages[index].pageBytes!,
-                            pageIndex: index,
                           ),
+                          pageIndex: index,
                         );
                       } else {
                         return PDFPageView(
                           viewportFraction: pageController.viewportFraction,
-                          page: LoadingPage(pageIndex: index),
+                          imageView:
+                              const Loading(loadingText: "Loading page..."),
+                          pageIndex: index,
                         );
                       }
                     },
@@ -146,68 +150,70 @@ class PdfViewerArguments {
   PdfViewerArguments({required this.fileName, required this.filePathOrUri});
 }
 
-class PageImageView extends StatelessWidget {
-  const PageImageView({Key? key, required this.bytes, required this.pageIndex})
-      : super(key: key);
+class PageImageView extends StatefulWidget {
+  const PageImageView({Key? key, required this.bytes}) : super(key: key);
 
   final Uint8List bytes;
 
-  final int pageIndex;
-
   @override
-  Widget build(BuildContext context) {
-    return Image.memory(
-      bytes,
-      frameBuilder: ((context, child, frame, wasSynchronouslyLoaded) {
-        if (wasSynchronouslyLoaded) {
-          return ImageChild(pageIndex: pageIndex, child: child);
-        } else {
-          return AnimatedSwitcher(
-            duration: const Duration(milliseconds: 200),
-            child: frame != null
-                ? ImageChild(pageIndex: pageIndex, child: child)
-                : LoadingPage(pageIndex: pageIndex),
-          );
-        }
-      }),
-      fit: BoxFit.contain,
-    );
-  }
+  State<PageImageView> createState() => _PageImageViewState();
 }
 
-class ImageChild extends StatelessWidget {
-  const ImageChild({Key? key, required this.child, required this.pageIndex})
-      : super(key: key);
-
-  final Widget child;
-
-  final int pageIndex;
+class _PageImageViewState extends State<PageImageView> {
+  final TransformationController _transformationController =
+      TransformationController();
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Expanded(child: child),
-          const SizedBox(height: 8),
-          PageNumber(pageIndex: pageIndex),
-        ],
-      ),
+    return Stack(
+      fit: StackFit.passthrough,
+      children: [
+        ImageView(
+          imageData: widget.bytes,
+          frameBuilder: ((context, child, frame, wasSynchronouslyLoaded) {
+            if (wasSynchronouslyLoaded) {
+              return child;
+            } else {
+              return AnimatedSwitcher(
+                duration: const Duration(milliseconds: 200),
+                child: frame != null
+                    ? child
+                    : const Loading(loadingText: "Loading page..."),
+              );
+            }
+          }),
+          transformationController: _transformationController,
+        ),
+        Align(
+          alignment: Alignment.topLeft,
+          child: IconButton(
+            onPressed: () {
+              setState(() {
+                _transformationController.value = Matrix4.identity();
+              });
+            },
+            tooltip: 'Zoom out',
+            icon: const Icon(Icons.zoom_out),
+          ),
+        ),
+      ],
     );
   }
 }
 
 class PDFPageView extends StatelessWidget {
   const PDFPageView(
-      {Key? key, required this.viewportFraction, required this.page})
+      {Key? key,
+      required this.viewportFraction,
+      required this.imageView,
+      required this.pageIndex})
       : super(key: key);
 
   final double viewportFraction;
 
-  final Widget page;
+  final Widget imageView;
+
+  final int pageIndex;
 
   @override
   Widget build(BuildContext context) {
@@ -215,26 +221,17 @@ class PDFPageView extends StatelessWidget {
       heightFactor: 1 / viewportFraction,
       child: Container(
         color: Theme.of(context).colorScheme.surfaceVariant,
-        child: page,
+        child: Column(
+          children: [
+            Expanded(
+              child: imageView,
+            ),
+            const SizedBox(height: 8),
+            PageNumber(pageIndex: pageIndex),
+            const SizedBox(height: 8),
+          ],
+        ),
       ),
-    );
-  }
-}
-
-class LoadingPage extends StatelessWidget {
-  const LoadingPage({Key? key, required this.pageIndex}) : super(key: key);
-
-  final int pageIndex;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        const Loading(loadingText: "Loading page..."),
-        const SizedBox(height: 16),
-        PageNumber(pageIndex: pageIndex),
-      ],
     );
   }
 }
