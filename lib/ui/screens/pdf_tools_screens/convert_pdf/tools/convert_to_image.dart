@@ -125,10 +125,10 @@ class _ConvertToImageState extends State<ConvertToImage> {
               // The validator receives the text that the user has entered.
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Please enter a value greater than 0 and less than or equal to 5';
+                  return 'Please enter number from 0 to 5';
                 } else if (double.parse(value) <= 0 ||
                     double.parse(value) > 5) {
-                  return 'Please enter a value greater than 0 and less than or equal to 5';
+                  return 'Please enter number from 0 to 5';
                 }
                 return null;
               },

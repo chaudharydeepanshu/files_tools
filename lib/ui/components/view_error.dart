@@ -1,5 +1,5 @@
-import 'package:device_info_plus/device_info_plus.dart';
-import 'package:files_tools/ui/components/url_launcher.dart';
+import 'package:files_tools/ui/components/custom_snack_bar.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 
 class ErrorIndicator extends StatelessWidget {
@@ -82,44 +82,57 @@ class ShowError extends StatelessWidget {
                 ),
               TextButton(
                 onPressed: () async {
-                  DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+                  FirebaseCrashlytics.instance.recordError(
+                      "User Reported Error: $errorMessage", null,
+                      reason: 'a non-fatal error');
 
-                  AndroidDeviceInfo androidDeviceInfo =
-                      await deviceInfo.androidInfo;
+                  String? contentText = "Error reported successfully";
+                  TextStyle? textStyle = Theme.of(context).textTheme.bodySmall;
 
-                  String userDeviceInfo =
-                      '''version.securityPatch: ${androidDeviceInfo.version.securityPatch}
-                          version.sdkInt: ${androidDeviceInfo.version.sdkInt}
-                          version.release: ${androidDeviceInfo.version.release}
-                          version.previewSdkInt: ${androidDeviceInfo.version.previewSdkInt}
-                          version.incrementa: ${androidDeviceInfo.version.incremental}
-                          version.codename: ${androidDeviceInfo.version.codename}
-                          version.baseOS: ${androidDeviceInfo.version.baseOS}
-                          board: ${androidDeviceInfo.board}
-                          bootloader: ${androidDeviceInfo.bootloader}
-                          brand: ${androidDeviceInfo.brand}
-                          device: ${androidDeviceInfo.device}
-                          display: ${androidDeviceInfo.display}
-                          fingerprint: ${androidDeviceInfo.fingerprint}
-                          hardware: ${androidDeviceInfo.hardware}
-                          host: ${androidDeviceInfo.host}
-                          id: ${androidDeviceInfo.id}
-                          manufacturer: ${androidDeviceInfo.manufacturer}
-                          model: ${androidDeviceInfo.model}
-                          product: ${androidDeviceInfo.product}
-                          supported32BitAbis: ${androidDeviceInfo.supported32BitAbis}
-                          supported64BitAbis: ${androidDeviceInfo.supported64BitAbis}
-                          supportedAbis: ${androidDeviceInfo.supportedAbis}
-                          tags: ${androidDeviceInfo.tags}
-                          type: ${androidDeviceInfo.type}
-                          isPhysicalDevice: ${androidDeviceInfo.isPhysicalDevice}
-                          systemFeatures: ${androidDeviceInfo.systemFeatures}
-                          ''';
+                  showCustomSnackBar(
+                    context: context,
+                    contentText: contentText,
+                    textStyle: textStyle,
+                  );
 
-                  var url =
-                      'mailto:pureinfoapps@gmail.com?subject=Files Tools Bug Report&body=Error Message:\n$errorMessage\n\nUser Device Info:\n$userDeviceInfo';
-
-                  await urlLauncher(url);
+                  // DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+                  //
+                  // AndroidDeviceInfo androidDeviceInfo =
+                  //     await deviceInfo.androidInfo;
+                  //
+                  // String userDeviceInfo =
+                  //     '''version.securityPatch: ${androidDeviceInfo.version.securityPatch}
+                  //         version.sdkInt: ${androidDeviceInfo.version.sdkInt}
+                  //         version.release: ${androidDeviceInfo.version.release}
+                  //         version.previewSdkInt: ${androidDeviceInfo.version.previewSdkInt}
+                  //         version.incrementa: ${androidDeviceInfo.version.incremental}
+                  //         version.codename: ${androidDeviceInfo.version.codename}
+                  //         version.baseOS: ${androidDeviceInfo.version.baseOS}
+                  //         board: ${androidDeviceInfo.board}
+                  //         bootloader: ${androidDeviceInfo.bootloader}
+                  //         brand: ${androidDeviceInfo.brand}
+                  //         device: ${androidDeviceInfo.device}
+                  //         display: ${androidDeviceInfo.display}
+                  //         fingerprint: ${androidDeviceInfo.fingerprint}
+                  //         hardware: ${androidDeviceInfo.hardware}
+                  //         host: ${androidDeviceInfo.host}
+                  //         id: ${androidDeviceInfo.id}
+                  //         manufacturer: ${androidDeviceInfo.manufacturer}
+                  //         model: ${androidDeviceInfo.model}
+                  //         product: ${androidDeviceInfo.product}
+                  //         supported32BitAbis: ${androidDeviceInfo.supported32BitAbis}
+                  //         supported64BitAbis: ${androidDeviceInfo.supported64BitAbis}
+                  //         supportedAbis: ${androidDeviceInfo.supportedAbis}
+                  //         tags: ${androidDeviceInfo.tags}
+                  //         type: ${androidDeviceInfo.type}
+                  //         isPhysicalDevice: ${androidDeviceInfo.isPhysicalDevice}
+                  //         systemFeatures: ${androidDeviceInfo.systemFeatures}
+                  //         ''';
+                  //
+                  // var url =
+                  //     'mailto:pureinfoapps@gmail.com?subject=Files Tools Bug Report&body=Error Message:\n$errorMessage\n\nUser Device Info:\n$userDeviceInfo';
+                  //
+                  // await urlLauncher(url);
                 },
                 child: const Text('Report Error'),
               ),

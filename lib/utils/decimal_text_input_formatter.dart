@@ -18,7 +18,7 @@ class DecimalTextInputFormatter extends TextInputFormatter {
     String value = newValue.text;
 
     if (value.contains(".") &&
-        value.substring(value.indexOf(".") + 1).length > decimalRange) {
+        (value.substring(value.indexOf(".") + 1).length > decimalRange)) {
       truncated = oldValue.text;
       newSelection = oldValue.selection;
     } else if (value == ".") {

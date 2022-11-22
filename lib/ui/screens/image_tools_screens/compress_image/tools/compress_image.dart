@@ -1,6 +1,7 @@
 import 'package:files_tools/models/file_model.dart';
 import 'package:files_tools/state/providers.dart';
 import 'package:files_tools/state/tools_actions_state.dart';
+import 'package:files_tools/utils/decimal_text_input_formatter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -132,19 +133,18 @@ class _CompressImageActionCardState extends State<CompressImageActionCard> {
                                   const TextInputType.numberWithOptions(
                                       decimal: true),
                               inputFormatters: [
-                                FilteringTextInputFormatter(RegExp("[0-9.]"),
-                                    allow: true),
+                                DecimalTextInputFormatter(decimalRange: 2)
                               ],
                               autovalidateMode:
                                   AutovalidateMode.onUserInteraction,
                               // The validator receives the text that the user has entered.
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
-                                  return 'Please enter number greater than 0 and less than or equal to 1';
+                                  return 'Please enter number from 0 to 1';
                                 } else if (double.parse(value) <= 0) {
-                                  return 'Please enter number greater than 0 and less than or equal to 1';
+                                  return 'Please enter number from 0 to 1';
                                 } else if (double.parse(value) > 1) {
-                                  return 'Please enter number greater than 0 and less than or equal to 1';
+                                  return 'Please enter number from 0 to 1';
                                 }
                                 return null;
                               },

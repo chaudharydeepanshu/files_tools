@@ -22,15 +22,15 @@ class WatermarkPDF extends StatelessWidget {
     return ListView(
       children: [
         const SizedBox(height: 16),
-        SplitBySizeActionCard(pdfPageCount: pdfPageCount, file: file),
+        WatermarkPdfActionCard(pdfPageCount: pdfPageCount, file: file),
         const SizedBox(height: 16),
       ],
     );
   }
 }
 
-class SplitBySizeActionCard extends StatefulWidget {
-  const SplitBySizeActionCard(
+class WatermarkPdfActionCard extends StatefulWidget {
+  const WatermarkPdfActionCard(
       {Key? key, required this.pdfPageCount, required this.file})
       : super(key: key);
 
@@ -38,10 +38,10 @@ class SplitBySizeActionCard extends StatefulWidget {
   final InputFileModel file;
 
   @override
-  State<SplitBySizeActionCard> createState() => _SplitBySizeActionCardState();
+  State<WatermarkPdfActionCard> createState() => _WatermarkPdfActionCardState();
 }
 
-class _SplitBySizeActionCardState extends State<SplitBySizeActionCard> {
+class _WatermarkPdfActionCardState extends State<WatermarkPdfActionCard> {
   final _formKey = GlobalKey<FormState>();
 
   TextEditingController textController =
@@ -122,8 +122,6 @@ class _SplitBySizeActionCardState extends State<SplitBySizeActionCard> {
                     keyboardType:
                         const TextInputType.numberWithOptions(decimal: true),
                     inputFormatters: [
-                      FilteringTextInputFormatter(RegExp("[0-9.]"),
-                          allow: true),
                       DecimalTextInputFormatter(decimalRange: 2),
                     ],
                     autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -150,19 +148,17 @@ class _SplitBySizeActionCardState extends State<SplitBySizeActionCard> {
                     keyboardType:
                         const TextInputType.numberWithOptions(decimal: true),
                     inputFormatters: [
-                      FilteringTextInputFormatter(RegExp("[0-9.]"),
-                          allow: true),
                       DecimalTextInputFormatter(decimalRange: 2),
                     ],
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     // The validator receives the text that the user has entered.
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please enter number greater than 0 and less than or equal to 1';
+                        return 'Please enter number from 0 to 1';
                       } else if (double.parse(value) <= 0) {
-                        return 'Please enter number greater than 0 and less than or equal to 1';
+                        return 'Please enter number from 0 to 1';
                       } else if (double.parse(value) > 1) {
-                        return 'Please enter number greater than 0 and less than or equal to 1';
+                        return 'Please enter number from 0 to 1';
                       }
                       return null;
                     },
