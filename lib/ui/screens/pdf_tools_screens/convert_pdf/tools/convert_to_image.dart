@@ -38,10 +38,12 @@ class _ConvertToImageState extends State<ConvertToImage> {
         scale: 0.3,
         pdfPageModel: pdfPages[index],
       );
-      setState(() {
-        pdfPages[index] = updatedPdfPage;
-        isPageProcessing = false;
-      });
+      if (mounted) {
+        setState(() {
+          pdfPages[index] = updatedPdfPage;
+          isPageProcessing = false;
+        });
+      }
     }
   }
 
@@ -90,8 +92,11 @@ class _ConvertToImageState extends State<ConvertToImage> {
               value: isSelectAllEnabled,
               onChanged: (bool? value) {
                 setState(() {
-                  isSelectAllEnabled =
-                      isSelectAllEnabled == null ? true : !isSelectAllEnabled!;
+                  isSelectAllEnabled = isSelectAllEnabled == null
+                      ? true
+                      : isSelectAllEnabled == true
+                          ? isSelectAllEnabled == false
+                          : true;
                 });
                 for (int i = 0; i < pdfPages.length; i++) {
                   PdfPageModel temp = pdfPages[i];
@@ -304,7 +309,8 @@ class _ConvertToImageState extends State<ConvertToImage> {
                                     (PdfPageModel w) => w.pageSelected == false)
                                 ? null
                                 : () {
-                                    if (_formKey.currentState!.validate()) {
+                                    if (_formKey.currentState != null &&
+                                        _formKey.currentState!.validate()) {
                                       watchToolsActionsStateProviderValue
                                           .convertSelectedFile(
                                               files: [widget.file],
