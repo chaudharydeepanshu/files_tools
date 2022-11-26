@@ -64,7 +64,7 @@ class ImageToolsSection extends StatelessWidget {
       GridCardDetail(
         cardIcon: IntrinsicHeight(
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Column(
                 children: const [
@@ -75,7 +75,7 @@ class ImageToolsSection extends StatelessWidget {
                   ),
                 ],
               ),
-              const VerticalDivider(),
+              const VerticalDivider(width: 0),
               Column(
                 children: const [
                   Icon(Icons.rotate_right),
@@ -85,7 +85,7 @@ class ImageToolsSection extends StatelessWidget {
                   ),
                 ],
               ),
-              const VerticalDivider(),
+              const VerticalDivider(width: 0),
               Column(
                 children: const [
                   Icon(Icons.flip),

@@ -171,45 +171,57 @@ class FilesSelected extends StatelessWidget {
                 ref.watch(toolScreenStateProvider);
             final bool isPickingFile =
                 ref.watch(toolScreenStateProvider).isPickingFile;
-            return Wrap(
-              spacing: 10,
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 if (selectFileType == SelectFileType.multiple ||
                     selectFileType == SelectFileType.both)
-                  FilledButton.tonalIcon(
+                  Flexible(
+                    child: FilledButton.tonalIcon(
+                      onPressed: !isPickingFile
+                          ? () {
+                              // Removing any snack bar or keyboard
+                              FocusManager.instance.primaryFocus?.unfocus();
+                              ScaffoldMessenger.of(context)
+                                  .hideCurrentSnackBar();
+
+                              readToolScreenStateProviderValue.selectFiles(
+                                params: filePickerParams,
+                                discardInvalidPdfFiles: discardInvalidPdfFiles,
+                                discardProtectedPdfFiles:
+                                    discardProtectedPdfFiles,
+                              );
+                            }
+                          : null,
+                      label: const Text(
+                        'Select More',
+                        textAlign: TextAlign.center,
+                        overflow: TextOverflow.visible,
+                      ),
+                      icon: const Icon(Icons.upload_file),
+                    ),
+                  ),
+                Flexible(
+                  child: FilledButton.tonalIcon(
                     onPressed: !isPickingFile
                         ? () {
                             // Removing any snack bar or keyboard
                             FocusManager.instance.primaryFocus?.unfocus();
                             ScaffoldMessenger.of(context).hideCurrentSnackBar();
 
-                            readToolScreenStateProviderValue.selectFiles(
-                              params: filePickerParams,
-                              discardInvalidPdfFiles: discardInvalidPdfFiles,
-                              discardProtectedPdfFiles:
-                                  discardProtectedPdfFiles,
+                            readToolScreenStateProviderValue
+                                .updateSelectedFiles(
+                              files: [],
                             );
+                            clearCache(
+                                clearCacheCommandFrom: "Clear File Selection");
                           }
                         : null,
-                    label: const Text('Select More'),
-                    icon: const Icon(Icons.upload_file),
+                    label: const Text('Clear All',
+                        textAlign: TextAlign.center,
+                        overflow: TextOverflow.visible),
+                    icon: const Icon(Icons.clear),
                   ),
-                FilledButton.tonalIcon(
-                  onPressed: !isPickingFile
-                      ? () {
-                          // Removing any snack bar or keyboard
-                          FocusManager.instance.primaryFocus?.unfocus();
-                          ScaffoldMessenger.of(context).hideCurrentSnackBar();
-
-                          readToolScreenStateProviderValue.updateSelectedFiles(
-                            files: [],
-                          );
-                          clearCache(
-                              clearCacheCommandFrom: "Clear File Selection");
-                        }
-                      : null,
-                  label: const Text('Clear Selection'),
-                  icon: const Icon(Icons.clear),
                 ),
               ],
             );

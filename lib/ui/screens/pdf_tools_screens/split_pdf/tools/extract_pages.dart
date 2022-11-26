@@ -41,10 +41,12 @@ class _ExtractByPageSelectionState extends State<ExtractByPageSelection> {
         scale: 0.3,
         pdfPageModel: pdfPages[index],
       );
-      setState(() {
-        pdfPages[index] = updatedPdfPage;
-        isPageProcessing = false;
-      });
+      if (mounted) {
+        setState(() {
+          pdfPages[index] = updatedPdfPage;
+          isPageProcessing = false;
+        });
+      }
     }
   }
 
@@ -58,6 +60,38 @@ class _ExtractByPageSelectionState extends State<ExtractByPageSelection> {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        Padding(
+          padding: const EdgeInsets.only(
+              top: 10.0, bottom: 10.0, left: 16.0, right: 16.0),
+          child: CheckboxListTile(
+              tristate: true,
+              tileColor: Theme.of(context).colorScheme.surfaceVariant,
+              // contentPadding: EdgeInsets.zero,
+              visualDensity: VisualDensity.compact,
+              title: Text("Select All Pages",
+                  style: Theme.of(context).textTheme.bodyMedium),
+              value: isSelectAllEnabled,
+              onChanged: (bool? value) {
+                setState(() {
+                  isSelectAllEnabled = isSelectAllEnabled == null
+                      ? true
+                      : isSelectAllEnabled == true
+                          ? isSelectAllEnabled == false
+                          : true;
+                });
+                for (int i = 0; i < pdfPages.length; i++) {
+                  PdfPageModel temp = pdfPages[i];
+                  pdfPages[i] = PdfPageModel(
+                      pageIndex: temp.pageIndex,
+                      pageBytes: temp.pageBytes,
+                      pageErrorStatus: temp.pageErrorStatus,
+                      pageSelected: isSelectAllEnabled ?? temp.pageSelected,
+                      pageRotationAngle: temp.pageRotationAngle,
+                      pageHidden: temp.pageHidden);
+                }
+              }),
+        ),
+        const Divider(indent: 16.0, endIndent: 16.0),
         Expanded(
           child: Stack(
             children: [

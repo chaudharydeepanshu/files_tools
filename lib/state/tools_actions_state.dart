@@ -891,7 +891,9 @@ class ToolsActionsState extends ChangeNotifier {
 
   void cancelFileSaving() {
     try {
-      PickOrSave().cancelFilesSaving();
+      PickOrSave().cancelActions(
+          params:
+              const CancelActionsParams(cancelType: CancelType.filesSaving));
     } on PlatformException catch (e) {
       log(e.toString());
       _errorMessage = e.toString();

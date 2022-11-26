@@ -173,7 +173,7 @@ class AppAuthor extends StatelessWidget {
               ],
             ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Column(
                   children: [
@@ -186,24 +186,22 @@ class AppAuthor extends StatelessWidget {
                       onPressed: () {
                         urlLauncher(authorGithubUrl);
                       },
-                      child: Column(
-                        children: [
-                          Image.asset(
-                            'assets/github_3d_icon.png',
-                            height: 40,
-                            width: 40,
-                          ),
-                          const Padding(
-                            padding: EdgeInsets.only(
-                                bottom: 8.0, left: 8.0, right: 8.0),
-                            child: Text('Github Profile'),
-                          ),
-                        ],
+                      child: Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: Column(
+                          children: [
+                            Image.asset(
+                              'assets/github_3d_icon.png',
+                              height: 30,
+                              width: 30,
+                            ),
+                            const Text('Github Profile'),
+                          ],
+                        ),
                       ),
                     ),
                   ],
                 ),
-                const SizedBox(width: 16),
                 Column(
                   children: [
                     Text(
@@ -215,19 +213,18 @@ class AppAuthor extends StatelessWidget {
                       onPressed: () {
                         urlLauncher(sourceCodeUrl);
                       },
-                      child: Column(
-                        children: [
-                          Image.asset(
-                            'assets/github_3d_icon.png',
-                            height: 40,
-                            width: 40,
-                          ),
-                          const Padding(
-                            padding: EdgeInsets.only(
-                                bottom: 8.0, left: 8.0, right: 8.0),
-                            child: Text('Github Project'),
-                          ),
-                        ],
+                      child: Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: Column(
+                          children: [
+                            Image.asset(
+                              'assets/github_3d_icon.png',
+                              height: 30,
+                              width: 30,
+                            ),
+                            const Text('Github Project'),
+                          ],
+                        ),
                       ),
                     ),
                   ],

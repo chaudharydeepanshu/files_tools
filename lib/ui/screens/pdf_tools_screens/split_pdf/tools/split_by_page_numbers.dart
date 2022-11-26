@@ -102,6 +102,8 @@ class _SplitByPageNumbersActionCardState
                           decoration: const InputDecoration(
                             filled: true,
                             labelText: 'Enter Page Numbers',
+                            hintMaxLines: 2,
+                            errorMaxLines: 2,
                             // isDense: true,
                             helperText:
                                 'Separate numbers by "," to set split point',
@@ -151,7 +153,7 @@ class _SplitByPageNumbersActionCardState
                           // The validator receives the text that the user has entered.
                           validator: (value) {
                             if (pageNumbers.isEmpty) {
-                              return 'Please enter number from 1 to ${widget.pdfPageCount} separated by ,';
+                              return 'Enter numbers separated by "," from 1 to ${widget.pdfPageCount} ';
                             }
                             return null;
                           },

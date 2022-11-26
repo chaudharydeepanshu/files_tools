@@ -42,10 +42,12 @@ class _RotateDeleteReorderPagesState extends State<RotateDeleteReorderPages> {
         scale: 0.3,
         pdfPageModel: pdfPages[index],
       );
-      setState(() {
-        pdfPages[index] = updatedPdfPage;
-        isPageProcessing = false;
-      });
+      if (mounted) {
+        setState(() {
+          pdfPages[index] = updatedPdfPage;
+          isPageProcessing = false;
+        });
+      }
     }
   }
 
@@ -72,8 +74,11 @@ class _RotateDeleteReorderPagesState extends State<RotateDeleteReorderPages> {
               value: isSelectAllEnabled,
               onChanged: (bool? value) {
                 setState(() {
-                  isSelectAllEnabled =
-                      isSelectAllEnabled == null ? true : !isSelectAllEnabled!;
+                  isSelectAllEnabled = isSelectAllEnabled == null
+                      ? true
+                      : isSelectAllEnabled == true
+                          ? isSelectAllEnabled == false
+                          : true;
                 });
                 for (int i = 0; i < pdfPages.length; i++) {
                   PdfPageModel temp = pdfPages[i];

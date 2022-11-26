@@ -74,7 +74,7 @@ class PDFToolsSection extends StatelessWidget {
       GridCardDetail(
         cardIcon: IntrinsicHeight(
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Column(
                 children: const [
@@ -85,7 +85,7 @@ class PDFToolsSection extends StatelessWidget {
                   ),
                 ],
               ),
-              const VerticalDivider(),
+              const VerticalDivider(width: 0),
               Column(
                 children: const [
                   Icon(Icons.delete),
@@ -95,7 +95,7 @@ class PDFToolsSection extends StatelessWidget {
                   ),
                 ],
               ),
-              const VerticalDivider(),
+              const VerticalDivider(width: 0),
               Column(
                 children: const [
                   Icon(Icons.reorder),
