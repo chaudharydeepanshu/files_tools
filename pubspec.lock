@@ -148,10 +148,11 @@ packages:
   dynamic_color:
     dependency: "direct main"
     description:
-      name: dynamic_color
-      sha256: "37a15576f5a0bfd5555b613cf20ea3bd379607cf88d457374a16032f4e942174"
-      url: "https://pub.dev"
-    source: hosted
+      path: "."
+      ref: main
+      resolved-ref: c1ea39aff3f4b24ecd118c52340d6305e66d1273
+      url: "https://github.com/chaudharydeepanshu/material-dynamic-color-flutter.git"
+    source: git
     version: "1.5.4"
   extended_image:
     dependency: "direct main"
@@ -266,7 +267,7 @@ packages:
     source: hosted
     version: "3.0.0"
   flex_seed_scheme:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: flex_seed_scheme
       sha256: "7ded1dbf0cef4d9d27a194ad021f4755cd4a82a3c5f10e803dca84d9843fd639"

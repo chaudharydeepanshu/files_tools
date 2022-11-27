@@ -31,6 +31,9 @@ class _HomePageState extends State<HomePage> {
           centerTitle: true,
           bottom: TabBar(
             indicatorColor: Theme.of(context).colorScheme.primary,
+            labelColor: Theme.of(context).colorScheme.primary,
+            unselectedLabelColor:
+                Theme.of(context).colorScheme.onSurfaceVariant,
             tabs: const <Widget>[
               Tab(
                 text: 'Document Tools',

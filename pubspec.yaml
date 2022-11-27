@@ -36,10 +36,14 @@ dependencies:
   flutter_riverpod: ^2.1.1
 
   # For material you.
-  dynamic_color: ^1.5.4
+#  dynamic_color: ^1.5.4
+  dynamic_color:
+    git:
+      url: https://github.com/chaudharydeepanshu/material-dynamic-color-flutter.git
+      ref: main
 
   # For colorscheme generation.
-  flex_seed_scheme: ^1.1.0
+#  flex_seed_scheme: ^1.1.0
 
   # For storing user preferences, app themeMode.
   shared_preferences: ^2.0.15

@@ -1,7 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:files_tools/shared_preferences/preferences.dart';
 import 'package:files_tools/ui/components/color_picker.dart';
-import 'package:files_tools/ui/theme/app_theme_data.dart';
 import 'package:flex_color_picker/flex_color_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -463,39 +462,41 @@ class ThemeWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer(
       builder: (BuildContext context, WidgetRef ref, Widget? child) {
-        ColorScheme userLightColorScheme = ref.watch(appThemeStateProvider
-            .select((value) => value.userLightColorScheme));
-        ColorScheme userDarkColorScheme = ref.watch(
-            appThemeStateProvider.select((value) => value.userDarkColorScheme));
-        final Color themePrimaryColor =
-            Theme.of(context).brightness != Brightness.dark
-                ? AppThemeData.lightThemeData(userLightColorScheme)
-                    .colorScheme
-                    .primary
-                : AppThemeData.darkThemeData(userDarkColorScheme)
-                    .colorScheme
-                    .primary;
+        // ColorScheme userLightColorScheme = ref.watch(appThemeStateProvider
+        //     .select((value) => value.userLightColorScheme));
+        int themeColorValue = ref.watch(
+            preferencesProvider.select((value) => value.themeColorValue));
+        // ColorScheme userDarkColorScheme = ref.watch(
+        //     appThemeStateProvider.select((value) => value.userDarkColorScheme));
+        final Color themeColor = Color(themeColorValue);
+        // Theme.of(context).brightness != Brightness.dark
+        //     ? AppThemeData.lightThemeData(userLightColorScheme)
+        //         .colorScheme
+        //         .primary
+        //     : AppThemeData.darkThemeData(userDarkColorScheme)
+        //         .colorScheme
+        //         .primary;
         return ListTile(
           title: const Text('Theme color'),
           subtitle: Text(
-            '${ColorTools.materialNameAndCode(themePrimaryColor)} '
+            '${ColorTools.materialNameAndCode(themeColor)} '
             'aka '
-            '${ColorTools.nameThatColor(themePrimaryColor)}',
+            '${ColorTools.nameThatColor(themeColor)}',
           ),
           trailing: ColorIndicator(
             width: 44,
             height: 44,
             borderRadius: 22,
-            color: themePrimaryColor,
+            color: themeColor,
           ),
           onTap: () async {
             // Store current color before we open the dialog.
-            final Color colorBeforeDialog = themePrimaryColor;
+            final Color colorBeforeDialog = themeColor;
             // Wait for the picker to close, if dialog was dismissed,
             // then restore the color we had before it was opened.
             bool dialogStatus = await colorPickerDialog(
                 context: context,
-                dialogPickerColor: themePrimaryColor,
+                dialogPickerColor: themeColor,
                 onColorChanged: (Color value) {
                   ref.read(appThemeStateProvider).updateUserTheme(value);
                 });

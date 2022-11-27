@@ -24,11 +24,12 @@ class Preferences extends ChangeNotifier {
   bool get isUserOnBoarded =>
       sharedPreferences.getBool('isUserOnBoarded') ?? false;
 
-  persistThemeColorValue(int? themeColorValue) => themeColorValue != null
-      ? sharedPreferences.setInt('themeColorValue', themeColorValue)
-      : sharedPreferences.remove("themeColorValue");
+  persistThemeColorValue(int themeColorValue) =>
+      sharedPreferences.setInt('themeColorValue', themeColorValue);
 
-  int? get themeColorValue => sharedPreferences.getInt('themeColorValue');
+  int get themeColorValue =>
+      sharedPreferences.getInt('themeColorValue') ??
+      const Color(0xFFA93054).value;
 
   persistDynamicThemeStatus(bool dynamicThemeStatus) =>
       sharedPreferences.setBool('dynamicThemeStatus', dynamicThemeStatus);

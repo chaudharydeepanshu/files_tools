@@ -1,5 +1,4 @@
 import 'package:files_tools/state/providers.dart';
-import 'package:flex_seed_scheme/flex_seed_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:files_tools/ui/theme/app_theme_data.dart';
@@ -48,24 +47,27 @@ class AppThemeState extends ChangeNotifier {
     _lightDynamicColorScheme = lightDynamic;
     _darkDynamicColorScheme = darkDynamic;
     _isDynamicThemeEnabled = readPreferencesProviderValue.dynamicThemeStatus;
-    int? themeColorValue = readPreferencesProviderValue.themeColorValue;
+    int themeColorValue = readPreferencesProviderValue.themeColorValue;
     Color primaryColor;
-    if (themeColorValue != null) {
-      primaryColor = Color(themeColorValue);
-    } else {
-      primaryColor = const Color(0xFFA93054);
-      readPreferencesProviderValue.persistThemeColorValue(primaryColor.value);
-    }
-    _userLightColorScheme = SeedColorScheme.fromSeeds(
+    primaryColor = Color(themeColorValue);
+    _userLightColorScheme = ColorScheme.fromSeed(
       brightness: Brightness.light,
-      primaryKey: primaryColor,
-      tones: FlexTones.vivid(Brightness.light),
+      seedColor: primaryColor,
     );
-    _userDarkColorScheme = SeedColorScheme.fromSeeds(
+    //     SeedColorScheme.fromSeeds(
+    //   brightness: Brightness.light,
+    //   primaryKey: primaryColor,
+    //   tones: FlexTones.vivid(Brightness.light),
+    // );
+    _userDarkColorScheme = ColorScheme.fromSeed(
       brightness: Brightness.dark,
-      primaryKey: primaryColor,
-      tones: FlexTones.vivid(Brightness.dark),
+      seedColor: primaryColor,
     );
+    //     SeedColorScheme.fromSeeds(
+    //   brightness: Brightness.dark,
+    //   primaryKey: primaryColor,
+    //   tones: FlexTones.vivid(Brightness.dark),
+    // );
 
     if ((_lightDynamicColorScheme != null || _darkDynamicColorScheme != null) &&
         _isDynamicThemeEnabled == true) {
@@ -107,16 +109,24 @@ class AppThemeState extends ChangeNotifier {
     readPreferencesProviderValue
         .persistThemeColorValue(newUserThemeColor.value);
 
-    _userLightColorScheme = SeedColorScheme.fromSeeds(
+    _userLightColorScheme = ColorScheme.fromSeed(
       brightness: Brightness.light,
-      primaryKey: newUserThemeColor,
-      tones: FlexTones.vivid(Brightness.light),
+      seedColor: newUserThemeColor,
     );
-    _userDarkColorScheme = SeedColorScheme.fromSeeds(
+    //     SeedColorScheme.fromSeeds(
+    //   brightness: Brightness.light,
+    //   primaryKey: newUserThemeColor,
+    //   tones: FlexTones.vivid(Brightness.light),
+    // );
+    _userDarkColorScheme = ColorScheme.fromSeed(
       brightness: Brightness.dark,
-      primaryKey: newUserThemeColor,
-      tones: FlexTones.vivid(Brightness.dark),
+      seedColor: newUserThemeColor,
     );
+    //     SeedColorScheme.fromSeeds(
+    //   brightness: Brightness.dark,
+    //   primaryKey: newUserThemeColor,
+    //   tones: FlexTones.vivid(Brightness.dark),
+    // );
     updateTheme();
     notifyListeners();
   }

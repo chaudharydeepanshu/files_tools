@@ -22,11 +22,11 @@ class AppThemeData {
     }
 
     return ThemeData(
-      useMaterial3: false,
+      useMaterial3: true,
       colorScheme: colorScheme,
       extensions: [customColors],
       fontFamily: "LexendDeca",
-      // focusColor: focusColor,
+      focusColor: focusColor,
     );
   }
 }
