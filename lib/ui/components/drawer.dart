@@ -1,4 +1,5 @@
 import 'package:files_tools/state/providers.dart';
+import 'package:files_tools/ui/screens/onboarding_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:files_tools/route/route.dart' as route;
@@ -42,31 +43,18 @@ class AppDrawer extends StatelessWidget {
                   // Important: Remove any padding from the ListView.
                   padding: EdgeInsets.zero,
                   children: [
-                    Consumer(
-                      builder:
-                          (BuildContext context, WidgetRef ref, Widget? child) {
-                        ThemeMode themeMode = ref.watch(appThemeStateProvider
-                            .select((value) => value.themeMode));
-                        String buttonText = themeMode == ThemeMode.light
-                            ? "Light"
-                            : themeMode == ThemeMode.dark
-                                ? "Dark"
-                                : "System";
-                        IconData iconData = themeMode == ThemeMode.light
-                            ? Icons.light_mode
-                            : themeMode == ThemeMode.dark
-                                ? Icons.dark_mode
-                                : Icons.android;
-                        return ListTile(
-                          leading: Icon(iconData),
-                          title: Text('Theme - $buttonText'),
-                          onTap: () {
-                            ref.read(appThemeStateProvider).updateThemeMode();
-                          },
+                    const ThemeModeSwitcher(),
+                    const Divider(),
+                    ListTile(
+                      leading: const Icon(Icons.settings),
+                      title: const Text('Settings'),
+                      onTap: () {
+                        Navigator.pushNamed(
+                          context,
+                          route.settingsPage,
                         );
                       },
                     ),
-                    const Divider(),
                     ListTile(
                       leading: const Icon(Icons.help),
                       title: const Text('About'),

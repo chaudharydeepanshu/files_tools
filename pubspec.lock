@@ -41,6 +41,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.1"
+  carousel_slider:
+    dependency: "direct main"
+    description:
+      name: carousel_slider
+      sha256: "869a3f4f2ad0e8d029d9cefd20d2cafd0a50847b74e7aab3a8eec662b0c7d2ee"
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.1.1"
   characters:
     dependency: transitive
     description:
@@ -258,7 +266,7 @@ packages:
     source: hosted
     version: "3.0.0"
   flex_seed_scheme:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: flex_seed_scheme
       sha256: "7ded1dbf0cef4d9d27a194ad021f4755cd4a82a3c5f10e803dca84d9843fd639"
@@ -290,10 +298,10 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_native_splash
-      sha256: c21c5b236463268533a61b3e95506e3742f833abd9b20943f315c04e77d72014
+      sha256: "6777a3abb974021a39b5fdd2d46a03ca390e03903b6351f21d10e7ecc969f12d"
       url: "https://pub.dev"
     source: hosted
-    version: "2.2.15"
+    version: "2.2.16"
   flutter_plugin_android_lifecycle:
     dependency: transitive
     description:

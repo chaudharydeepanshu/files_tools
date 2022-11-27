@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:files_tools/state/providers.dart';
-import 'package:files_tools/ui/theme/app_theme_data.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -54,31 +53,53 @@ final GlobalKey<ScaffoldMessengerState> rootScaffoldMessengerKey =
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return DynamicColorBuilder(
       builder: (ColorScheme? lightDynamic, ColorScheme? darkDynamic) {
         return Consumer(
           builder: (BuildContext context, WidgetRef ref, Widget? child) {
-            ref
-                .read(appThemeStateProvider)
-                .init(lightDynamic: lightDynamic, darkDynamic: darkDynamic);
-            ThemeMode themeMode = ref.watch(
-                appThemeStateProvider.select((value) => value.themeMode));
-            return MaterialApp(
-              debugShowCheckedModeBanner: false,
-              title: 'Files Tools',
-              theme: AppThemeData.lightThemeData(lightDynamic),
-              darkTheme: AppThemeData.darkThemeData(darkDynamic),
-              themeMode: themeMode,
-              onGenerateRoute: route.controller,
-              initialRoute: route.homePage,
-              navigatorKey: navigatorKey,
-              navigatorObservers: [observer],
-              scaffoldMessengerKey: rootScaffoldMessengerKey,
-            );
+            var appThemeState = ref.read(appThemeStateProvider);
+            appThemeState.initTheme(
+                lightDynamic: lightDynamic, darkDynamic: darkDynamic);
+            // This is needed because DynamicColorBuilder doesn't provide dynamic colorScheme if os is yet to respond.
+            // So we just update the color scheme once again when we get the new dynamic colorScheme.
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              appThemeState.updateTheme();
+            });
+            return const App();
           },
+        );
+      },
+    );
+  }
+}
+
+class App extends StatelessWidget {
+  const App({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer(
+      builder: (BuildContext context, WidgetRef ref, Widget? child) {
+        bool isUserOnBoarded = ref.read(preferencesProvider).isUserOnBoarded;
+        ThemeData lightThemeData = ref.watch(
+            appThemeStateProvider.select((value) => value.lightThemeData));
+        ThemeData darkThemeData = ref.watch(
+            appThemeStateProvider.select((value) => value.darkThemeData));
+        ThemeMode themeMode =
+            ref.watch(appThemeStateProvider.select((value) => value.themeMode));
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'Files Tools',
+          theme: lightThemeData,
+          darkTheme: darkThemeData,
+          themeMode: themeMode,
+          onGenerateRoute: route.controller,
+          initialRoute: isUserOnBoarded ? route.homePage : route.onBoardingPage,
+          navigatorKey: navigatorKey,
+          navigatorObservers: [observer],
+          scaffoldMessengerKey: rootScaffoldMessengerKey,
         );
       },
     );

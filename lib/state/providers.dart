@@ -22,10 +22,10 @@ final packageInfoCalcProvider =
     ChangeNotifierProvider((ref) => PackageInfoCalc()..init(packageInfo));
 
 final preferencesProvider = ChangeNotifierProvider(
-    (ref) => Preferences(ref)..init(sharedPreferencesInstance));
+    (ref) => Preferences()..init(sharedPreferencesInstance));
 
 final appThemeStateProvider =
-    ChangeNotifierProvider((ref) => AppThemeState(ref)..init());
+    ChangeNotifierProvider((ref) => AppThemeState(ref)..initTheme());
 
 final toolScreenStateProvider =
     ChangeNotifierProvider.autoDispose((ref) => ToolScreenState());

@@ -1,4 +1,5 @@
 import 'package:files_tools/state/providers.dart';
+import 'package:flex_seed_scheme/flex_seed_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:files_tools/ui/theme/app_theme_data.dart';
@@ -10,6 +11,24 @@ class AppThemeState extends ChangeNotifier {
 
   final Ref ref;
 
+  late ColorScheme? _lightDynamicColorScheme;
+  ColorScheme? get lightDynamicColorScheme => _lightDynamicColorScheme;
+
+  late ColorScheme? _darkDynamicColorScheme;
+  ColorScheme? get darkDynamicColorScheme => _darkDynamicColorScheme;
+
+  late ColorScheme? _appLightColorScheme;
+  ColorScheme? get appLightColorScheme => _appLightColorScheme;
+
+  late ColorScheme? _appDarkColorScheme;
+  ColorScheme? get appDarkColorScheme => _appDarkColorScheme;
+
+  late ColorScheme _userLightColorScheme;
+  ColorScheme get userLightColorScheme => _userLightColorScheme;
+
+  late ColorScheme _userDarkColorScheme;
+  ColorScheme get userDarkColorScheme => _userDarkColorScheme;
+
   late ThemeData _lightThemeData;
   ThemeData get lightThemeData => _lightThemeData;
 
@@ -19,13 +38,87 @@ class AppThemeState extends ChangeNotifier {
   late ThemeMode _themeMode;
   ThemeMode get themeMode => _themeMode;
 
+  late bool _isDynamicThemeEnabled;
+  bool get isDynamicThemeEnabled => _isDynamicThemeEnabled;
+
   late final Preferences readPreferencesProviderValue =
       ref.read(preferencesProvider);
 
-  init({ColorScheme? lightDynamic, ColorScheme? darkDynamic}) {
-    _lightThemeData = AppThemeData.lightThemeData(lightDynamic);
-    _darkThemeData = AppThemeData.darkThemeData(darkDynamic);
+  initTheme({ColorScheme? lightDynamic, ColorScheme? darkDynamic}) {
+    _lightDynamicColorScheme = lightDynamic;
+    _darkDynamicColorScheme = darkDynamic;
+    _isDynamicThemeEnabled = readPreferencesProviderValue.dynamicThemeStatus;
+    int? themeColorValue = readPreferencesProviderValue.themeColorValue;
+    Color primaryColor;
+    if (themeColorValue != null) {
+      primaryColor = Color(themeColorValue);
+    } else {
+      primaryColor = const Color(0xFFA93054);
+      readPreferencesProviderValue.persistThemeColorValue(primaryColor.value);
+    }
+    _userLightColorScheme = SeedColorScheme.fromSeeds(
+      brightness: Brightness.light,
+      primaryKey: primaryColor,
+      tones: FlexTones.vivid(Brightness.light),
+    );
+    _userDarkColorScheme = SeedColorScheme.fromSeeds(
+      brightness: Brightness.dark,
+      primaryKey: primaryColor,
+      tones: FlexTones.vivid(Brightness.dark),
+    );
+
+    if ((_lightDynamicColorScheme != null || _darkDynamicColorScheme != null) &&
+        _isDynamicThemeEnabled == true) {
+      _appLightColorScheme = _lightDynamicColorScheme;
+      _appDarkColorScheme = _darkDynamicColorScheme;
+    } else {
+      _appLightColorScheme = _userLightColorScheme;
+      _appDarkColorScheme = _userDarkColorScheme;
+    }
+
+    _lightThemeData = AppThemeData.lightThemeData(_appLightColorScheme);
+    _darkThemeData = AppThemeData.darkThemeData(_appDarkColorScheme);
     _themeMode = readPreferencesProviderValue.themeMode;
+  }
+
+  updateTheme() {
+    if ((_lightDynamicColorScheme != null || _darkDynamicColorScheme != null) &&
+        isDynamicThemeEnabled == true) {
+      _lightThemeData = AppThemeData.lightThemeData(_lightDynamicColorScheme);
+      _darkThemeData = AppThemeData.darkThemeData(_darkDynamicColorScheme);
+    } else {
+      _lightThemeData = AppThemeData.lightThemeData(_userLightColorScheme);
+      _darkThemeData = AppThemeData.darkThemeData(_userDarkColorScheme);
+    }
+    _themeMode = readPreferencesProviderValue.themeMode;
+    notifyListeners();
+  }
+
+  updateDynamicThemeStatus() {
+    _isDynamicThemeEnabled = !_isDynamicThemeEnabled;
+    readPreferencesProviderValue
+        .persistDynamicThemeStatus(_isDynamicThemeEnabled);
+
+    updateTheme();
+    notifyListeners();
+  }
+
+  updateUserTheme(Color newUserThemeColor) {
+    readPreferencesProviderValue
+        .persistThemeColorValue(newUserThemeColor.value);
+
+    _userLightColorScheme = SeedColorScheme.fromSeeds(
+      brightness: Brightness.light,
+      primaryKey: newUserThemeColor,
+      tones: FlexTones.vivid(Brightness.light),
+    );
+    _userDarkColorScheme = SeedColorScheme.fromSeeds(
+      brightness: Brightness.dark,
+      primaryKey: newUserThemeColor,
+      tones: FlexTones.vivid(Brightness.dark),
+    );
+    updateTheme();
+    notifyListeners();
   }
 
   updateThemeMode() {

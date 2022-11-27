@@ -6,6 +6,7 @@ import 'package:files_tools/ui/screens/image_tools_screens/crop_rotate_flip_imag
 import 'package:files_tools/ui/screens/image_tools_screens/crop_rotate_flip_images/crop_rotate_flip_images_tools_screen.dart';
 import 'package:files_tools/ui/screens/image_tools_screens/pdf_to_image/pdf_to_image_screen.dart';
 import 'package:files_tools/ui/screens/image_viewer.dart';
+import 'package:files_tools/ui/screens/onboarding_screen.dart';
 import 'package:files_tools/ui/screens/pdf_tools_screens/compress_pdf/compress_pdf_screen.dart';
 import 'package:files_tools/ui/screens/pdf_tools_screens/compress_pdf/compress_pdf_tool_screen.dart';
 import 'package:files_tools/ui/screens/pdf_tools_screens/decrypt_pdf/decrypt_pdf_screen.dart';
@@ -22,6 +23,7 @@ import 'package:files_tools/ui/screens/pdf_tools_screens/modify_pdf/modify_pdf_t
 import 'package:files_tools/ui/screens/pdf_tools_screens/split_pdf/split_pdf_screen.dart';
 import 'package:files_tools/ui/screens/pdf_tools_screens/split_pdf/split_pdf_tools_screen.dart';
 import 'package:files_tools/ui/screens/result_screen.dart';
+import 'package:files_tools/ui/screens/settings_page.dart';
 import 'package:flutter/material.dart';
 import 'package:files_tools/ui/screens/homescreen/homescreen.dart';
 import 'package:files_tools/ui/screens/homescreen/pages/components/pdf_tools_section.dart';
@@ -33,7 +35,9 @@ import 'package:files_tools/ui/screens/pdf_tools_screens/encrypt_pdf/encrypt_pdf
 
 // Route Names
 const String homePage = '/';
+const String onBoardingPage = '/onBoarding';
 const String aboutPage = '/about';
+const String settingsPage = '/settings';
 const String pdfViewer = '/pdfViewer';
 const String imageViewer = '/imageViewer';
 const String pdfToolsPage = '/pdfTools';
@@ -69,9 +73,17 @@ Route<dynamic> controller(RouteSettings settings) {
       return MaterialPageRoute(
           builder: (context) => const HomePage(),
           settings: RouteSettings(name: settings.name));
+    case onBoardingPage:
+      return MaterialPageRoute(
+          builder: (context) => const OnBoardingScreen(),
+          settings: RouteSettings(name: settings.name));
     case aboutPage:
       return MaterialPageRoute(
           builder: (context) => const AboutPage(),
+          settings: RouteSettings(name: settings.name));
+    case settingsPage:
+      return MaterialPageRoute(
+          builder: (context) => const SettingsPage(),
           settings: RouteSettings(name: settings.name));
     case pdfViewer:
       return MaterialPageRoute(

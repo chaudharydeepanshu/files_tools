@@ -7,15 +7,17 @@ class AppThemeData {
   static final Color _lightFocusColor = Colors.black.withOpacity(0.12);
   static final Color _darkFocusColor = Colors.white.withOpacity(0.12);
 
-  static ThemeData lightThemeData(ColorScheme? dynamic) =>
-      themeData(dynamic, lightColorScheme, _lightFocusColor, lightCustomColors);
-  static ThemeData darkThemeData(ColorScheme? dynamic) =>
-      themeData(dynamic, darkColorScheme, _darkFocusColor, darkCustomColors);
+  static ThemeData lightThemeData(ColorScheme? customLightColorScheme) =>
+      themeData(customLightColorScheme, defaultLightColorScheme,
+          _lightFocusColor, lightCustomColors);
+  static ThemeData darkThemeData(ColorScheme? customDarkColorScheme) =>
+      themeData(customDarkColorScheme, defaultDarkColorScheme, _darkFocusColor,
+          darkCustomColors);
 
-  static ThemeData themeData(ColorScheme? dynamic, ColorScheme colorScheme,
-      Color focusColor, CustomColors customColors) {
-    if (dynamic != null) {
-      colorScheme = dynamic.harmonized();
+  static ThemeData themeData(ColorScheme? customColorScheme,
+      ColorScheme colorScheme, Color focusColor, CustomColors customColors) {
+    if (customColorScheme != null) {
+      colorScheme = customColorScheme.harmonized();
       customColors = customColors.harmonized(colorScheme);
     }
 
@@ -24,7 +26,7 @@ class AppThemeData {
       colorScheme: colorScheme,
       extensions: [customColors],
       fontFamily: "LexendDeca",
-      focusColor: focusColor,
+      // focusColor: focusColor,
     );
   }
 }
