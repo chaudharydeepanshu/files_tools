@@ -3,7 +3,6 @@ import 'package:files_tools/models/file_model.dart';
 import 'package:files_tools/models/pdf_page_model.dart';
 import 'package:files_tools/state/providers.dart';
 import 'package:files_tools/state/tools_actions_state.dart';
-import 'package:files_tools/ui/components/custom_snack_bar.dart';
 import 'package:files_tools/ui/components/levitating_options_bar.dart';
 import 'package:files_tools/ui/components/loading.dart';
 import 'package:files_tools/ui/components/view_error.dart';
