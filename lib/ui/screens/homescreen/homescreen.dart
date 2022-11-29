@@ -29,12 +29,8 @@ class _HomePageState extends State<HomePage> {
         appBar: AppBar(
           title: const Text("Files Tools"),
           centerTitle: true,
-          bottom: TabBar(
-            indicatorColor: Theme.of(context).colorScheme.primary,
-            labelColor: Theme.of(context).colorScheme.primary,
-            unselectedLabelColor:
-                Theme.of(context).colorScheme.onSurfaceVariant,
-            tabs: const <Widget>[
+          bottom: const TabBar(
+            tabs: <Widget>[
               Tab(
                 text: 'Document Tools',
                 icon: Icon(Icons.description),

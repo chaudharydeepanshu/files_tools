@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:files_tools/shared_preferences/preferences.dart';
 import 'package:files_tools/ui/components/color_picker.dart';

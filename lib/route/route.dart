@@ -34,37 +34,37 @@ import 'package:files_tools/ui/screens/pdf_tools_screens/encrypt_pdf/encrypt_pdf
 // Note: When using path "/" in routes then the initial route will always have to be "/" and will always run "/" no matter what initial route is.
 
 // Route Names
-const String onBoardingPage = '/';
-const String homePage = '/homePage';
-const String aboutPage = '/about';
-const String settingsPage = '/settings';
-const String pdfViewer = '/pdfViewer';
-const String imageViewer = '/imageViewer';
-const String pdfToolsPage = '/pdfTools';
-const String mergePDFsPage = '/mergePDFs';
-const String splitPDFPage = '/splitPDF';
-const String modifyPDFPage = '/modifyPDF';
-const String convertPDFPage = '/convertPDF';
-const String compressPDFPage = '/CompressPDF';
-const String watermarkPDFPage = '/WatermarkPDF';
-const String encryptPDFPage = '/EncryptPDF';
-const String decryptPDFPage = '/DecryptPDF';
-const String imageToPDFPage = '/ImageToPDF';
-const String splitPDFToolsPage = '/SplitPDFTools';
-const String modifyPDFToolsPage = '/ModifyPDFTools';
-const String convertPDFToolsPage = '/ConvertPDFTools';
-const String compressPDFToolsPage = '/CompressPDFTools';
-const String watermarkPDFToolsPage = '/WatermarkPDFTools';
-const String encryptPDFToolsPage = '/EncryptPDFTools';
-const String decryptPDFToolsPage = '/DecryptPDFTools';
-const String imageToPDFToolsPage = '/ImageToPDFTools';
-const String imageToolsPage = '/imageTools';
-const String compressImagePage = '/CompressImage';
-const String compressImageToolsPage = '/CompressImageTools';
-const String pdfToImagePage = '/pdfToImage';
-const String cropRotateFlipImagesPage = '/CropRotateFlipImages';
-const String cropRotateFlipImagesToolsPage = '/CropRotateFlipImagesTools';
-const String resultPage = '/Result';
+const String onBoardingPage = 'onBoarding';
+const String homePage = 'homePage';
+const String aboutPage = 'about';
+const String settingsPage = 'settings';
+const String pdfViewer = 'pdfViewer';
+const String imageViewer = 'imageViewer';
+const String pdfToolsPage = 'pdfTools';
+const String mergePDFsPage = 'mergePDFs';
+const String splitPDFPage = 'splitPDF';
+const String modifyPDFPage = 'modifyPDF';
+const String convertPDFPage = 'convertPDF';
+const String compressPDFPage = 'CompressPDF';
+const String watermarkPDFPage = 'WatermarkPDF';
+const String encryptPDFPage = 'EncryptPDF';
+const String decryptPDFPage = 'DecryptPDF';
+const String imageToPDFPage = 'ImageToPDF';
+const String splitPDFToolsPage = 'SplitPDFTools';
+const String modifyPDFToolsPage = 'ModifyPDFTools';
+const String convertPDFToolsPage = 'ConvertPDFTools';
+const String compressPDFToolsPage = 'CompressPDFTools';
+const String watermarkPDFToolsPage = 'WatermarkPDFTools';
+const String encryptPDFToolsPage = 'EncryptPDFTools';
+const String decryptPDFToolsPage = 'DecryptPDFTools';
+const String imageToPDFToolsPage = 'ImageToPDFTools';
+const String imageToolsPage = 'imageTools';
+const String compressImagePage = 'CompressImage';
+const String compressImageToolsPage = 'CompressImageTools';
+const String pdfToImagePage = 'pdfToImage';
+const String cropRotateFlipImagesPage = 'CropRotateFlipImages';
+const String cropRotateFlipImagesToolsPage = 'CropRotateFlipImagesTools';
+const String resultPage = 'Result';
 
 // Control our page route flow
 Route<dynamic> controller(RouteSettings settings) {
