@@ -10,6 +10,9 @@ class AppThemeState extends ChangeNotifier {
 
   final Ref ref;
 
+  late Color _userColorSchemeSeedColor;
+  Color get userColorSchemeSeedColor => _userColorSchemeSeedColor;
+
   late ColorScheme? _lightDynamicColorScheme;
   ColorScheme? get lightDynamicColorScheme => _lightDynamicColorScheme;
 
@@ -47,25 +50,25 @@ class AppThemeState extends ChangeNotifier {
     _lightDynamicColorScheme = lightDynamic;
     _darkDynamicColorScheme = darkDynamic;
     _isDynamicThemeEnabled = readPreferencesProviderValue.dynamicThemeStatus;
-    int themeColorValue = readPreferencesProviderValue.themeColorValue;
-    Color primaryColor;
-    primaryColor = Color(themeColorValue);
+    int seedColorColorValue =
+        readPreferencesProviderValue.userThemeSeedColorValue;
+    _userColorSchemeSeedColor = Color(seedColorColorValue);
     _userLightColorScheme = ColorScheme.fromSeed(
       brightness: Brightness.light,
-      seedColor: primaryColor,
+      seedColor: _userColorSchemeSeedColor,
     );
     //     SeedColorScheme.fromSeeds(
     //   brightness: Brightness.light,
-    //   primaryKey: primaryColor,
+    //   primaryKey: seedColor,
     //   tones: FlexTones.vivid(Brightness.light),
     // );
     _userDarkColorScheme = ColorScheme.fromSeed(
       brightness: Brightness.dark,
-      seedColor: primaryColor,
+      seedColor: _userColorSchemeSeedColor,
     );
     //     SeedColorScheme.fromSeeds(
     //   brightness: Brightness.dark,
-    //   primaryKey: primaryColor,
+    //   primaryKey: seedColor,
     //   tones: FlexTones.vivid(Brightness.dark),
     // );
 
@@ -84,6 +87,10 @@ class AppThemeState extends ChangeNotifier {
   }
 
   updateTheme() {
+    initTheme(
+        lightDynamic: _lightDynamicColorScheme,
+        darkDynamic: _darkDynamicColorScheme);
+
     if ((_lightDynamicColorScheme != null || _darkDynamicColorScheme != null) &&
         isDynamicThemeEnabled == true) {
       _lightThemeData = AppThemeData.lightThemeData(_lightDynamicColorScheme);
@@ -107,7 +114,7 @@ class AppThemeState extends ChangeNotifier {
 
   updateUserTheme(Color newUserThemeColor) {
     readPreferencesProviderValue
-        .persistThemeColorValue(newUserThemeColor.value);
+        .persistUserThemeSeedColorValue(newUserThemeColor.value);
 
     _userLightColorScheme = ColorScheme.fromSeed(
       brightness: Brightness.light,

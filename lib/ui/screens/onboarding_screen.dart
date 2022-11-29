@@ -62,38 +62,43 @@ class HoledScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        Flexible(
-          child: Container(
-            height: 300,
-            width: 300,
-            decoration: BoxDecoration(
-              color: firstHoleColor,
-              border: disableFirstHoleBorder
-                  ? null
-                  : Border.all(color: firstHoleBorderColor),
-              borderRadius: BorderRadius.circular(12),
+    return SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 16.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Expanded(
+              child: Container(
+                // height: 300,
+                width: 300,
+                decoration: BoxDecoration(
+                  color: firstHoleColor,
+                  border: disableFirstHoleBorder
+                      ? null
+                      : Border.all(color: firstHoleBorderColor),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: firstHoleChild,
+              ),
             ),
-            child: firstHoleChild,
-          ),
-        ),
-        Flexible(
-          child: Container(
-            height: 300,
-            width: 300,
-            decoration: BoxDecoration(
-              color: secondHoleColor,
-              border: disableSecondHoleBorder
-                  ? null
-                  : Border.all(color: secondHoleBorderColor),
-              borderRadius: BorderRadius.circular(12),
+            Expanded(
+              child: Container(
+                // height: 300,
+                width: 300,
+                decoration: BoxDecoration(
+                  color: secondHoleColor,
+                  border: disableSecondHoleBorder
+                      ? null
+                      : Border.all(color: secondHoleBorderColor),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: secondHoleChild,
+              ),
             ),
-            child: secondHoleChild,
-          ),
+          ],
         ),
-      ],
+      ),
     );
   }
 }
@@ -309,37 +314,39 @@ class PageViewFirstScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return HoledScaffold(
-        firstHoleColor: Colors.transparent,
-        secondHoleColor: Colors.transparent,
-        firstHoleBorderColor: Theme.of(context).colorScheme.outline,
-        secondHoleBorderColor: Colors.transparent,
-        disableFirstHoleBorder: false,
-        firstHoleChild: AbsorbPointer(
-          absorbing: false,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: const [
-              ToolsMovingList1(
-                  noOfElementsToRemoveFromList: 10,
-                  noOfElementsToAddInIndex: 0,
-                  delayMilliseconds: 100,
-                  durationSeconds: 100),
-              VerticalDivider(width: 0),
-              ToolsMovingList1(
-                  noOfElementsToRemoveFromList: 10,
-                  noOfElementsToAddInIndex: 5,
-                  delayMilliseconds: 100,
-                  durationSeconds: 100),
-              VerticalDivider(width: 0),
-              ToolsMovingList1(
-                  noOfElementsToRemoveFromList: 10,
-                  noOfElementsToAddInIndex: 10,
-                  delayMilliseconds: 100,
-                  durationSeconds: 100),
-            ],
-          ),
+      firstHoleColor: Colors.transparent,
+      secondHoleColor: Colors.transparent,
+      firstHoleBorderColor: Theme.of(context).colorScheme.outline,
+      secondHoleBorderColor: Colors.transparent,
+      disableFirstHoleBorder: false,
+      firstHoleChild: AbsorbPointer(
+        absorbing: false,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: const [
+            ToolsMovingList1(
+                noOfElementsToRemoveFromList: 10,
+                noOfElementsToAddInIndex: 0,
+                delayMilliseconds: 100,
+                durationSeconds: 100),
+            VerticalDivider(width: 0),
+            ToolsMovingList1(
+                noOfElementsToRemoveFromList: 10,
+                noOfElementsToAddInIndex: 5,
+                delayMilliseconds: 100,
+                durationSeconds: 100),
+            VerticalDivider(width: 0),
+            ToolsMovingList1(
+                noOfElementsToRemoveFromList: 10,
+                noOfElementsToAddInIndex: 10,
+                delayMilliseconds: 100,
+                durationSeconds: 100),
+          ],
         ),
-        secondHoleChild: const OnBoardingText(onBoardingText: 'Welcome!'));
+      ),
+      secondHoleChild:
+          const Center(child: OnBoardingText(onBoardingText: 'Welcome!')),
+    );
   }
 }
 
@@ -358,23 +365,26 @@ class PageViewSecondScreen extends StatelessWidget {
           absorbing: false,
           child: Material(
             color: Colors.transparent,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: const [
-                ThemeWidget(),
-                DynamicThemeCheckboxTile(),
-                ThemeModeSwitcher(),
-              ],
+            child: Scrollbar(
+              thumbVisibility: true,
+              child: ListView(
+                // mainAxisAlignment: MainAxisAlignment.center,
+                // crossAxisAlignment: CrossAxisAlignment.center,
+                children: const [
+                  ThemeChooserWidget(),
+                  DynamicThemeSwitchTile(),
+                  ThemeModeSwitcher(),
+                  Align(
+                    alignment: Alignment.topRight,
+                    child: ResetAppThemeSettings(),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
-        secondHoleChild: Column(
-          children: const [
-            OnBoardingText(onBoardingText: 'Customize App Theme!'),
-            // OnBoardingText(onBoardingText: "Thank You!"),
-          ],
-        ));
+        secondHoleChild: const Center(
+            child: OnBoardingText(onBoardingText: 'Customize App Theme!')));
   }
 }
 
@@ -397,8 +407,8 @@ class GetStartedButton extends StatelessWidget {
   }
 }
 
-class DynamicThemeCheckboxTile extends StatelessWidget {
-  const DynamicThemeCheckboxTile({Key? key}) : super(key: key);
+class DynamicThemeSwitchTile extends StatelessWidget {
+  const DynamicThemeSwitchTile({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -410,15 +420,42 @@ class DynamicThemeCheckboxTile extends StatelessWidget {
             .select((value) => value.lightDynamicColorScheme));
 
         return lightDynamicColorScheme != null
-            ? CheckboxListTile(
+            ? SwitchListTile(
                 title: const Text("Enable Dynamic Theme"),
                 subtitle: const Text("Wallpaper as theme"),
+                secondary: const Icon(Icons.wallpaper),
                 value: isDynamicThemeEnabled,
                 onChanged: (bool? value) {
                   ref.read(appThemeStateProvider).updateDynamicThemeStatus();
                 },
               )
             : const SizedBox();
+      },
+    );
+  }
+}
+
+class ResetAppThemeSettings extends StatelessWidget {
+  const ResetAppThemeSettings({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer(
+      builder: (BuildContext context, WidgetRef ref, Widget? child) {
+        return TextButton(
+          style: TextButton.styleFrom(
+            padding: EdgeInsets.zero,
+            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          ),
+          onPressed: () async {
+            sharedPreferencesInstance.remove(themeModePerfKey);
+            sharedPreferencesInstance.remove(userThemeSeedColorValuePerfKey);
+            sharedPreferencesInstance.remove(dynamicThemeStatusPerfKey);
+            // sharedPreferencesInstance.remove(onBoardingStatusPerfKey);
+            ref.read(appThemeStateProvider).updateTheme();
+          },
+          child: const Text('Reset'),
+        );
       },
     );
   }
@@ -445,7 +482,8 @@ class ThemeModeSwitcher extends StatelessWidget {
                 : Icons.android;
         return ListTile(
           leading: Icon(iconData),
-          title: Text('Theme - $buttonText'),
+          title: const Text('Theme Mode'),
+          subtitle: Text(buttonText),
           onTap: () {
             ref.read(appThemeStateProvider).updateThemeMode();
           },
@@ -455,48 +493,37 @@ class ThemeModeSwitcher extends StatelessWidget {
   }
 }
 
-class ThemeWidget extends StatelessWidget {
-  const ThemeWidget({Key? key}) : super(key: key);
+class ThemeChooserWidget extends StatelessWidget {
+  const ThemeChooserWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Consumer(
       builder: (BuildContext context, WidgetRef ref, Widget? child) {
-        // ColorScheme userLightColorScheme = ref.watch(appThemeStateProvider
-        //     .select((value) => value.userLightColorScheme));
-        int themeColorValue = ref.watch(
-            preferencesProvider.select((value) => value.themeColorValue));
-        // ColorScheme userDarkColorScheme = ref.watch(
-        //     appThemeStateProvider.select((value) => value.userDarkColorScheme));
-        final Color themeColor = Color(themeColorValue);
-        // Theme.of(context).brightness != Brightness.dark
-        //     ? AppThemeData.lightThemeData(userLightColorScheme)
-        //         .colorScheme
-        //         .primary
-        //     : AppThemeData.darkThemeData(userDarkColorScheme)
-        //         .colorScheme
-        //         .primary;
+        Color userColorSchemeSeedColor = ref.watch(appThemeStateProvider
+            .select((value) => value.userColorSchemeSeedColor));
         return ListTile(
           title: const Text('Theme color'),
           subtitle: Text(
-            '${ColorTools.materialNameAndCode(themeColor)} '
+            '${ColorTools.materialNameAndCode(userColorSchemeSeedColor)} '
             'aka '
-            '${ColorTools.nameThatColor(themeColor)}',
+            '${ColorTools.nameThatColor(userColorSchemeSeedColor)}',
           ),
+          leading: const Icon(Icons.palette),
           trailing: ColorIndicator(
             width: 44,
             height: 44,
             borderRadius: 22,
-            color: themeColor,
+            color: userColorSchemeSeedColor,
           ),
           onTap: () async {
             // Store current color before we open the dialog.
-            final Color colorBeforeDialog = themeColor;
+            final Color colorBeforeDialog = userColorSchemeSeedColor;
             // Wait for the picker to close, if dialog was dismissed,
             // then restore the color we had before it was opened.
             bool dialogStatus = await colorPickerDialog(
                 context: context,
-                dialogPickerColor: themeColor,
+                dialogPickerColor: userColorSchemeSeedColor,
                 onColorChanged: (Color value) {
                   ref.read(appThemeStateProvider).updateUserTheme(value);
                 });
@@ -545,7 +572,7 @@ class ToolsMovingList1 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Flexible(
+    return Expanded(
       child: ShaderMask(
         shaderCallback: (Rect rect) {
           return LinearGradient(
@@ -566,31 +593,36 @@ class ToolsMovingList1 extends StatelessWidget {
           ).createShader(rect);
         },
         blendMode: BlendMode.dstOut,
-        child: CarouselSlider.builder(
-          options: CarouselOptions(
-              pageSnapping: false,
-              viewportFraction: 0.333,
-              height: 300.0,
-              enableInfiniteScroll: true,
-              reverse: false,
-              autoPlay: true,
-              autoPlayInterval: const Duration(seconds: 3),
-              autoPlayAnimationDuration: const Duration(milliseconds: 800),
-              autoPlayCurve: Curves.fastOutSlowIn,
-              scrollDirection: Axis.vertical),
-          itemCount: appTools.length - noOfElementsToRemoveFromList,
-          itemBuilder: (BuildContext context, int index, int realIndex) {
-            final int first = index + noOfElementsToAddInIndex;
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Divider(height: 0),
-                Flexible(
-                  child: AppToolDisplayElement(index: first),
-                ),
-                const Divider(height: 0),
-              ],
+        child: LayoutBuilder(
+          builder: (BuildContext buildContext, BoxConstraints boxConstraints) {
+            double viewportFraction = 1 / (boxConstraints.maxHeight / 100);
+            return CarouselSlider.builder(
+              options: CarouselOptions(
+                  pageSnapping: false,
+                  viewportFraction: viewportFraction,
+                  height: boxConstraints.maxHeight,
+                  enableInfiniteScroll: true,
+                  reverse: false,
+                  autoPlay: true,
+                  autoPlayInterval: const Duration(seconds: 3),
+                  autoPlayAnimationDuration: const Duration(milliseconds: 800),
+                  autoPlayCurve: Curves.fastOutSlowIn,
+                  scrollDirection: Axis.vertical),
+              itemCount: appTools.length - noOfElementsToRemoveFromList,
+              itemBuilder: (BuildContext context, int index, int realIndex) {
+                final int first = index + noOfElementsToAddInIndex;
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Divider(height: 0),
+                    Expanded(
+                      child: AppToolDisplayElement(index: first),
+                    ),
+                    const Divider(height: 0),
+                  ],
+                );
+              },
             );
           },
         ),
@@ -619,6 +651,7 @@ class AppToolDisplayElement extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
         children: [
           Icon(
             appTools[index].toolIconsData,
