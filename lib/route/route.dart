@@ -31,11 +31,11 @@ import 'package:files_tools/ui/screens/pdf_tools_screens/merge_pdfs_screen.dart'
 import 'package:files_tools/ui/screens/pdf_tools_screens/encrypt_pdf/encrypt_pdf_screen.dart';
 import 'package:files_tools/ui/screens/pdf_tools_screens/encrypt_pdf/encrypt_pdf_tools_screen.dart';
 
-// Note: When using path "/" in routes then the initial route will always have to be "/".
+// Note: When using path "/" in routes then the initial route will always have to be "/" and will always run "/" no matter what initial route is.
 
 // Route Names
-const String homePage = '/';
-const String onBoardingPage = '/onBoarding';
+const String onBoardingPage = '/';
+const String homePage = '/homePage';
 const String aboutPage = '/about';
 const String settingsPage = '/settings';
 const String pdfViewer = '/pdfViewer';
@@ -69,13 +69,13 @@ const String resultPage = '/Result';
 // Control our page route flow
 Route<dynamic> controller(RouteSettings settings) {
   switch (settings.name) {
-    case homePage:
-      return MaterialPageRoute(
-          builder: (context) => const HomePage(),
-          settings: RouteSettings(name: settings.name));
     case onBoardingPage:
       return MaterialPageRoute(
           builder: (context) => const OnBoardingScreen(),
+          settings: RouteSettings(name: settings.name));
+    case homePage:
+      return MaterialPageRoute(
+          builder: (context) => const HomePage(),
           settings: RouteSettings(name: settings.name));
     case aboutPage:
       return MaterialPageRoute(
