@@ -136,20 +136,18 @@ class _RotateDeleteReorderPagesState extends State<RotateDeleteReorderPages> {
                           setState(() {
                             pdfPages[index] = value;
                           });
-                          if (isSelectAllEnabled == null) {
-                            if (pdfPages.every(
-                                (PdfPageModel w) => w.pageSelected == true)) {
-                              setState(() {
-                                isSelectAllEnabled = true;
-                              });
-                            } else if (pdfPages.every(
-                                (PdfPageModel w) => w.pageSelected == false)) {
-                              setState(() {
-                                isSelectAllEnabled = false;
-                              });
-                            }
-                          } else if (isSelectAllEnabled == true ||
-                              isSelectAllEnabled == false) {
+
+                          if (pdfPages.every(
+                              (PdfPageModel w) => w.pageSelected == true)) {
+                            setState(() {
+                              isSelectAllEnabled = true;
+                            });
+                          } else if (pdfPages.every(
+                              (PdfPageModel w) => w.pageSelected == false)) {
+                            setState(() {
+                              isSelectAllEnabled = false;
+                            });
+                          } else {
                             setState(() {
                               isSelectAllEnabled = null;
                             });

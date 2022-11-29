@@ -135,20 +135,18 @@ class _ExtractByPageSelectionState extends State<ExtractByPageSelection> {
                           setState(() {
                             pdfPages[index] = value;
                           });
-                          if (isSelectAllEnabled == null) {
-                            if (pdfPages.every(
-                                (PdfPageModel w) => w.pageSelected == true)) {
-                              setState(() {
-                                isSelectAllEnabled = true;
-                              });
-                            } else if (pdfPages.every(
-                                (PdfPageModel w) => w.pageSelected == false)) {
-                              setState(() {
-                                isSelectAllEnabled = false;
-                              });
-                            }
-                          } else if (isSelectAllEnabled == true ||
-                              isSelectAllEnabled == false) {
+
+                          if (pdfPages.every(
+                              (PdfPageModel w) => w.pageSelected == true)) {
+                            setState(() {
+                              isSelectAllEnabled = true;
+                            });
+                          } else if (pdfPages.every(
+                              (PdfPageModel w) => w.pageSelected == false)) {
+                            setState(() {
+                              isSelectAllEnabled = false;
+                            });
+                          } else {
                             setState(() {
                               isSelectAllEnabled = null;
                             });
@@ -276,25 +274,28 @@ class _ExtractByPageSelectionState extends State<ExtractByPageSelection> {
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(0)),
                             ),
-                            onPressed:
-                                pageNumbersForDeleter.length >= pdfPages.length
-                                    ? null
-                                    : () {
-                                        watchToolsActionsStateProviderValue
-                                            .modifySelectedFile(
-                                          files: [widget.file],
-                                          pagesRotationInfo: pagesRotationInfo,
-                                          pageNumbersForDeleter:
-                                              pageNumbersForDeleter,
-                                          pageNumbersForReorder:
-                                              pageNumbersForReorder,
-                                        );
+                            onPressed: pageNumbersForDeleter.length ==
+                                        pdfPages.length ||
+                                    (pageNumbersForDeleter.isEmpty &&
+                                        pagesRotationInfo.isEmpty &&
+                                        pageNumbersForReorder.isEmpty)
+                                ? null
+                                : () {
+                                    watchToolsActionsStateProviderValue
+                                        .modifySelectedFile(
+                                      files: [widget.file],
+                                      pagesRotationInfo: pagesRotationInfo,
+                                      pageNumbersForDeleter:
+                                          pageNumbersForDeleter,
+                                      pageNumbersForReorder:
+                                          pageNumbersForReorder,
+                                    );
 
-                                        Navigator.pushNamed(
-                                          context,
-                                          route.resultPage,
-                                        );
-                                      },
+                                    Navigator.pushNamed(
+                                      context,
+                                      route.resultPage,
+                                    );
+                                  },
                             child: SizedBox.expand(
                               child: Center(
                                 child: Column(
