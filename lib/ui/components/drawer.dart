@@ -18,25 +18,37 @@ class AppDrawer extends StatelessWidget {
           Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Consumer(
-                builder: (BuildContext context, WidgetRef ref, Widget? child) {
-                  return DrawerHeader(
-                    decoration: const BoxDecoration(
-                        // color: Theme.of(context).colorScheme.surfaceVariant,
+              Flexible(
+                child: Consumer(
+                  builder:
+                      (BuildContext context, WidgetRef ref, Widget? child) {
+                    return DrawerHeader(
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.surface,
+                        border: const Border(
+                          bottom: BorderSide.none,
                         ),
-                    child: Column(
-                      children: [
-                        Flexible(
-                          child: Image.asset(
-                            'assets/app_icon.png',
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Column(
+                            children: [
+                              Flexible(
+                                child: Image.asset(
+                                  'assets/app_icon.png',
+                                ),
+                              ),
+                              Text(ref.read(packageInfoCalcProvider).appName,
+                                  style:
+                                      Theme.of(context).textTheme.titleLarge),
+                            ],
                           ),
-                        ),
-                        Text(ref.read(packageInfoCalcProvider).appName,
-                            style: Theme.of(context).textTheme.titleLarge),
-                      ],
-                    ),
-                  );
-                },
+                        ],
+                      ),
+                    );
+                  },
+                ),
               ),
               Expanded(
                 child: ListView(
@@ -44,7 +56,7 @@ class AppDrawer extends StatelessWidget {
                   padding: EdgeInsets.zero,
                   children: [
                     const ThemeModeSwitcher(),
-                    const Divider(),
+                    const Divider(indent: 16, endIndent: 16),
                     ListTile(
                       leading: const Icon(Icons.settings),
                       title: const Text('Settings'),
@@ -80,7 +92,7 @@ class AppDrawer extends StatelessWidget {
                 color: Theme.of(context).colorScheme.surface,
                 child: Column(
                   children: [
-                    const Divider(),
+                    const Divider(height: 0),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Row(
