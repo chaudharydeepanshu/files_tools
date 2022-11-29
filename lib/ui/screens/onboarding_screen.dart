@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:files_tools/shared_preferences/preferences.dart';
 import 'package:files_tools/ui/components/color_picker.dart';
@@ -178,7 +180,7 @@ class _OnBoardScreenPageViewState extends State<OnBoardScreenPageView>
             ignoring: true,
             child: ColorFiltered(
               colorFilter: ColorFilter.mode(
-                  Theme.of(context).scaffoldBackgroundColor.withOpacity(1),
+                  Theme.of(context).scaffoldBackgroundColor.withOpacity(0.7),
                   BlendMode.srcOut), // This one will create the magic
               child: Stack(
                 fit: StackFit.expand,
