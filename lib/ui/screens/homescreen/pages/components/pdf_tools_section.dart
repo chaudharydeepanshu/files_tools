@@ -17,23 +17,21 @@ class PDFToolsPage extends StatelessWidget {
         title: const Text("PDF Tools"),
         centerTitle: true,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: GridView.builder(
-          gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-            childAspectRatio: 1,
-            maxCrossAxisExtent: 200,
-            mainAxisExtent: 100,
-            mainAxisSpacing: 8,
-            crossAxisSpacing: 8,
-          ),
-          itemCount: cardsDetails.length,
-          itemBuilder: (BuildContext context, int index) {
-            return GridViewCard(
-              gridCardDetail: cardsDetails[index],
-            );
-          },
+      body: GridView.builder(
+        gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+          childAspectRatio: 1,
+          maxCrossAxisExtent: 200,
+          mainAxisExtent: 100,
+          mainAxisSpacing: 8,
+          crossAxisSpacing: 8,
         ),
+        padding: const EdgeInsets.all(16.0),
+        itemCount: cardsDetails.length,
+        itemBuilder: (BuildContext context, int index) {
+          return GridViewCard(
+            gridCardDetail: cardsDetails[index],
+          );
+        },
       ),
     );
   }
