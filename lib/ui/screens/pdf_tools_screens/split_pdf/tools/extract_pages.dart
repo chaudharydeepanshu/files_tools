@@ -191,23 +191,31 @@ class _ExtractByPageSelectionState extends State<ExtractByPageSelection> {
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(0)),
                               ),
-                              onPressed: () {
-                                setState(() {
-                                  for (int i = 0; i < pdfPages.length; i++) {
-                                    PdfPageModel temp = pdfPages[i];
-                                    if (temp.pageSelected) {
-                                      pdfPages[i] = PdfPageModel(
-                                          pageIndex: temp.pageIndex,
-                                          pageBytes: temp.pageBytes,
-                                          pageErrorStatus: temp.pageErrorStatus,
-                                          pageSelected: temp.pageSelected,
-                                          pageRotationAngle:
-                                              temp.pageRotationAngle - 90,
-                                          pageHidden: temp.pageHidden);
-                                    }
-                                  }
-                                });
-                              },
+                              onPressed: pdfPages
+                                      .where((PdfPageModel w) =>
+                                          w.pageSelected == true)
+                                      .isEmpty
+                                  ? null
+                                  : () {
+                                      setState(() {
+                                        for (int i = 0;
+                                            i < pdfPages.length;
+                                            i++) {
+                                          PdfPageModel temp = pdfPages[i];
+                                          if (temp.pageSelected) {
+                                            pdfPages[i] = PdfPageModel(
+                                                pageIndex: temp.pageIndex,
+                                                pageBytes: temp.pageBytes,
+                                                pageErrorStatus:
+                                                    temp.pageErrorStatus,
+                                                pageSelected: temp.pageSelected,
+                                                pageRotationAngle:
+                                                    temp.pageRotationAngle - 90,
+                                                pageHidden: temp.pageHidden);
+                                          }
+                                        }
+                                      });
+                                    },
                               child: const SizedBox.expand(
                                   child: Icon(Icons.rotate_left)),
                             ),
@@ -220,23 +228,31 @@ class _ExtractByPageSelectionState extends State<ExtractByPageSelection> {
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(0)),
                               ),
-                              onPressed: () {
-                                setState(() {
-                                  for (int i = 0; i < pdfPages.length; i++) {
-                                    PdfPageModel temp = pdfPages[i];
-                                    if (temp.pageSelected) {
-                                      pdfPages[i] = PdfPageModel(
-                                          pageIndex: temp.pageIndex,
-                                          pageBytes: temp.pageBytes,
-                                          pageErrorStatus: temp.pageErrorStatus,
-                                          pageSelected: temp.pageSelected,
-                                          pageRotationAngle:
-                                              temp.pageRotationAngle + 90,
-                                          pageHidden: temp.pageHidden);
-                                    }
-                                  }
-                                });
-                              },
+                              onPressed: pdfPages
+                                      .where((PdfPageModel w) =>
+                                          w.pageSelected == true)
+                                      .isEmpty
+                                  ? null
+                                  : () {
+                                      setState(() {
+                                        for (int i = 0;
+                                            i < pdfPages.length;
+                                            i++) {
+                                          PdfPageModel temp = pdfPages[i];
+                                          if (temp.pageSelected) {
+                                            pdfPages[i] = PdfPageModel(
+                                                pageIndex: temp.pageIndex,
+                                                pageBytes: temp.pageBytes,
+                                                pageErrorStatus:
+                                                    temp.pageErrorStatus,
+                                                pageSelected: temp.pageSelected,
+                                                pageRotationAngle:
+                                                    temp.pageRotationAngle + 90,
+                                                pageHidden: temp.pageHidden);
+                                          }
+                                        }
+                                      });
+                                    },
                               child: const SizedBox.expand(
                                   child: Icon(Icons.rotate_right)),
                             ),

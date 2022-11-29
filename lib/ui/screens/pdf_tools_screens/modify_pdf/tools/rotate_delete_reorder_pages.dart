@@ -3,6 +3,7 @@ import 'package:files_tools/models/file_model.dart';
 import 'package:files_tools/models/pdf_page_model.dart';
 import 'package:files_tools/state/providers.dart';
 import 'package:files_tools/state/tools_actions_state.dart';
+import 'package:files_tools/ui/components/custom_snack_bar.dart';
 import 'package:files_tools/ui/components/levitating_options_bar.dart';
 import 'package:files_tools/ui/components/loading.dart';
 import 'package:files_tools/ui/components/view_error.dart';
@@ -187,23 +188,28 @@ class _RotateDeleteReorderPagesState extends State<RotateDeleteReorderPages> {
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(0)),
                         ),
-                        onPressed: () {
-                          setState(() {
-                            for (int i = 0; i < pdfPages.length; i++) {
-                              PdfPageModel temp = pdfPages[i];
-                              if (temp.pageSelected) {
-                                pdfPages[i] = PdfPageModel(
-                                    pageIndex: temp.pageIndex,
-                                    pageBytes: temp.pageBytes,
-                                    pageErrorStatus: temp.pageErrorStatus,
-                                    pageSelected: temp.pageSelected,
-                                    pageRotationAngle:
-                                        temp.pageRotationAngle - 90,
-                                    pageHidden: temp.pageHidden);
-                              }
-                            }
-                          });
-                        },
+                        onPressed: pdfPages
+                                .where(
+                                    (PdfPageModel w) => w.pageSelected == true)
+                                .isEmpty
+                            ? null
+                            : () {
+                                setState(() {
+                                  for (int i = 0; i < pdfPages.length; i++) {
+                                    PdfPageModel temp = pdfPages[i];
+                                    if (temp.pageSelected) {
+                                      pdfPages[i] = PdfPageModel(
+                                          pageIndex: temp.pageIndex,
+                                          pageBytes: temp.pageBytes,
+                                          pageErrorStatus: temp.pageErrorStatus,
+                                          pageSelected: temp.pageSelected,
+                                          pageRotationAngle:
+                                              temp.pageRotationAngle - 90,
+                                          pageHidden: temp.pageHidden);
+                                    }
+                                  }
+                                });
+                              },
                         child: const SizedBox.expand(
                             child: Icon(Icons.rotate_left)),
                       ),
@@ -216,23 +222,28 @@ class _RotateDeleteReorderPagesState extends State<RotateDeleteReorderPages> {
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(0)),
                         ),
-                        onPressed: () {
-                          setState(() {
-                            for (int i = 0; i < pdfPages.length; i++) {
-                              PdfPageModel temp = pdfPages[i];
-                              if (temp.pageSelected) {
-                                pdfPages[i] = PdfPageModel(
-                                    pageIndex: temp.pageIndex,
-                                    pageBytes: temp.pageBytes,
-                                    pageErrorStatus: temp.pageErrorStatus,
-                                    pageSelected: temp.pageSelected,
-                                    pageRotationAngle:
-                                        temp.pageRotationAngle + 90,
-                                    pageHidden: temp.pageHidden);
-                              }
-                            }
-                          });
-                        },
+                        onPressed: pdfPages
+                                .where(
+                                    (PdfPageModel w) => w.pageSelected == true)
+                                .isEmpty
+                            ? null
+                            : () {
+                                setState(() {
+                                  for (int i = 0; i < pdfPages.length; i++) {
+                                    PdfPageModel temp = pdfPages[i];
+                                    if (temp.pageSelected) {
+                                      pdfPages[i] = PdfPageModel(
+                                          pageIndex: temp.pageIndex,
+                                          pageBytes: temp.pageBytes,
+                                          pageErrorStatus: temp.pageErrorStatus,
+                                          pageSelected: temp.pageSelected,
+                                          pageRotationAngle:
+                                              temp.pageRotationAngle + 90,
+                                          pageHidden: temp.pageHidden);
+                                    }
+                                  }
+                                });
+                              },
                         child: const SizedBox.expand(
                             child: Icon(Icons.rotate_right)),
                       ),
@@ -245,25 +256,37 @@ class _RotateDeleteReorderPagesState extends State<RotateDeleteReorderPages> {
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(0)),
                         ),
-                        onPressed: () {
-                          setState(() {
-                            List<int> pagesToRemoveWithPageIndex = [];
-                            for (int i = 0; i < pdfPages.length; i++) {
-                              PdfPageModel temp = pdfPages[i];
-                              if (temp.pageSelected) {
-                                pagesToRemoveWithPageIndex.add(temp.pageIndex);
-                              }
-                            }
-                            pdfPages.removeWhere((element) =>
-                                pagesToRemoveWithPageIndex
-                                    .contains(element.pageIndex));
-                            removedPdfPagesIndexes
-                                .addAll(pagesToRemoveWithPageIndex);
-                          });
-                        },
+                        onPressed: pdfPages.every((PdfPageModel w) =>
+                                    w.pageSelected == true) ||
+                                pdfPages.every(
+                                    (PdfPageModel w) => w.pageSelected == false)
+                            ? null
+                            : () {
+                                setState(() {
+                                  List<int> pagesToRemoveWithPageIndex = [];
+                                  for (int i = 0; i < pdfPages.length; i++) {
+                                    PdfPageModel temp = pdfPages[i];
+                                    if (temp.pageSelected) {
+                                      pagesToRemoveWithPageIndex
+                                          .add(temp.pageIndex);
+                                    }
+                                  }
+                                  pdfPages.removeWhere((element) =>
+                                      pagesToRemoveWithPageIndex
+                                          .contains(element.pageIndex));
+                                  removedPdfPagesIndexes
+                                      .addAll(pagesToRemoveWithPageIndex);
+                                });
+                              },
                         child: SizedBox.expand(
-                            child: Icon(Icons.delete,
-                                color: Theme.of(context).colorScheme.error)),
+                          child: Icon(Icons.delete,
+                              color: pdfPages.every((PdfPageModel w) =>
+                                          w.pageSelected == true) ||
+                                      pdfPages.every((PdfPageModel w) =>
+                                          w.pageSelected == false)
+                                  ? null
+                                  : Theme.of(context).colorScheme.error),
+                        ),
                       ),
                     ),
                     const VerticalDivider(width: 1),
