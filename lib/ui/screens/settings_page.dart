@@ -12,11 +12,22 @@ class SettingsPage extends StatelessWidget {
         centerTitle: true,
       ),
       body: ListView(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.symmetric(vertical: 16),
         children: [
-          Text("App Theming", style: Theme.of(context).textTheme.titleMedium),
-          const ThemeWidget(),
-          const DynamicThemeCheckboxTile(),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text("App Theming",
+                    style: Theme.of(context).textTheme.bodyMedium),
+                const ResetAppThemeSettings(),
+              ],
+            ),
+          ),
+          const ThemeChooserWidget(),
+          const DynamicThemeSwitchTile(),
+          const ThemeModeSwitcher(),
         ],
       ),
     );
