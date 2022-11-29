@@ -92,232 +92,250 @@ class _ExtractByPageSelectionState extends State<ExtractByPageSelection> {
               }),
         ),
         const Divider(indent: 16.0, endIndent: 16.0),
-        Expanded(
-          child: Stack(
-            children: [
-              ReorderableGridView.builder(
-                padding: const EdgeInsets.symmetric(
-                    vertical: 16.0, horizontal: 16.0),
-                gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                  childAspectRatio: 1,
-                  maxCrossAxisExtent: 150,
-                  mainAxisExtent: 150,
-                  mainAxisSpacing: 8,
-                  crossAxisSpacing: 8,
-                ),
-                itemCount: pdfPages.length,
-                placeholderBuilder:
-                    (int oldIndex, int newIndex, Widget widget) {
-                  return GridElementPlaceholder(index: newIndex);
-                },
-                dragWidgetBuilder: (int index, Widget widget) {
-                  return Transform.scale(
-                    scale: 1.1,
-                    child: GridElement(
-                        child: PageImageView(
-                      pdfPage: pdfPages[index],
-                      pageIndex: index,
-                    )),
-                  );
-                },
-                itemBuilder: (BuildContext context, int index) {
-                  updatePdfPages(index: index);
-                  if (pdfPages[index].pageErrorStatus) {
-                    return GridElement(
-                        key: Key('$index'), child: const ErrorIndicator());
-                  } else if (pdfPages[index].pageBytes != null) {
-                    return GridElement(
-                      key: Key('$index'),
-                      child: PageImageView(
-                        pdfPage: pdfPages[index],
-                        pageIndex: index,
-                        onUpdatePdfPage: (PdfPageModel value) {
-                          setState(() {
-                            pdfPages[index] = value;
-                          });
-
-                          if (pdfPages.every(
-                              (PdfPageModel w) => w.pageSelected == true)) {
-                            setState(() {
-                              isSelectAllEnabled = true;
-                            });
-                          } else if (pdfPages.every(
-                              (PdfPageModel w) => w.pageSelected == false)) {
-                            setState(() {
-                              isSelectAllEnabled = false;
-                            });
-                          } else {
-                            setState(() {
-                              isSelectAllEnabled = null;
-                            });
-                          }
-                        },
+        const SizedBox(height: 10),
+        widget.pdfPages.length > 1
+            ? Expanded(
+                child: Stack(
+                  children: [
+                    ReorderableGridView.builder(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 16.0, horizontal: 16.0),
+                      gridDelegate:
+                          const SliverGridDelegateWithMaxCrossAxisExtent(
+                        childAspectRatio: 1,
+                        maxCrossAxisExtent: 150,
+                        mainAxisExtent: 150,
+                        mainAxisSpacing: 8,
+                        crossAxisSpacing: 8,
                       ),
-                    );
-                  } else {
-                    return GridElement(
-                        key: Key('$index'), child: const LoadingIndicator());
-                  }
-                },
-                onReorder: (oldIndex, newIndex) {
-                  setState(() {
-                    final element = pdfPages.removeAt(oldIndex);
-                    pdfPages.insert(newIndex, element);
-                  });
-                },
-                scrollSpeedController:
-                    (int timeInMilliSecond, double overSize, double itemSize) {
-                  if (timeInMilliSecond > 1500) {
-                    scrollSpeedVariable = 20;
-                  } else {
-                    scrollSpeedVariable = 5;
-                  }
-                  return scrollSpeedVariable;
-                },
-              ),
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: LevitatingOptionsBar(
-                  optionsList: [
-                    Expanded(
-                      flex: 1,
-                      child: FilledButton.tonal(
-                        style: FilledButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(0)),
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            for (int i = 0; i < pdfPages.length; i++) {
-                              PdfPageModel temp = pdfPages[i];
-                              if (temp.pageSelected) {
-                                pdfPages[i] = PdfPageModel(
-                                    pageIndex: temp.pageIndex,
-                                    pageBytes: temp.pageBytes,
-                                    pageErrorStatus: temp.pageErrorStatus,
-                                    pageSelected: temp.pageSelected,
-                                    pageRotationAngle:
-                                        temp.pageRotationAngle - 90,
-                                    pageHidden: temp.pageHidden);
-                              }
-                            }
-                          });
-                        },
-                        child: const SizedBox.expand(
-                            child: Icon(Icons.rotate_left)),
-                      ),
-                    ),
-                    const VerticalDivider(width: 1),
-                    Expanded(
-                      flex: 1,
-                      child: FilledButton.tonal(
-                        style: FilledButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(0)),
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            for (int i = 0; i < pdfPages.length; i++) {
-                              PdfPageModel temp = pdfPages[i];
-                              if (temp.pageSelected) {
-                                pdfPages[i] = PdfPageModel(
-                                    pageIndex: temp.pageIndex,
-                                    pageBytes: temp.pageBytes,
-                                    pageErrorStatus: temp.pageErrorStatus,
-                                    pageSelected: temp.pageSelected,
-                                    pageRotationAngle:
-                                        temp.pageRotationAngle + 90,
-                                    pageHidden: temp.pageHidden);
-                              }
-                            }
-                          });
-                        },
-                        child: const SizedBox.expand(
-                            child: Icon(Icons.rotate_right)),
-                      ),
-                    ),
-                    const VerticalDivider(width: 1),
-                    Expanded(
-                      flex: 2,
-                      child: Consumer(
-                        builder: (BuildContext context, WidgetRef ref,
-                            Widget? child) {
-                          final ToolsActionsState
-                              watchToolsActionsStateProviderValue =
-                              ref.watch(toolsActionsStateProvider);
+                      itemCount: pdfPages.length,
+                      placeholderBuilder:
+                          (int oldIndex, int newIndex, Widget widget) {
+                        return GridElementPlaceholder(index: newIndex);
+                      },
+                      dragWidgetBuilder: (int index, Widget widget) {
+                        return Transform.scale(
+                          scale: 1.1,
+                          child: GridElement(
+                              child: PageImageView(
+                            pdfPage: pdfPages[index],
+                            pageIndex: index,
+                          )),
+                        );
+                      },
+                      itemBuilder: (BuildContext context, int index) {
+                        updatePdfPages(index: index);
+                        if (pdfPages[index].pageErrorStatus) {
+                          return GridElement(
+                              key: Key('$index'),
+                              child: const ErrorIndicator());
+                        } else if (pdfPages[index].pageBytes != null) {
+                          return GridElement(
+                            key: Key('$index'),
+                            child: PageImageView(
+                              pdfPage: pdfPages[index],
+                              pageIndex: index,
+                              onUpdatePdfPage: (PdfPageModel value) {
+                                setState(() {
+                                  pdfPages[index] = value;
+                                });
 
-                          List<PageRotationInfo> pagesRotationInfo = pdfPages
-                              .where(
-                                  (element) => element.pageRotationAngle != 0)
-                              .map((e) => PageRotationInfo(
-                                  pageNumber: e.pageIndex + 1,
-                                  rotationAngle: e.pageRotationAngle))
-                              .toList();
-                          List<int> pageNumbersForReorder;
-                          if (const ListEquality().equals(
-                              pdfPages.map((e) => e.pageIndex + 1).toList(),
-                              widget.pdfPages
-                                  .map((e) => e.pageIndex + 1)
-                                  .toList())) {
-                            pageNumbersForReorder = [];
-                          } else {
-                            pageNumbersForReorder =
-                                pdfPages.map((e) => e.pageIndex + 1).toList();
-                          }
-                          List<int> pageNumbersForDeleter = pdfPages
-                              .where((w) => w.pageSelected == false)
-                              .map((e) => e.pageIndex + 1)
-                              .toList();
-
-                          return FilledButton(
-                            style: FilledButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(0)),
-                            ),
-                            onPressed: pageNumbersForDeleter.length ==
-                                        pdfPages.length ||
-                                    (pageNumbersForDeleter.isEmpty &&
-                                        pagesRotationInfo.isEmpty &&
-                                        pageNumbersForReorder.isEmpty)
-                                ? null
-                                : () {
-                                    watchToolsActionsStateProviderValue
-                                        .modifySelectedFile(
-                                      files: [widget.file],
-                                      pagesRotationInfo: pagesRotationInfo,
-                                      pageNumbersForDeleter:
-                                          pageNumbersForDeleter,
-                                      pageNumbersForReorder:
-                                          pageNumbersForReorder,
-                                    );
-
-                                    Navigator.pushNamed(
-                                      context,
-                                      route.resultPage,
-                                    );
-                                  },
-                            child: SizedBox.expand(
-                              child: Center(
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: const [
-                                    Icon(Icons.check),
-                                    SizedBox(width: 10),
-                                    Text("Process"),
-                                  ],
-                                ),
-                              ),
+                                if (pdfPages.every((PdfPageModel w) =>
+                                    w.pageSelected == true)) {
+                                  setState(() {
+                                    isSelectAllEnabled = true;
+                                  });
+                                } else if (pdfPages.every((PdfPageModel w) =>
+                                    w.pageSelected == false)) {
+                                  setState(() {
+                                    isSelectAllEnabled = false;
+                                  });
+                                } else {
+                                  setState(() {
+                                    isSelectAllEnabled = null;
+                                  });
+                                }
+                              },
                             ),
                           );
-                        },
+                        } else {
+                          return GridElement(
+                              key: Key('$index'),
+                              child: const LoadingIndicator());
+                        }
+                      },
+                      onReorder: (oldIndex, newIndex) {
+                        setState(() {
+                          final element = pdfPages.removeAt(oldIndex);
+                          pdfPages.insert(newIndex, element);
+                        });
+                      },
+                      scrollSpeedController: (int timeInMilliSecond,
+                          double overSize, double itemSize) {
+                        if (timeInMilliSecond > 1500) {
+                          scrollSpeedVariable = 20;
+                        } else {
+                          scrollSpeedVariable = 5;
+                        }
+                        return scrollSpeedVariable;
+                      },
+                    ),
+                    Align(
+                      alignment: Alignment.bottomCenter,
+                      child: LevitatingOptionsBar(
+                        optionsList: [
+                          Expanded(
+                            flex: 1,
+                            child: FilledButton.tonal(
+                              style: FilledButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(0)),
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  for (int i = 0; i < pdfPages.length; i++) {
+                                    PdfPageModel temp = pdfPages[i];
+                                    if (temp.pageSelected) {
+                                      pdfPages[i] = PdfPageModel(
+                                          pageIndex: temp.pageIndex,
+                                          pageBytes: temp.pageBytes,
+                                          pageErrorStatus: temp.pageErrorStatus,
+                                          pageSelected: temp.pageSelected,
+                                          pageRotationAngle:
+                                              temp.pageRotationAngle - 90,
+                                          pageHidden: temp.pageHidden);
+                                    }
+                                  }
+                                });
+                              },
+                              child: const SizedBox.expand(
+                                  child: Icon(Icons.rotate_left)),
+                            ),
+                          ),
+                          const VerticalDivider(width: 1),
+                          Expanded(
+                            flex: 1,
+                            child: FilledButton.tonal(
+                              style: FilledButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(0)),
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  for (int i = 0; i < pdfPages.length; i++) {
+                                    PdfPageModel temp = pdfPages[i];
+                                    if (temp.pageSelected) {
+                                      pdfPages[i] = PdfPageModel(
+                                          pageIndex: temp.pageIndex,
+                                          pageBytes: temp.pageBytes,
+                                          pageErrorStatus: temp.pageErrorStatus,
+                                          pageSelected: temp.pageSelected,
+                                          pageRotationAngle:
+                                              temp.pageRotationAngle + 90,
+                                          pageHidden: temp.pageHidden);
+                                    }
+                                  }
+                                });
+                              },
+                              child: const SizedBox.expand(
+                                  child: Icon(Icons.rotate_right)),
+                            ),
+                          ),
+                          const VerticalDivider(width: 1),
+                          Expanded(
+                            flex: 2,
+                            child: Consumer(
+                              builder: (BuildContext context, WidgetRef ref,
+                                  Widget? child) {
+                                final ToolsActionsState
+                                    watchToolsActionsStateProviderValue =
+                                    ref.watch(toolsActionsStateProvider);
+
+                                List<PageRotationInfo> pagesRotationInfo =
+                                    pdfPages
+                                        .where((element) =>
+                                            element.pageRotationAngle != 0)
+                                        .map((e) => PageRotationInfo(
+                                            pageNumber: e.pageIndex + 1,
+                                            rotationAngle: e.pageRotationAngle))
+                                        .toList();
+                                List<int> pageNumbersForReorder;
+                                if (const ListEquality().equals(
+                                    pdfPages
+                                        .map((e) => e.pageIndex + 1)
+                                        .toList(),
+                                    widget.pdfPages
+                                        .map((e) => e.pageIndex + 1)
+                                        .toList())) {
+                                  pageNumbersForReorder = [];
+                                } else {
+                                  pageNumbersForReorder = pdfPages
+                                      .map((e) => e.pageIndex + 1)
+                                      .toList();
+                                }
+                                List<int> pageNumbersForDeleter = pdfPages
+                                    .where((w) => w.pageSelected == false)
+                                    .map((e) => e.pageIndex + 1)
+                                    .toList();
+
+                                return FilledButton(
+                                  style: FilledButton.styleFrom(
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(0)),
+                                  ),
+                                  onPressed: pageNumbersForDeleter.length ==
+                                              pdfPages.length ||
+                                          (pageNumbersForDeleter.isEmpty &&
+                                              pagesRotationInfo.isEmpty &&
+                                              pageNumbersForReorder.isEmpty)
+                                      ? null
+                                      : () {
+                                          watchToolsActionsStateProviderValue
+                                              .modifySelectedFile(
+                                            files: [widget.file],
+                                            pagesRotationInfo:
+                                                pagesRotationInfo,
+                                            pageNumbersForDeleter:
+                                                pageNumbersForDeleter,
+                                            pageNumbersForReorder:
+                                                pageNumbersForReorder,
+                                          );
+
+                                          Navigator.pushNamed(
+                                            context,
+                                            route.resultPage,
+                                          );
+                                        },
+                                  child: SizedBox.expand(
+                                    child: Center(
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: const [
+                                          Icon(Icons.check),
+                                          SizedBox(width: 10),
+                                          Text("Process"),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ],
                 ),
+              )
+            : Text(
+                'Sorry, pdf with less than 2 pages cant be further extracted.',
+                style: Theme.of(context)
+                    .textTheme
+                    .bodySmall
+                    ?.copyWith(color: Theme.of(context).colorScheme.error),
+                textAlign: TextAlign.center,
               ),
-            ],
-          ),
-        ),
       ],
     );
   }
