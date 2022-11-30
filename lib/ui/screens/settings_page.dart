@@ -1,4 +1,7 @@
-import 'package:files_tools/ui/screens/onboarding_screen.dart';
+import 'package:files_tools/ui/components/dynamic_theme_switch_tile.dart';
+import 'package:files_tools/ui/components/reset_app_theme_settings.dart';
+import 'package:files_tools/ui/components/theme_chooser_widget.dart';
+import 'package:files_tools/ui/components/theme_mode_switcher.dart';
 import 'package:flutter/material.dart';
 
 class SettingsPage extends StatelessWidget {

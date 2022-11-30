@@ -1,12 +1,13 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:files_tools/shared_preferences/preferences.dart';
-import 'package:files_tools/ui/components/color_picker.dart';
-import 'package:flex_color_picker/flex_color_picker.dart';
+import 'package:files_tools/ui/components/dynamic_theme_switch_tile.dart';
+import 'package:files_tools/ui/components/reset_app_theme_settings.dart';
+import 'package:files_tools/ui/components/theme_chooser_widget.dart';
+import 'package:files_tools/ui/components/theme_mode_switcher.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:files_tools/route/route.dart' as route;
-
-import '../../state/providers.dart';
+import 'package:files_tools/state/providers.dart';
 
 class OnBoardingScreen extends StatelessWidget {
   const OnBoardingScreen({Key? key}) : super(key: key);
@@ -401,139 +402,6 @@ class GetStartedButton extends StatelessWidget {
           },
           icon: const Icon(Icons.arrow_forward),
           label: const Text("Done"),
-        );
-      },
-    );
-  }
-}
-
-class DynamicThemeSwitchTile extends StatelessWidget {
-  const DynamicThemeSwitchTile({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Consumer(
-      builder: (BuildContext context, WidgetRef ref, Widget? child) {
-        bool isDynamicThemeEnabled = ref.watch(appThemeStateProvider
-            .select((value) => value.isDynamicThemeEnabled));
-        ColorScheme? lightDynamicColorScheme = ref.watch(appThemeStateProvider
-            .select((value) => value.lightDynamicColorScheme));
-
-        return lightDynamicColorScheme != null
-            ? SwitchListTile(
-                title: const Text("Enable Dynamic Theme"),
-                subtitle: const Text("Wallpaper as theme"),
-                secondary: const Icon(Icons.wallpaper),
-                value: isDynamicThemeEnabled,
-                onChanged: (bool? value) {
-                  ref.read(appThemeStateProvider).updateDynamicThemeStatus();
-                },
-              )
-            : const SizedBox();
-      },
-    );
-  }
-}
-
-class ResetAppThemeSettings extends StatelessWidget {
-  const ResetAppThemeSettings({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Consumer(
-      builder: (BuildContext context, WidgetRef ref, Widget? child) {
-        return TextButton(
-          style: TextButton.styleFrom(
-            padding: EdgeInsets.zero,
-            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-          ),
-          onPressed: () async {
-            sharedPreferencesInstance.remove(themeModePerfKey);
-            sharedPreferencesInstance.remove(userThemeSeedColorValuePerfKey);
-            sharedPreferencesInstance.remove(dynamicThemeStatusPerfKey);
-            // sharedPreferencesInstance.remove(onBoardingStatusPerfKey);
-            ref.read(appThemeStateProvider).updateTheme();
-          },
-          child: const Text('Reset'),
-        );
-      },
-    );
-  }
-}
-
-class ThemeModeSwitcher extends StatelessWidget {
-  const ThemeModeSwitcher({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Consumer(
-      builder: (BuildContext context, WidgetRef ref, Widget? child) {
-        ThemeMode themeMode =
-            ref.watch(appThemeStateProvider.select((value) => value.themeMode));
-        String buttonText = themeMode == ThemeMode.light
-            ? "Light"
-            : themeMode == ThemeMode.dark
-                ? "Dark"
-                : "System";
-        IconData iconData = themeMode == ThemeMode.light
-            ? Icons.light_mode
-            : themeMode == ThemeMode.dark
-                ? Icons.dark_mode
-                : Icons.android;
-        return ListTile(
-          leading: Icon(iconData),
-          title: const Text('Theme Mode'),
-          subtitle: Text(buttonText),
-          onTap: () {
-            ref.read(appThemeStateProvider).updateThemeMode();
-          },
-        );
-      },
-    );
-  }
-}
-
-class ThemeChooserWidget extends StatelessWidget {
-  const ThemeChooserWidget({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Consumer(
-      builder: (BuildContext context, WidgetRef ref, Widget? child) {
-        Color userColorSchemeSeedColor = ref.watch(appThemeStateProvider
-            .select((value) => value.userColorSchemeSeedColor));
-        return ListTile(
-          title: const Text('Theme color'),
-          subtitle: Text(
-            '${ColorTools.materialNameAndCode(userColorSchemeSeedColor)} '
-            'aka '
-            '${ColorTools.nameThatColor(userColorSchemeSeedColor)}',
-          ),
-          leading: const Icon(Icons.palette),
-          trailing: ColorIndicator(
-            width: 44,
-            height: 44,
-            borderRadius: 22,
-            color: userColorSchemeSeedColor,
-          ),
-          onTap: () async {
-            // Store current color before we open the dialog.
-            final Color colorBeforeDialog = userColorSchemeSeedColor;
-            // Wait for the picker to close, if dialog was dismissed,
-            // then restore the color we had before it was opened.
-            bool dialogStatus = await colorPickerDialog(
-                context: context,
-                dialogPickerColor: userColorSchemeSeedColor,
-                onColorChanged: (Color value) {
-                  ref.read(appThemeStateProvider).updateUserTheme(value);
-                });
-
-            if (!dialogStatus) {
-              ref
-                  .read(appThemeStateProvider)
-                  .updateUserTheme(colorBeforeDialog);
-            }
-          },
         );
       },
     );

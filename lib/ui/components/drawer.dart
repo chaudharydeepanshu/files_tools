@@ -1,5 +1,5 @@
 import 'package:files_tools/state/providers.dart';
-import 'package:files_tools/ui/screens/onboarding_screen.dart';
+import 'package:files_tools/ui/components/theme_mode_switcher.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:files_tools/route/route.dart' as route;
