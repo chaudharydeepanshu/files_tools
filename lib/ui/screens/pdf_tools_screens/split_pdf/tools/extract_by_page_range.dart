@@ -24,9 +24,12 @@ class ExtractByPageRange extends StatelessWidget {
         const SizedBox(height: 16),
         const AboutActionCard(
           aboutText:
-              'This method extracts pages into a single pdf from the provided pdf by providing page range.',
-          exampleText: "",
+              'This function extracts a range of pages from the provided pdf into a single pdf.',
+          aboutTextBodyTitle: 'Example :-',
+          aboutTextBody:
+              "If pages in selected PDF = 10\n\nAnd, your input = 2-4,6\n\nThen, result pdf will contain pages - 2,3,4,6",
         ),
+        const SizedBox(height: 16),
       ],
     );
   }

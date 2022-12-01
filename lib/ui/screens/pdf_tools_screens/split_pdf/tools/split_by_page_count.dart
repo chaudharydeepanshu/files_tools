@@ -24,9 +24,12 @@ class SplitByPageCount extends StatelessWidget {
         const SizedBox(height: 16),
         const AboutActionCard(
           aboutText:
-              'This method splits the pdf into multiple pdfs containing no. of pages equals to the page count.',
-          exampleText: "",
+              'This splits pdf into multiple pdfs each containing no. of pages equals to provided page count.',
+          aboutTextBodyTitle: 'Example :-',
+          aboutTextBody:
+              "If pages in selected PDF = 10\n\nAnd, your input = 3,7\n\nThen, it will split the PDF at every next 3rd page\n\nSo, we will get (10 / 3) = 4 PDFs\n\nPDF 1 containing pages - 1,2,3\nPDF 2 containing pages - 4,5,6\nPDF 3 containing pages - 7,8,9\nPDF 4 containing page - 10",
         ),
+        const SizedBox(height: 16),
       ],
     );
   }

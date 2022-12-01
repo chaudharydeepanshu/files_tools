@@ -55,24 +55,11 @@ class _WatermarkPdfActionCardState extends State<WatermarkPdfActionCard> {
   TextEditingController textRotationAngleController =
       TextEditingController(text: '45');
 
-  WatermarkLayer watermarkLayer = WatermarkLayer.overContent;
-
   Color watermarkColor = Colors.black;
 
   PositionType positionType = PositionType.center;
 
-  final List<bool> isSelectedForLayerTypes = <bool>[false, true];
-
-  List<Widget> layerTypes = const [
-    Padding(
-      padding: EdgeInsets.symmetric(horizontal: 10),
-      child: Text('Under Content'),
-    ),
-    Padding(
-      padding: EdgeInsets.symmetric(horizontal: 10),
-      child: Text('Over Content'),
-    )
-  ];
+  WatermarkLayer watermarkLayer = WatermarkLayer.overContent;
 
   @override
   Widget build(BuildContext context) {
@@ -256,28 +243,27 @@ class _WatermarkPdfActionCardState extends State<WatermarkPdfActionCard> {
             ),
             const SizedBox(height: 10),
             const Text("Choose watermark layer:"),
-            ToggleButtons(
-              onPressed: (int index) {
+            SegmentedButton<WatermarkLayer>(
+              segments: const [
+                ButtonSegment(
+                    value: WatermarkLayer.overContent,
+                    label: Text('Over Content')),
+                ButtonSegment(
+                    value: WatermarkLayer.underContent,
+                    label: Text('Under Content')),
+              ],
+              selected: <WatermarkLayer>{watermarkLayer},
+              onSelectionChanged: (Set<WatermarkLayer> value) {
                 setState(() {
-                  for (int buttonIndex = 0;
-                      buttonIndex < isSelectedForLayerTypes.length;
-                      buttonIndex++) {
-                    if (buttonIndex == index) {
-                      isSelectedForLayerTypes[buttonIndex] = true;
-                    } else {
-                      isSelectedForLayerTypes[buttonIndex] = false;
-                    }
-                  }
+                  watermarkLayer = value.first;
                 });
               },
-              isSelected: isSelectedForLayerTypes,
-              children: layerTypes,
             ),
             const SizedBox(height: 10),
             const Text("Choose watermark position:"),
             Flexible(
               child: SizedBox(
-                width: 200,
+                // width: 200,
                 child: GridView.builder(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
@@ -292,7 +278,7 @@ class _WatermarkPdfActionCardState extends State<WatermarkPdfActionCard> {
                   itemBuilder: (BuildContext context, int index) {
                     if (index == 0) {
                       return WatermarkPositionButton(
-                        positionText: "TL",
+                        positionText: "Top\nLeft",
                         isPositionSelected:
                             positionType == PositionType.topLeft,
                         onPositionChange: () {
@@ -300,10 +286,12 @@ class _WatermarkPdfActionCardState extends State<WatermarkPdfActionCard> {
                             positionType = PositionType.topLeft;
                           });
                         },
+                        positionBorderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(12)),
                       );
                     } else if (index == 1) {
                       return WatermarkPositionButton(
-                        positionText: "TC",
+                        positionText: "Top\nCenter",
                         isPositionSelected:
                             positionType == PositionType.topCenter,
                         onPositionChange: () {
@@ -311,10 +299,11 @@ class _WatermarkPdfActionCardState extends State<WatermarkPdfActionCard> {
                             positionType = PositionType.topCenter;
                           });
                         },
+                        positionBorderRadius: const BorderRadius.only(),
                       );
                     } else if (index == 2) {
                       return WatermarkPositionButton(
-                        positionText: "TR",
+                        positionText: "Top\nRight",
                         isPositionSelected:
                             positionType == PositionType.topRight,
                         onPositionChange: () {
@@ -322,10 +311,12 @@ class _WatermarkPdfActionCardState extends State<WatermarkPdfActionCard> {
                             positionType = PositionType.topRight;
                           });
                         },
+                        positionBorderRadius: const BorderRadius.only(
+                            topRight: Radius.circular(12)),
                       );
                     } else if (index == 3) {
                       return WatermarkPositionButton(
-                        positionText: "CL",
+                        positionText: "Center\nLeft",
                         isPositionSelected:
                             positionType == PositionType.centerLeft,
                         onPositionChange: () {
@@ -333,20 +324,22 @@ class _WatermarkPdfActionCardState extends State<WatermarkPdfActionCard> {
                             positionType = PositionType.centerLeft;
                           });
                         },
+                        positionBorderRadius: const BorderRadius.only(),
                       );
                     } else if (index == 4) {
                       return WatermarkPositionButton(
-                        positionText: "CC",
+                        positionText: "Center",
                         isPositionSelected: positionType == PositionType.center,
                         onPositionChange: () {
                           setState(() {
                             positionType = PositionType.center;
                           });
                         },
+                        positionBorderRadius: const BorderRadius.only(),
                       );
                     } else if (index == 5) {
                       return WatermarkPositionButton(
-                        positionText: "CR",
+                        positionText: "Center\nRight",
                         isPositionSelected:
                             positionType == PositionType.centerRight,
                         onPositionChange: () {
@@ -354,10 +347,11 @@ class _WatermarkPdfActionCardState extends State<WatermarkPdfActionCard> {
                             positionType = PositionType.centerRight;
                           });
                         },
+                        positionBorderRadius: const BorderRadius.only(),
                       );
                     } else if (index == 6) {
                       return WatermarkPositionButton(
-                        positionText: "BL",
+                        positionText: "Bottom\nLeft",
                         isPositionSelected:
                             positionType == PositionType.bottomLeft,
                         onPositionChange: () {
@@ -365,10 +359,12 @@ class _WatermarkPdfActionCardState extends State<WatermarkPdfActionCard> {
                             positionType = PositionType.bottomLeft;
                           });
                         },
+                        positionBorderRadius: const BorderRadius.only(
+                            bottomLeft: Radius.circular(12)),
                       );
                     } else if (index == 7) {
                       return WatermarkPositionButton(
-                        positionText: "BC",
+                        positionText: "Bottom\nCenter",
                         isPositionSelected:
                             positionType == PositionType.bottomCenter,
                         onPositionChange: () {
@@ -376,10 +372,11 @@ class _WatermarkPdfActionCardState extends State<WatermarkPdfActionCard> {
                             positionType = PositionType.bottomCenter;
                           });
                         },
+                        positionBorderRadius: const BorderRadius.only(),
                       );
                     } else {
                       return WatermarkPositionButton(
-                        positionText: "BR",
+                        positionText: "Bottom\nRight",
                         isPositionSelected:
                             positionType == PositionType.bottomRight,
                         onPositionChange: () {
@@ -387,6 +384,8 @@ class _WatermarkPdfActionCardState extends State<WatermarkPdfActionCard> {
                             positionType = PositionType.bottomRight;
                           });
                         },
+                        positionBorderRadius: const BorderRadius.only(
+                            bottomRight: Radius.circular(12)),
                       );
                     }
                   },
@@ -445,23 +444,36 @@ class WatermarkPositionButton extends StatelessWidget {
       {Key? key,
       required this.positionText,
       this.onPositionChange,
-      required this.isPositionSelected})
+      required this.isPositionSelected,
+      required this.positionBorderRadius})
       : super(key: key);
 
   final String positionText;
   final void Function()? onPositionChange;
   final bool isPositionSelected;
+  final BorderRadiusGeometry positionBorderRadius;
 
   @override
   Widget build(BuildContext context) {
     return OutlinedButton(
       style: isPositionSelected
           ? OutlinedButton.styleFrom(
-              backgroundColor: Theme.of(context).colorScheme.surfaceVariant,
+              backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+              shape: RoundedRectangleBorder(borderRadius: positionBorderRadius),
             )
-          : null,
+          : OutlinedButton.styleFrom(
+              backgroundColor: Theme.of(context).colorScheme.surface,
+              shape: RoundedRectangleBorder(borderRadius: positionBorderRadius),
+            ),
       onPressed: onPositionChange,
-      child: Text(positionText),
+      child: Text(
+        positionText,
+        textAlign: TextAlign.center,
+        style: isPositionSelected
+            ? Theme.of(context).textTheme.labelLarge?.copyWith(
+                color: Theme.of(context).colorScheme.onSecondaryContainer)
+            : null,
+      ),
     );
   }
 }

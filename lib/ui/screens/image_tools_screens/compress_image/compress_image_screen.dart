@@ -98,10 +98,10 @@ class _CompressPDFPageState extends State<CompressImagePage> {
                     ],
                   ),
                   const SizedBox(height: 16),
-                  const AboutActionCard(
-                    aboutText: 'Currently, we only compress JPG, PNG and WebP.',
-                    exampleText: "",
-                  ),
+                  // const AboutActionCard(
+                  //   aboutText: 'Currently, we only compress JPG, PNG and WebP.',
+                  //   aboutTextBody: "",
+                  // ),
                 ],
               );
             },

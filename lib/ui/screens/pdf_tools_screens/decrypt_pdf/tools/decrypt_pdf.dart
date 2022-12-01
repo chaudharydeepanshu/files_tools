@@ -1,6 +1,7 @@
 import 'package:files_tools/models/file_model.dart';
 import 'package:files_tools/state/providers.dart';
 import 'package:files_tools/state/tools_actions_state.dart';
+import 'package:files_tools/ui/components/tools_about_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -17,6 +18,13 @@ class DecryptPDF extends StatelessWidget {
       children: [
         const SizedBox(height: 16),
         DecryptPDFActionCard(file: file),
+        const SizedBox(height: 16),
+        const AboutActionCard(
+          aboutText: 'This function removes encryption from a pdf.',
+          aboutTextBody:
+              "If a have PDF has owner/permission password set but not user/open password set then you leave the input blank and proceed as it can remove the owner/permission password without password.\n\nBut if the PDF has a user password set then you must provide the user password to decrypt it.\n\nA owner/permission password is generally used to restrict printing, editing, and copying content in the PDF. And it requires a user to type a password to change those permission settings.\n\nA user/open password requires a user to type a password to open the PDF.",
+        ),
+        const SizedBox(height: 16),
       ],
     );
   }

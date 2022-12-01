@@ -22,9 +22,11 @@ class SplitByPageRanges extends StatelessWidget {
         const SizedBox(height: 16),
         const AboutActionCard(
           aboutText:
-              'This method extracts pages into a single pdf from the provided pdf by providing page range.',
-          exampleText: "",
+              'This function extracts a range of pages from the provided pdf into a single pdf.',
+          aboutTextBodyTitle: 'Example :-',
+          aboutTextBody: "",
         ),
+        const SizedBox(height: 16),
       ],
     );
   }

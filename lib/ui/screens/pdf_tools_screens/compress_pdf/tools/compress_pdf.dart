@@ -1,6 +1,7 @@
 import 'package:files_tools/models/file_model.dart';
 import 'package:files_tools/state/providers.dart';
 import 'package:files_tools/state/tools_actions_state.dart';
+import 'package:files_tools/ui/components/tools_about_card.dart';
 import 'package:files_tools/utils/decimal_text_input_formatter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -20,6 +21,12 @@ class CompressPDF extends StatelessWidget {
       children: [
         const SizedBox(height: 16),
         CompressPDFActionCard(pdfPageCount: pdfPageCount, file: file),
+        const SizedBox(height: 16),
+        const AboutActionCard(
+          aboutText: 'This function helps decrease a PDF size.',
+          aboutTextBody:
+              "The higher the compression the lower the size and quality of PDF.\n\nLess compression:\nImage scaling = 0.9, Image quality = 80\n\nMedium compression:\nImage scaling = 0.7, Image quality = 70\n\nExtreme compression:\nImage scaling = 0.7, Image quality = 60\n\nNote: All compression methods remove duplicate or unused assets from the PDF.",
+        ),
         const SizedBox(height: 16),
       ],
     );

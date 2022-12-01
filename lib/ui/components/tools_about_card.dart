@@ -2,11 +2,15 @@ import 'package:flutter/material.dart';
 
 class AboutActionCard extends StatelessWidget {
   const AboutActionCard(
-      {Key? key, required this.aboutText, this.exampleText = ""})
+      {Key? key,
+      required this.aboutText,
+      this.aboutTextBody,
+      this.aboutTextBodyTitle})
       : super(key: key);
 
   final String aboutText;
-  final String exampleText;
+  final String? aboutTextBody;
+  final String? aboutTextBodyTitle;
 
   @override
   Widget build(BuildContext context) {
@@ -18,14 +22,24 @@ class AboutActionCard extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Icon(Icons.info),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(Icons.info),
+                Text(
+                  "Function Info",
+                  style: Theme.of(context).textTheme.bodyLarge,
+                  textAlign: TextAlign.center,
+                )
+              ],
+            ),
             const Divider(),
             Text(
               aboutText,
               style: Theme.of(context).textTheme.bodyMedium,
               textAlign: TextAlign.center,
             ),
-            if (exampleText.isNotEmpty)
+            if (aboutTextBody != null && aboutTextBody!.trim().isNotEmpty)
               Padding(
                 padding: const EdgeInsets.only(top: 10.0),
                 child: Container(
@@ -39,14 +53,19 @@ class AboutActionCard extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
+                        if (aboutTextBodyTitle != null &&
+                            aboutTextBodyTitle!.trim().isNotEmpty)
+                          Text(
+                            "$aboutTextBodyTitle\n",
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium
+                                ?.copyWith(
+                                    decoration: TextDecoration.underline),
+                            textAlign: TextAlign.center,
+                          ),
                         Text(
-                          "Example:-",
-                          style: Theme.of(context).textTheme.bodyMedium,
-                          textAlign: TextAlign.center,
-                        ),
-                        const SizedBox(height: 10),
-                        Text(
-                          exampleText,
+                          "$aboutTextBody",
                           style: Theme.of(context).textTheme.bodySmall,
                           textAlign: TextAlign.start,
                         ),

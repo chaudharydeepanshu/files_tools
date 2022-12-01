@@ -25,9 +25,11 @@ class SplitByPageNumbers extends StatelessWidget {
         const AboutActionCard(
           aboutText:
               'This method splits the pdf into multiple pdfs by providing page numbers.',
-          exampleText:
-              "If pages in selected PDF = 10\n\nAnd, your input = 3,7\n(Tip: 1 is default in input)\n\nThen, it will split the PDF from 1, 3 and 7\n\nSo, we will get 3 PDFs\n\nPDF 1 contain pages - 1,2\nPDF 2 contain pages - 3,4,5,6\nPDF 3 contain pages - 7,8,9,10",
+          aboutTextBodyTitle: 'Example :-',
+          aboutTextBody:
+              "If pages in selected PDF = 10\n\nAnd, your input = 3,7\n(Tip: 1 is default in input)\n\nThen, it will split the PDF from 1, 3 and 7\n\nSo, we will get 3 PDFs :-\n\nPDF 1 containing pages - 1,2\nPDF 2 containing pages - 3,4,5,6\nPDF 3 containing pages - 7,8,9,10",
         ),
+        const SizedBox(height: 16),
       ],
     );
   }

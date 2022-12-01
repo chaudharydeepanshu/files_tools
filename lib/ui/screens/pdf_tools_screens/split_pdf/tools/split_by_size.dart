@@ -26,9 +26,12 @@ class SplitBySize extends StatelessWidget {
         const SizedBox(height: 16),
         const AboutActionCard(
           aboutText:
-              'This method splits the pdf into multiple pdfs with the specified size.',
-          exampleText: "",
+              'This function splits a pdf into multiple pdfs of specified size.',
+          aboutTextBodyTitle: 'Example :-',
+          aboutTextBody:
+              "If a PDF size = 100 MB\n\nAnd, your input(in MB) = 25\n\nThen, all result pdfs size will be under 25 MB\n\nNote: If a provided size is not possible then it creates PDFs of minimum possible size.",
         ),
+        const SizedBox(height: 16),
       ],
     );
   }
@@ -51,9 +54,28 @@ class _SplitBySizeActionCardState extends State<SplitBySizeActionCard> {
 
   TextEditingController sizeController = TextEditingController();
 
-  final List<bool> isSelected = <bool>[true, false, false];
+  BytesFormatType selected = BytesFormatType.KB;
 
-  List<Widget> sizeTypes = const [Text('KB'), Text('MB'), Text('GB')];
+  late double fileSizeInKB;
+  late double fileSizeInMB;
+  late double fileSizeInGB;
+
+  @override
+  void initState() {
+    fileSizeInKB = double.parse(formatBytes(
+        bytes: widget.file.fileSizeBytes,
+        decimals: 2,
+        formatType: BytesFormatType.KB));
+    fileSizeInMB = double.parse(formatBytes(
+        bytes: widget.file.fileSizeBytes,
+        decimals: 2,
+        formatType: BytesFormatType.MB));
+    fileSizeInGB = double.parse(formatBytes(
+        bytes: widget.file.fileSizeBytes,
+        decimals: 2,
+        formatType: BytesFormatType.GB));
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -75,89 +97,107 @@ class _SplitBySizeActionCardState extends State<SplitBySizeActionCard> {
             widget.pdfPageCount > 1
                 ? Column(
                     children: [
-                      ToggleButtons(
-                        onPressed: (int index) {
+                      SegmentedButton<BytesFormatType>(
+                        segments: const [
+                          ButtonSegment(
+                              value: BytesFormatType.KB, label: Text('KB')),
+                          ButtonSegment(
+                              value: BytesFormatType.MB, label: Text('MB')),
+                          ButtonSegment(
+                              value: BytesFormatType.GB, label: Text('GB')),
+                        ],
+                        selected: <BytesFormatType>{selected},
+                        onSelectionChanged: (Set<BytesFormatType> value) {
                           setState(() {
-                            for (int buttonIndex = 0;
-                                buttonIndex < isSelected.length;
-                                buttonIndex++) {
-                              if (buttonIndex == index) {
-                                isSelected[buttonIndex] = true;
-                              } else {
-                                isSelected[buttonIndex] = false;
-                              }
-                            }
+                            selected = value.first;
                           });
                         },
-                        isSelected: isSelected,
-                        children: sizeTypes,
                       ),
                       const SizedBox(height: 10),
                       Form(
                         key: _formKey,
-                        child: TextFormField(
-                          controller: sizeController,
-                          decoration: InputDecoration(
-                            filled: true,
-                            labelText: 'Enter Size',
-                            // isDense: true,
-                            helperText: isSelected[0] == true
-                                ? 'Example- ${double.parse(formatBytes(bytes: widget.file.fileSizeBytes, decimals: 2, formatType: BytesFormatType.KB)) / 2}'
-                                : isSelected[1] == true
-                                    ? 'Example- ${double.parse(formatBytes(bytes: widget.file.fileSizeBytes, decimals: 2, formatType: BytesFormatType.MB)) / 2}'
-                                    : 'Example- ${double.parse(formatBytes(bytes: widget.file.fileSizeBytes, decimals: 2, formatType: BytesFormatType.GB)) / 2}',
-                            // enabledBorder: const UnderlineInputBorder(),
-                          ),
-                          keyboardType: const TextInputType.numberWithOptions(
-                              decimal: true),
-                          inputFormatters: [
-                            DecimalTextInputFormatter(decimalRange: 2)
-                          ],
-                          autovalidateMode: AutovalidateMode.onUserInteraction,
-                          // The validator receives the text that the user has entered.
-                          validator: (value) {
-                            if (isSelected[0] == true) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter number between 0 to ${formatBytes(bytes: widget.file.fileSizeBytes, decimals: 2, formatType: BytesFormatType.KB)}';
-                              } else if (double.parse(value) <= 0) {
-                                return 'Please enter number bigger than 0';
-                              } else if (double.parse(value) >
-                                  double.parse(formatBytes(
-                                      bytes: widget.file.fileSizeBytes,
-                                      decimals: 2,
-                                      formatType: BytesFormatType.KB))) {
-                                return 'Please enter number lower than ${formatBytes(bytes: widget.file.fileSizeBytes, decimals: 2, formatType: BytesFormatType.KB)}';
-                              }
-                              return null;
-                            } else if (isSelected[1] == true) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter number between 0 to ${formatBytes(bytes: widget.file.fileSizeBytes, decimals: 2, formatType: BytesFormatType.MB)}';
-                              } else if (double.parse(value) <= 0) {
-                                return 'Please enter number bigger than 0';
-                              } else if (double.parse(value) >
-                                  double.parse(formatBytes(
-                                      bytes: widget.file.fileSizeBytes,
-                                      decimals: 2,
-                                      formatType: BytesFormatType.MB))) {
-                                return 'Please enter number lower than ${formatBytes(bytes: widget.file.fileSizeBytes, decimals: 2, formatType: BytesFormatType.MB)}';
-                              }
-                              return null;
-                            } else {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter number between 0 to ${formatBytes(bytes: widget.file.fileSizeBytes, decimals: 2, formatType: BytesFormatType.GB)}';
-                              } else if (double.parse(value) <= 0) {
-                                return 'Please enter number bigger than 0';
-                              } else if (double.parse(value) >
-                                  double.parse(formatBytes(
-                                      bytes: widget.file.fileSizeBytes,
-                                      decimals: 2,
-                                      formatType: BytesFormatType.GB))) {
-                                return 'Please enter number lower than ${formatBytes(bytes: widget.file.fileSizeBytes, decimals: 2, formatType: BytesFormatType.GB)}';
-                              }
-                              return null;
-                            }
-                          },
-                        ),
+                        child: (selected == BytesFormatType.KB
+                                    ? fileSizeInKB
+                                    : selected == BytesFormatType.MB
+                                        ? fileSizeInMB
+                                        : fileSizeInGB) >
+                                0
+                            ? TextFormField(
+                                controller: sizeController,
+                                decoration: InputDecoration(
+                                  filled: true,
+                                  labelText: 'Enter Size',
+                                  // isDense: true,
+                                  helperText: selected == BytesFormatType.KB
+                                      ? 'Example- ${fileSizeInKB / 2}'
+                                      : selected == BytesFormatType.MB
+                                          ? 'Example- ${fileSizeInMB / 2}'
+                                          : 'Example- ${fileSizeInGB / 2}',
+                                  // enabledBorder: const UnderlineInputBorder(),
+                                ),
+                                keyboardType:
+                                    const TextInputType.numberWithOptions(
+                                        decimal: true),
+                                inputFormatters: [
+                                  DecimalTextInputFormatter(decimalRange: 2)
+                                ],
+                                autovalidateMode:
+                                    AutovalidateMode.onUserInteraction,
+                                // The validator receives the text that the user has entered.
+                                validator: (value) {
+                                  if (selected == BytesFormatType.KB) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'Please enter number between 0 to $fileSizeInKB';
+                                    } else if (double.parse(value) <= 0) {
+                                      return 'Please enter number bigger than 0';
+                                    } else if (double.parse(value) >
+                                        double.parse(formatBytes(
+                                            bytes: widget.file.fileSizeBytes,
+                                            decimals: 2,
+                                            formatType: BytesFormatType.KB))) {
+                                      return 'Please enter number lower than $fileSizeInKB';
+                                    }
+                                    return null;
+                                  } else if (selected == BytesFormatType.MB) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'Please enter number between 0 to $fileSizeInMB';
+                                    } else if (double.parse(value) <= 0) {
+                                      return 'Please enter number bigger than 0';
+                                    } else if (double.parse(value) >
+                                        double.parse(formatBytes(
+                                            bytes: widget.file.fileSizeBytes,
+                                            decimals: 2,
+                                            formatType: BytesFormatType.MB))) {
+                                      return 'Please enter number lower than $fileSizeInMB';
+                                    }
+                                    return null;
+                                  } else {
+                                    if (value == null || value.isEmpty) {
+                                      return 'Please enter number between 0 to $fileSizeInGB';
+                                    } else if (double.parse(value) <= 0) {
+                                      return 'Please enter number bigger than 0';
+                                    } else if (double.parse(value) >
+                                        double.parse(formatBytes(
+                                            bytes: widget.file.fileSizeBytes,
+                                            decimals: 2,
+                                            formatType: BytesFormatType.GB))) {
+                                      return 'Please enter number lower than $fileSizeInGB';
+                                    }
+                                    return null;
+                                  }
+                                },
+                              )
+                            : Text(
+                                'Sorry, pdf size is too small for taking input in this unit. Please choose a smaller unit.',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodySmall
+                                    ?.copyWith(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .error),
+                                textAlign: TextAlign.center,
+                              ),
                       ),
                       const Divider(),
                       Consumer(
@@ -172,12 +212,12 @@ class _SplitBySizeActionCardState extends State<SplitBySizeActionCard> {
                                 watchToolsActionsStateProviderValue
                                     .splitSelectedFile(
                                   files: [widget.file],
-                                  byteSize: isSelected[0] == true
+                                  byteSize: selected == BytesFormatType.KB
                                       ? (math.pow(1000, 1) *
                                               double.parse(
                                                   sizeController.value.text))
                                           .toInt()
-                                      : isSelected[1] == true
+                                      : selected == BytesFormatType.MB
                                           ? (math.pow(1000, 2) *
                                                   double.parse(sizeController
                                                       .value.text))

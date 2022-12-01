@@ -1,6 +1,7 @@
 import 'package:files_tools/models/file_model.dart';
 import 'package:files_tools/state/providers.dart';
 import 'package:files_tools/state/tools_actions_state.dart';
+import 'package:files_tools/ui/components/tools_about_card.dart';
 import 'package:files_tools/utils/decimal_text_input_formatter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -18,6 +19,12 @@ class CompressImage extends StatelessWidget {
       children: [
         const SizedBox(height: 16),
         CompressImageActionCard(files: files),
+        const SizedBox(height: 16),
+        const AboutActionCard(
+          aboutText: 'This function helps decrease a image size.',
+          aboutTextBody:
+              "The higher the compression the lower the size and quality of image.\n\nLess compression:\nImage scaling = 0.9, Image quality = 80\n\nMedium compression:\nImage scaling = 0.7, Image quality = 70\n\nExtreme compression:\nImage scaling = 0.7, Image quality = 60.",
+        ),
         const SizedBox(height: 16),
       ],
     );
