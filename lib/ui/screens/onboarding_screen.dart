@@ -1,13 +1,13 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:files_tools/route/route.dart' as route;
 import 'package:files_tools/shared_preferences/preferences.dart';
+import 'package:files_tools/state/providers.dart';
 import 'package:files_tools/ui/components/dynamic_theme_switch_tile.dart';
 import 'package:files_tools/ui/components/reset_app_theme_settings.dart';
 import 'package:files_tools/ui/components/theme_chooser_widget.dart';
 import 'package:files_tools/ui/components/theme_mode_switcher.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:files_tools/route/route.dart' as route;
-import 'package:files_tools/state/providers.dart';
 
 class OnBoardingScreen extends StatelessWidget {
   const OnBoardingScreen({Key? key}) : super(key: key);
@@ -31,7 +31,7 @@ void onBoardingFinish(BuildContext context) async {
     route.homePage,
   );
   Preferences preferences = Preferences();
-  await preferences.init(sharedPreferencesInstance);
+  preferences.init(sharedPreferencesInstance);
   preferences.persistOnBoardingStatus(true);
   // if (Navigator.canPop(context)) {
   //   // Popping only if it can be popped.
@@ -230,7 +230,7 @@ class _OnBoardScreenPageViewState extends State<OnBoardScreenPageView>
                           onPressed: () {
                             onBoardingFinish(context);
                           },
-                          child: const Text("Skip"),
+                          child: const Text('Skip'),
                         );
                       },
                     )
@@ -401,7 +401,7 @@ class GetStartedButton extends StatelessWidget {
             onBoardingFinish(context);
           },
           icon: const Icon(Icons.arrow_forward),
-          label: const Text("Done"),
+          label: const Text('Done'),
         );
       },
     );
@@ -546,21 +546,21 @@ class AppTool {
 }
 
 final List<AppTool> appTools = [
-  const AppTool(toolName: "Merge PDF", toolIconsData: Icons.merge),
-  const AppTool(toolName: "Split PDF", toolIconsData: Icons.call_split),
+  const AppTool(toolName: 'Merge PDF', toolIconsData: Icons.merge),
+  const AppTool(toolName: 'Split PDF', toolIconsData: Icons.call_split),
   const AppTool(
-      toolName: "Rotate PDF Pages", toolIconsData: Icons.rotate_right),
-  const AppTool(toolName: "Delete PDF Pages", toolIconsData: Icons.delete),
-  const AppTool(toolName: "Reorder PDF Pages", toolIconsData: Icons.reorder),
-  const AppTool(toolName: "PDF To Image", toolIconsData: Icons.image),
-  const AppTool(toolName: "Compress PDF", toolIconsData: Icons.compress),
+      toolName: 'Rotate PDF Pages', toolIconsData: Icons.rotate_right),
+  const AppTool(toolName: 'Delete PDF Pages', toolIconsData: Icons.delete),
+  const AppTool(toolName: 'Reorder PDF Pages', toolIconsData: Icons.reorder),
+  const AppTool(toolName: 'PDF To Image', toolIconsData: Icons.image),
+  const AppTool(toolName: 'Compress PDF', toolIconsData: Icons.compress),
   const AppTool(
-      toolName: "Watermark PDF", toolIconsData: Icons.branding_watermark),
-  const AppTool(toolName: "Image To PDF", toolIconsData: Icons.picture_as_pdf),
-  const AppTool(toolName: "Encrypt PDF", toolIconsData: Icons.lock),
-  const AppTool(toolName: "Decrypt PDF", toolIconsData: Icons.lock_open),
-  const AppTool(toolName: "Compress Image", toolIconsData: Icons.compress),
-  const AppTool(toolName: "Crop Image", toolIconsData: Icons.crop),
-  const AppTool(toolName: "Rotate Image", toolIconsData: Icons.rotate_right),
-  const AppTool(toolName: "Flip Image", toolIconsData: Icons.flip),
+      toolName: 'Watermark PDF', toolIconsData: Icons.branding_watermark),
+  const AppTool(toolName: 'Image To PDF', toolIconsData: Icons.picture_as_pdf),
+  const AppTool(toolName: 'Encrypt PDF', toolIconsData: Icons.lock),
+  const AppTool(toolName: 'Decrypt PDF', toolIconsData: Icons.lock_open),
+  const AppTool(toolName: 'Compress Image', toolIconsData: Icons.compress),
+  const AppTool(toolName: 'Crop Image', toolIconsData: Icons.crop),
+  const AppTool(toolName: 'Rotate Image', toolIconsData: Icons.rotate_right),
+  const AppTool(toolName: 'Flip Image', toolIconsData: Icons.flip),
 ];

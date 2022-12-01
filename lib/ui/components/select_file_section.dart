@@ -214,7 +214,7 @@ class FilesSelected extends StatelessWidget {
                               files: [],
                             );
                             clearCache(
-                                clearCacheCommandFrom: "Clear File Selection");
+                                clearCacheCommandFrom: 'Clear File Selection');
                           }
                         : null,
                     label: const Text('Clear All',

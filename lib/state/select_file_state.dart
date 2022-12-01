@@ -1,14 +1,14 @@
 import 'dart:developer';
 
+import 'package:files_tools/main.dart';
 import 'package:files_tools/models/file_model.dart';
-import 'package:files_tools/state/tools_actions_state.dart';
+import 'package:files_tools/ui/components/custom_snack_bar.dart';
+import 'package:files_tools/utils/get_file_model_from_uri.dart';
+import 'package:files_tools/utils/get_file_name_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pdf_bitmaps/pdf_bitmaps.dart';
 import 'package:pick_or_save/pick_or_save.dart';
-import '../main.dart';
-import '../ui/components/custom_snack_bar.dart';
-import '../utils/format_bytes.dart';
 
 class ToolScreenState extends ChangeNotifier {
   List<InputFileModel> removedFiles = [];
@@ -19,7 +19,7 @@ class ToolScreenState extends ChangeNotifier {
   bool _isPickingFile = false;
   bool get isPickingFile => _isPickingFile;
 
-  updateSelectedFiles({required List<InputFileModel> files}) {
+  void updateSelectedFiles({required List<InputFileModel> files}) {
     _selectedFiles = files;
     notifyListeners();
   }
@@ -47,7 +47,7 @@ class ToolScreenState extends ChangeNotifier {
     return files;
   }
 
-  updateFilePickingStatus({required bool status}) {
+  void updateFilePickingStatus({required bool status}) {
     _isPickingFile = status;
 
     BuildContext? context = navigatorKey.currentState?.context;
@@ -78,7 +78,7 @@ class ToolScreenState extends ChangeNotifier {
     notifyListeners();
   }
 
-  selectFiles(
+  void selectFiles(
       {required FilePickerParams params,
       required bool discardInvalidPdfFiles,
       required bool discardProtectedPdfFiles}) async {
@@ -108,13 +108,13 @@ Future<List<InputFileModel>> fileFiltering(
   for (var element in files) {
     String extensionOfFile = getFileNameExtension(fileName: element.fileName);
     if ((discardInvalidPdfFiles || discardProtectedPdfFiles) &&
-        extensionOfFile == ".pdf") {
+        extensionOfFile == '.pdf') {
       PdfValidityAndProtection? pdfValidityAndProtectionInfo =
           await PdfBitmaps().pdfValidityAndProtection(
               params: PDFValidityAndProtectionParams(pdfPath: element.fileUri));
       if (pdfValidityAndProtectionInfo == null) {
         InputFileModel temp = InputFileModel(
-            fileName: "${element.fileName} (Invalid)",
+            fileName: '${element.fileName} (Invalid)',
             fileDate: element.fileDate,
             fileTime: element.fileTime,
             fileSizeFormatBytes: element.fileSizeFormatBytes,
@@ -124,7 +124,7 @@ Future<List<InputFileModel>> fileFiltering(
       } else if (pdfValidityAndProtectionInfo.isPDFValid == false &&
           discardInvalidPdfFiles) {
         InputFileModel temp = InputFileModel(
-            fileName: "${element.fileName} (Invalid)",
+            fileName: '${element.fileName} (Invalid)',
             fileDate: element.fileDate,
             fileTime: element.fileTime,
             fileSizeFormatBytes: element.fileSizeFormatBytes,
@@ -134,7 +134,7 @@ Future<List<InputFileModel>> fileFiltering(
       } else if (pdfValidityAndProtectionInfo.isOpenPasswordProtected == true &&
           discardProtectedPdfFiles) {
         InputFileModel temp = InputFileModel(
-            fileName: "${element.fileName} (Protected)",
+            fileName: '${element.fileName} (Protected)',
             fileDate: element.fileDate,
             fileTime: element.fileTime,
             fileSizeFormatBytes: element.fileSizeFormatBytes,
@@ -160,7 +160,7 @@ Future<List<InputFileModel>> imagesFiltering(
     if (allowedExtensions.isNotEmpty &&
         !allowedExtensions.contains(extensionOfFile)) {
       InputFileModel temp = InputFileModel(
-          fileName: "${element.fileName} (Unsupported File Type)",
+          fileName: '${element.fileName} (Unsupported File Type)',
           fileDate: element.fileDate,
           fileTime: element.fileTime,
           fileSizeFormatBytes: element.fileSizeFormatBytes,
@@ -171,42 +171,4 @@ Future<List<InputFileModel>> imagesFiltering(
   }
 
   return filesToRemoveFromSelection;
-}
-
-Future<InputFileModel> getInputFileModelFromUri(
-    {required String filePathOrUri}) async {
-  InputFileModel file;
-  FileMetadata fileMetadata;
-  fileMetadata = await PickOrSave()
-      .fileMetaData(params: FileMetadataParams(filePath: filePathOrUri));
-  final String fileName = fileMetadata.displayName ?? "Unknown";
-  final DateTime? lastModifiedDateTime;
-  if (fileMetadata.lastModified != null &&
-      fileMetadata.lastModified != "Unknown") {
-    lastModifiedDateTime = DateTime.parse(fileMetadata.lastModified!);
-  } else {
-    lastModifiedDateTime = null;
-  }
-  final String fileDate = lastModifiedDateTime != null
-      ? "${lastModifiedDateTime.day}/${lastModifiedDateTime.month}/${lastModifiedDateTime.year}"
-      : "Unknown";
-  final String fileTime = lastModifiedDateTime != null
-      ? "${lastModifiedDateTime.hour}:${lastModifiedDateTime.minute}"
-      : "Unknown";
-  final String fileSizeFormatBytes =
-      fileMetadata.size != null && fileMetadata.size != "Unknown"
-          ? formatBytes(bytes: int.parse(fileMetadata.size!), decimals: 2)
-          : "Unknown";
-  final int fileSizeBytes =
-      fileMetadata.size != null && fileMetadata.size != "Unknown"
-          ? int.parse(fileMetadata.size!)
-          : 0;
-  file = InputFileModel(
-      fileName: fileName,
-      fileDate: fileDate,
-      fileTime: fileTime,
-      fileSizeFormatBytes: fileSizeFormatBytes,
-      fileSizeBytes: fileSizeBytes,
-      fileUri: filePathOrUri);
-  return file;
 }

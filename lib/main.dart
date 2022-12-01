@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:dynamic_color/dynamic_color.dart';
+import 'package:files_tools/route/route.dart' as route;
 import 'package:files_tools/state/providers.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -9,9 +10,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:files_tools/route/route.dart' as route;
 
-import 'firebase_options.dart';
+import 'package:files_tools/firebase_options.dart';
 
 final FirebaseCrashlytics crashlytics = FirebaseCrashlytics.instance;
 final FirebaseAnalytics analytics = FirebaseAnalytics.instance;
@@ -106,6 +106,9 @@ class App extends StatelessWidget {
   }
 }
 
+// Todo: Improve appbar texts for smaller screens.
+// Todo: Use flutter_intro for first use step-by-step users guide for app.
+// Todo: Add localization.
 // Todo: Add extraction of pages from selection and splitting on the basis of ranges.
 // Todo: Use image mode instead of file mode for images selection in application such as images to pdf function. Can't do it due to https://issuetracker.google.com/issues/257642029.
 // Todo: Check on watermarking is failing for some large pdfs.

@@ -1,5 +1,6 @@
 import 'package:files_tools/models/file_model.dart';
 import 'package:files_tools/models/tool_actions_model.dart';
+import 'package:files_tools/route/route.dart' as route;
 import 'package:files_tools/state/providers.dart';
 import 'package:files_tools/state/select_file_state.dart';
 import 'package:files_tools/state/tools_actions_state.dart';
@@ -10,7 +11,6 @@ import 'package:files_tools/utils/clear_cache.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pick_or_save/pick_or_save.dart';
-import 'package:files_tools/route/route.dart' as route;
 
 class PdfToImagePage extends StatefulWidget {
   const PdfToImagePage({Key? key}) : super(key: key);
@@ -22,7 +22,7 @@ class PdfToImagePage extends StatefulWidget {
 class _PdfToImagePageState extends State<PdfToImagePage> {
   @override
   void initState() {
-    clearCache(clearCacheCommandFrom: "PDFToImagePage");
+    clearCache(clearCacheCommandFrom: 'PDFToImagePage');
     super.initState();
   }
 
@@ -43,7 +43,7 @@ class _PdfToImagePageState extends State<PdfToImagePage> {
         },
         child: Scaffold(
           appBar: AppBar(
-            title: const Text("PDF To Images"),
+            title: const Text('PDF To Images'),
             centerTitle: true,
           ),
           body: Consumer(
@@ -63,8 +63,8 @@ class _PdfToImagePageState extends State<PdfToImagePage> {
                       getCachedFilePath: false,
                       pickerType: PickerType.file,
                       enableMultipleSelection: false,
-                      mimeTypesFilter: ["application/pdf"],
-                      allowedExtensions: [".pdf"],
+                      mimeTypesFilter: ['application/pdf'],
+                      allowedExtensions: ['.pdf'],
                     ),
                     discardInvalidPdfFiles: true,
                     discardProtectedPdfFiles: true,
@@ -73,7 +73,7 @@ class _PdfToImagePageState extends State<PdfToImagePage> {
                   ToolActionsCard(
                     toolActions: [
                       ToolActionsModel(
-                        actionText: "Convert pdf pages to images",
+                        actionText: 'Convert pdf pages to images',
                         actionOnTap: selectedFiles.length == 1
                             ? () {
                                 // Removing any snack bar or keyboard

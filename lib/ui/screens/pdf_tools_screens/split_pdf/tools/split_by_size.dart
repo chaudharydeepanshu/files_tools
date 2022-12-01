@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 
 import 'package:files_tools/models/file_model.dart';
+import 'package:files_tools/route/route.dart' as route;
 import 'package:files_tools/state/providers.dart';
 import 'package:files_tools/state/tools_actions_state.dart';
 import 'package:files_tools/ui/components/tools_about_card.dart';
@@ -8,7 +9,6 @@ import 'package:files_tools/utils/decimal_text_input_formatter.dart';
 import 'package:files_tools/utils/format_bytes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:files_tools/route/route.dart' as route;
 
 class SplitBySize extends StatelessWidget {
   const SplitBySize({Key? key, required this.pdfPageCount, required this.file})
@@ -29,7 +29,7 @@ class SplitBySize extends StatelessWidget {
               'This function splits a pdf into multiple pdfs of specified size.',
           aboutTextBodyTitle: 'Example :-',
           aboutTextBody:
-              "If a PDF size = 100 MB\n\nAnd, your input(in MB) = 25\n\nThen, all result pdfs size will be under 25 MB\n\nNote: If a provided size is not possible then it creates PDFs of minimum possible size.",
+              'If a PDF size = 100 MB\n\nAnd, your input(in MB) = 25\n\nThen, all result pdfs size will be under 25 MB\n\nNote: If a provided size is not possible then it creates PDFs of minimum possible size.',
         ),
         const SizedBox(height: 16),
       ],
@@ -234,7 +234,7 @@ class _SplitBySizeActionCardState extends State<SplitBySizeActionCard> {
                               }
                             },
                             icon: const Icon(Icons.check),
-                            label: const Text("Split PDF"),
+                            label: const Text('Split PDF'),
                           );
                         },
                       ),

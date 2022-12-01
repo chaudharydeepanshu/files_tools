@@ -1,5 +1,6 @@
 import 'package:files_tools/models/file_model.dart';
 import 'package:files_tools/models/tool_actions_model.dart';
+import 'package:files_tools/route/route.dart' as route;
 import 'package:files_tools/state/providers.dart';
 import 'package:files_tools/state/select_file_state.dart';
 import 'package:files_tools/state/tools_actions_state.dart';
@@ -10,9 +11,6 @@ import 'package:files_tools/utils/clear_cache.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pick_or_save/pick_or_save.dart';
-import 'package:files_tools/route/route.dart' as route;
-
-import '../../../components/tools_about_card.dart';
 
 class CompressImagePage extends StatefulWidget {
   const CompressImagePage({Key? key}) : super(key: key);
@@ -24,7 +22,7 @@ class CompressImagePage extends StatefulWidget {
 class _CompressPDFPageState extends State<CompressImagePage> {
   @override
   void initState() {
-    clearCache(clearCacheCommandFrom: "CompressImagePage");
+    clearCache(clearCacheCommandFrom: 'CompressImagePage');
     super.initState();
   }
 
@@ -45,7 +43,7 @@ class _CompressPDFPageState extends State<CompressImagePage> {
         },
         child: Scaffold(
           appBar: AppBar(
-            title: const Text("Compress Image"),
+            title: const Text('Compress Image'),
             centerTitle: true,
           ),
           body: Consumer(
@@ -66,18 +64,18 @@ class _CompressPDFPageState extends State<CompressImagePage> {
                       pickerType: PickerType.file,
                       enableMultipleSelection: true,
                       mimeTypesFilter: [
-                        "image/png",
-                        "image/jpeg",
-                        "image/webp"
+                        'image/png',
+                        'image/jpeg',
+                        'image/webp'
                       ],
-                      allowedExtensions: [".png", ".jpeg", ".jpg", ".webp"],
+                      allowedExtensions: ['.png', '.jpeg', '.jpg', '.webp'],
                     ),
                   ),
                   const SizedBox(height: 16),
                   ToolActionsCard(
                     toolActions: [
                       ToolActionsModel(
-                        actionText: "Compress images",
+                        actionText: 'Compress images',
                         actionOnTap: selectedFiles.isNotEmpty
                             ? () {
                                 // Removing any snack bar or keyboard

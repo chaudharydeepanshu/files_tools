@@ -1,5 +1,6 @@
 import 'package:files_tools/models/file_model.dart';
 import 'package:files_tools/models/tool_actions_model.dart';
+import 'package:files_tools/route/route.dart' as route;
 import 'package:files_tools/state/providers.dart';
 import 'package:files_tools/state/select_file_state.dart';
 import 'package:files_tools/state/tools_actions_state.dart';
@@ -10,7 +11,6 @@ import 'package:files_tools/utils/clear_cache.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pick_or_save/pick_or_save.dart';
-import 'package:files_tools/route/route.dart' as route;
 
 class DecryptPDFPage extends StatefulWidget {
   const DecryptPDFPage({Key? key}) : super(key: key);
@@ -22,7 +22,7 @@ class DecryptPDFPage extends StatefulWidget {
 class _DecryptPDFPageState extends State<DecryptPDFPage> {
   @override
   void initState() {
-    clearCache(clearCacheCommandFrom: "DecryptPDFPage");
+    clearCache(clearCacheCommandFrom: 'DecryptPDFPage');
     super.initState();
   }
 
@@ -43,7 +43,7 @@ class _DecryptPDFPageState extends State<DecryptPDFPage> {
         },
         child: Scaffold(
           appBar: AppBar(
-            title: const Text("Decrypt PDF"),
+            title: const Text('Decrypt PDF'),
             centerTitle: true,
           ),
           body: Consumer(
@@ -63,8 +63,8 @@ class _DecryptPDFPageState extends State<DecryptPDFPage> {
                       getCachedFilePath: false,
                       pickerType: PickerType.file,
                       enableMultipleSelection: false,
-                      mimeTypesFilter: ["application/pdf"],
-                      allowedExtensions: [".pdf"],
+                      mimeTypesFilter: ['application/pdf'],
+                      allowedExtensions: ['.pdf'],
                     ),
                     discardInvalidPdfFiles: true,
                     discardProtectedPdfFiles: false,
@@ -73,7 +73,7 @@ class _DecryptPDFPageState extends State<DecryptPDFPage> {
                   ToolActionsCard(
                     toolActions: [
                       ToolActionsModel(
-                        actionText: "Decrypt PDF",
+                        actionText: 'Decrypt PDF',
                         actionOnTap: selectedFiles.length == 1
                             ? () {
                                 // Removing any snack bar or keyboard

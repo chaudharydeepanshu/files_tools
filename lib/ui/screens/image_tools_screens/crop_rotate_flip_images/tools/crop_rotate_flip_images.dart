@@ -5,17 +5,16 @@ import 'package:collection/collection.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:files_tools/models/file_model.dart';
 import 'package:files_tools/models/image_model.dart';
+import 'package:files_tools/route/route.dart' as route;
 import 'package:files_tools/state/providers.dart';
 import 'package:files_tools/state/tools_actions_state.dart';
 import 'package:files_tools/ui/components/levitating_options_bar.dart';
 import 'package:files_tools/ui/components/loading.dart';
+import 'package:files_tools/ui/components/view_error.dart';
 import 'package:files_tools/utils/edit_image.dart';
 import 'package:files_tools/utils/get_uint8list_from_absolute_file_path_or_uri.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:files_tools/route/route.dart' as route;
-
-import 'package:files_tools/ui/components/view_error.dart';
 
 class CropRotateFlipImages extends StatefulWidget {
   const CropRotateFlipImages({Key? key, required this.files}) : super(key: key);
@@ -42,7 +41,7 @@ class _CropRotateFlipImagesState extends State<CropRotateFlipImages> {
       String imageName = file.fileName;
       Uint8List? imageBytes;
       bool imageErrorStatus = false;
-      String imageError = "Unknown Error";
+      String imageError = 'Unknown Error';
       try {
         imageBytes = await getBytesFromFilePathOrUri(
             filePath: null, fileUri: file.fileUri);
@@ -84,7 +83,7 @@ class _CropRotateFlipImagesState extends State<CropRotateFlipImages> {
             switch (snapshot.connectionState) {
               case ConnectionState.waiting:
                 return const Expanded(
-                    child: Loading(loadingText: "Loading images..."));
+                    child: Loading(loadingText: 'Loading images...'));
               default:
                 if (snapshot.hasError) {
                   log(snapshot.error.toString());
@@ -298,7 +297,7 @@ class _CropRotateFlipImagesState extends State<CropRotateFlipImages> {
                                             children: const [
                                               Icon(Icons.check),
                                               SizedBox(width: 10),
-                                              Text("Process"),
+                                              Text('Process'),
                                             ],
                                           ),
                                         ),

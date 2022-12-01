@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
 import 'package:files_tools/route/route.dart' as route;
+import 'package:flutter/material.dart';
 
-import 'grid_view_in_card_view.dart';
+import 'package:files_tools/ui/screens/homescreen/pages/components/grid_view_in_card_view.dart';
 
 class ImageToolsPage extends StatelessWidget {
   const ImageToolsPage({Key? key, required this.arguments}) : super(key: key);
@@ -14,7 +14,7 @@ class ImageToolsPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Image Tools"),
+        title: const Text('Image Tools'),
         centerTitle: true,
       ),
       body: GridView.builder(
@@ -50,7 +50,7 @@ class ImageToolsSection extends StatelessWidget {
   Widget build(BuildContext context) {
     final List<GridCardDetail> exploreCardsDetails = [
       GridCardDetail(
-        cardIcon: const Icon(Icons.compress),
+        cardIcons: const [Icon(Icons.compress)],
         cardTitle: 'Compress Image',
         cardOnTap: () {
           Navigator.pushNamed(
@@ -60,42 +60,35 @@ class ImageToolsSection extends StatelessWidget {
         },
       ),
       GridCardDetail(
-        cardIcon: IntrinsicHeight(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Column(
-                children: const [
-                  Icon(Icons.crop),
-                  Text(
-                    "Crop",
-                    style: TextStyle(fontSize: 8),
-                  ),
-                ],
-              ),
-              const VerticalDivider(width: 0),
-              Column(
-                children: const [
-                  Icon(Icons.rotate_right),
-                  Text(
-                    "Rotate",
-                    style: TextStyle(fontSize: 8),
-                  ),
-                ],
-              ),
-              const VerticalDivider(width: 0),
-              Column(
-                children: const [
-                  Icon(Icons.flip),
-                  Text(
-                    "Flip",
-                    style: TextStyle(fontSize: 8),
-                  ),
-                ],
+        cardIcons: [
+          Column(
+            children: const [
+              Icon(Icons.crop),
+              Text(
+                'Crop',
+                style: TextStyle(fontSize: 8),
               ),
             ],
           ),
-        ),
+          Column(
+            children: const [
+              Icon(Icons.rotate_right),
+              Text(
+                'Rotate',
+                style: TextStyle(fontSize: 8),
+              ),
+            ],
+          ),
+          Column(
+            children: const [
+              Icon(Icons.flip),
+              Text(
+                'Flip',
+                style: TextStyle(fontSize: 8),
+              ),
+            ],
+          ),
+        ],
         cardTitle: 'Image',
         cardOnTap: () {
           Navigator.pushNamed(
@@ -105,7 +98,7 @@ class ImageToolsSection extends StatelessWidget {
         },
       ),
       GridCardDetail(
-        cardIcon: const Icon(Icons.cached),
+        cardIcons: const [Icon(Icons.cached)],
         cardTitle: 'Convert Image',
         cardOnTap: null,
         //     () {
@@ -116,7 +109,7 @@ class ImageToolsSection extends StatelessWidget {
         // },
       ),
       GridCardDetail(
-        cardIcon: const Icon(Icons.branding_watermark),
+        cardIcons: const [Icon(Icons.branding_watermark)],
         cardTitle: 'Watermark Image',
         cardOnTap: null,
         //     () {
@@ -127,14 +120,16 @@ class ImageToolsSection extends StatelessWidget {
         // },
       ),
       GridCardDetail(
-        cardIcon: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: const [
-            Icon(Icons.picture_as_pdf),
-            Icon(Icons.arrow_forward),
-            Icon(Icons.image),
-          ],
-        ),
+        cardIcons: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: const [
+              Icon(Icons.picture_as_pdf),
+              Icon(Icons.arrow_forward),
+              Icon(Icons.image),
+            ],
+          )
+        ],
         cardTitle: 'PDF To Image',
         cardOnTap: () {
           Navigator.pushNamed(

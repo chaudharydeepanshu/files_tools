@@ -1,7 +1,8 @@
 import 'dart:developer';
 import 'dart:typed_data';
-import 'package:files_tools/ui/components/view_error.dart';
+
 import 'package:files_tools/ui/components/loading.dart';
+import 'package:files_tools/ui/components/view_error.dart';
 import 'package:files_tools/utils/get_uint8list_from_absolute_file_path_or_uri.dart';
 import 'package:flutter/material.dart';
 
@@ -58,12 +59,12 @@ class _ImageViewerState extends State<ImageViewer> {
           builder: (context, AsyncSnapshot<bool> snapshot) {
             switch (snapshot.connectionState) {
               case ConnectionState.waiting:
-                return const Loading(loadingText: "Loading image...");
+                return const Loading(loadingText: 'Loading image...');
               default:
                 if (snapshot.hasError) {
                   log(snapshot.error.toString());
                   return ShowError(
-                    taskMessage: "Failed to load image",
+                    taskMessage: 'Failed to load image',
                     errorMessage: snapshot.error.toString(),
                   );
                 } else {
@@ -86,7 +87,7 @@ class _ImageViewerState extends State<ImageViewer> {
                                     child: frame != null
                                         ? child
                                         : const Loading(
-                                            loadingText: "Loading image..."),
+                                            loadingText: 'Loading image...'),
                                   );
                                 }
                               }),

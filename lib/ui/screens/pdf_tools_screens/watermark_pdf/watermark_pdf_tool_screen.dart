@@ -58,13 +58,13 @@ class _WatermarkPDFToolsPageState extends State<WatermarkPDFToolsPage> {
                 if (snapshot.hasError) {
                   log(snapshot.error.toString());
                   return ShowError(
-                      taskMessage: "Sorry, failed to process the pdf.",
+                      taskMessage: 'Sorry, failed to process the pdf.',
                       errorMessage: snapshot.error.toString(),
                       allowBack: true);
                 } else if (pdfPageCount == null) {
                   return const ShowError(
-                      taskMessage: "Sorry, failed to process the pdf.",
-                      errorMessage: "PDF page count is null",
+                      taskMessage: 'Sorry, failed to process the pdf.',
+                      errorMessage: 'PDF page count is null',
                       allowBack: true);
                 } else {
                   return WatermarkPDFToolsBody(
@@ -111,9 +111,9 @@ class WatermarkPDFToolsBody extends StatelessWidget {
 }
 
 String getAppBarTitleForActionType({required ToolsActions actionType}) {
-  String title = "Action Successful";
+  String title = 'Action Successful';
   if (actionType == ToolsActions.watermarkPdf) {
-    title = "Select Watermark Config";
+    title = 'Select Watermark Config';
   }
   return title;
 }

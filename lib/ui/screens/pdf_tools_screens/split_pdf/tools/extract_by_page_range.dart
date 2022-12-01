@@ -1,11 +1,11 @@
 import 'package:files_tools/models/file_model.dart';
+import 'package:files_tools/route/route.dart' as route;
 import 'package:files_tools/state/providers.dart';
 import 'package:files_tools/state/tools_actions_state.dart';
 import 'package:files_tools/ui/components/tools_about_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:files_tools/route/route.dart' as route;
 
 class ExtractByPageRange extends StatelessWidget {
   const ExtractByPageRange(
@@ -27,7 +27,7 @@ class ExtractByPageRange extends StatelessWidget {
               'This function extracts a range of pages from the provided pdf into a single pdf.',
           aboutTextBodyTitle: 'Example :-',
           aboutTextBody:
-              "If pages in selected PDF = 10\n\nAnd, your input = 2-4,6\n\nThen, result pdf will contain pages - 2,3,4,6",
+              'If pages in selected PDF = 10\n\nAnd, your input = 2-4,6\n\nThen, result pdf will contain pages - 2,3,4,6',
         ),
         const SizedBox(height: 16),
       ],
@@ -93,7 +93,7 @@ class _ExtractByPageRangeActionCardState
                           ),
                           keyboardType: TextInputType.number,
                           inputFormatters: [
-                            FilteringTextInputFormatter(RegExp("[0-9,-]"),
+                            FilteringTextInputFormatter(RegExp('[0-9,-]'),
                                 allow: true),
                           ],
                           onChanged: (String value) {
@@ -130,13 +130,13 @@ class _ExtractByPageRangeActionCardState
                             ),
                             onPressed: () {
                               pageNumbersController.text =
-                                  pageRangeStringList.join(",");
+                                  pageRangeStringList.join(',');
                               pageNumbersController.selection =
                                   TextSelection.collapsed(
                                       offset:
                                           pageNumbersController.text.length);
                             },
-                            child: const Text("Sanitize Input"),
+                            child: const Text('Sanitize Input'),
                           ),
                         ],
                       ),
@@ -148,7 +148,7 @@ class _ExtractByPageRangeActionCardState
                                   Theme.of(context).colorScheme.surfaceVariant,
                               // contentPadding: EdgeInsets.zero,
                               visualDensity: VisualDensity.compact,
-                              title: Text("Remove repeats in range",
+                              title: Text('Remove repeats in range',
                                   style:
                                       Theme.of(context).textTheme.bodyMedium),
                               value: isRemoveDuplicates,
@@ -170,7 +170,7 @@ class _ExtractByPageRangeActionCardState
                                   Theme.of(context).colorScheme.surfaceVariant,
                               // contentPadding: EdgeInsets.zero,
                               visualDensity: VisualDensity.compact,
-                              title: Text("Force Ascending",
+                              title: Text('Force Ascending',
                                   style:
                                       Theme.of(context).textTheme.bodyMedium),
                               value: isForceAscending,
@@ -201,7 +201,7 @@ class _ExtractByPageRangeActionCardState
                             children: [
                               Flexible(
                                 child: Text(
-                                  sanitizedData.join(", "),
+                                  sanitizedData.join(', '),
                                   style: Theme.of(context).textTheme.bodySmall,
                                   textAlign: TextAlign.start,
                                 ),
@@ -227,7 +227,7 @@ class _ExtractByPageRangeActionCardState
                                 watchToolsActionsStateProviderValue
                                     .splitSelectedFile(files: [
                                   widget.file
-                                ], pageRange: pageRangeStringList.join(","));
+                                ], pageRange: pageRangeStringList.join(','));
                                 Navigator.pushNamed(
                                   context,
                                   route.resultPage,
@@ -235,7 +235,7 @@ class _ExtractByPageRangeActionCardState
                               }
                             },
                             icon: const Icon(Icons.check),
-                            label: const Text("Split PDF"),
+                            label: const Text('Split PDF'),
                           );
                         },
                       ),
@@ -289,7 +289,7 @@ List<String> getPageRangeStringList(
 
 String strip(String str, String charactersToRemove) {
   String escapedChars = RegExp.escape(charactersToRemove);
-  RegExp regex = RegExp(r"^[" + escapedChars + r"]+|[" + escapedChars + r']+$');
+  RegExp regex = RegExp(r'^[' + escapedChars + r']+|[' + escapedChars + r']+$');
   String newStr = str.replaceAll(regex, '').trim();
   return newStr;
 }
@@ -299,8 +299,8 @@ List<String> enableReverseRangeForSanitizedRange(
   List<String> tempPageRangeStringList = [];
   for (int i = 0; i < sanitizedPageRange.length; i++) {
     String pageRangeString = sanitizedPageRange[i];
-    if (pageRangeString.contains("-")) {
-      List<String> tempSplit = pageRangeString.split("-");
+    if (pageRangeString.contains('-')) {
+      List<String> tempSplit = pageRangeString.split('-');
       int rangeStart = int.parse(tempSplit.first);
       int rangeEnd = int.parse(tempSplit.last);
       if (rangeStart > rangeEnd) {
@@ -322,20 +322,20 @@ List<String> pageRangeSanitized(
     {required String? value, required int pdfPageCount}) {
   List<String> pageRangeStringList = [];
   if (value != null) {
-    String newStrippedValue = strip(value, r"-,");
+    String newStrippedValue = strip(value, r'-,');
     pageRangeStringList = newStrippedValue
-        .split(",")
+        .split(',')
         .map((e) => e.trim())
-        .map((e) => strip(e, r"-").replaceAll(RegExp(r'^0+(?=.)'), ''))
+        .map((e) => strip(e, r'-').replaceAll(RegExp(r'^0+(?=.)'), ''))
         .toList();
     pageRangeStringList.removeWhere((element) => element.isEmpty);
     List<String> tempPageRangeStringList = [];
     for (int i = 0; i < pageRangeStringList.length; i++) {
       String pageRangeString = pageRangeStringList[i];
-      if (pageRangeString.contains("-")) {
+      if (pageRangeString.contains('-')) {
         List<String> tempSplit = pageRangeString
-            .split("-")
-            .map((e) => e.replaceAll("^0+", ""))
+            .split('-')
+            .map((e) => e.replaceAll('^0+', ''))
             .toList();
         String rangeStart = tempSplit.first.replaceAll(RegExp(r'^0+(?=.)'), '');
         String rangeEnd = tempSplit.last.replaceAll(RegExp(r'^0+(?=.)'), '');
@@ -346,15 +346,15 @@ List<String> pageRangeSanitized(
         } else {
           if (rangeEnd.length > pdfPageCount.toString().length ||
               int.parse(rangeEnd) > pdfPageCount) {
-            tempPageRangeStringList.add("$rangeStart-$pdfPageCount");
+            tempPageRangeStringList.add('$rangeStart-$pdfPageCount');
           } else {
-            tempPageRangeStringList.add("$rangeStart-$rangeEnd");
+            tempPageRangeStringList.add('$rangeStart-$rangeEnd');
           }
         }
       } else {
         if (pageRangeString.length > pdfPageCount.toString().length ||
             int.parse(pageRangeString) > pdfPageCount) {
-        } else if (pageRangeString == "0") {
+        } else if (pageRangeString == '0') {
         } else {
           tempPageRangeStringList.add(pageRangeString);
         }
@@ -379,8 +379,8 @@ List<String> pageRangeGeneralSanitized(
   List<String> tempPageRangeStringList = [];
   for (int i = 0; i < sanitizedPageRange.length; i++) {
     String pageRangeString = sanitizedPageRange[i];
-    if (pageRangeString.contains("-")) {
-      List<String> tempSplit = pageRangeString.split("-");
+    if (pageRangeString.contains('-')) {
+      List<String> tempSplit = pageRangeString.split('-');
       int rangeStart = int.parse(tempSplit.first);
       int rangeEnd = int.parse(tempSplit.last);
       if (rangeStart > rangeEnd) {
@@ -411,8 +411,8 @@ List<String> pageRangeDuplicatesSanitized(
   List<String> tempPageRangeStringList = [];
   for (int i = 0; i < sanitizedPageRange.length; i++) {
     String pageRangeString = sanitizedPageRange[i];
-    if (pageRangeString.contains("-")) {
-      List<String> tempSplit = pageRangeString.split("-");
+    if (pageRangeString.contains('-')) {
+      List<String> tempSplit = pageRangeString.split('-');
       int rangeStart = int.parse(tempSplit.first);
       int rangeEnd = int.parse(tempSplit.last);
       if (rangeStart > rangeEnd) {
@@ -443,8 +443,8 @@ List<String> pageRangeAscendingSanitized(
   List<String> tempPageRangeStringList = [];
   for (int i = 0; i < sanitizedPageRange.length; i++) {
     String pageRangeString = sanitizedPageRange[i];
-    if (pageRangeString.contains("-")) {
-      List<String> tempSplit = pageRangeString.split("-");
+    if (pageRangeString.contains('-')) {
+      List<String> tempSplit = pageRangeString.split('-');
       int rangeStart = int.parse(tempSplit.first);
       int rangeEnd = int.parse(tempSplit.last);
       if (rangeStart > rangeEnd) {
@@ -526,7 +526,7 @@ List<String> createListOfRangesFromNumbers({required List<int> numList}) {
       if (result[i].length == 1) {
         tempPageRangeStringList.add(result[i].first.toString());
       } else {
-        tempPageRangeStringList.add("${result[i].first}-${result[i].last}");
+        tempPageRangeStringList.add('${result[i].first}-${result[i].last}');
       }
     }
   }

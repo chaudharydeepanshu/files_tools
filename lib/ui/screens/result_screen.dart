@@ -1,16 +1,15 @@
 import 'package:files_tools/models/file_model.dart';
+import 'package:files_tools/route/route.dart' as route;
 import 'package:files_tools/state/providers.dart';
 import 'package:files_tools/state/tools_actions_state.dart';
 import 'package:files_tools/ui/components/custom_snack_bar.dart';
 import 'package:files_tools/ui/components/input_output_list_tile.dart';
 import 'package:files_tools/ui/components/loading.dart';
 import 'package:files_tools/ui/components/view_error.dart';
+import 'package:files_tools/utils/clear_cache.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rive/rive.dart';
-
-import 'package:files_tools/route/route.dart' as route;
-import 'package:files_tools/utils/clear_cache.dart';
 
 class ResultPage extends StatelessWidget {
   const ResultPage({Key? key}) : super(key: key);
@@ -26,7 +25,7 @@ class ResultPage extends StatelessWidget {
             // Canceling running actions.
             ref.read(toolsActionsStateProvider).cancelAction();
             // Remove result cached Files
-            clearCache(clearCacheCommandFrom: "WillPopScope");
+            clearCache(clearCacheCommandFrom: 'WillPopScope');
             // Returning true allows the pop to happen, returning false prevents it.
             return true;
           },
@@ -55,7 +54,7 @@ class ResultPage extends StatelessWidget {
                     return const ProcessingResult();
                   } else if (actionErrorStatus) {
                     return ShowError(
-                      taskMessage: "Sorry, failed to complete the processing.",
+                      taskMessage: 'Sorry, failed to complete the processing.',
                       errorMessage: errorMessage,
                       allowBack: true,
                     );
@@ -95,9 +94,9 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
             getAppBarTitleForActionType(actionType: currentActionType);
         return AppBar(
           title: Text(isActionProcessing
-              ? "Processing Data"
+              ? 'Processing Data'
               : actionErrorStatus
-                  ? "Error Occurred"
+                  ? 'Error Occurred'
                   : actionAppbarTitle),
           centerTitle: true,
           actions: [
@@ -120,13 +119,13 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
 }
 
 String getAppBarTitleForActionType({required ToolsActions actionType}) {
-  String title = "Action Successful";
-  if (actionType == ToolsActions.mergePdfs) {
-    title = "Successfully Merged Files";
-  } else if (actionType == ToolsActions.splitPdfByPageCount ||
-      actionType == ToolsActions.splitPdfByByteSize) {
-    title = "Successfully Split File";
-  }
+  String title = 'Action Successful';
+  // if (actionType == ToolsActions.mergePdfs) {
+  //   title = "Successfully Merged Files";
+  // } else if (actionType == ToolsActions.splitPdfByPageCount ||
+  //     actionType == ToolsActions.splitPdfByByteSize) {
+  //   title = "Successfully Split File";
+  // }
   return title;
 }
 
@@ -146,7 +145,7 @@ class ResultBody extends StatelessWidget {
       } else if (outputFiles.length > 1) {
         return SavingMultipleFiles(files: outputFiles, actionType: actionType);
       } else {
-        return const Text("No save for action.");
+        return const Text('No save for action.');
       }
     });
   }
@@ -253,8 +252,8 @@ class SavingSingleFile extends StatelessWidget {
                           );
                         },
                   label: isSaveProcessing
-                      ? const Text("Saving File. Please wait")
-                      : const Text("Save File"),
+                      ? const Text('Saving File. Please wait')
+                      : const Text('Save File'),
                   icon: const Icon(Icons.save),
                 );
               },
@@ -348,8 +347,8 @@ class SavingMultipleFiles extends StatelessWidget {
                                 );
                           },
                     label: isSaveProcessing
-                        ? const Text("Saving Files. Please wait")
-                        : const Text("Save Files"),
+                        ? const Text('Saving Files. Please wait')
+                        : const Text('Save Files'),
                     icon: const Icon(Icons.save),
                   );
                 },

@@ -16,8 +16,8 @@ class DynamicThemeSwitchTile extends StatelessWidget {
 
         return lightDynamicColorScheme != null
             ? SwitchListTile(
-                title: const Text("Enable Dynamic Theme"),
-                subtitle: const Text("Wallpaper as theme"),
+                title: const Text('Enable Dynamic Theme'),
+                subtitle: const Text('Wallpaper as theme'),
                 secondary: const Icon(Icons.wallpaper),
                 value: isDynamicThemeEnabled,
                 onChanged: (bool? value) {

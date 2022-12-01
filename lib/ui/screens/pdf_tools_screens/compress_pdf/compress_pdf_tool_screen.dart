@@ -58,13 +58,13 @@ class _CompressPDFToolsPageState extends State<CompressPDFToolsPage> {
                 if (snapshot.hasError) {
                   log(snapshot.error.toString());
                   return ShowError(
-                      taskMessage: "Sorry, failed to process the pdf.",
+                      taskMessage: 'Sorry, failed to process the pdf.',
                       errorMessage: snapshot.error.toString(),
                       allowBack: true);
                 } else if (pdfPageCount == null) {
                   return const ShowError(
-                      taskMessage: "Sorry, failed to process the pdf.",
-                      errorMessage: "PDF page count is null",
+                      taskMessage: 'Sorry, failed to process the pdf.',
+                      errorMessage: 'PDF page count is null',
                       allowBack: true);
                 } else {
                   return CompressPDFToolsBody(
@@ -110,9 +110,9 @@ class CompressPDFToolsBody extends StatelessWidget {
 }
 
 String getAppBarTitleForActionType({required ToolsActions actionType}) {
-  String title = "Action Successful";
+  String title = 'Action Successful';
   if (actionType == ToolsActions.compressPdf) {
-    title = "Select Compress Config";
+    title = 'Select Compress Config';
   }
   return title;
 }

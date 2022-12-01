@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'dart:io';
+
 import 'package:path_provider/path_provider.dart';
 
 Future<void> clearCache({required String clearCacheCommandFrom}) async {
@@ -17,7 +18,7 @@ Future<void> clearCache({required String clearCacheCommandFrom}) async {
     }
   }
 
-  log("Temporary directory emptied by $clearCacheCommandFrom");
+  log('Temporary directory emptied by $clearCacheCommandFrom');
 }
 
 Future<void> clearSelectiveFilesFromCache(List<String> filesPaths) async {
@@ -28,9 +29,9 @@ Future<void> clearSelectiveFilesFromCache(List<String> filesPaths) async {
       tempFile.delete();
     }
   }
-  log("Cleared $filesPaths from cache");
+  log('Cleared $filesPaths from cache');
   if (!(await Directory(appDir).exists())) {
     Directory(appDir).create();
-    log("Creating cache directory");
+    log('Creating cache directory');
   }
 }

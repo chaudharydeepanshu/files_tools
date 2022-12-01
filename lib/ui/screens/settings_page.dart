@@ -11,7 +11,7 @@ class SettingsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("App Settings"),
+        title: const Text('App Settings'),
         centerTitle: true,
       ),
       body: ListView(
@@ -22,7 +22,7 @@ class SettingsPage extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("App Theming",
+                Text('App Theming',
                     style: Theme.of(context).textTheme.bodyMedium),
                 const ResetAppThemeSettings(),
               ],

@@ -1,5 +1,6 @@
 import 'package:files_tools/models/file_model.dart';
 import 'package:files_tools/models/tool_actions_model.dart';
+import 'package:files_tools/route/route.dart' as route;
 import 'package:files_tools/state/providers.dart';
 import 'package:files_tools/state/select_file_state.dart';
 import 'package:files_tools/state/tools_actions_state.dart';
@@ -8,10 +9,9 @@ import 'package:files_tools/ui/screens/pdf_tools_screens/image_to_pdf/image_to_p
 import 'package:files_tools/utils/clear_cache.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:files_tools/route/route.dart' as route;
 import 'package:pick_or_save/pick_or_save.dart';
 
-import '../../../components/select_file_section.dart';
+import 'package:files_tools/ui/components/select_file_section.dart';
 
 class ImageToPDFPage extends StatefulWidget {
   const ImageToPDFPage({Key? key}) : super(key: key);
@@ -23,7 +23,7 @@ class ImageToPDFPage extends StatefulWidget {
 class _ImageToPDFPageState extends State<ImageToPDFPage> {
   @override
   void initState() {
-    clearCache(clearCacheCommandFrom: "ImageToPDFPage");
+    clearCache(clearCacheCommandFrom: 'ImageToPDFPage');
     super.initState();
   }
 
@@ -44,7 +44,7 @@ class _ImageToPDFPageState extends State<ImageToPDFPage> {
         },
         child: Scaffold(
           appBar: AppBar(
-            title: const Text("Image To PDF"),
+            title: const Text('Image To PDF'),
             centerTitle: true,
           ),
           body: Consumer(
@@ -69,21 +69,21 @@ class _ImageToPDFPageState extends State<ImageToPDFPage> {
                       enableMultipleSelection: true,
                       mimeTypesFilter: [
                         // "image/*",
-                        "image/png",
-                        "image/gif",
-                        "image/jpeg",
+                        'image/png',
+                        'image/gif',
+                        'image/jpeg',
                       ],
                       allowedExtensions: [
-                        ".JPEG",
-                        ".JPG",
-                        ".JP2",
-                        ".GIF",
-                        ".PNG",
-                        ".BMP",
-                        ".WMF",
-                        ".TIFF",
-                        ".CCITT",
-                        ".JBIG2"
+                        '.JPEG',
+                        '.JPG',
+                        '.JP2',
+                        '.GIF',
+                        '.PNG',
+                        '.BMP',
+                        '.WMF',
+                        '.TIFF',
+                        '.CCITT',
+                        '.JBIG2'
                       ],
                     ),
                   ),
@@ -107,7 +107,7 @@ class _ImageToPDFPageState extends State<ImageToPDFPage> {
                   ToolActionsCard(
                     toolActions: [
                       ToolActionsModel(
-                        actionText: "Image To PDF",
+                        actionText: 'Image To PDF',
                         actionOnTap: selectedFiles.isNotEmpty
                             ? () {
                                 // Removing any snack bar or keyboard

@@ -1,4 +1,5 @@
 import 'package:files_tools/models/file_model.dart';
+import 'package:files_tools/route/route.dart' as route;
 import 'package:files_tools/state/providers.dart';
 import 'package:files_tools/state/tools_actions_state.dart';
 import 'package:files_tools/ui/components/tools_about_card.dart';
@@ -6,7 +7,6 @@ import 'package:files_tools/utils/decimal_text_input_formatter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:files_tools/route/route.dart' as route;
 
 class CompressImage extends StatelessWidget {
   const CompressImage({Key? key, required this.files}) : super(key: key);
@@ -23,7 +23,7 @@ class CompressImage extends StatelessWidget {
         const AboutActionCard(
           aboutText: 'This function helps decrease a image size.',
           aboutTextBody:
-              "The higher the compression the lower the size and quality of image.\n\nLess compression:\nImage scaling = 0.9, Image quality = 80\n\nMedium compression:\nImage scaling = 0.7, Image quality = 70\n\nExtreme compression:\nImage scaling = 0.7, Image quality = 60.",
+              'The higher the compression the lower the size and quality of image.\n\nLess compression:\nImage scaling = 0.9, Image quality = 80\n\nMedium compression:\nImage scaling = 0.7, Image quality = 70\n\nExtreme compression:\nImage scaling = 0.7, Image quality = 60.',
         ),
         const SizedBox(height: 16),
       ],
@@ -201,8 +201,8 @@ class _CompressImageActionCardState extends State<CompressImageActionCard> {
                 tileColor: Theme.of(context).colorScheme.surfaceVariant,
                 // contentPadding: EdgeInsets.zero,
                 visualDensity: VisualDensity.compact,
-                title: const Text("Remove exif data"),
-                subtitle: const Text("Only works for jpg format"),
+                title: const Text('Remove exif data'),
+                subtitle: const Text('Only works for jpg format'),
                 value: removeExifData,
                 onChanged: (bool? value) {
                   setState(() {
@@ -273,7 +273,7 @@ class _CompressImageActionCardState extends State<CompressImageActionCard> {
                         }
                       },
                       icon: const Icon(Icons.check),
-                      label: const Text("Compress Images"),
+                      label: const Text('Compress Images'),
                     );
                   },
                 ),

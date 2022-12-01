@@ -1,5 +1,6 @@
 import 'package:files_tools/models/file_model.dart';
 import 'package:files_tools/models/tool_actions_model.dart';
+import 'package:files_tools/route/route.dart' as route;
 import 'package:files_tools/state/providers.dart';
 import 'package:files_tools/state/select_file_state.dart';
 import 'package:files_tools/state/tools_actions_state.dart';
@@ -9,7 +10,6 @@ import 'package:files_tools/utils/clear_cache.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pick_or_save/pick_or_save.dart';
-import 'package:files_tools/route/route.dart' as route;
 
 class MergePDFsPage extends StatefulWidget {
   const MergePDFsPage({Key? key}) : super(key: key);
@@ -21,7 +21,7 @@ class MergePDFsPage extends StatefulWidget {
 class _MergePDFsPageState extends State<MergePDFsPage> {
   @override
   void initState() {
-    clearCache(clearCacheCommandFrom: "MergePDFsPage");
+    clearCache(clearCacheCommandFrom: 'MergePDFsPage');
     super.initState();
   }
 
@@ -42,7 +42,7 @@ class _MergePDFsPageState extends State<MergePDFsPage> {
         },
         child: Scaffold(
           appBar: AppBar(
-            title: const Text("Merge PDFs"),
+            title: const Text('Merge PDFs'),
             centerTitle: true,
           ),
           body: Consumer(
@@ -64,8 +64,8 @@ class _MergePDFsPageState extends State<MergePDFsPage> {
                       getCachedFilePath: false,
                       pickerType: PickerType.file,
                       enableMultipleSelection: true,
-                      mimeTypesFilter: ["application/pdf"],
-                      allowedExtensions: [".pdf"],
+                      mimeTypesFilter: ['application/pdf'],
+                      allowedExtensions: ['.pdf'],
                     ),
                     discardInvalidPdfFiles: true,
                     discardProtectedPdfFiles: true,
@@ -74,7 +74,7 @@ class _MergePDFsPageState extends State<MergePDFsPage> {
                   ToolActionsCard(
                     toolActions: [
                       ToolActionsModel(
-                        actionText: "Merge into one PDF",
+                        actionText: 'Merge into one PDF',
                         actionOnTap: selectedFiles.length >= 2
                             ? () {
                                 // Removing any snack bar or keyboard

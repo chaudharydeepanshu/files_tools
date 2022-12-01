@@ -48,7 +48,8 @@ dependencies:
   # For storing user preferences, app themeMode.
   shared_preferences: ^2.0.15
 
-  # For firebase packages. After installing new firebase package run ```flutterfire configure```.
+  # For firebase packages`npm install -g firebase-tools`,`dart pub global activate flutterfire_cli`,`flutterfire configure --account firebaseAccount@email.com`.
+  # After installing new firebase package run `flutterfire configure --account firebaseAccount@email.com`.
   # https://stackoverflow.com/questions/71803062/flutterfire-cli-how-to-switch-between-separate-firebase-consoles
   firebase_core: ^2.3.0
 

@@ -54,16 +54,16 @@ class _PdfViewerState extends State<PdfViewer> {
             params: PDFValidityAndProtectionParams(
                 pdfPath: widget.arguments.filePathOrUri));
     if (pdfValidityAndProtectionInfo == null) {
-      throw Exception("Failed to verify pdf validity.");
+      throw Exception('Failed to verify pdf validity.');
     } else if (pdfValidityAndProtectionInfo.isPDFValid == false) {
-      throw Exception("Pdf is found to be invalid.");
+      throw Exception('Pdf is found to be invalid.');
     } else if (pdfValidityAndProtectionInfo.isOpenPasswordProtected == true) {
-      throw Exception("Pdf is found to be password protected.");
+      throw Exception('Pdf is found to be password protected.');
     }
     pdfPages =
         await generatePdfPagesList(pdfPath: widget.arguments.filePathOrUri);
     if (pdfPages.isEmpty) {
-      throw Exception("No pages found for the pdf.");
+      throw Exception('No pages found for the pdf.');
     }
     log('initPdfPagesState Executed in ${stopwatch.elapsed}');
     return true;
@@ -103,7 +103,7 @@ class _PdfViewerState extends State<PdfViewer> {
                 if (snapshot.hasError) {
                   log(snapshot.error.toString());
                   return ShowError(
-                    taskMessage: "Failed to load pdf",
+                    taskMessage: 'Failed to load pdf',
                     errorMessage: snapshot.error.toString(),
                   );
                 } else {
@@ -127,7 +127,7 @@ class _PdfViewerState extends State<PdfViewer> {
                         return PDFPageView(
                           viewportFraction: pageController.viewportFraction,
                           imageView:
-                              const Loading(loadingText: "Loading page..."),
+                              const Loading(loadingText: 'Loading page...'),
                           pageIndex: index,
                         );
                       }
@@ -178,7 +178,7 @@ class _PageImageViewState extends State<PageImageView> {
                 duration: const Duration(milliseconds: 200),
                 child: frame != null
                     ? child
-                    : const Loading(loadingText: "Loading page..."),
+                    : const Loading(loadingText: 'Loading page...'),
               );
             }
           }),
@@ -245,9 +245,9 @@ class LoadingPdf extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Loading(loadingText: "Loading page..."),
+          const Loading(loadingText: 'Loading page...'),
           const SizedBox(height: 16),
-          Text("Loading pdf...", style: Theme.of(context).textTheme.bodySmall),
+          Text('Loading pdf...', style: Theme.of(context).textTheme.bodySmall),
         ],
       ),
     );
@@ -267,7 +267,7 @@ class PageNumber extends StatelessWidget {
           color: Theme.of(context).colorScheme.onSurfaceVariant),
       child: Padding(
         padding: const EdgeInsets.all(3.0),
-        child: Text("Page - ${pageIndex + 1}",
+        child: Text('Page - ${pageIndex + 1}',
             style: Theme.of(context).textTheme.labelMedium?.copyWith(
                 color: Theme.of(context).colorScheme.surfaceVariant)),
       ),
@@ -288,7 +288,7 @@ class PageError extends StatelessWidget {
         Icon(Icons.error, color: Theme.of(context).colorScheme.error),
         const SizedBox(height: 16),
         Text(
-          "Failed to load page",
+          'Failed to load page',
           style: Theme.of(context)
               .textTheme
               .bodySmall

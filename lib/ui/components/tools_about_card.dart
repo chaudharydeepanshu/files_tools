@@ -27,7 +27,7 @@ class AboutActionCard extends StatelessWidget {
               children: [
                 const Icon(Icons.info),
                 Text(
-                  "Function Info",
+                  'Function Info',
                   style: Theme.of(context).textTheme.bodyLarge,
                   textAlign: TextAlign.center,
                 )
@@ -56,7 +56,7 @@ class AboutActionCard extends StatelessWidget {
                         if (aboutTextBodyTitle != null &&
                             aboutTextBodyTitle!.trim().isNotEmpty)
                           Text(
-                            "$aboutTextBodyTitle\n",
+                            '$aboutTextBodyTitle\n',
                             style: Theme.of(context)
                                 .textTheme
                                 .bodyMedium
@@ -65,7 +65,7 @@ class AboutActionCard extends StatelessWidget {
                             textAlign: TextAlign.center,
                           ),
                         Text(
-                          "$aboutTextBody",
+                          '$aboutTextBody',
                           style: Theme.of(context).textTheme.bodySmall,
                           textAlign: TextAlign.start,
                         ),

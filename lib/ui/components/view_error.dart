@@ -83,10 +83,10 @@ class ShowError extends StatelessWidget {
               TextButton(
                 onPressed: () async {
                   FirebaseCrashlytics.instance.recordError(
-                      "User Reported Error: $errorMessage", null,
+                      'User Reported Error: $errorMessage', null,
                       reason: 'a non-fatal error');
 
-                  String? contentText = "Error reported successfully";
+                  String? contentText = 'Error reported successfully';
                   TextStyle? textStyle = Theme.of(context).textTheme.bodySmall;
 
                   showCustomSnackBar(

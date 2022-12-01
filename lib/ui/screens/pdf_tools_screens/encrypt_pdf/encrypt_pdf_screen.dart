@@ -1,16 +1,16 @@
 import 'package:files_tools/models/file_model.dart';
 import 'package:files_tools/models/tool_actions_model.dart';
+import 'package:files_tools/route/route.dart' as route;
 import 'package:files_tools/state/providers.dart';
 import 'package:files_tools/state/select_file_state.dart';
 import 'package:files_tools/state/tools_actions_state.dart';
 import 'package:files_tools/ui/components/select_file_section.dart';
 import 'package:files_tools/ui/components/tool_actions_section.dart';
+import 'package:files_tools/ui/screens/pdf_tools_screens/encrypt_pdf/encrypt_pdf_tools_screen.dart';
 import 'package:files_tools/utils/clear_cache.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pick_or_save/pick_or_save.dart';
-import 'package:files_tools/route/route.dart' as route;
-import 'package:files_tools/ui/screens/pdf_tools_screens/encrypt_pdf/encrypt_pdf_tools_screen.dart';
 
 class EncryptPDFPage extends StatefulWidget {
   const EncryptPDFPage({Key? key}) : super(key: key);
@@ -22,7 +22,7 @@ class EncryptPDFPage extends StatefulWidget {
 class _EncryptPDFPageState extends State<EncryptPDFPage> {
   @override
   void initState() {
-    clearCache(clearCacheCommandFrom: "EncryptPDFPage");
+    clearCache(clearCacheCommandFrom: 'EncryptPDFPage');
     super.initState();
   }
 
@@ -43,7 +43,7 @@ class _EncryptPDFPageState extends State<EncryptPDFPage> {
         },
         child: Scaffold(
           appBar: AppBar(
-            title: const Text("Encrypt PDF"),
+            title: const Text('Encrypt PDF'),
             centerTitle: true,
           ),
           body: Consumer(
@@ -63,8 +63,8 @@ class _EncryptPDFPageState extends State<EncryptPDFPage> {
                       getCachedFilePath: false,
                       pickerType: PickerType.file,
                       enableMultipleSelection: false,
-                      mimeTypesFilter: ["application/pdf"],
-                      allowedExtensions: [".pdf"],
+                      mimeTypesFilter: ['application/pdf'],
+                      allowedExtensions: ['.pdf'],
                     ),
                     discardInvalidPdfFiles: true,
                     discardProtectedPdfFiles: true,
@@ -73,7 +73,7 @@ class _EncryptPDFPageState extends State<EncryptPDFPage> {
                   ToolActionsCard(
                     toolActions: [
                       ToolActionsModel(
-                        actionText: "Encrypt PDF",
+                        actionText: 'Encrypt PDF',
                         actionOnTap: selectedFiles.length == 1
                             ? () {
                                 // Removing any snack bar or keyboard

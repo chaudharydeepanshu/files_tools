@@ -1,12 +1,11 @@
 import 'dart:developer';
 
-import 'package:files_tools/state/tools_actions_state.dart';
+import 'package:files_tools/route/route.dart' as route;
 import 'package:files_tools/ui/components/custom_snack_bar.dart';
 import 'package:files_tools/ui/screens/image_viewer.dart';
 import 'package:files_tools/ui/screens/pdf_viewer.dart';
+import 'package:files_tools/utils/get_file_name_extension.dart';
 import 'package:flutter/material.dart';
-
-import 'package:files_tools/route/route.dart' as route;
 
 class FileTile extends StatelessWidget {
   const FileTile(
@@ -35,12 +34,12 @@ class FileTile extends StatelessWidget {
       contentPadding: EdgeInsets.zero,
       horizontalTitleGap: 0,
       minLeadingWidth: 0,
-      minVerticalPadding: 0,
+      minVerticalPadding: 8,
       visualDensity: VisualDensity.comfortable,
       dense: true,
       onTap: () {
         String fileExtension = getFileNameExtension(fileName: fileName);
-        if (fileExtension.toLowerCase() == ".pdf") {
+        if (fileExtension.toLowerCase() == '.pdf') {
           if (filePath != null || fileUri != null) {
             Navigator.pushNamed(
               context,
@@ -49,12 +48,12 @@ class FileTile extends StatelessWidget {
                   fileName: fileName, filePathOrUri: filePath ?? fileUri!),
             );
           } else {
-            log("File path or file uri both are null for opening file with extension $fileExtension");
+            log('File path or file uri both are null for opening file with extension $fileExtension');
           }
-        } else if (fileExtension.toLowerCase() == ".png" ||
-            fileExtension.toLowerCase() == ".jpg" ||
-            fileExtension.toLowerCase() == ".jpeg" ||
-            fileExtension.toLowerCase() == ".webp") {
+        } else if (fileExtension.toLowerCase() == '.png' ||
+            fileExtension.toLowerCase() == '.jpg' ||
+            fileExtension.toLowerCase() == '.jpeg' ||
+            fileExtension.toLowerCase() == '.webp') {
           Navigator.pushNamed(
             context,
             route.imageViewer,
@@ -62,7 +61,7 @@ class FileTile extends StatelessWidget {
                 fileName: fileName, filePath: filePath, fileUri: fileUri),
           );
         } else {
-          log("No action found for opening file with extension $fileExtension");
+          log('No action found for opening file with extension $fileExtension');
 
           String? contentText =
               "Oh...No! We don't support opening this type of file.";
@@ -106,24 +105,25 @@ class FileTile extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Expanded(
-              flex: 6,
               child: Text(fileDate,
                   style: Theme.of(context).textTheme.bodySmall,
                   overflow: TextOverflow.ellipsis),
             ),
-            const VerticalDivider(),
+            VerticalDivider(
+                color: Theme.of(context).colorScheme.onSecondaryContainer,
+                width: 0),
             Expanded(
-              flex: 3,
               child: Text(
                 fileTime,
                 style: Theme.of(context).textTheme.bodySmall,
-                overflow: TextOverflow.ellipsis,
+                // overflow: TextOverflow.ellipsis,
                 textAlign: TextAlign.center,
               ),
             ),
-            const VerticalDivider(),
+            VerticalDivider(
+                color: Theme.of(context).colorScheme.onSecondaryContainer,
+                width: 0),
             Expanded(
-              flex: 5,
               child: Text(
                 fileSize,
                 style: Theme.of(context).textTheme.bodySmall,
@@ -137,6 +137,7 @@ class FileTile extends StatelessWidget {
       trailing: onRemove != null
           ? IconButton(
               style: IconButton.styleFrom(
+
                   // minimumSize: Size.zero,
                   // padding: EdgeInsets.zero,
                   // tapTargetSize: MaterialTapTargetSize.shrinkWrap,

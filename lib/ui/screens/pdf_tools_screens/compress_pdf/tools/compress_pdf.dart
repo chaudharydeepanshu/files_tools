@@ -1,4 +1,5 @@
 import 'package:files_tools/models/file_model.dart';
+import 'package:files_tools/route/route.dart' as route;
 import 'package:files_tools/state/providers.dart';
 import 'package:files_tools/state/tools_actions_state.dart';
 import 'package:files_tools/ui/components/tools_about_card.dart';
@@ -6,7 +7,6 @@ import 'package:files_tools/utils/decimal_text_input_formatter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:files_tools/route/route.dart' as route;
 
 class CompressPDF extends StatelessWidget {
   const CompressPDF({Key? key, required this.pdfPageCount, required this.file})
@@ -25,7 +25,7 @@ class CompressPDF extends StatelessWidget {
         const AboutActionCard(
           aboutText: 'This function helps decrease a PDF size.',
           aboutTextBody:
-              "The higher the compression the lower the size and quality of PDF.\n\nLess compression:\nImage scaling = 0.9, Image quality = 80\n\nMedium compression:\nImage scaling = 0.7, Image quality = 70\n\nExtreme compression:\nImage scaling = 0.7, Image quality = 60\n\nNote: All compression methods remove duplicate or unused assets from the PDF.",
+              'The higher the compression the lower the size and quality of PDF.\n\nLess compression:\nImage scaling = 0.9, Image quality = 80\n\nMedium compression:\nImage scaling = 0.7, Image quality = 70\n\nExtreme compression:\nImage scaling = 0.7, Image quality = 60\n\nNote: All compression methods remove duplicate or unused assets from the PDF.',
         ),
         const SizedBox(height: 16),
       ],
@@ -204,8 +204,8 @@ class _CompressPDFActionCardState extends State<CompressPDFActionCard> {
                 tileColor: Theme.of(context).colorScheme.surfaceVariant,
                 // contentPadding: EdgeInsets.zero,
                 visualDensity: VisualDensity.compact,
-                title: const Text("Remove fonts from pdf"),
-                subtitle: const Text("Could make PDF text unreadable."),
+                title: const Text('Remove fonts from pdf'),
+                subtitle: const Text('Could make PDF text unreadable.'),
                 value: isUnEmbedFonts,
                 onChanged: (bool? value) {
                   setState(() {
@@ -277,7 +277,7 @@ class _CompressPDFActionCardState extends State<CompressPDFActionCard> {
                         }
                       },
                       icon: const Icon(Icons.check),
-                      label: const Text("Compress PDF"),
+                      label: const Text('Compress PDF'),
                     );
                   },
                 ),

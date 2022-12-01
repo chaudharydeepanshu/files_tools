@@ -16,7 +16,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
-    clearCache(clearCacheCommandFrom: "HomePage");
+    clearCache(clearCacheCommandFrom: 'HomePage');
     super.initState();
   }
 
@@ -27,7 +27,7 @@ class _HomePageState extends State<HomePage> {
       child: Scaffold(
         drawer: const AppDrawer(),
         appBar: AppBar(
-          title: const Text("Files Tools"),
+          title: const Text('Files Tools'),
           centerTitle: true,
           bottom: const TabBar(
             tabs: <Widget>[

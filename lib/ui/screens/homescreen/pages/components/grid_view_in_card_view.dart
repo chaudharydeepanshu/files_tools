@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
 class GridCardDetail {
-  final Widget cardIcon;
+  final List<Widget> cardIcons;
 
   final String cardTitle;
   final Function()? cardOnTap;
 
   GridCardDetail({
-    required this.cardIcon,
+    required this.cardIcons,
     required this.cardTitle,
     this.cardOnTap,
   });
@@ -16,7 +16,7 @@ class GridCardDetail {
   // when using the print statement.
   @override
   String toString() {
-    return 'CardDetail{cardIcon: $cardIcon, cardTitle: $cardTitle, cardOnTap: $cardOnTap}';
+    return 'CardDetail{cardIcons: $cardIcons, cardTitle: $cardTitle, cardOnTap: $cardOnTap}';
   }
 }
 
@@ -110,7 +110,7 @@ class GridViewInCardSection extends StatelessWidget {
                                 ),
                                 onPressed: cardShowAllOnTap,
                                 icon: const Icon(Icons.arrow_forward),
-                                label: const Text("Show All"),
+                                label: const Text('Show All'),
                               ),
                             ),
                           ],
@@ -134,6 +134,20 @@ class GridViewCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    List<Widget> iconsList = [];
+
+    for (int i = 0; i < gridCardDetail.cardIcons.length; i++) {
+      iconsList.addAll([
+        gridCardDetail.cardIcons[i],
+        if (i != gridCardDetail.cardIcons.length - 1)
+          VerticalDivider(
+              width: 0,
+              color: gridCardDetail.cardOnTap == null
+                  ? Theme.of(context).disabledColor
+                  : Theme.of(context).colorScheme.onSecondaryContainer)
+      ]);
+    }
+
     return FilledButton.tonal(
       clipBehavior: Clip.antiAlias,
       onPressed: gridCardDetail.cardOnTap,
@@ -151,7 +165,7 @@ class GridViewCard extends StatelessWidget {
                   ),
                   child: gridCardDetail.cardOnTap == null
                       ? Text(
-                          "Coming Soon",
+                          'Coming Soon',
                           textAlign: TextAlign.center,
                           style: Theme.of(context).textTheme.labelSmall,
                         )
@@ -164,7 +178,12 @@ class GridViewCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              gridCardDetail.cardIcon,
+              IntrinsicHeight(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: iconsList,
+                ),
+              ),
               const SizedBox(
                 height: 5,
               ),

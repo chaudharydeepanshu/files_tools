@@ -1,5 +1,6 @@
 import 'package:files_tools/models/file_model.dart';
 import 'package:files_tools/models/tool_actions_model.dart';
+import 'package:files_tools/route/route.dart' as route;
 import 'package:files_tools/state/providers.dart';
 import 'package:files_tools/state/select_file_state.dart';
 import 'package:files_tools/state/tools_actions_state.dart';
@@ -10,7 +11,6 @@ import 'package:files_tools/utils/clear_cache.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pick_or_save/pick_or_save.dart';
-import 'package:files_tools/route/route.dart' as route;
 
 class WatermarkPDFPage extends StatefulWidget {
   const WatermarkPDFPage({Key? key}) : super(key: key);
@@ -22,7 +22,7 @@ class WatermarkPDFPage extends StatefulWidget {
 class _WatermarkPDFPageState extends State<WatermarkPDFPage> {
   @override
   void initState() {
-    clearCache(clearCacheCommandFrom: "WatermarkPDFPage");
+    clearCache(clearCacheCommandFrom: 'WatermarkPDFPage');
     super.initState();
   }
 
@@ -43,7 +43,7 @@ class _WatermarkPDFPageState extends State<WatermarkPDFPage> {
         },
         child: Scaffold(
           appBar: AppBar(
-            title: const Text("Watermark PDF"),
+            title: const Text('Watermark PDF'),
             centerTitle: true,
           ),
           body: Consumer(
@@ -63,8 +63,8 @@ class _WatermarkPDFPageState extends State<WatermarkPDFPage> {
                       getCachedFilePath: false,
                       pickerType: PickerType.file,
                       enableMultipleSelection: false,
-                      mimeTypesFilter: ["application/pdf"],
-                      allowedExtensions: [".pdf"],
+                      mimeTypesFilter: ['application/pdf'],
+                      allowedExtensions: ['.pdf'],
                     ),
                     discardInvalidPdfFiles: true,
                     discardProtectedPdfFiles: true,
@@ -73,7 +73,7 @@ class _WatermarkPDFPageState extends State<WatermarkPDFPage> {
                   ToolActionsCard(
                     toolActions: [
                       ToolActionsModel(
-                        actionText: "Watermark pdf",
+                        actionText: 'Watermark pdf',
                         actionOnTap: selectedFiles.length == 1
                             ? () {
                                 // Removing any snack bar or keyboard

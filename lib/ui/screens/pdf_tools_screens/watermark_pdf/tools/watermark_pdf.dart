@@ -1,4 +1,5 @@
 import 'package:files_tools/models/file_model.dart';
+import 'package:files_tools/route/route.dart' as route;
 import 'package:files_tools/state/providers.dart';
 import 'package:files_tools/state/tools_actions_state.dart';
 import 'package:files_tools/ui/components/color_picker.dart';
@@ -7,7 +8,6 @@ import 'package:flex_color_picker/flex_color_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:files_tools/route/route.dart' as route;
 import 'package:pdf_manipulator/pdf_manipulator.dart';
 
 class WatermarkPDF extends StatelessWidget {
@@ -163,16 +163,16 @@ class _WatermarkPdfActionCardState extends State<WatermarkPdfActionCard> {
                     keyboardType:
                         const TextInputType.numberWithOptions(decimal: true),
                     inputFormatters: [
-                      FilteringTextInputFormatter(RegExp("[0-9.-]"),
+                      FilteringTextInputFormatter(RegExp('[0-9.-]'),
                           allow: true),
                       TextInputFormatter.withFunction(
                           (TextEditingValue oldValue,
                               TextEditingValue newValue) {
                         final newValueText = newValue.text;
 
-                        if (newValueText == "-" ||
-                            newValueText == "-." ||
-                            newValueText == ".") {
+                        if (newValueText == '-' ||
+                            newValueText == '-.' ||
+                            newValueText == '.') {
                           // Returning new value if text field contains only "." or "-." or ".".
                           return newValue;
                         } else if (newValueText.isNotEmpty) {
@@ -242,7 +242,7 @@ class _WatermarkPdfActionCardState extends State<WatermarkPdfActionCard> {
               },
             ),
             const SizedBox(height: 10),
-            const Text("Choose watermark layer:"),
+            const Text('Choose watermark layer:'),
             SegmentedButton<WatermarkLayer>(
               segments: const [
                 ButtonSegment(
@@ -260,7 +260,7 @@ class _WatermarkPdfActionCardState extends State<WatermarkPdfActionCard> {
               },
             ),
             const SizedBox(height: 10),
-            const Text("Choose watermark position:"),
+            const Text('Choose watermark position:'),
             Flexible(
               child: SizedBox(
                 // width: 200,
@@ -278,7 +278,7 @@ class _WatermarkPdfActionCardState extends State<WatermarkPdfActionCard> {
                   itemBuilder: (BuildContext context, int index) {
                     if (index == 0) {
                       return WatermarkPositionButton(
-                        positionText: "Top\nLeft",
+                        positionText: 'Top\nLeft',
                         isPositionSelected:
                             positionType == PositionType.topLeft,
                         onPositionChange: () {
@@ -291,7 +291,7 @@ class _WatermarkPdfActionCardState extends State<WatermarkPdfActionCard> {
                       );
                     } else if (index == 1) {
                       return WatermarkPositionButton(
-                        positionText: "Top\nCenter",
+                        positionText: 'Top\nCenter',
                         isPositionSelected:
                             positionType == PositionType.topCenter,
                         onPositionChange: () {
@@ -303,7 +303,7 @@ class _WatermarkPdfActionCardState extends State<WatermarkPdfActionCard> {
                       );
                     } else if (index == 2) {
                       return WatermarkPositionButton(
-                        positionText: "Top\nRight",
+                        positionText: 'Top\nRight',
                         isPositionSelected:
                             positionType == PositionType.topRight,
                         onPositionChange: () {
@@ -316,7 +316,7 @@ class _WatermarkPdfActionCardState extends State<WatermarkPdfActionCard> {
                       );
                     } else if (index == 3) {
                       return WatermarkPositionButton(
-                        positionText: "Center\nLeft",
+                        positionText: 'Center\nLeft',
                         isPositionSelected:
                             positionType == PositionType.centerLeft,
                         onPositionChange: () {
@@ -328,7 +328,7 @@ class _WatermarkPdfActionCardState extends State<WatermarkPdfActionCard> {
                       );
                     } else if (index == 4) {
                       return WatermarkPositionButton(
-                        positionText: "Center",
+                        positionText: 'Center',
                         isPositionSelected: positionType == PositionType.center,
                         onPositionChange: () {
                           setState(() {
@@ -339,7 +339,7 @@ class _WatermarkPdfActionCardState extends State<WatermarkPdfActionCard> {
                       );
                     } else if (index == 5) {
                       return WatermarkPositionButton(
-                        positionText: "Center\nRight",
+                        positionText: 'Center\nRight',
                         isPositionSelected:
                             positionType == PositionType.centerRight,
                         onPositionChange: () {
@@ -351,7 +351,7 @@ class _WatermarkPdfActionCardState extends State<WatermarkPdfActionCard> {
                       );
                     } else if (index == 6) {
                       return WatermarkPositionButton(
-                        positionText: "Bottom\nLeft",
+                        positionText: 'Bottom\nLeft',
                         isPositionSelected:
                             positionType == PositionType.bottomLeft,
                         onPositionChange: () {
@@ -364,7 +364,7 @@ class _WatermarkPdfActionCardState extends State<WatermarkPdfActionCard> {
                       );
                     } else if (index == 7) {
                       return WatermarkPositionButton(
-                        positionText: "Bottom\nCenter",
+                        positionText: 'Bottom\nCenter',
                         isPositionSelected:
                             positionType == PositionType.bottomCenter,
                         onPositionChange: () {
@@ -376,7 +376,7 @@ class _WatermarkPdfActionCardState extends State<WatermarkPdfActionCard> {
                       );
                     } else {
                       return WatermarkPositionButton(
-                        positionText: "Bottom\nRight",
+                        positionText: 'Bottom\nRight',
                         isPositionSelected:
                             positionType == PositionType.bottomRight,
                         onPositionChange: () {
@@ -426,7 +426,7 @@ class _WatermarkPdfActionCardState extends State<WatermarkPdfActionCard> {
                         }
                       },
                       icon: const Icon(Icons.check),
-                      label: const Text("Watermark PDF"),
+                      label: const Text('Watermark PDF'),
                     );
                   },
                 ),

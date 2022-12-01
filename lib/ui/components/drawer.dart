@@ -1,11 +1,10 @@
+import 'package:files_tools/constants.dart';
+import 'package:files_tools/route/route.dart' as route;
 import 'package:files_tools/state/providers.dart';
+import 'package:files_tools/ui/components/link_button.dart';
 import 'package:files_tools/ui/components/theme_mode_switcher.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:files_tools/route/route.dart' as route;
-
-import 'package:files_tools/constants.dart';
-import 'package:files_tools/ui/components/link_button.dart';
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({Key? key}) : super(key: key);
@@ -99,14 +98,14 @@ class AppDrawer extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           LinkButton(
-                              urlLabel: "Privacy Policy",
+                              urlLabel: 'Privacy Policy',
                               urlIcon: Icons.privacy_tip,
                               url: privacyPolicyUrl),
                           const Text(
                             ' - ',
                           ),
                           LinkButton(
-                              urlLabel: "Terms and Conditions",
+                              urlLabel: 'Terms and Conditions',
                               urlIcon: Icons.gavel,
                               url: termsAndConditionsUrl),
                         ],

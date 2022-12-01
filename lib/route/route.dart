@@ -1,5 +1,7 @@
 import 'package:files_tools/ui/screens/about_page.dart';
+import 'package:files_tools/ui/screens/homescreen/homescreen.dart';
 import 'package:files_tools/ui/screens/homescreen/pages/components/image_tools_section.dart';
+import 'package:files_tools/ui/screens/homescreen/pages/components/pdf_tools_section.dart';
 import 'package:files_tools/ui/screens/image_tools_screens/compress_image/compress_image_screen.dart';
 import 'package:files_tools/ui/screens/image_tools_screens/compress_image/compress_image_tool_screen.dart';
 import 'package:files_tools/ui/screens/image_tools_screens/crop_rotate_flip_images/crop_rotate_flip_images_screen.dart';
@@ -9,27 +11,25 @@ import 'package:files_tools/ui/screens/image_viewer.dart';
 import 'package:files_tools/ui/screens/onboarding_screen.dart';
 import 'package:files_tools/ui/screens/pdf_tools_screens/compress_pdf/compress_pdf_screen.dart';
 import 'package:files_tools/ui/screens/pdf_tools_screens/compress_pdf/compress_pdf_tool_screen.dart';
-import 'package:files_tools/ui/screens/pdf_tools_screens/decrypt_pdf/decrypt_pdf_screen.dart';
-import 'package:files_tools/ui/screens/pdf_tools_screens/decrypt_pdf/decrypt_pdf_tools_screen.dart';
-import 'package:files_tools/ui/screens/pdf_tools_screens/image_to_pdf/image_to_pdf_screen.dart';
-import 'package:files_tools/ui/screens/pdf_tools_screens/image_to_pdf/image_to_pdf_tools_screen.dart';
-import 'package:files_tools/ui/screens/pdf_tools_screens/watermark_pdf/watermark_pdf_screen.dart';
-import 'package:files_tools/ui/screens/pdf_tools_screens/watermark_pdf/watermark_pdf_tool_screen.dart';
-import 'package:files_tools/ui/screens/pdf_viewer.dart';
 import 'package:files_tools/ui/screens/pdf_tools_screens/convert_pdf/convert_pdf_screen.dart';
 import 'package:files_tools/ui/screens/pdf_tools_screens/convert_pdf/convert_pdf_tool_screen.dart';
+import 'package:files_tools/ui/screens/pdf_tools_screens/decrypt_pdf/decrypt_pdf_screen.dart';
+import 'package:files_tools/ui/screens/pdf_tools_screens/decrypt_pdf/decrypt_pdf_tools_screen.dart';
+import 'package:files_tools/ui/screens/pdf_tools_screens/encrypt_pdf/encrypt_pdf_screen.dart';
+import 'package:files_tools/ui/screens/pdf_tools_screens/encrypt_pdf/encrypt_pdf_tools_screen.dart';
+import 'package:files_tools/ui/screens/pdf_tools_screens/image_to_pdf/image_to_pdf_screen.dart';
+import 'package:files_tools/ui/screens/pdf_tools_screens/image_to_pdf/image_to_pdf_tools_screen.dart';
+import 'package:files_tools/ui/screens/pdf_tools_screens/merge_pdfs_screen.dart';
 import 'package:files_tools/ui/screens/pdf_tools_screens/modify_pdf/modify_pdf_screen.dart';
 import 'package:files_tools/ui/screens/pdf_tools_screens/modify_pdf/modify_pdf_tool_screen.dart';
 import 'package:files_tools/ui/screens/pdf_tools_screens/split_pdf/split_pdf_screen.dart';
 import 'package:files_tools/ui/screens/pdf_tools_screens/split_pdf/split_pdf_tools_screen.dart';
+import 'package:files_tools/ui/screens/pdf_tools_screens/watermark_pdf/watermark_pdf_screen.dart';
+import 'package:files_tools/ui/screens/pdf_tools_screens/watermark_pdf/watermark_pdf_tool_screen.dart';
+import 'package:files_tools/ui/screens/pdf_viewer.dart';
 import 'package:files_tools/ui/screens/result_screen.dart';
 import 'package:files_tools/ui/screens/settings_page.dart';
 import 'package:flutter/material.dart';
-import 'package:files_tools/ui/screens/homescreen/homescreen.dart';
-import 'package:files_tools/ui/screens/homescreen/pages/components/pdf_tools_section.dart';
-import 'package:files_tools/ui/screens/pdf_tools_screens/merge_pdfs_screen.dart';
-import 'package:files_tools/ui/screens/pdf_tools_screens/encrypt_pdf/encrypt_pdf_screen.dart';
-import 'package:files_tools/ui/screens/pdf_tools_screens/encrypt_pdf/encrypt_pdf_tools_screen.dart';
 
 // Note: When using path "/" in routes then the initial route will always have to be "/" and will always run "/" no matter what initial route is.
 

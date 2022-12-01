@@ -1,5 +1,6 @@
 import 'package:files_tools/models/file_model.dart';
 import 'package:files_tools/models/tool_actions_model.dart';
+import 'package:files_tools/route/route.dart' as route;
 import 'package:files_tools/state/providers.dart';
 import 'package:files_tools/state/select_file_state.dart';
 import 'package:files_tools/state/tools_actions_state.dart';
@@ -10,7 +11,6 @@ import 'package:files_tools/utils/clear_cache.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pick_or_save/pick_or_save.dart';
-import 'package:files_tools/route/route.dart' as route;
 
 class SplitPDFPage extends StatefulWidget {
   const SplitPDFPage({Key? key}) : super(key: key);
@@ -22,7 +22,7 @@ class SplitPDFPage extends StatefulWidget {
 class _SplitPDFPageState extends State<SplitPDFPage> {
   @override
   void initState() {
-    clearCache(clearCacheCommandFrom: "SplitPDFPage");
+    clearCache(clearCacheCommandFrom: 'SplitPDFPage');
     super.initState();
   }
 
@@ -43,7 +43,7 @@ class _SplitPDFPageState extends State<SplitPDFPage> {
         },
         child: Scaffold(
           appBar: AppBar(
-            title: const Text("Split PDF"),
+            title: const Text('Split PDF'),
             centerTitle: true,
           ),
           body: Consumer(
@@ -63,8 +63,8 @@ class _SplitPDFPageState extends State<SplitPDFPage> {
                       getCachedFilePath: false,
                       pickerType: PickerType.file,
                       enableMultipleSelection: false,
-                      mimeTypesFilter: ["application/pdf"],
-                      allowedExtensions: [".pdf"],
+                      mimeTypesFilter: ['application/pdf'],
+                      allowedExtensions: ['.pdf'],
                     ),
                     discardInvalidPdfFiles: true,
                     discardProtectedPdfFiles: true,
@@ -73,7 +73,7 @@ class _SplitPDFPageState extends State<SplitPDFPage> {
                   ToolActionsCard(
                     toolActions: [
                       ToolActionsModel(
-                        actionText: "Extract PDF pages by page selection",
+                        actionText: 'Extract PDF pages by page selection',
                         actionOnTap: selectedFiles.length == 1
                             ? () {
                                 // Removing any snack bar or keyboard
@@ -93,7 +93,7 @@ class _SplitPDFPageState extends State<SplitPDFPage> {
                             : null,
                       ),
                       ToolActionsModel(
-                        actionText: "Split PDF by page count",
+                        actionText: 'Split PDF by page count',
                         actionOnTap: selectedFiles.length == 1
                             ? () {
                                 // Removing any snack bar or keyboard
@@ -113,7 +113,7 @@ class _SplitPDFPageState extends State<SplitPDFPage> {
                             : null,
                       ),
                       ToolActionsModel(
-                        actionText: "Split PDF by size",
+                        actionText: 'Split PDF by size',
                         actionOnTap: selectedFiles.length == 1
                             ? () {
                                 // Removing any snack bar or keyboard
@@ -133,7 +133,7 @@ class _SplitPDFPageState extends State<SplitPDFPage> {
                             : null,
                       ),
                       ToolActionsModel(
-                        actionText: "Split PDF by page numbers",
+                        actionText: 'Split PDF by page numbers',
                         actionOnTap: selectedFiles.length == 1
                             ? () {
                                 // Removing any snack bar or keyboard
@@ -153,7 +153,7 @@ class _SplitPDFPageState extends State<SplitPDFPage> {
                             : null,
                       ),
                       ToolActionsModel(
-                        actionText: "Extract PDF pages by page range",
+                        actionText: 'Extract PDF pages by page range',
                         actionOnTap: selectedFiles.length == 1
                             ? () {
                                 // Removing any snack bar or keyboard

@@ -1,11 +1,11 @@
 import 'package:files_tools/models/file_model.dart';
+import 'package:files_tools/route/route.dart' as route;
 import 'package:files_tools/state/providers.dart';
 import 'package:files_tools/state/tools_actions_state.dart';
 import 'package:files_tools/ui/components/tools_about_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:files_tools/route/route.dart' as route;
 
 class SplitByPageCount extends StatelessWidget {
   const SplitByPageCount(
@@ -27,7 +27,7 @@ class SplitByPageCount extends StatelessWidget {
               'This splits pdf into multiple pdfs each containing no. of pages equals to provided page count.',
           aboutTextBodyTitle: 'Example :-',
           aboutTextBody:
-              "If pages in selected PDF = 10\n\nAnd, your input = 3,7\n\nThen, it will split the PDF at every next 3rd page\n\nSo, we will get (10 / 3) = 4 PDFs\n\nPDF 1 containing pages - 1,2,3\nPDF 2 containing pages - 4,5,6\nPDF 3 containing pages - 7,8,9\nPDF 4 containing page - 10",
+              'If pages in selected PDF = 10\n\nAnd, your input = 3\n\nThen, it will split the PDF at every next 3rd page\n\nSo, we will get (10 / 3) = 4 PDFs\n\nPDF 1 containing pages - 1,2,3\nPDF 2 containing pages - 4,5,6\nPDF 3 containing pages - 7,8,9\nPDF 4 containing page - 10',
         ),
         const SizedBox(height: 16),
       ],
@@ -125,7 +125,7 @@ class _SplitByPageCountActionCardState
                               }
                             },
                             icon: const Icon(Icons.check),
-                            label: const Text("Split PDF"),
+                            label: const Text('Split PDF'),
                           );
                         },
                       ),

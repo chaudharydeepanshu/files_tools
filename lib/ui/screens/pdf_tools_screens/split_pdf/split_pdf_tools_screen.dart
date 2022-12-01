@@ -5,10 +5,10 @@ import 'package:files_tools/models/pdf_page_model.dart';
 import 'package:files_tools/state/tools_actions_state.dart';
 import 'package:files_tools/ui/components/loading.dart';
 import 'package:files_tools/ui/components/view_error.dart';
+import 'package:files_tools/ui/screens/pdf_tools_screens/split_pdf/tools/extract_by_page_range.dart';
 import 'package:files_tools/ui/screens/pdf_tools_screens/split_pdf/tools/extract_pages.dart';
 import 'package:files_tools/ui/screens/pdf_tools_screens/split_pdf/tools/split_by_page_count.dart';
 import 'package:files_tools/ui/screens/pdf_tools_screens/split_pdf/tools/split_by_page_numbers.dart';
-import 'package:files_tools/ui/screens/pdf_tools_screens/split_pdf/tools/extract_by_page_range.dart';
 import 'package:files_tools/ui/screens/pdf_tools_screens/split_pdf/tools/split_by_page_ranges.dart';
 import 'package:files_tools/ui/screens/pdf_tools_screens/split_pdf/tools/split_by_size.dart';
 import 'package:files_tools/utils/get_pdf_bitmaps.dart';
@@ -66,13 +66,13 @@ class _SplitPDFToolsPageState extends State<SplitPDFToolsPage> {
                 if (snapshot.hasError) {
                   log(snapshot.error.toString());
                   return ShowError(
-                      taskMessage: "Sorry, failed to process the pdf.",
+                      taskMessage: 'Sorry, failed to process the pdf.',
                       errorMessage: snapshot.error.toString(),
                       allowBack: true);
                 } else if (pdfPages.isEmpty) {
                   return const ShowError(
-                      taskMessage: "Sorry, failed to process the pdf.",
-                      errorMessage: "PDF page count is null",
+                      taskMessage: 'Sorry, failed to process the pdf.',
+                      errorMessage: 'PDF page count is null',
                       allowBack: true);
                 } else {
                   return SplitPDFToolsBody(
@@ -128,19 +128,19 @@ class SplitPDFToolsBody extends StatelessWidget {
 }
 
 String getAppBarTitleForActionType({required ToolsActions actionType}) {
-  String title = "Action Successful";
+  String title = 'Action Successful';
   if (actionType == ToolsActions.extractPdfByPageSelection) {
-    title = "Select Pages To Extract";
+    title = 'Select Pages To Extract';
   } else if (actionType == ToolsActions.splitPdfByPageCount) {
-    title = "Provide Page Count";
+    title = 'Provide Page Count';
   } else if (actionType == ToolsActions.splitPdfByByteSize) {
-    title = "Provide Size";
+    title = 'Provide Size';
   } else if (actionType == ToolsActions.splitPdfByPageNumbers) {
-    title = "Provide Page Numbers";
+    title = 'Provide Page Numbers';
   } else if (actionType == ToolsActions.splitPdfByPageRanges) {
-    title = "Provide Page Ranges";
+    title = 'Provide Page Ranges';
   } else if (actionType == ToolsActions.extractPdfByPageRange) {
-    title = "Provide Page Range";
+    title = 'Provide Page Range';
   }
   return title;
 }

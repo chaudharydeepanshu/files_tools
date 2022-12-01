@@ -61,13 +61,13 @@ class _ConvertPDFToolsPageState extends State<ConvertPDFToolsPage> {
                 if (snapshot.hasError) {
                   log(snapshot.error.toString());
                   return ShowError(
-                      taskMessage: "Sorry, failed to process the pdf.",
+                      taskMessage: 'Sorry, failed to process the pdf.',
                       errorMessage: snapshot.error.toString(),
                       allowBack: true);
                 } else if (pdfPages.isEmpty) {
                   return const ShowError(
-                      taskMessage: "Sorry, failed to process the pdf.",
-                      errorMessage: "PDF page count is null",
+                      taskMessage: 'Sorry, failed to process the pdf.',
+                      errorMessage: 'PDF page count is null',
                       allowBack: true);
                 } else {
                   return ConvertPDFToolsBody(
@@ -113,9 +113,9 @@ class ConvertPDFToolsBody extends StatelessWidget {
 }
 
 String getAppBarTitleForActionType({required ToolsActions actionType}) {
-  String title = "Action Successful";
+  String title = 'Action Successful';
   if (actionType == ToolsActions.convertPdfToImage) {
-    title = "Select Pages To Convert";
+    title = 'Select Pages To Convert';
   }
   return title;
 }

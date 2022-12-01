@@ -1,6 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:files_tools/models/file_model.dart';
 import 'package:files_tools/models/pdf_page_model.dart';
+import 'package:files_tools/route/route.dart' as route;
 import 'package:files_tools/state/providers.dart';
 import 'package:files_tools/state/tools_actions_state.dart';
 import 'package:files_tools/ui/components/levitating_options_bar.dart';
@@ -11,7 +12,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pdf_manipulator/pdf_manipulator.dart';
 import 'package:reorderable_grid_view/reorderable_grid_view.dart';
-import 'package:files_tools/route/route.dart' as route;
 
 class ExtractByPageSelection extends StatefulWidget {
   const ExtractByPageSelection(
@@ -68,7 +68,7 @@ class _ExtractByPageSelectionState extends State<ExtractByPageSelection> {
               tileColor: Theme.of(context).colorScheme.surfaceVariant,
               // contentPadding: EdgeInsets.zero,
               visualDensity: VisualDensity.compact,
-              title: Text("Select All Pages",
+              title: Text('Select All Pages',
                   style: Theme.of(context).textTheme.bodyMedium),
               value: isSelectAllEnabled,
               onChanged: (bool? value) {
@@ -329,7 +329,7 @@ class _ExtractByPageSelectionState extends State<ExtractByPageSelection> {
                                         children: const [
                                           Icon(Icons.check),
                                           SizedBox(width: 10),
-                                          Text("Process"),
+                                          Text('Process'),
                                         ],
                                       ),
                                     ),

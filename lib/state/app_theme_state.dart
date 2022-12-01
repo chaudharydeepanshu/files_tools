@@ -1,9 +1,8 @@
+import 'package:files_tools/shared_preferences/preferences.dart';
 import 'package:files_tools/state/providers.dart';
+import 'package:files_tools/ui/theme/app_theme_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:files_tools/ui/theme/app_theme_data.dart';
-
-import '../shared_preferences/preferences.dart';
 
 class AppThemeState extends ChangeNotifier {
   AppThemeState(this.ref);
@@ -46,7 +45,7 @@ class AppThemeState extends ChangeNotifier {
   late final Preferences readPreferencesProviderValue =
       ref.read(preferencesProvider);
 
-  initTheme({ColorScheme? lightDynamic, ColorScheme? darkDynamic}) {
+  void initTheme({ColorScheme? lightDynamic, ColorScheme? darkDynamic}) {
     _lightDynamicColorScheme = lightDynamic;
     _darkDynamicColorScheme = darkDynamic;
     _isDynamicThemeEnabled = readPreferencesProviderValue.dynamicThemeStatus;
@@ -86,7 +85,7 @@ class AppThemeState extends ChangeNotifier {
     _themeMode = readPreferencesProviderValue.themeMode;
   }
 
-  updateTheme() {
+  void updateTheme() {
     initTheme(
         lightDynamic: _lightDynamicColorScheme,
         darkDynamic: _darkDynamicColorScheme);
@@ -103,7 +102,7 @@ class AppThemeState extends ChangeNotifier {
     notifyListeners();
   }
 
-  updateDynamicThemeStatus() {
+  void updateDynamicThemeStatus() {
     _isDynamicThemeEnabled = !_isDynamicThemeEnabled;
     readPreferencesProviderValue
         .persistDynamicThemeStatus(_isDynamicThemeEnabled);
@@ -112,7 +111,7 @@ class AppThemeState extends ChangeNotifier {
     notifyListeners();
   }
 
-  updateUserTheme(Color newUserThemeColor) {
+  void updateUserTheme(Color newUserThemeColor) {
     readPreferencesProviderValue
         .persistUserThemeSeedColorValue(newUserThemeColor.value);
 
@@ -138,7 +137,7 @@ class AppThemeState extends ChangeNotifier {
     notifyListeners();
   }
 
-  updateThemeMode() {
+  void updateThemeMode() {
     if (_themeMode == ThemeMode.dark) {
       _themeMode = ThemeMode.system;
       readPreferencesProviderValue.persistThemeMode(ThemeMode.system);

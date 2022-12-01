@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-String themeModePerfKey = "themeMode";
-String onBoardingStatusPerfKey = "isUserOnBoarded";
-String userThemeSeedColorValuePerfKey = "userThemeSeedColorValue";
-String dynamicThemeStatusPerfKey = "dynamicThemeStatus";
+String themeModePerfKey = 'themeMode';
+String onBoardingStatusPerfKey = 'isUserOnBoarded';
+String userThemeSeedColorValuePerfKey = 'userThemeSeedColorValue';
+String dynamicThemeStatusPerfKey = 'dynamicThemeStatus';
 
 class Preferences extends ChangeNotifier {
   late SharedPreferences _sharedPreferences;
   SharedPreferences get sharedPreferences => _sharedPreferences;
 
-  init(SharedPreferences sharedPreferencesInstance) async {
+  void init(SharedPreferences sharedPreferencesInstance) {
     _sharedPreferences = sharedPreferencesInstance;
   }
 
-  persistThemeMode(ThemeMode mode) =>
+  Future<bool> persistThemeMode(ThemeMode mode) =>
       sharedPreferences.setString(themeModePerfKey, mode.toString());
 
   ThemeMode get themeMode => ThemeMode.values.firstWhere(
@@ -23,13 +23,13 @@ class Preferences extends ChangeNotifier {
         orElse: () => ThemeMode.light,
       );
 
-  persistOnBoardingStatus(bool isUserOnBoarded) =>
+  Future<bool> persistOnBoardingStatus(bool isUserOnBoarded) =>
       sharedPreferences.setBool(onBoardingStatusPerfKey, isUserOnBoarded);
 
   bool get isUserOnBoarded =>
       sharedPreferences.getBool(onBoardingStatusPerfKey) ?? false;
 
-  persistUserThemeSeedColorValue(int userThemeSeedColorValue) =>
+  Future<bool> persistUserThemeSeedColorValue(int userThemeSeedColorValue) =>
       sharedPreferences.setInt(
           userThemeSeedColorValuePerfKey, userThemeSeedColorValue);
 
@@ -37,7 +37,7 @@ class Preferences extends ChangeNotifier {
       sharedPreferences.getInt(userThemeSeedColorValuePerfKey) ??
       const Color(0xFFA93054).value;
 
-  persistDynamicThemeStatus(bool dynamicThemeStatus) =>
+  Future<bool> persistDynamicThemeStatus(bool dynamicThemeStatus) =>
       sharedPreferences.setBool(dynamicThemeStatusPerfKey, dynamicThemeStatus);
 
   bool get dynamicThemeStatus =>

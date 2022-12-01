@@ -10,7 +10,7 @@ class AboutPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("About"),
+        title: const Text('About'),
         centerTitle: true,
       ),
       body: ListView(
@@ -62,7 +62,7 @@ class AppDescription extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Text(
-          "Files Tools is an application on which I worked during my spare time. It provides tools to perform various operations on files (documents and media), which helps everyone in their everyday life.",
+          'Files Tools is an application on which I worked during my spare time. It provides tools to perform various operations on files (documents and media), which helps everyone in their everyday life.',
           style: Theme.of(context).textTheme.bodyMedium,
           textAlign: TextAlign.center,
         ),
@@ -102,7 +102,7 @@ class AppBadges extends StatelessWidget {
                       width: 100,
                     ),
                     Text(
-                      "Open Source",
+                      'Open Source',
                       style: Theme.of(context).textTheme.bodySmall,
                       textAlign: TextAlign.center,
                     ),
@@ -116,7 +116,7 @@ class AppBadges extends StatelessWidget {
                       width: 100,
                     ),
                     Text(
-                      "No ads",
+                      'No ads',
                       style: Theme.of(context).textTheme.bodySmall,
                       textAlign: TextAlign.center,
                     ),
@@ -127,7 +127,7 @@ class AppBadges extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child:
-                  LinkButton(urlLabel: "Show Source Code", url: sourceCodeUrl),
+                  LinkButton(urlLabel: 'Show Source Code', url: sourceCodeUrl),
             ),
           ],
         ),
@@ -156,20 +156,20 @@ class AppAuthor extends StatelessWidget {
         child: Column(
           children: [
             Text(
-              "Author",
+              'Author',
               style: Theme.of(context).textTheme.titleLarge,
               textAlign: TextAlign.center,
             ),
             const Divider(),
             Text(
-              "Deepanshu",
+              'Deepanshu',
               style: Theme.of(context).textTheme.bodyLarge,
               textAlign: TextAlign.center,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                LinkButton(urlLabel: "LinkedIn", url: authorLinkedInUrl),
+                LinkButton(urlLabel: 'LinkedIn', url: authorLinkedInUrl),
               ],
             ),
             Row(
@@ -178,7 +178,7 @@ class AppAuthor extends StatelessWidget {
                 Column(
                   children: [
                     Text(
-                      "Follow",
+                      'Follow',
                       style: Theme.of(context).textTheme.bodySmall,
                       textAlign: TextAlign.center,
                     ),
@@ -205,7 +205,7 @@ class AppAuthor extends StatelessWidget {
                 Column(
                   children: [
                     Text(
-                      "⭐ Project",
+                      '⭐ Project',
                       style: Theme.of(context).textTheme.bodySmall,
                       textAlign: TextAlign.center,
                     ),
@@ -258,25 +258,25 @@ class AppContributions extends StatelessWidget {
         child: Column(
           children: [
             Text(
-              "Contributors",
+              'Contributors',
               style: Theme.of(context).textTheme.titleLarge,
               textAlign: TextAlign.center,
             ),
             const Divider(),
             Text(
-              "App Testers",
+              'App Testers',
               style: Theme.of(context).textTheme.bodySmall,
               textAlign: TextAlign.center,
             ),
             Text(
-              "XYZ",
+              'XYZ',
               style: Theme.of(context).textTheme.bodyLarge,
               textAlign: TextAlign.center,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: const [
-                LinkButton(urlLabel: "Github", url: "https://github.com/xyz"),
+                LinkButton(urlLabel: 'Github', url: 'https://github.com/xyz'),
               ],
             ),
             const Divider(),
@@ -307,7 +307,7 @@ class Credits extends StatelessWidget {
         child: Column(
           children: [
             Text(
-              "Credits",
+              'Credits',
               style: Theme.of(context).textTheme.titleLarge,
               textAlign: TextAlign.center,
             ),
@@ -315,14 +315,14 @@ class Credits extends StatelessWidget {
             RichText(
               textAlign: TextAlign.center,
               text: TextSpan(
-                text: "Icons by ",
+                text: 'Icons by ',
                 style: Theme.of(context).textTheme.bodySmall,
                 children: const <InlineSpan>[
                   WidgetSpan(
                     alignment: PlaceholderAlignment.baseline,
                     baseline: TextBaseline.alphabetic,
                     child: LinkButton(
-                        urlLabel: "Icons8", url: "https://icons8.com"),
+                        urlLabel: 'Icons8', url: 'https://icons8.com'),
                   ),
                 ],
               ),
@@ -330,15 +330,15 @@ class Credits extends StatelessWidget {
             RichText(
               textAlign: TextAlign.center,
               text: TextSpan(
-                text: "Animations by ",
+                text: 'Animations by ',
                 style: Theme.of(context).textTheme.bodySmall,
                 children: const <InlineSpan>[
                   WidgetSpan(
                     alignment: PlaceholderAlignment.baseline,
                     baseline: TextBaseline.alphabetic,
                     child: LinkButton(
-                        urlLabel: "Rive Community",
-                        url: "https://rive.app/community/"),
+                        urlLabel: 'Rive Community',
+                        url: 'https://rive.app/community/'),
                   ),
                 ],
               ),

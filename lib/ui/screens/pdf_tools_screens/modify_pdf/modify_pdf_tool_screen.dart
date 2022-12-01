@@ -61,13 +61,13 @@ class _ModifyPDFToolsPageState extends State<ModifyPDFToolsPage> {
                 if (snapshot.hasError) {
                   log(snapshot.error.toString());
                   return ShowError(
-                      taskMessage: "Sorry, failed to process the pdf.",
+                      taskMessage: 'Sorry, failed to process the pdf.',
                       errorMessage: snapshot.error.toString(),
                       allowBack: true);
                 } else if (pdfPages.isEmpty) {
                   return const ShowError(
-                      taskMessage: "Sorry, failed to process the pdf.",
-                      errorMessage: "PDF page count is null",
+                      taskMessage: 'Sorry, failed to process the pdf.',
+                      errorMessage: 'PDF page count is null',
                       allowBack: true);
                 } else {
                   return ModifyPDFToolsBody(
@@ -113,9 +113,9 @@ class ModifyPDFToolsBody extends StatelessWidget {
 }
 
 String getAppBarTitleForActionType({required ToolsActions actionType}) {
-  String title = "Action Successful";
+  String title = 'Action Successful';
   if (actionType == ToolsActions.modifyPdf) {
-    title = "Rotate, Delete & Reorder";
+    title = 'Rotate, Delete & Reorder';
   }
   return title;
 }

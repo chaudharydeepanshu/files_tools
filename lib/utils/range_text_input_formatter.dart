@@ -18,28 +18,28 @@ class RangeTextInputFormatter extends TextInputFormatter {
       newSelection = newValue.selection;
     }
     // Blocks comma and dash at start.
-    else if ((oldValue.text.isEmpty || oldValue.text == "") &&
-        (newValue.text[newValueLength - 1] == "," ||
-            newValue.text[newValueLength - 1] == "-")) {
+    else if ((oldValue.text.isEmpty || oldValue.text == '') &&
+        (newValue.text[newValueLength - 1] == ',' ||
+            newValue.text[newValueLength - 1] == '-')) {
       truncated = oldValue.text;
       newSelection = oldValue.selection;
     }
     // Allows numbers at start.
-    else if (oldValue.text.isEmpty || oldValue.text == "") {
+    else if (oldValue.text.isEmpty || oldValue.text == '') {
       truncated = newValue.text;
       newSelection = newValue.selection;
     } else {
       // Blocks comma and dash after comma.
-      if (newValue.text[newValueLength - 2] == "," &&
-          (newValue.text[newValueLength - 1] == "," ||
-              newValue.text[newValueLength - 1] == "-")) {
+      if (newValue.text[newValueLength - 2] == ',' &&
+          (newValue.text[newValueLength - 1] == ',' ||
+              newValue.text[newValueLength - 1] == '-')) {
         truncated = oldValue.text;
         newSelection = oldValue.selection;
       }
       // Blocks comma and dash after dash.
-      else if (newValue.text[newValueLength - 2] == "-" &&
-          (newValue.text[newValueLength - 1] == "," ||
-              newValue.text[newValueLength - 1] == "-")) {
+      else if (newValue.text[newValueLength - 2] == '-' &&
+          (newValue.text[newValueLength - 1] == ',' ||
+              newValue.text[newValueLength - 1] == '-')) {
         truncated = oldValue.text;
         newSelection = oldValue.selection;
       }
@@ -47,8 +47,8 @@ class RangeTextInputFormatter extends TextInputFormatter {
       else if (oldValue.text.lastIndexOf('-') != -1) {
         if (!(oldValue.text
                 .substring(oldValue.text.lastIndexOf('-'))
-                .contains(",")) &&
-            newValue.text[newValueLength - 1] == "-") {
+                .contains(',')) &&
+            newValue.text[newValueLength - 1] == '-') {
           truncated = oldValue.text;
           newSelection = oldValue.selection;
         }

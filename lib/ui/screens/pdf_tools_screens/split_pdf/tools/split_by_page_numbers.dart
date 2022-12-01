@@ -1,11 +1,11 @@
 import 'package:files_tools/models/file_model.dart';
+import 'package:files_tools/route/route.dart' as route;
 import 'package:files_tools/state/providers.dart';
 import 'package:files_tools/state/tools_actions_state.dart';
 import 'package:files_tools/ui/components/tools_about_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:files_tools/route/route.dart' as route;
 
 class SplitByPageNumbers extends StatelessWidget {
   const SplitByPageNumbers(
@@ -27,7 +27,7 @@ class SplitByPageNumbers extends StatelessWidget {
               'This method splits the pdf into multiple pdfs by providing page numbers.',
           aboutTextBodyTitle: 'Example :-',
           aboutTextBody:
-              "If pages in selected PDF = 10\n\nAnd, your input = 3,7\n(Tip: 1 is default in input)\n\nThen, it will split the PDF from 1, 3 and 7\n\nSo, we will get 3 PDFs :-\n\nPDF 1 containing pages - 1,2\nPDF 2 containing pages - 3,4,5,6\nPDF 3 containing pages - 7,8,9,10",
+              'If pages in selected PDF = 10\n\nAnd, your input = 3,7\n(Tip: 1 is default in input)\n\nThen, it will split the PDF from 1, 3 and 7\n\nSo, we will get 3 PDFs :-\n\nPDF 1 containing pages - 1,2\nPDF 2 containing pages - 3,4,5,6\nPDF 3 containing pages - 7,8,9,10',
         ),
         const SizedBox(height: 16),
       ],
@@ -71,7 +71,7 @@ class _SplitByPageNumbersActionCardState
       } else {
         setEnd = setStart;
       }
-      sets.add("$setStart-$setEnd");
+      sets.add('$setStart-$setEnd');
     }
     return sets;
   }
@@ -113,13 +113,13 @@ class _SplitByPageNumbersActionCardState
                           ),
                           keyboardType: TextInputType.number,
                           inputFormatters: [
-                            FilteringTextInputFormatter(RegExp("[0-9,]"),
+                            FilteringTextInputFormatter(RegExp('[0-9,]'),
                                 allow: true),
                           ],
                           onChanged: (String value) {
                             pageNumbers.clear();
                             List<String> pageNumbersStringList = value
-                                .split(",") //splits string from comma
+                                .split(',') //splits string from comma
                                 .map((e) => e
                                     .trim()) //removes all leading and trailing with spaces
                                 .map((e) => e.replaceAll(RegExp(r'^0+(?=.)'),
@@ -178,13 +178,13 @@ class _SplitByPageNumbersActionCardState
                               pageNumbers.removeWhere((element) =>
                                   element < 1 || element > widget.pdfPageCount);
                               pageNumbersController.text =
-                                  pageNumbers.join(",");
+                                  pageNumbers.join(',');
                               pageNumbersController.selection =
                                   TextSelection.collapsed(
                                       offset:
                                           pageNumbersController.text.length);
                             },
-                            child: const Text("Sanitize Entered Data"),
+                            child: const Text('Sanitize Entered Data'),
                           ),
                         ],
                       ),
@@ -206,7 +206,7 @@ class _SplitByPageNumbersActionCardState
                             children: [
                               Flexible(
                                 child: Text(
-                                  sets.join(", "),
+                                  sets.join(', '),
                                   style: Theme.of(context).textTheme.bodySmall,
                                   textAlign: TextAlign.start,
                                 ),
@@ -236,7 +236,7 @@ class _SplitByPageNumbersActionCardState
                               }
                             },
                             icon: const Icon(Icons.check),
-                            label: const Text("Split PDF"),
+                            label: const Text('Split PDF'),
                           );
                         },
                       ),

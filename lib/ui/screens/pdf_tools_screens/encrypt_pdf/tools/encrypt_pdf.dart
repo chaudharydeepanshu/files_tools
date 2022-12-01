@@ -1,11 +1,11 @@
 import 'package:files_tools/models/file_model.dart';
+import 'package:files_tools/route/route.dart' as route;
 import 'package:files_tools/state/providers.dart';
 import 'package:files_tools/state/tools_actions_state.dart';
 import 'package:files_tools/ui/components/tools_about_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:files_tools/route/route.dart' as route;
 
 class EncryptPDF extends StatelessWidget {
   const EncryptPDF({Key? key, required this.file}) : super(key: key);
@@ -22,7 +22,7 @@ class EncryptPDF extends StatelessWidget {
         const AboutActionCard(
           aboutText: 'This function adds encryption from a pdf.',
           aboutTextBody:
-              "A owner/permission password is generally used to restrict printing, editing, and copying content in the PDF. And it requires a user to type a password to change those permission settings.\n\nA user/open password requires a user to type a password to open the PDF.",
+              'A owner/permission password is generally used to restrict printing, editing, and copying content in the PDF. And it requires a user to type a password to change those permission settings.\n\nA user/open password requires a user to type a password to open the PDF.',
         ),
         const SizedBox(height: 16),
       ],
@@ -172,7 +172,7 @@ class _EncryptPDFActionCardState extends State<EncryptPDFActionCard> {
                 tileColor: Theme.of(context).colorScheme.surfaceVariant,
                 // contentPadding: EdgeInsets.zero,
                 visualDensity: VisualDensity.compact,
-                title: Text("Allow Printing",
+                title: Text('Allow Printing',
                     style: Theme.of(context).textTheme.bodyMedium),
                 value: allowPrinting,
                 onChanged: (bool? value) {
@@ -185,7 +185,7 @@ class _EncryptPDFActionCardState extends State<EncryptPDFActionCard> {
                 tileColor: Theme.of(context).colorScheme.surfaceVariant,
                 // contentPadding: EdgeInsets.zero,
                 visualDensity: VisualDensity.compact,
-                title: Text("Allow Modifying Contents",
+                title: Text('Allow Modifying Contents',
                     style: Theme.of(context).textTheme.bodyMedium),
                 value: allowModifyContents,
                 onChanged: (bool? value) {
@@ -198,7 +198,7 @@ class _EncryptPDFActionCardState extends State<EncryptPDFActionCard> {
                 tileColor: Theme.of(context).colorScheme.surfaceVariant,
                 // contentPadding: EdgeInsets.zero,
                 visualDensity: VisualDensity.compact,
-                title: Text("Allow Copy",
+                title: Text('Allow Copy',
                     style: Theme.of(context).textTheme.bodyMedium),
                 value: allowCopy,
                 onChanged: (bool? value) {
@@ -211,7 +211,7 @@ class _EncryptPDFActionCardState extends State<EncryptPDFActionCard> {
                 tileColor: Theme.of(context).colorScheme.surfaceVariant,
                 // contentPadding: EdgeInsets.zero,
                 visualDensity: VisualDensity.compact,
-                title: Text("Allow Modifying Annotations",
+                title: Text('Allow Modifying Annotations',
                     style: Theme.of(context).textTheme.bodyMedium),
                 value: allowModifyAnnotations,
                 onChanged: (bool? value) {
@@ -224,7 +224,7 @@ class _EncryptPDFActionCardState extends State<EncryptPDFActionCard> {
                 tileColor: Theme.of(context).colorScheme.surfaceVariant,
                 // contentPadding: EdgeInsets.zero,
                 visualDensity: VisualDensity.compact,
-                title: Text("Allow Fill In",
+                title: Text('Allow Fill In',
                     style: Theme.of(context).textTheme.bodyMedium),
                 value: allowFillIn,
                 onChanged: (bool? value) {
@@ -237,7 +237,7 @@ class _EncryptPDFActionCardState extends State<EncryptPDFActionCard> {
                 tileColor: Theme.of(context).colorScheme.surfaceVariant,
                 // contentPadding: EdgeInsets.zero,
                 visualDensity: VisualDensity.compact,
-                title: Text("Allow Screen Readers",
+                title: Text('Allow Screen Readers',
                     style: Theme.of(context).textTheme.bodyMedium),
                 value: allowScreenReaders,
                 onChanged: (bool? value) {
@@ -250,7 +250,7 @@ class _EncryptPDFActionCardState extends State<EncryptPDFActionCard> {
                 tileColor: Theme.of(context).colorScheme.surfaceVariant,
                 // contentPadding: EdgeInsets.zero,
                 visualDensity: VisualDensity.compact,
-                title: Text("Allow Assembly",
+                title: Text('Allow Assembly',
                     style: Theme.of(context).textTheme.bodyMedium),
                 value: allowAssembly,
                 onChanged: (bool? value) {
@@ -263,7 +263,7 @@ class _EncryptPDFActionCardState extends State<EncryptPDFActionCard> {
                 tileColor: Theme.of(context).colorScheme.surfaceVariant,
                 // contentPadding: EdgeInsets.zero,
                 visualDensity: VisualDensity.compact,
-                title: Text("Allow Degraded Printing",
+                title: Text('Allow Degraded Printing',
                     style: Theme.of(context).textTheme.bodyMedium),
                 value: allowDegradedPrinting,
                 onChanged: (bool? value) {
@@ -304,7 +304,7 @@ class _EncryptPDFActionCardState extends State<EncryptPDFActionCard> {
                 tileColor: Theme.of(context).colorScheme.surfaceVariant,
                 // contentPadding: EdgeInsets.zero,
                 visualDensity: VisualDensity.compact,
-                title: Text("Encrypt Embedded Files Only",
+                title: Text('Encrypt Embedded Files Only',
                     style: Theme.of(context).textTheme.bodyMedium),
                 value: encryptEmbeddedFilesOnly,
                 onChanged: (bool? value) {
@@ -318,7 +318,7 @@ class _EncryptPDFActionCardState extends State<EncryptPDFActionCard> {
                 tileColor: Theme.of(context).colorScheme.surfaceVariant,
                 // contentPadding: EdgeInsets.zero,
                 visualDensity: VisualDensity.compact,
-                title: Text("Do Not Encrypt Metadata",
+                title: Text('Do Not Encrypt Metadata',
                     style: Theme.of(context).textTheme.bodyMedium),
                 value: doNotEncryptMetadata,
                 onChanged: (bool? value) {
@@ -368,7 +368,7 @@ class _EncryptPDFActionCardState extends State<EncryptPDFActionCard> {
                         }
                       },
                       icon: const Icon(Icons.check),
-                      label: const Text("Encrypt PDF"),
+                      label: const Text('Encrypt PDF'),
                     );
                   },
                 ),

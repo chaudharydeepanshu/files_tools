@@ -4,9 +4,13 @@ import 'dart:io';
 import 'package:extended_image/extended_image.dart';
 import 'package:files_tools/models/file_model.dart';
 import 'package:files_tools/models/pdf_page_model.dart';
+import 'package:files_tools/utils/cleanup_file_name_for_android.dart';
 import 'package:files_tools/utils/clear_cache.dart';
 import 'package:files_tools/utils/edit_image.dart';
 import 'package:files_tools/utils/get_absolute_file_path_from_file_uri.dart';
+import 'package:files_tools/utils/get_file_model_from_uri.dart';
+import 'package:files_tools/utils/get_file_name_extension.dart';
+import 'package:files_tools/utils/get_file_name_without_extension.dart';
 import 'package:files_tools/utils/get_pdf_bitmaps.dart';
 import 'package:files_tools/utils/get_uint8list_from_absolute_file_path_or_uri.dart';
 import 'package:flutter/material.dart';
@@ -15,9 +19,6 @@ import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf_manipulator/pdf_manipulator.dart';
 import 'package:pick_or_save/pick_or_save.dart';
-
-import '../utils/cleanup_file_name_for_android.dart';
-import '../utils/format_bytes.dart';
 
 enum ToolsActions {
   // Actions for PDF
@@ -48,7 +49,7 @@ class ToolsActionsState extends ChangeNotifier {
   bool _actionErrorStatus = false;
   bool get actionErrorStatus => _actionErrorStatus;
 
-  String _errorMessage = "Unknown error";
+  String _errorMessage = 'Unknown error';
   String get errorMessage => _errorMessage;
 
   bool _isActionProcessing = false;
@@ -96,7 +97,7 @@ class ToolsActionsState extends ChangeNotifier {
           await getOutputFileModelFromPath(filePathOrUri: result);
       DateTime currentDateTime = DateTime.now();
       String outputFileName =
-          getCleanedUpFileName("Merged File $currentDateTime.pdf");
+          getCleanedUpFileName('Merged File $currentDateTime.pdf');
       _outputFiles = [
         OutputFileModel(
             fileName: outputFileName,
@@ -176,7 +177,7 @@ class ToolsActionsState extends ChangeNotifier {
         outputFilesNames = List<String>.generate(result.length, (int index) {
           DateTime currentDateTime = DateTime.now();
           return getCleanedUpFileName(
-              "$nameOfFileToSplitWithoutExtension - ${index + 1} - $currentDateTime$extensionOfFileToSplit");
+              '$nameOfFileToSplitWithoutExtension - ${index + 1} - $currentDateTime$extensionOfFileToSplit');
         }, growable: false);
       }
     } on PlatformException catch (e) {
@@ -226,7 +227,7 @@ class ToolsActionsState extends ChangeNotifier {
         getFileNameWithoutExtension(fileName: nameOfFileToSplit);
     String uriPathOfFileToModify = files[0].fileUri;
     String? result;
-    String outputFileName = "Unknown File$extensionOfFileToSplit";
+    String outputFileName = 'Unknown File$extensionOfFileToSplit';
     try {
       updateActionType(ToolsActions.modifyPdf);
       result = await PdfManipulator().pdfPageRotatorDeleterReorder(
@@ -240,7 +241,7 @@ class ToolsActionsState extends ChangeNotifier {
       if (result != null) {
         DateTime currentDateTime = DateTime.now();
         outputFileName = getCleanedUpFileName(
-            "$nameOfFileToSplitWithoutExtension - $currentDateTime$extensionOfFileToSplit");
+            '$nameOfFileToSplitWithoutExtension - $currentDateTime$extensionOfFileToSplit');
       }
     } on PlatformException catch (e) {
       log(e.toString());
@@ -289,7 +290,7 @@ class ToolsActionsState extends ChangeNotifier {
     List<String> outputFilesNames = [];
     try {
       if (imageScaling != null) {
-        String imageTypeExtension = ".png";
+        String imageTypeExtension = '.png';
         updateActionType(ToolsActions.convertPdfToImage);
         String tempPath = (await getTemporaryDirectory()).path;
         for (var page in selectedPages) {
@@ -301,7 +302,7 @@ class ToolsActionsState extends ChangeNotifier {
               rotationAngle: page.pageRotationAngle);
           DateTime currentDateTime = DateTime.now();
           String tempFileName =
-              getCleanedUpFileName("$currentDateTime$imageTypeExtension");
+              getCleanedUpFileName('$currentDateTime$imageTypeExtension');
           File file = File('$tempPath/$tempFileName');
           await file.writeAsBytes(pageBytes!.buffer
               .asUint8List(pageBytes.offsetInBytes, pageBytes.lengthInBytes));
@@ -310,7 +311,7 @@ class ToolsActionsState extends ChangeNotifier {
         outputFilesNames = List<String>.generate(result.length, (int index) {
           DateTime currentDateTime = DateTime.now();
           return getCleanedUpFileName(
-              "$nameOfFileToConvertWithoutExtension - ${index + 1} - $currentDateTime$imageTypeExtension");
+              '$nameOfFileToConvertWithoutExtension - ${index + 1} - $currentDateTime$imageTypeExtension');
         }, growable: false);
       }
     } on PlatformException catch (e) {
@@ -360,7 +361,7 @@ class ToolsActionsState extends ChangeNotifier {
         getFileNameWithoutExtension(fileName: nameOfFileToCompress);
     String uriPathOfFileToCompress = files[0].fileUri;
     String? result;
-    String outputFileName = "Unknown File$extensionOfFileToCompress";
+    String outputFileName = 'Unknown File$extensionOfFileToCompress';
     try {
       updateActionType(ToolsActions.compressPdf);
       result = await PdfManipulator().pdfCompressor(
@@ -373,7 +374,7 @@ class ToolsActionsState extends ChangeNotifier {
       if (result != null) {
         DateTime currentDateTime = DateTime.now();
         outputFileName = getCleanedUpFileName(
-            "$nameOfFileToCompressWithoutExtension - Compressed - $currentDateTime$extensionOfFileToCompress");
+            '$nameOfFileToCompressWithoutExtension - Compressed - $currentDateTime$extensionOfFileToCompress');
       }
     } on PlatformException catch (e) {
       log(e.toString());
@@ -424,7 +425,7 @@ class ToolsActionsState extends ChangeNotifier {
         getFileNameWithoutExtension(fileName: nameOfFileToWatermark);
     String uriPathOfFileToWatermark = files[0].fileUri;
     String? result;
-    String outputFileName = "Unknown File$extensionOfFileToWatermark";
+    String outputFileName = 'Unknown File$extensionOfFileToWatermark';
     try {
       updateActionType(ToolsActions.watermarkPdf);
       result = await PdfManipulator().pdfWatermark(
@@ -441,7 +442,7 @@ class ToolsActionsState extends ChangeNotifier {
       if (result != null) {
         DateTime currentDateTime = DateTime.now();
         outputFileName = getCleanedUpFileName(
-            "$nameOfFileToWatermarkWithoutExtension - Watermarked - $currentDateTime$extensionOfFileToWatermark");
+            '$nameOfFileToWatermarkWithoutExtension - Watermarked - $currentDateTime$extensionOfFileToWatermark');
       }
     } on PlatformException catch (e) {
       log(e.toString());
@@ -501,14 +502,14 @@ class ToolsActionsState extends ChangeNotifier {
         getFileNameWithoutExtension(fileName: nameOfFileToEncrypt);
     String uriPathOfFileToEncrypt = files[0].fileUri;
     String? result;
-    String outputFileName = "Unknown File$extensionOfFileToEncrypt";
+    String outputFileName = 'Unknown File$extensionOfFileToEncrypt';
     try {
       updateActionType(ToolsActions.encryptPdf);
       result = await PdfManipulator().pdfEncryption(
           params: PDFEncryptionParams(
         pdfPath: uriPathOfFileToEncrypt,
-        ownerPassword: ownerPassword ?? "",
-        userPassword: userPassword ?? "",
+        ownerPassword: ownerPassword ?? '',
+        userPassword: userPassword ?? '',
         allowPrinting: allowPrinting ?? false,
         allowModifyContents: allowModifyContents ?? false,
         allowCopy: allowCopy ?? false,
@@ -527,7 +528,7 @@ class ToolsActionsState extends ChangeNotifier {
       if (result != null) {
         DateTime currentDateTime = DateTime.now();
         outputFileName = outputFileName = getCleanedUpFileName(
-            "$nameOfFileToEncryptWithoutExtension - Encrypted - $currentDateTime$extensionOfFileToEncrypt");
+            '$nameOfFileToEncryptWithoutExtension - Encrypted - $currentDateTime$extensionOfFileToEncrypt');
       }
     } on PlatformException catch (e) {
       log(e.toString());
@@ -572,23 +573,23 @@ class ToolsActionsState extends ChangeNotifier {
         getFileNameWithoutExtension(fileName: nameOfFileToDecrypt);
     String uriPathOfFileToDecrypt = files[0].fileUri;
     String? result;
-    String outputFileName = "Unknown File$extensionOfFileToDecrypt";
+    String outputFileName = 'Unknown File$extensionOfFileToDecrypt';
     try {
       updateActionType(ToolsActions.decryptPdf);
       result = await PdfManipulator().pdfDecryption(
           params: PDFDecryptionParams(
         pdfPath: uriPathOfFileToDecrypt,
-        password: password ?? "",
+        password: password ?? '',
       ));
       if (result != null) {
         DateTime currentDateTime = DateTime.now();
         outputFileName = getCleanedUpFileName(
-            "$nameOfFileToDecryptWithoutExtension - Decrypted - $currentDateTime$extensionOfFileToDecrypt");
+            '$nameOfFileToDecryptWithoutExtension - Decrypted - $currentDateTime$extensionOfFileToDecrypt');
       }
     } on PlatformException catch (e) {
       log(e.toString());
-      if (e.toString().contains("BadPasswordException")) {
-        _errorMessage = "Password provided was wrong";
+      if (e.toString().contains('BadPasswordException')) {
+        _errorMessage = 'Password provided was wrong';
       } else {
         _errorMessage = e.toString();
       }
@@ -644,7 +645,7 @@ class ToolsActionsState extends ChangeNotifier {
               getFileNameExtension(fileName: nameOfFile);
           DateTime currentDateTime = DateTime.now();
           String tempFileName =
-              getCleanedUpFileName("$currentDateTime$imageTypeExtension");
+              getCleanedUpFileName('$currentDateTime$imageTypeExtension');
           File file = File('$tempPath/$tempFileName');
           await file.writeAsBytes(imageData!.buffer
               .asUint8List(imageData.offsetInBytes, imageData.lengthInBytes));
@@ -674,7 +675,7 @@ class ToolsActionsState extends ChangeNotifier {
           String nameOfFileWithoutExtension =
               getFileNameWithoutExtension(fileName: nameOfFile);
           return getCleanedUpFileName(
-              "$nameOfFileWithoutExtension - $currentDateTime.pdf");
+              '$nameOfFileWithoutExtension - $currentDateTime.pdf');
         });
       }
     } on PlatformException catch (e) {
@@ -744,7 +745,7 @@ class ToolsActionsState extends ChangeNotifier {
         String imageTypeExtension = getFileNameExtension(fileName: nameOfFile);
         DateTime currentDateTime = DateTime.now();
         String tempFileName =
-            getCleanedUpFileName("$currentDateTime$imageTypeExtension");
+            getCleanedUpFileName('$currentDateTime$imageTypeExtension');
         File file = File('$tempPath/$tempFileName');
         await file.writeAsBytes(compressedImageData.buffer.asUint8List(
             compressedImageData.offsetInBytes,
@@ -759,7 +760,7 @@ class ToolsActionsState extends ChangeNotifier {
               getFileNameWithoutExtension(fileName: nameOfFile);
           String extensionOfFile = getFileNameExtension(fileName: nameOfFile);
           return getCleanedUpFileName(
-              "$nameOfFileWithoutExtension - Compressed - $currentDateTime$extensionOfFile");
+              '$nameOfFileWithoutExtension - Compressed - $currentDateTime$extensionOfFile');
         });
       }
     } on PlatformException catch (e) {
@@ -818,7 +819,7 @@ class ToolsActionsState extends ChangeNotifier {
               getFileNameExtension(fileName: nameOfFile);
           DateTime currentDateTime = DateTime.now();
           String tempFileName =
-              getCleanedUpFileName("$currentDateTime$imageTypeExtension");
+              getCleanedUpFileName('$currentDateTime$imageTypeExtension');
           File file = File('$tempPath/$tempFileName');
           await file.writeAsBytes(imageData!.buffer
               .asUint8List(imageData.offsetInBytes, imageData.lengthInBytes));
@@ -838,7 +839,7 @@ class ToolsActionsState extends ChangeNotifier {
               getFileNameWithoutExtension(fileName: nameOfFile);
           String extensionOfFile = getFileNameExtension(fileName: nameOfFile);
           return getCleanedUpFileName(
-              "$nameOfFileWithoutExtension - $currentDateTime$extensionOfFile");
+              '$nameOfFileWithoutExtension - $currentDateTime$extensionOfFile');
         });
       }
     } on PlatformException catch (e) {
@@ -874,7 +875,7 @@ class ToolsActionsState extends ChangeNotifier {
   }
 
   void cancelAction() {
-    clearCache(clearCacheCommandFrom: "Cancel Running Action");
+    clearCache(clearCacheCommandFrom: 'Cancel Running Action');
     updateActionProcessingStatus(true);
     try {
       PdfManipulator().cancelManipulations();
@@ -905,22 +906,22 @@ class ToolsActionsState extends ChangeNotifier {
     customNotifyListener();
   }
 
-  updateActionErrorStatus(bool status) {
+  void updateActionErrorStatus(bool status) {
     _actionErrorStatus = status;
     customNotifyListener();
   }
 
-  updateActionProcessingStatus(bool status) {
+  void updateActionProcessingStatus(bool status) {
     _isActionProcessing = status;
     customNotifyListener();
   }
 
-  updateSaveProcessingStatus(bool status) {
+  void updateSaveProcessingStatus(bool status) {
     _isSaveProcessing = status;
     customNotifyListener();
   }
 
-  updateActionType(ToolsActions actionType) {
+  void updateActionType(ToolsActions actionType) {
     _currentActionType = actionType;
     customNotifyListener();
   }
@@ -961,57 +962,5 @@ class ToolsActionsState extends ChangeNotifier {
     }
     updateSaveProcessingStatus(false);
     customNotifyListener();
-  }
-}
-
-Future<OutputFileModel> getOutputFileModelFromPath(
-    {required String filePathOrUri}) async {
-  OutputFileModel file;
-  FileMetadata fileMetadata = await PickOrSave()
-      .fileMetaData(params: FileMetadataParams(filePath: filePathOrUri));
-  final String fileName = fileMetadata.displayName ?? "Unknown";
-  final DateTime? lastModifiedDateTime;
-  if (fileMetadata.lastModified != null &&
-      fileMetadata.lastModified != "Unknown") {
-    lastModifiedDateTime = DateTime.parse(fileMetadata.lastModified!);
-  } else {
-    lastModifiedDateTime = null;
-  }
-  final String fileDate = lastModifiedDateTime != null
-      ? "${lastModifiedDateTime.day}/${lastModifiedDateTime.month}/${lastModifiedDateTime.year}"
-      : "Unknown";
-  final String fileTime = lastModifiedDateTime != null
-      ? "${lastModifiedDateTime.hour}:${lastModifiedDateTime.minute}"
-      : "Unknown";
-  final int fileSizeBytes =
-      fileMetadata.size != null && fileMetadata.size != "Unknown"
-          ? int.parse(fileMetadata.size!)
-          : 0;
-  final String fileSizeFormatBytes =
-      formatBytes(bytes: fileSizeBytes, decimals: 2);
-  file = OutputFileModel(
-      fileName: fileName,
-      fileDate: fileDate,
-      fileTime: fileTime,
-      fileSizeFormatBytes: fileSizeFormatBytes,
-      fileSizeBytes: fileSizeBytes,
-      filePath: filePathOrUri);
-  return file;
-}
-
-String getFileNameWithoutExtension({required String fileName}) {
-  String fileExt = getFileNameExtension(fileName: fileName);
-  String fileNameWithoutExtension =
-      fileName.substring(0, fileName.length - fileExt.length);
-  return fileNameWithoutExtension;
-}
-
-String getFileNameExtension({required String fileName}) {
-  int indexOfLastDot = fileName.lastIndexOf('.');
-  if (indexOfLastDot == -1) {
-    return "";
-  } else {
-    String fileExt = fileName.substring(indexOfLastDot).toLowerCase();
-    return fileExt;
   }
 }
