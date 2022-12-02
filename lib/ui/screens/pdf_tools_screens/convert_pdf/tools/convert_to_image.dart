@@ -9,6 +9,7 @@ import 'package:files_tools/ui/components/view_error.dart';
 import 'package:files_tools/utils/decimal_text_input_formatter.dart';
 import 'package:files_tools/utils/get_pdf_bitmaps.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ConvertToImage extends StatefulWidget {
@@ -125,7 +126,10 @@ class _ConvertToImageState extends State<ConvertToImage> {
               ),
               keyboardType:
                   const TextInputType.numberWithOptions(decimal: true),
-              inputFormatters: [DecimalTextInputFormatter(decimalRange: 2)],
+              inputFormatters: [
+                DecimalTextInputFormatter(decimalRange: 2),
+                FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
+              ],
               autovalidateMode: AutovalidateMode.onUserInteraction,
               // The validator receives the text that the user has entered.
               validator: (value) {

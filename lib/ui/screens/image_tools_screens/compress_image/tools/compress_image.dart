@@ -141,6 +141,8 @@ class _CompressImageActionCardState extends State<CompressImageActionCard> {
                                       decimal: true),
                               inputFormatters: [
                                 DecimalTextInputFormatter(decimalRange: 2),
+                                FilteringTextInputFormatter.allow(
+                                    RegExp(r'[0-9.]')),
                               ],
                               autovalidateMode:
                                   AutovalidateMode.onUserInteraction,

@@ -143,7 +143,9 @@ class _CompressPDFActionCardState extends State<CompressPDFActionCard> {
                                   const TextInputType.numberWithOptions(
                                       decimal: true),
                               inputFormatters: [
-                                DecimalTextInputFormatter(decimalRange: 2)
+                                DecimalTextInputFormatter(decimalRange: 2),
+                                FilteringTextInputFormatter.allow(
+                                    RegExp(r'[0-9.]')),
                               ],
                               autovalidateMode:
                                   AutovalidateMode.onUserInteraction,

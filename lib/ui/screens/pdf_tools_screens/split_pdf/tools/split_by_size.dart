@@ -8,6 +8,7 @@ import 'package:files_tools/ui/components/tools_about_card.dart';
 import 'package:files_tools/utils/decimal_text_input_formatter.dart';
 import 'package:files_tools/utils/format_bytes.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class SplitBySize extends StatelessWidget {
@@ -139,7 +140,9 @@ class _SplitBySizeActionCardState extends State<SplitBySizeActionCard> {
                                     const TextInputType.numberWithOptions(
                                         decimal: true),
                                 inputFormatters: [
-                                  DecimalTextInputFormatter(decimalRange: 2)
+                                  DecimalTextInputFormatter(decimalRange: 2),
+                                  FilteringTextInputFormatter.allow(
+                                      RegExp(r'[0-9.]')),
                                 ],
                                 autovalidateMode:
                                     AutovalidateMode.onUserInteraction,

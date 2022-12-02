@@ -110,6 +110,7 @@ class _WatermarkPdfActionCardState extends State<WatermarkPdfActionCard> {
                         const TextInputType.numberWithOptions(decimal: true),
                     inputFormatters: [
                       DecimalTextInputFormatter(decimalRange: 2),
+                      FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
                     ],
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     // The validator receives the text that the user has entered.
@@ -136,6 +137,7 @@ class _WatermarkPdfActionCardState extends State<WatermarkPdfActionCard> {
                         const TextInputType.numberWithOptions(decimal: true),
                     inputFormatters: [
                       DecimalTextInputFormatter(decimalRange: 2),
+                      FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
                     ],
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     // The validator receives the text that the user has entered.
