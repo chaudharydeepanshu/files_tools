@@ -140,7 +140,7 @@ class _CompressImageActionCardState extends State<CompressImageActionCard> {
                                   const TextInputType.numberWithOptions(
                                       decimal: true),
                               inputFormatters: [
-                                DecimalTextInputFormatter(decimalRange: 2)
+                                DecimalTextInputFormatter(decimalRange: 2),
                               ],
                               autovalidateMode:
                                   AutovalidateMode.onUserInteraction,

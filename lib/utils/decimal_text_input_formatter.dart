@@ -43,7 +43,10 @@ class DecimalTextInputFormatter extends TextInputFormatter {
         );
       }
     }
-    if (value.contains(' ') || value.contains('-')) {
+    if (value.contains(' ') ||
+        value.contains('-') ||
+        value.contains(',') ||
+        double.tryParse(value) == null) {
       truncated = oldValue.text;
       newSelection = oldValue.selection;
     }
