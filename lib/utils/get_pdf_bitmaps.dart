@@ -12,14 +12,25 @@ Future<Uint8List?> getPdfPageBitmap({
   int? rotationAngle,
   Color? backgroundColor,
 }) async {
-  Uint8List? bytes = await PdfBitmaps().pdfBitmap(
+  Uint8List? bytes;
+
+  try {
+    bytes = await PdfBitmaps().pdfBitmap(
       params: PDFBitmapParams(
-          pdfPath: pdfPath,
-          pageInfo: BitmapConfigForPage(
-              pageNumber: index + 1,
-              scale: scale ?? 1,
-              rotationAngle: rotationAngle ?? 0,
-              backgroundColor: backgroundColor ?? Colors.white)));
+        pdfPath: pdfPath,
+        pageInfo: BitmapConfigForPage(
+            pageNumber: index + 1,
+            scale: scale ?? 1,
+            rotationAngle: rotationAngle ?? 0,
+            backgroundColor: backgroundColor ?? Colors.white),
+      ),
+    );
+  } on PlatformException catch (e) {
+    log(e.toString());
+  } catch (e) {
+    log(e.toString());
+  }
+
   return bytes;
 }
 
