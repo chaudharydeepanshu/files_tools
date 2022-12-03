@@ -66,6 +66,7 @@ class _ImageViewerState extends State<ImageViewer> {
                   return ShowError(
                     taskMessage: 'Failed to load image',
                     errorMessage: snapshot.error.toString(),
+                    errorStackTrace: snapshot.stackTrace,
                   );
                 } else {
                   return Column(
@@ -154,6 +155,7 @@ class ImageView extends StatelessWidget {
         return ShowError(
           taskMessage: 'Sorry! Failed to show image',
           errorMessage: error.toString(),
+          errorStackTrace: stackTrace,
         );
       }),
     );

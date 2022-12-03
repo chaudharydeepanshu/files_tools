@@ -573,18 +573,18 @@ packages:
     dependency: "direct main"
     description:
       name: pdf_bitmaps
-      sha256: "962fadb96d25a33bdab938d7e1a3c4496d83e11bfbaeace2019e39b4a4cebd81"
+      sha256: bf95f4bf512ced467ecefacaa9ddb001f5040db1d6453e6d6ffcfbd0fba41f7b
       url: "https://pub.dev"
     source: hosted
-    version: "0.3.2"
+    version: "1.0.0"
   pdf_manipulator:
     dependency: "direct main"
     description:
       name: pdf_manipulator
-      sha256: "62a26d5e53c8dda5043ac6a6c053a7ff87a2c5a8cc75b26cd0bf7aa786a17d51"
+      sha256: "10015f8c7dc264980d9639e09bbca70e4072fd47441eaf4a5547d550c41da983"
       url: "https://pub.dev"
     source: hosted
-    version: "0.5.6"
+    version: "0.5.7"
   petitparser:
     dependency: transitive
     description:

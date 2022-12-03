@@ -21,11 +21,13 @@ class ShowError extends StatelessWidget {
       {Key? key,
       required this.errorMessage,
       required this.taskMessage,
-      this.allowBack = false})
+      this.allowBack = false,
+      required this.errorStackTrace})
       : super(key: key);
 
   final String taskMessage;
   final String errorMessage;
+  final StackTrace? errorStackTrace;
   final bool allowBack;
 
   @override
@@ -83,8 +85,8 @@ class ShowError extends StatelessWidget {
               TextButton(
                 onPressed: () async {
                   FirebaseCrashlytics.instance.recordError(
-                      'User Reported Error: $errorMessage', null,
-                      reason: 'a non-fatal error');
+                      'User Reported Error: $errorMessage', errorStackTrace,
+                      reason: 'Task Message: $taskMessage');
 
                   String? contentText = 'Error reported successfully';
                   TextStyle? textStyle = Theme.of(context).textTheme.bodySmall;

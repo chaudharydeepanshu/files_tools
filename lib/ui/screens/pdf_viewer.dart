@@ -105,6 +105,7 @@ class _PdfViewerState extends State<PdfViewer> {
                   return ShowError(
                     taskMessage: 'Failed to load pdf',
                     errorMessage: snapshot.error.toString(),
+                    errorStackTrace: snapshot.stackTrace,
                   );
                 } else {
                   return PageView.builder(

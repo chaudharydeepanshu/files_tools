@@ -47,6 +47,9 @@ class ResultPage extends StatelessWidget {
                   final String errorMessage = ref.watch(
                       toolsActionsStateProvider
                           .select((value) => value.errorMessage));
+                  final StackTrace errorStackTrace = ref.watch(
+                      toolsActionsStateProvider
+                          .select((value) => value.errorStackTrace));
                   final ToolsActions currentActionType = ref.watch(
                       toolsActionsStateProvider
                           .select((value) => value.currentActionType));
@@ -56,6 +59,7 @@ class ResultPage extends StatelessWidget {
                     return ShowError(
                       taskMessage: 'Sorry, failed to complete the processing.',
                       errorMessage: errorMessage,
+                      errorStackTrace: errorStackTrace,
                       allowBack: true,
                     );
                   } else {

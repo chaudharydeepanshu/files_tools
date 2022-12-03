@@ -60,11 +60,13 @@ class _CompressPDFToolsPageState extends State<CompressPDFToolsPage> {
                   return ShowError(
                       taskMessage: 'Sorry, failed to process the pdf.',
                       errorMessage: snapshot.error.toString(),
+                      errorStackTrace: snapshot.stackTrace,
                       allowBack: true);
                 } else if (pdfPageCount == null) {
-                  return const ShowError(
+                  return ShowError(
                       taskMessage: 'Sorry, failed to process the pdf.',
                       errorMessage: 'PDF page count is null',
+                      errorStackTrace: snapshot.stackTrace,
                       allowBack: true);
                 } else {
                   return CompressPDFToolsBody(

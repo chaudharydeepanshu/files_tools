@@ -4,13 +4,15 @@ class ImageModel {
   final String imageName;
   final Uint8List? imageBytes;
   final bool imageErrorStatus;
-  final String imageError;
+  final String imageErrorMessage;
+  final StackTrace imageErrorStackTrace;
 
   ImageModel({
     required this.imageName,
     required this.imageBytes,
     required this.imageErrorStatus,
-    required this.imageError,
+    required this.imageErrorMessage,
+    required this.imageErrorStackTrace,
   });
 
   @override
@@ -21,19 +23,21 @@ class ImageModel {
           imageName == other.imageName &&
           imageBytes == other.imageBytes &&
           imageErrorStatus == other.imageErrorStatus &&
-          imageError == other.imageError;
+          imageErrorMessage == other.imageErrorMessage &&
+          imageErrorStackTrace == other.imageErrorStackTrace;
 
   @override
   int get hashCode =>
       imageName.hashCode ^
       imageBytes.hashCode ^
       imageErrorStatus.hashCode ^
-      imageError.hashCode;
+      imageErrorMessage.hashCode ^
+      imageErrorStackTrace.hashCode;
 
   // Implement toString to make it easier to see information
   // when using the print statement.
   @override
   String toString() {
-    return 'ImageModel{imageName: $imageName, imageBytes: $imageBytes, imageErrorStatus: $imageErrorStatus, imageError: $imageError}';
+    return 'ImageModel{imageName: $imageName, imageBytes: $imageBytes, imageErrorStatus: $imageErrorStatus, imageErrorMessage: $imageErrorMessage, imageErrorStackTrace: $imageErrorStackTrace}';
   }
 }

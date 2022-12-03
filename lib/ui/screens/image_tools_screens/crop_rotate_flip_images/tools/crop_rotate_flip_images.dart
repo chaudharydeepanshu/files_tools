@@ -41,19 +41,22 @@ class _CropRotateFlipImagesState extends State<CropRotateFlipImages> {
       String imageName = file.fileName;
       Uint8List? imageBytes;
       bool imageErrorStatus = false;
-      String imageError = 'Unknown Error';
+      String imageErrorMessage = 'Unknown Error';
+      StackTrace imageErrorStackTrace = StackTrace.current;
       try {
         imageBytes = await getBytesFromFilePathOrUri(
             filePath: null, fileUri: file.fileUri);
-      } catch (e) {
+      } catch (e, s) {
         imageErrorStatus = true;
-        imageError = e.toString();
+        imageErrorMessage = e.toString();
+        imageErrorStackTrace = s;
       }
       ImageModel imageInfo = ImageModel(
           imageName: imageName,
           imageBytes: imageBytes,
           imageErrorStatus: imageErrorStatus,
-          imageError: imageError);
+          imageErrorMessage: imageErrorMessage,
+          imageErrorStackTrace: imageErrorStackTrace);
       imagesInfo.add(imageInfo);
     }
     log('initImagesDataState Executed in ${stopwatch.elapsed}');
@@ -91,6 +94,7 @@ class _CropRotateFlipImagesState extends State<CropRotateFlipImages> {
                     child: ShowError(
                       taskMessage: 'Sorry! Failed to get images data',
                       errorMessage: snapshot.error.toString(),
+                      errorStackTrace: snapshot.stackTrace,
                     ),
                   );
                 } else {
@@ -126,11 +130,13 @@ class _CropRotateFlipImagesState extends State<CropRotateFlipImages> {
                                                 );
                                               case LoadState.failed:
                                                 // Todo: Should remove images from processing that failed to load. But first verify if they are capable of loading without waiting for user to load them.
-                                                return const ShowError(
+                                                return ShowError(
                                                   taskMessage:
                                                       'Sorry! Failed to show image',
                                                   errorMessage:
                                                       'Image viewer failed to load image',
+                                                  errorStackTrace:
+                                                      state.lastStack,
                                                 );
                                               case LoadState.completed:
                                                 return null;
@@ -156,8 +162,9 @@ class _CropRotateFlipImagesState extends State<CropRotateFlipImages> {
                                       : ShowError(
                                           taskMessage:
                                               'Sorry! Failed to get image data',
-                                          errorMessage:
-                                              imagesInfo[index].imageError,
+                                          errorMessage: imagesInfo[index]
+                                              .imageErrorMessage,
+                                          errorStackTrace: null,
                                         ),
                                   key: ValueKey<InputFileModel>(
                                       widget.files[index]),

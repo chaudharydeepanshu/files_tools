@@ -58,19 +58,24 @@ class _WatermarkPDFToolsPageState extends State<WatermarkPDFToolsPage> {
                 if (snapshot.hasError) {
                   log(snapshot.error.toString());
                   return ShowError(
-                      taskMessage: 'Sorry, failed to process the pdf.',
-                      errorMessage: snapshot.error.toString(),
-                      allowBack: true);
+                    taskMessage: 'Sorry, failed to process the pdf.',
+                    errorMessage: snapshot.error.toString(),
+                    errorStackTrace: snapshot.stackTrace,
+                    allowBack: true,
+                  );
                 } else if (pdfPageCount == null) {
-                  return const ShowError(
-                      taskMessage: 'Sorry, failed to process the pdf.',
-                      errorMessage: 'PDF page count is null',
-                      allowBack: true);
+                  return ShowError(
+                    taskMessage: 'Sorry, failed to process the pdf.',
+                    errorMessage: 'PDF page count is null',
+                    errorStackTrace: StackTrace.current,
+                    allowBack: true,
+                  );
                 } else {
                   return WatermarkPDFToolsBody(
-                      actionType: widget.arguments.actionType,
-                      file: widget.arguments.file,
-                      pdfPageCount: pdfPageCount!);
+                    actionType: widget.arguments.actionType,
+                    file: widget.arguments.file,
+                    pdfPageCount: pdfPageCount!,
+                  );
                 }
             }
           },

@@ -61,19 +61,24 @@ class _ModifyPDFToolsPageState extends State<ModifyPDFToolsPage> {
                 if (snapshot.hasError) {
                   log(snapshot.error.toString());
                   return ShowError(
-                      taskMessage: 'Sorry, failed to process the pdf.',
-                      errorMessage: snapshot.error.toString(),
-                      allowBack: true);
+                    taskMessage: 'Sorry, failed to process the pdf.',
+                    errorMessage: snapshot.error.toString(),
+                    errorStackTrace: snapshot.stackTrace,
+                    allowBack: true,
+                  );
                 } else if (pdfPages.isEmpty) {
-                  return const ShowError(
-                      taskMessage: 'Sorry, failed to process the pdf.',
-                      errorMessage: 'PDF page count is null',
-                      allowBack: true);
+                  return ShowError(
+                    taskMessage: 'Sorry, failed to process the pdf.',
+                    errorMessage: 'PDF page count is null',
+                    errorStackTrace: StackTrace.current,
+                    allowBack: true,
+                  );
                 } else {
                   return ModifyPDFToolsBody(
-                      actionType: widget.arguments.actionType,
-                      file: widget.arguments.file,
-                      pdfPages: pdfPages);
+                    actionType: widget.arguments.actionType,
+                    file: widget.arguments.file,
+                    pdfPages: pdfPages,
+                  );
                 }
             }
           },

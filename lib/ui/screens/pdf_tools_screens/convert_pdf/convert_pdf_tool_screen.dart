@@ -63,11 +63,13 @@ class _ConvertPDFToolsPageState extends State<ConvertPDFToolsPage> {
                   return ShowError(
                       taskMessage: 'Sorry, failed to process the pdf.',
                       errorMessage: snapshot.error.toString(),
+                      errorStackTrace: snapshot.stackTrace,
                       allowBack: true);
                 } else if (pdfPages.isEmpty) {
-                  return const ShowError(
+                  return ShowError(
                       taskMessage: 'Sorry, failed to process the pdf.',
                       errorMessage: 'PDF page count is null',
+                      errorStackTrace: snapshot.stackTrace,
                       allowBack: true);
                 } else {
                   return ConvertPDFToolsBody(

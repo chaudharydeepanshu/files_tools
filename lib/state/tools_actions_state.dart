@@ -52,6 +52,9 @@ class ToolsActionsState extends ChangeNotifier {
   String _errorMessage = 'Unknown error';
   String get errorMessage => _errorMessage;
 
+  StackTrace _errorStackTrace = StackTrace.current;
+  StackTrace get errorStackTrace => _errorStackTrace;
+
   bool _isActionProcessing = false;
   bool get isActionProcessing => _isActionProcessing;
 
@@ -85,12 +88,14 @@ class ToolsActionsState extends ChangeNotifier {
           params: PDFMergerParams(
         pdfsPaths: uriPathsOfFilesToMerge,
       ));
-    } on PlatformException catch (e) {
+    } on PlatformException catch (e, s) {
       log(e.toString());
       _errorMessage = e.toString();
-    } catch (e) {
+      _errorStackTrace = s;
+    } catch (e, s) {
       log(e.toString());
       _errorMessage = e.toString();
+      _errorStackTrace = s;
     }
     if (result != null) {
       OutputFileModel file =
@@ -180,12 +185,14 @@ class ToolsActionsState extends ChangeNotifier {
               '$nameOfFileToSplitWithoutExtension - ${index + 1} - $currentDateTime$extensionOfFileToSplit');
         }, growable: false);
       }
-    } on PlatformException catch (e) {
+    } on PlatformException catch (e, s) {
       log(e.toString());
       _errorMessage = e.toString();
-    } catch (e) {
+      _errorStackTrace = s;
+    } catch (e, s) {
       log(e.toString());
       _errorMessage = e.toString();
+      _errorStackTrace = s;
     }
     if (result != null && result.isNotEmpty) {
       outputFiles.clear();
@@ -243,12 +250,14 @@ class ToolsActionsState extends ChangeNotifier {
         outputFileName = getCleanedUpFileName(
             '$nameOfFileToSplitWithoutExtension - $currentDateTime$extensionOfFileToSplit');
       }
-    } on PlatformException catch (e) {
+    } on PlatformException catch (e, s) {
       log(e.toString());
       _errorMessage = e.toString();
-    } catch (e) {
+      _errorStackTrace = s;
+    } catch (e, s) {
       log(e.toString());
       _errorMessage = e.toString();
+      _errorStackTrace = s;
     }
     if (result != null && result.isNotEmpty) {
       outputFiles.clear();
@@ -314,12 +323,14 @@ class ToolsActionsState extends ChangeNotifier {
               '$nameOfFileToConvertWithoutExtension - ${index + 1} - $currentDateTime$imageTypeExtension');
         }, growable: false);
       }
-    } on PlatformException catch (e) {
+    } on PlatformException catch (e, s) {
       log(e.toString());
       _errorMessage = e.toString();
-    } catch (e) {
+      _errorStackTrace = s;
+    } catch (e, s) {
       log(e.toString());
       _errorMessage = e.toString();
+      _errorStackTrace = s;
     }
     if (result.isNotEmpty) {
       outputFiles.clear();
@@ -376,12 +387,14 @@ class ToolsActionsState extends ChangeNotifier {
         outputFileName = getCleanedUpFileName(
             '$nameOfFileToCompressWithoutExtension - Compressed - $currentDateTime$extensionOfFileToCompress');
       }
-    } on PlatformException catch (e) {
+    } on PlatformException catch (e, s) {
       log(e.toString());
       _errorMessage = e.toString();
-    } catch (e) {
+      _errorStackTrace = s;
+    } catch (e, s) {
       log(e.toString());
       _errorMessage = e.toString();
+      _errorStackTrace = s;
     }
     if (result != null && result.isNotEmpty) {
       outputFiles.clear();
@@ -444,12 +457,14 @@ class ToolsActionsState extends ChangeNotifier {
         outputFileName = getCleanedUpFileName(
             '$nameOfFileToWatermarkWithoutExtension - Watermarked - $currentDateTime$extensionOfFileToWatermark');
       }
-    } on PlatformException catch (e) {
+    } on PlatformException catch (e, s) {
       log(e.toString());
       _errorMessage = e.toString();
-    } catch (e) {
+      _errorStackTrace = s;
+    } catch (e, s) {
       log(e.toString());
       _errorMessage = e.toString();
+      _errorStackTrace = s;
     }
     if (result != null && result.isNotEmpty) {
       outputFiles.clear();
@@ -530,12 +545,14 @@ class ToolsActionsState extends ChangeNotifier {
         outputFileName = outputFileName = getCleanedUpFileName(
             '$nameOfFileToEncryptWithoutExtension - Encrypted - $currentDateTime$extensionOfFileToEncrypt');
       }
-    } on PlatformException catch (e) {
+    } on PlatformException catch (e, s) {
       log(e.toString());
       _errorMessage = e.toString();
-    } catch (e) {
+      _errorStackTrace = s;
+    } catch (e, s) {
       log(e.toString());
       _errorMessage = e.toString();
+      _errorStackTrace = s;
     }
     if (result != null && result.isNotEmpty) {
       outputFiles.clear();
@@ -586,16 +603,18 @@ class ToolsActionsState extends ChangeNotifier {
         outputFileName = getCleanedUpFileName(
             '$nameOfFileToDecryptWithoutExtension - Decrypted - $currentDateTime$extensionOfFileToDecrypt');
       }
-    } on PlatformException catch (e) {
+    } on PlatformException catch (e, s) {
       log(e.toString());
       if (e.toString().contains('BadPasswordException')) {
         _errorMessage = 'Password provided was wrong';
       } else {
         _errorMessage = e.toString();
+        _errorStackTrace = s;
       }
-    } catch (e) {
+    } catch (e, s) {
       log(e.toString());
       _errorMessage = e.toString();
+      _errorStackTrace = s;
     }
     if (result != null && result.isNotEmpty) {
       outputFiles.clear();
@@ -678,12 +697,14 @@ class ToolsActionsState extends ChangeNotifier {
               '$nameOfFileWithoutExtension - $currentDateTime.pdf');
         });
       }
-    } on PlatformException catch (e) {
+    } on PlatformException catch (e, s) {
       log(e.toString());
       _errorMessage = e.toString();
-    } catch (e) {
+      _errorStackTrace = s;
+    } catch (e, s) {
       log(e.toString());
       _errorMessage = e.toString();
+      _errorStackTrace = s;
     }
     if (result != null && result.isNotEmpty) {
       outputFiles.clear();
@@ -763,12 +784,14 @@ class ToolsActionsState extends ChangeNotifier {
               '$nameOfFileWithoutExtension - Compressed - $currentDateTime$extensionOfFile');
         });
       }
-    } on PlatformException catch (e) {
+    } on PlatformException catch (e, s) {
       log(e.toString());
       _errorMessage = e.toString();
-    } catch (e) {
+      _errorStackTrace = s;
+    } catch (e, s) {
       log(e.toString());
       _errorMessage = e.toString();
+      _errorStackTrace = s;
     }
     if (result.isNotEmpty) {
       outputFiles.clear();
@@ -842,12 +865,14 @@ class ToolsActionsState extends ChangeNotifier {
               '$nameOfFileWithoutExtension - $currentDateTime$extensionOfFile');
         });
       }
-    } on PlatformException catch (e) {
+    } on PlatformException catch (e, s) {
       log(e.toString());
       _errorMessage = e.toString();
-    } catch (e) {
+      _errorStackTrace = s;
+    } catch (e, s) {
       log(e.toString());
       _errorMessage = e.toString();
+      _errorStackTrace = s;
     }
     if (result.isNotEmpty) {
       outputFiles.clear();
@@ -879,12 +904,14 @@ class ToolsActionsState extends ChangeNotifier {
     updateActionProcessingStatus(true);
     try {
       PdfManipulator().cancelManipulations();
-    } on PlatformException catch (e) {
+    } on PlatformException catch (e, s) {
       log(e.toString());
       _errorMessage = e.toString();
-    } catch (e) {
+      _errorStackTrace = s;
+    } catch (e, s) {
       log(e.toString());
       _errorMessage = e.toString();
+      _errorStackTrace = s;
     }
     updateActionProcessingStatus(false);
     customNotifyListener();
@@ -895,12 +922,14 @@ class ToolsActionsState extends ChangeNotifier {
       PickOrSave().cancelActions(
           params:
               const CancelActionsParams(cancelType: CancelType.filesSaving));
-    } on PlatformException catch (e) {
+    } on PlatformException catch (e, s) {
       log(e.toString());
       _errorMessage = e.toString();
-    } catch (e) {
+      _errorStackTrace = s;
+    } catch (e, s) {
       log(e.toString());
       _errorMessage = e.toString();
+      _errorStackTrace = s;
     }
     updateSaveProcessingStatus(false);
     customNotifyListener();
@@ -949,12 +978,14 @@ class ToolsActionsState extends ChangeNotifier {
         saveFiles: saveFiles,
         mimeTypesFilter: mimeTypesFilter,
       ));
-    } on PlatformException catch (e) {
+    } on PlatformException catch (e, s) {
       log(e.toString());
       _errorMessage = e.toString();
-    } catch (e) {
+      _errorStackTrace = s;
+    } catch (e, s) {
       log(e.toString());
       _errorMessage = e.toString();
+      _errorStackTrace = s;
     }
     if (result != null) {
     } else {

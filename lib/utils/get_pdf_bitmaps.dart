@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:files_tools/models/pdf_page_model.dart';
 import 'package:flutter/material.dart';
@@ -11,20 +12,27 @@ Future<Uint8List?> getPdfPageBitmap({
   double? scale,
   int? rotationAngle,
   Color? backgroundColor,
+  PdfRendererType? pdfRendererType,
 }) async {
+  String? imageCachedPath;
   Uint8List? bytes;
 
   try {
-    bytes = await PdfBitmaps().pdfBitmap(
+    imageCachedPath = await PdfBitmaps().pdfBitmap(
       params: PDFBitmapParams(
         pdfPath: pdfPath,
         pageInfo: BitmapConfigForPage(
-            pageNumber: index + 1,
-            scale: scale ?? 1,
-            rotationAngle: rotationAngle ?? 0,
-            backgroundColor: backgroundColor ?? Colors.white),
+          pageNumber: index + 1,
+          scale: scale ?? 1,
+          rotationAngle: rotationAngle ?? 0,
+          backgroundColor: backgroundColor ?? Colors.white,
+        ),
+        pdfRendererType: pdfRendererType ?? PdfRendererType.androidPdfRenderer,
       ),
     );
+    if (imageCachedPath != null) {
+      bytes = File(imageCachedPath).readAsBytesSync();
+    }
   } on PlatformException catch (e) {
     log(e.toString());
   } catch (e) {
@@ -41,13 +49,16 @@ Future<PdfPageModel> getUpdatedPdfPage({
   double? scale,
   int? rotationAngle,
   Color? backgroundColor,
+  PdfRendererType? pdfRendererType,
 }) async {
   Uint8List? bytes = await getPdfPageBitmap(
-      index: index,
-      pdfPath: pdfPath,
-      scale: scale,
-      rotationAngle: rotationAngle,
-      backgroundColor: backgroundColor);
+    index: index,
+    pdfPath: pdfPath,
+    scale: scale,
+    rotationAngle: rotationAngle,
+    backgroundColor: backgroundColor,
+    pdfRendererType: pdfRendererType,
+  );
 
   PdfPageModel updatedPdfPage;
   if (bytes != null) {
