@@ -5,7 +5,7 @@ import 'package:files_tools/state/tools_actions_state.dart';
 import 'package:files_tools/ui/components/loading.dart';
 import 'package:files_tools/ui/components/view_error.dart';
 import 'package:files_tools/ui/screens/pdf_tools_screens/watermark_pdf/tools/watermark_pdf.dart';
-import 'package:files_tools/utils/get_pdf_bitmaps.dart';
+import 'package:files_tools/utils/utility.dart';
 import 'package:flutter/material.dart';
 
 class WatermarkPDFToolsPage extends StatefulWidget {
@@ -24,7 +24,7 @@ class _WatermarkPDFToolsPageState extends State<WatermarkPDFToolsPage> {
 
   Future<bool> initPdfPageCount() async {
     pdfPageCount =
-        await getPdfPageCount(pdfPath: widget.arguments.file.fileUri);
+        await Utility.getPdfPageCount(pdfPath: widget.arguments.file.fileUri);
     return true;
   }
 
@@ -43,17 +43,21 @@ class _WatermarkPDFToolsPageState extends State<WatermarkPDFToolsPage> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Text(getAppBarTitleForActionType(
-              actionType: widget.arguments.actionType)),
+          title: Text(
+            getAppBarTitleForActionType(
+              actionType: widget.arguments.actionType,
+            ),
+          ),
           centerTitle: true,
         ),
         body: FutureBuilder<bool>(
           future: initPageCount, // async work
-          builder: (context, AsyncSnapshot<bool> snapshot) {
+          builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
             switch (snapshot.connectionState) {
               case ConnectionState.waiting:
                 return const Loading(
-                    loadingText: 'Getting pdf info please wait ...');
+                  loadingText: 'Getting pdf info please wait ...',
+                );
               default:
                 if (snapshot.hasError) {
                   log(snapshot.error.toString());
@@ -86,28 +90,29 @@ class _WatermarkPDFToolsPageState extends State<WatermarkPDFToolsPage> {
 }
 
 class WatermarkPDFToolsPageArguments {
-  final ToolsActions actionType;
+  WatermarkPDFToolsPageArguments({
+    required this.actionType,
+    required this.file,
+  });
+  final ToolAction actionType;
   final InputFileModel file;
-
-  WatermarkPDFToolsPageArguments(
-      {required this.actionType, required this.file});
 }
 
 class WatermarkPDFToolsBody extends StatelessWidget {
-  const WatermarkPDFToolsBody(
-      {Key? key,
-      required this.actionType,
-      required this.file,
-      required this.pdfPageCount})
-      : super(key: key);
+  const WatermarkPDFToolsBody({
+    Key? key,
+    required this.actionType,
+    required this.file,
+    required this.pdfPageCount,
+  }) : super(key: key);
 
-  final ToolsActions actionType;
+  final ToolAction actionType;
   final InputFileModel file;
   final int pdfPageCount;
 
   @override
   Widget build(BuildContext context) {
-    if (actionType == ToolsActions.watermarkPdf) {
+    if (actionType == ToolAction.watermarkPdf) {
       return WatermarkPDF(pdfPageCount: pdfPageCount, file: file);
     } else {
       return Container();
@@ -115,9 +120,9 @@ class WatermarkPDFToolsBody extends StatelessWidget {
   }
 }
 
-String getAppBarTitleForActionType({required ToolsActions actionType}) {
+String getAppBarTitleForActionType({required ToolAction actionType}) {
   String title = 'Action Successful';
-  if (actionType == ToolsActions.watermarkPdf) {
+  if (actionType == ToolAction.watermarkPdf) {
     title = 'Select Watermark Config';
   }
   return title;

@@ -3,14 +3,13 @@ import 'dart:developer';
 import 'package:files_tools/main.dart';
 import 'package:files_tools/models/file_model.dart';
 import 'package:files_tools/ui/components/custom_snack_bar.dart';
-import 'package:files_tools/utils/get_file_model_from_uri.dart';
-import 'package:files_tools/utils/get_file_name_extension.dart';
+import 'package:files_tools/utils/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pdf_bitmaps/pdf_bitmaps.dart';
 import 'package:pick_or_save/pick_or_save.dart';
 
-class ToolScreenState extends ChangeNotifier {
+class ToolsScreensState extends ChangeNotifier {
   List<InputFileModel> removedFiles = [];
 
   List<InputFileModel> _selectedFiles = [];
@@ -40,7 +39,7 @@ class ToolScreenState extends ChangeNotifier {
     if (result != null && result.isNotEmpty) {
       for (int i = 0; i < result.length; i++) {
         InputFileModel file =
-            await getInputFileModelFromUri(filePathOrUri: result[i]);
+            await Utility.getInputFileModelFromUri(filePathOrUri: result[i]);
         files.add(file);
       }
     }
@@ -78,21 +77,26 @@ class ToolScreenState extends ChangeNotifier {
     notifyListeners();
   }
 
-  void selectFiles(
-      {required FilePickerParams params,
-      required bool discardInvalidPdfFiles,
-      required bool discardProtectedPdfFiles}) async {
+  void selectFiles({
+    required FilePickerParams params,
+    required bool discardInvalidPdfFiles,
+    required bool discardProtectedPdfFiles,
+  }) async {
     removedFiles = [];
 
     _selectedFiles = _selectedFiles + await _filePicker(params);
 
     removedFiles = await fileFiltering(
-        files: selectedFiles,
-        discardInvalidPdfFiles: discardInvalidPdfFiles,
-        discardProtectedPdfFiles: discardProtectedPdfFiles);
+      files: selectedFiles,
+      discardInvalidPdfFiles: discardInvalidPdfFiles,
+      discardProtectedPdfFiles: discardProtectedPdfFiles,
+    );
 
-    _selectedFiles.removeWhere((element) =>
-        removedFiles.map((e) => e.fileUri).contains(element.fileUri));
+    _selectedFiles.removeWhere(
+      (InputFileModel element) => removedFiles
+          .map((InputFileModel e) => e.fileUri)
+          .contains(element.fileUri),
+    );
 
     updateSelectedFiles(files: _selectedFiles);
 
@@ -100,46 +104,52 @@ class ToolScreenState extends ChangeNotifier {
   }
 }
 
-Future<List<InputFileModel>> fileFiltering(
-    {required List<InputFileModel> files,
-    required bool discardInvalidPdfFiles,
-    required bool discardProtectedPdfFiles}) async {
+Future<List<InputFileModel>> fileFiltering({
+  required List<InputFileModel> files,
+  required bool discardInvalidPdfFiles,
+  required bool discardProtectedPdfFiles,
+}) async {
   List<InputFileModel> filesToRemoveFromSelection = [];
-  for (var element in files) {
-    String extensionOfFile = getFileNameExtension(fileName: element.fileName);
+  for (InputFileModel element in files) {
+    String extensionOfFile =
+        Utility.getFileNameExtension(fileName: element.fileName);
     if ((discardInvalidPdfFiles || discardProtectedPdfFiles) &&
         extensionOfFile == '.pdf') {
       PdfValidityAndProtection? pdfValidityAndProtectionInfo =
           await PdfBitmaps().pdfValidityAndProtection(
-              params: PDFValidityAndProtectionParams(pdfPath: element.fileUri));
+        params: PDFValidityAndProtectionParams(pdfPath: element.fileUri),
+      );
       if (pdfValidityAndProtectionInfo == null) {
         InputFileModel temp = InputFileModel(
-            fileName: '${element.fileName} (Invalid)',
-            fileDate: element.fileDate,
-            fileTime: element.fileTime,
-            fileSizeFormatBytes: element.fileSizeFormatBytes,
-            fileSizeBytes: element.fileSizeBytes,
-            fileUri: element.fileUri);
+          fileName: '${element.fileName} (Invalid)',
+          fileDate: element.fileDate,
+          fileTime: element.fileTime,
+          fileSizeFormatBytes: element.fileSizeFormatBytes,
+          fileSizeBytes: element.fileSizeBytes,
+          fileUri: element.fileUri,
+        );
         filesToRemoveFromSelection.add(temp);
       } else if (pdfValidityAndProtectionInfo.isPDFValid == false &&
           discardInvalidPdfFiles) {
         InputFileModel temp = InputFileModel(
-            fileName: '${element.fileName} (Invalid)',
-            fileDate: element.fileDate,
-            fileTime: element.fileTime,
-            fileSizeFormatBytes: element.fileSizeFormatBytes,
-            fileSizeBytes: element.fileSizeBytes,
-            fileUri: element.fileUri);
+          fileName: '${element.fileName} (Invalid)',
+          fileDate: element.fileDate,
+          fileTime: element.fileTime,
+          fileSizeFormatBytes: element.fileSizeFormatBytes,
+          fileSizeBytes: element.fileSizeBytes,
+          fileUri: element.fileUri,
+        );
         filesToRemoveFromSelection.add(temp);
       } else if (pdfValidityAndProtectionInfo.isOpenPasswordProtected == true &&
           discardProtectedPdfFiles) {
         InputFileModel temp = InputFileModel(
-            fileName: '${element.fileName} (Protected)',
-            fileDate: element.fileDate,
-            fileTime: element.fileTime,
-            fileSizeFormatBytes: element.fileSizeFormatBytes,
-            fileSizeBytes: element.fileSizeBytes,
-            fileUri: element.fileUri);
+          fileName: '${element.fileName} (Protected)',
+          fileDate: element.fileDate,
+          fileTime: element.fileTime,
+          fileSizeFormatBytes: element.fileSizeFormatBytes,
+          fileSizeBytes: element.fileSizeBytes,
+          fileUri: element.fileUri,
+        );
         filesToRemoveFromSelection.add(temp);
       }
     }
@@ -148,24 +158,27 @@ Future<List<InputFileModel>> fileFiltering(
   return filesToRemoveFromSelection;
 }
 
-Future<List<InputFileModel>> imagesFiltering(
-    {required List<InputFileModel> images,
-    required List<String> allowedExtensions}) async {
+Future<List<InputFileModel>> imagesFiltering({
+  required List<InputFileModel> images,
+  required List<String> allowedExtensions,
+}) async {
   List<InputFileModel> filesToRemoveFromSelection = [];
-  for (var element in images) {
+  for (InputFileModel element in images) {
     String extensionOfFile =
-        getFileNameExtension(fileName: element.fileName).toLowerCase();
-    allowedExtensions = allowedExtensions.map((e) => e.toLowerCase()).toList();
+        Utility.getFileNameExtension(fileName: element.fileName).toLowerCase();
+    allowedExtensions =
+        allowedExtensions.map((String e) => e.toLowerCase()).toList();
 
     if (allowedExtensions.isNotEmpty &&
         !allowedExtensions.contains(extensionOfFile)) {
       InputFileModel temp = InputFileModel(
-          fileName: '${element.fileName} (Unsupported File Type)',
-          fileDate: element.fileDate,
-          fileTime: element.fileTime,
-          fileSizeFormatBytes: element.fileSizeFormatBytes,
-          fileSizeBytes: element.fileSizeBytes,
-          fileUri: element.fileUri);
+        fileName: '${element.fileName} (Unsupported File Type)',
+        fileDate: element.fileDate,
+        fileTime: element.fileTime,
+        fileSizeFormatBytes: element.fileSizeFormatBytes,
+        fileSizeBytes: element.fileSizeBytes,
+        fileUri: element.fileUri,
+      );
       filesToRemoveFromSelection.add(temp);
     }
   }

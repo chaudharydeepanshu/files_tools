@@ -1,4 +1,4 @@
-import 'package:files_tools/route/route.dart' as route;
+import 'package:files_tools/route/app_routes.dart' as route;
 import 'package:flutter/material.dart';
 
 import 'package:files_tools/ui/screens/homescreen/pages/components/grid_view_in_card_view.dart';
@@ -19,7 +19,6 @@ class ImageToolsPage extends StatelessWidget {
       ),
       body: GridView.builder(
         gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-          childAspectRatio: 1,
           maxCrossAxisExtent: 200,
           mainAxisExtent: 100,
           mainAxisSpacing: 8,
@@ -38,9 +37,9 @@ class ImageToolsPage extends StatelessWidget {
 }
 
 class ImageToolsPageArguments {
-  final List<GridCardDetail> cardsDetails;
 
   ImageToolsPageArguments({required this.cardsDetails});
+  final List<GridCardDetail> cardsDetails;
 }
 
 class ImageToolsSection extends StatelessWidget {
@@ -55,7 +54,7 @@ class ImageToolsSection extends StatelessWidget {
         cardOnTap: () {
           Navigator.pushNamed(
             context,
-            route.compressImagePage,
+            route.AppRoutes.compressImagePage,
           );
         },
       ),
@@ -93,29 +92,27 @@ class ImageToolsSection extends StatelessWidget {
         cardOnTap: () {
           Navigator.pushNamed(
             context,
-            route.cropRotateFlipImagesPage,
+            route.AppRoutes.cropRotateFlipImagesPage,
           );
         },
       ),
       GridCardDetail(
         cardIcons: const [Icon(Icons.cached)],
         cardTitle: 'Convert Image',
-        cardOnTap: null,
         //     () {
         //   Navigator.pushNamed(
         //     context,
-        //     route.convertPDFPage,
+        //     route.AppRoutes.convertPDFPage,
         //   );
         // },
       ),
       GridCardDetail(
         cardIcons: const [Icon(Icons.branding_watermark)],
         cardTitle: 'Watermark Image',
-        cardOnTap: null,
         //     () {
         //   Navigator.pushNamed(
         //     context,
-        //     route.watermarkPDFPage,
+        //     route.AppRoutes.watermarkPDFPage,
         //   );
         // },
       ),
@@ -134,7 +131,7 @@ class ImageToolsSection extends StatelessWidget {
         cardOnTap: () {
           Navigator.pushNamed(
             context,
-            route.pdfToImagePage,
+            route.AppRoutes.pdfToImagePage,
           );
         },
       ),
@@ -147,7 +144,7 @@ class ImageToolsSection extends StatelessWidget {
       cardShowAllOnTap: () {
         Navigator.pushNamed(
           context,
-          route.imageToolsPage,
+          route.AppRoutes.imageToolsPage,
           arguments: ImageToolsPageArguments(cardsDetails: exploreCardsDetails),
         );
       },

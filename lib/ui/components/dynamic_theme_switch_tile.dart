@@ -1,3 +1,4 @@
+import 'package:files_tools/state/app_theme_state.dart';
 import 'package:files_tools/state/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -10,9 +11,9 @@ class DynamicThemeSwitchTile extends StatelessWidget {
     return Consumer(
       builder: (BuildContext context, WidgetRef ref, Widget? child) {
         bool isDynamicThemeEnabled = ref.watch(appThemeStateProvider
-            .select((value) => value.isDynamicThemeEnabled));
+            .select((AppThemeState value) => value.isDynamicThemeEnabled),);
         ColorScheme? lightDynamicColorScheme = ref.watch(appThemeStateProvider
-            .select((value) => value.lightDynamicColorScheme));
+            .select((AppThemeState value) => value.lightDynamicColorScheme),);
 
         return lightDynamicColorScheme != null
             ? SwitchListTile(

@@ -22,7 +22,7 @@ class ShowError extends StatelessWidget {
       required this.errorMessage,
       required this.taskMessage,
       this.allowBack = false,
-      required this.errorStackTrace})
+      required this.errorStackTrace,})
       : super(key: key);
 
   final String taskMessage;
@@ -51,8 +51,6 @@ class ShowError extends StatelessWidget {
             child: Container(
               // height: 100,
               constraints: BoxConstraints(
-                minHeight: 0,
-                minWidth: 0,
                 maxHeight: 100,
                 maxWidth: MediaQuery.of(context).size.width,
               ),
@@ -86,7 +84,7 @@ class ShowError extends StatelessWidget {
                 onPressed: () async {
                   FirebaseCrashlytics.instance.recordError(
                       'User Reported Error: $errorMessage', errorStackTrace,
-                      reason: 'Task Message: $taskMessage');
+                      reason: 'Task Message: $taskMessage',);
 
                   String? contentText = 'Error reported successfully';
                   TextStyle? textStyle = Theme.of(context).textTheme.bodySmall;

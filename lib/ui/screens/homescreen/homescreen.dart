@@ -1,7 +1,7 @@
 import 'package:files_tools/ui/components/drawer.dart';
 import 'package:files_tools/ui/screens/homescreen/pages/document_tools_page.dart';
 import 'package:files_tools/ui/screens/homescreen/pages/media_tools_page.dart';
-import 'package:files_tools/utils/clear_cache.dart';
+import 'package:files_tools/utils/utility.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -16,7 +16,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
-    clearCache(clearCacheCommandFrom: 'HomePage');
+    Utility.clearCache(clearCacheCommandFrom: 'HomePage');
     super.initState();
   }
 

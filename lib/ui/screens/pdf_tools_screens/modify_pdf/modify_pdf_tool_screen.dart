@@ -6,7 +6,7 @@ import 'package:files_tools/state/tools_actions_state.dart';
 import 'package:files_tools/ui/components/loading.dart';
 import 'package:files_tools/ui/components/view_error.dart';
 import 'package:files_tools/ui/screens/pdf_tools_screens/modify_pdf/tools/rotate_delete_reorder_pages.dart';
-import 'package:files_tools/utils/get_pdf_bitmaps.dart';
+import 'package:files_tools/utils/utility.dart';
 import 'package:flutter/material.dart';
 
 class ModifyPDFToolsPage extends StatefulWidget {
@@ -25,8 +25,8 @@ class _ModifyPDFToolsPageState extends State<ModifyPDFToolsPage> {
   late Future<bool> initPdfPages;
   Future<bool> initPdfPagesState() async {
     Stopwatch stopwatch = Stopwatch()..start();
-    pdfPages =
-        await generatePdfPagesList(pdfPath: widget.arguments.file.fileUri);
+    pdfPages = await Utility.generatePdfPagesList(
+        pdfPath: widget.arguments.file.fileUri);
     log('initPdfPagesState Executed in ${stopwatch.elapsed}');
     return true;
   }
@@ -46,17 +46,21 @@ class _ModifyPDFToolsPageState extends State<ModifyPDFToolsPage> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Text(getAppBarTitleForActionType(
-              actionType: widget.arguments.actionType)),
+          title: Text(
+            getAppBarTitleForActionType(
+              actionType: widget.arguments.actionType,
+            ),
+          ),
           centerTitle: true,
         ),
         body: FutureBuilder<bool>(
           future: initPdfPages, // async work
-          builder: (context, AsyncSnapshot<bool> snapshot) {
+          builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
             switch (snapshot.connectionState) {
               case ConnectionState.waiting:
                 return const Loading(
-                    loadingText: 'Getting pdf info please wait ...');
+                  loadingText: 'Getting pdf info please wait ...',
+                );
               default:
                 if (snapshot.hasError) {
                   log(snapshot.error.toString());
@@ -89,27 +93,26 @@ class _ModifyPDFToolsPageState extends State<ModifyPDFToolsPage> {
 }
 
 class ModifyPDFToolsPageArguments {
-  final ToolsActions actionType;
-  final InputFileModel file;
-
   ModifyPDFToolsPageArguments({required this.actionType, required this.file});
+  final ToolAction actionType;
+  final InputFileModel file;
 }
 
 class ModifyPDFToolsBody extends StatelessWidget {
-  const ModifyPDFToolsBody(
-      {Key? key,
-      required this.actionType,
-      required this.file,
-      required this.pdfPages})
-      : super(key: key);
+  const ModifyPDFToolsBody({
+    Key? key,
+    required this.actionType,
+    required this.file,
+    required this.pdfPages,
+  }) : super(key: key);
 
-  final ToolsActions actionType;
+  final ToolAction actionType;
   final InputFileModel file;
   final List<PdfPageModel> pdfPages;
 
   @override
   Widget build(BuildContext context) {
-    if (actionType == ToolsActions.modifyPdf) {
+    if (actionType == ToolAction.modifyPdf) {
       return RotateDeleteReorderPages(pdfPages: pdfPages, file: file);
     } else {
       return Container();
@@ -117,9 +120,9 @@ class ModifyPDFToolsBody extends StatelessWidget {
   }
 }
 
-String getAppBarTitleForActionType({required ToolsActions actionType}) {
+String getAppBarTitleForActionType({required ToolAction actionType}) {
   String title = 'Action Successful';
-  if (actionType == ToolsActions.modifyPdf) {
+  if (actionType == ToolAction.modifyPdf) {
     title = 'Rotate, Delete & Reorder';
   }
   return title;

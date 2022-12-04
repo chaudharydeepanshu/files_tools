@@ -1,13 +1,13 @@
 import 'package:files_tools/models/file_model.dart';
 import 'package:files_tools/models/tool_actions_model.dart';
-import 'package:files_tools/route/route.dart' as route;
+import 'package:files_tools/route/app_routes.dart' as route;
 import 'package:files_tools/state/providers.dart';
-import 'package:files_tools/state/select_file_state.dart';
 import 'package:files_tools/state/tools_actions_state.dart';
+import 'package:files_tools/state/tools_screens_state.dart';
 import 'package:files_tools/ui/components/select_file_section.dart';
 import 'package:files_tools/ui/components/tool_actions_section.dart';
 import 'package:files_tools/ui/screens/pdf_tools_screens/split_pdf/split_pdf_tools_screen.dart';
-import 'package:files_tools/utils/clear_cache.dart';
+import 'package:files_tools/utils/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pick_or_save/pick_or_save.dart';
@@ -22,7 +22,7 @@ class SplitPDFPage extends StatefulWidget {
 class _SplitPDFPageState extends State<SplitPDFPage> {
   @override
   void initState() {
-    clearCache(clearCacheCommandFrom: 'SplitPDFPage');
+    Utility.clearCache(clearCacheCommandFrom: 'SplitPDFPage');
     super.initState();
   }
 
@@ -48,11 +48,12 @@ class _SplitPDFPageState extends State<SplitPDFPage> {
           ),
           body: Consumer(
             builder: (BuildContext context, WidgetRef ref, Widget? child) {
-              final ToolScreenState watchToolScreenStateProviderValue =
-                  ref.watch(toolScreenStateProvider);
+              final ToolsScreensState watchToolScreenStateProviderValue =
+                  ref.watch(toolsScreensStateProvider);
               final List<InputFileModel> selectedFiles = ref.watch(
-                  toolScreenStateProvider
-                      .select((value) => value.selectedFiles));
+                toolsScreensStateProvider
+                    .select((ToolsScreensState value) => value.selectedFiles),
+              );
               return ListView(
                 children: [
                   const SizedBox(height: 16),
@@ -61,8 +62,6 @@ class _SplitPDFPageState extends State<SplitPDFPage> {
                     files: watchToolScreenStateProviderValue.selectedFiles,
                     filePickerParams: FilePickerParams(
                       getCachedFilePath: false,
-                      pickerType: PickerType.file,
-                      enableMultipleSelection: false,
                       mimeTypesFilter: ['application/pdf'],
                       allowedExtensions: ['.pdf'],
                     ),
@@ -72,7 +71,7 @@ class _SplitPDFPageState extends State<SplitPDFPage> {
                   const SizedBox(height: 16),
                   ToolActionsCard(
                     toolActions: [
-                      ToolActionsModel(
+                      ToolActionModel(
                         actionText: 'Extract PDF pages by page selection',
                         actionOnTap: selectedFiles.length == 1
                             ? () {
@@ -83,16 +82,17 @@ class _SplitPDFPageState extends State<SplitPDFPage> {
 
                                 Navigator.pushNamed(
                                   context,
-                                  route.splitPDFToolsPage,
+                                  route.AppRoutes.splitPDFToolsPage,
                                   arguments: SplitPDFToolsPageArguments(
-                                      actionType: ToolsActions
-                                          .extractPdfByPageSelection,
-                                      file: selectedFiles[0]),
+                                    actionType:
+                                        ToolAction.extractPdfByPageSelection,
+                                    file: selectedFiles[0],
+                                  ),
                                 );
                               }
                             : null,
                       ),
-                      ToolActionsModel(
+                      ToolActionModel(
                         actionText: 'Split PDF by page count',
                         actionOnTap: selectedFiles.length == 1
                             ? () {
@@ -103,16 +103,16 @@ class _SplitPDFPageState extends State<SplitPDFPage> {
 
                                 Navigator.pushNamed(
                                   context,
-                                  route.splitPDFToolsPage,
+                                  route.AppRoutes.splitPDFToolsPage,
                                   arguments: SplitPDFToolsPageArguments(
-                                      actionType:
-                                          ToolsActions.splitPdfByPageCount,
-                                      file: selectedFiles[0]),
+                                    actionType: ToolAction.splitPdfByPageCount,
+                                    file: selectedFiles[0],
+                                  ),
                                 );
                               }
                             : null,
                       ),
-                      ToolActionsModel(
+                      ToolActionModel(
                         actionText: 'Split PDF by size',
                         actionOnTap: selectedFiles.length == 1
                             ? () {
@@ -123,16 +123,16 @@ class _SplitPDFPageState extends State<SplitPDFPage> {
 
                                 Navigator.pushNamed(
                                   context,
-                                  route.splitPDFToolsPage,
+                                  route.AppRoutes.splitPDFToolsPage,
                                   arguments: SplitPDFToolsPageArguments(
-                                      actionType:
-                                          ToolsActions.splitPdfByByteSize,
-                                      file: selectedFiles[0]),
+                                    actionType: ToolAction.splitPdfByByteSize,
+                                    file: selectedFiles[0],
+                                  ),
                                 );
                               }
                             : null,
                       ),
-                      ToolActionsModel(
+                      ToolActionModel(
                         actionText: 'Split PDF by page numbers',
                         actionOnTap: selectedFiles.length == 1
                             ? () {
@@ -143,16 +143,17 @@ class _SplitPDFPageState extends State<SplitPDFPage> {
 
                                 Navigator.pushNamed(
                                   context,
-                                  route.splitPDFToolsPage,
+                                  route.AppRoutes.splitPDFToolsPage,
                                   arguments: SplitPDFToolsPageArguments(
-                                      actionType:
-                                          ToolsActions.splitPdfByPageNumbers,
-                                      file: selectedFiles[0]),
+                                    actionType:
+                                        ToolAction.splitPdfByPageNumbers,
+                                    file: selectedFiles[0],
+                                  ),
                                 );
                               }
                             : null,
                       ),
-                      ToolActionsModel(
+                      ToolActionModel(
                         actionText: 'Extract PDF pages by page range',
                         actionOnTap: selectedFiles.length == 1
                             ? () {
@@ -163,11 +164,12 @@ class _SplitPDFPageState extends State<SplitPDFPage> {
 
                                 Navigator.pushNamed(
                                   context,
-                                  route.splitPDFToolsPage,
+                                  route.AppRoutes.splitPDFToolsPage,
                                   arguments: SplitPDFToolsPageArguments(
-                                      actionType:
-                                          ToolsActions.extractPdfByPageRange,
-                                      file: selectedFiles[0]),
+                                    actionType:
+                                        ToolAction.extractPdfByPageRange,
+                                    file: selectedFiles[0],
+                                  ),
                                 );
                               }
                             : null,
@@ -178,7 +180,7 @@ class _SplitPDFPageState extends State<SplitPDFPage> {
                       //       ? () {
                       //           Navigator.pushNamed(
                       //             context,
-                      //             route.splitPDFToolsPage,
+                      //             route.AppRoutes.splitPDFToolsPage,
                       //             arguments: SplitPDFToolsPageArguments(
                       //                 actionType: ToolsActions.splitByPageRanges,
                       //                 file: selectedFiles[0]),

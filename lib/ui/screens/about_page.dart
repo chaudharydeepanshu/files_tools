@@ -322,7 +322,7 @@ class Credits extends StatelessWidget {
                     alignment: PlaceholderAlignment.baseline,
                     baseline: TextBaseline.alphabetic,
                     child: LinkButton(
-                        urlLabel: 'Icons8', url: 'https://icons8.com'),
+                        urlLabel: 'Icons8', url: 'https://icons8.com',),
                   ),
                 ],
               ),
@@ -338,7 +338,7 @@ class Credits extends StatelessWidget {
                     baseline: TextBaseline.alphabetic,
                     child: LinkButton(
                         urlLabel: 'Rive Community',
-                        url: 'https://rive.app/community/'),
+                        url: 'https://rive.app/community/',),
                   ),
                 ],
               ),

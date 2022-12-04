@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class LinkButton extends StatelessWidget {
   const LinkButton(
-      {Key? key, required this.urlLabel, required this.url, this.urlIcon})
+      {Key? key, required this.urlLabel, required this.url, this.urlIcon,})
       : super(key: key);
 
   final String urlLabel;

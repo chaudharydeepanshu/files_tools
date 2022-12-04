@@ -5,14 +5,14 @@ import 'package:collection/collection.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:files_tools/models/file_model.dart';
 import 'package:files_tools/models/image_model.dart';
-import 'package:files_tools/route/route.dart' as route;
+import 'package:files_tools/route/app_routes.dart' as route;
 import 'package:files_tools/state/providers.dart';
 import 'package:files_tools/state/tools_actions_state.dart';
 import 'package:files_tools/ui/components/levitating_options_bar.dart';
 import 'package:files_tools/ui/components/loading.dart';
 import 'package:files_tools/ui/components/view_error.dart';
 import 'package:files_tools/utils/edit_image.dart';
-import 'package:files_tools/utils/get_uint8list_from_absolute_file_path_or_uri.dart';
+import 'package:files_tools/utils/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -39,26 +39,28 @@ class _ImageToPDFState extends State<ImageToPDF> {
   late Future<bool> initImagesData;
   Future<bool> initImagesDataState() async {
     Stopwatch stopwatch = Stopwatch()..start();
-    for (var file in widget.files) {
+    for (InputFileModel file in widget.files) {
       String imageName = file.fileName;
       Uint8List? imageBytes;
       bool imageErrorStatus = false;
       String imageErrorMessage = 'Unknown Error';
       StackTrace imageErrorStackTrace = StackTrace.current;
       try {
-        imageBytes = await getBytesFromFilePathOrUri(
-            filePath: null, fileUri: file.fileUri);
+        imageBytes = await Utility.getBytesFromFilePathOrUri(
+          fileUri: file.fileUri,
+        );
       } catch (e, s) {
         imageErrorStatus = true;
         imageErrorMessage = e.toString();
         imageErrorStackTrace = s;
       }
       ImageModel imageInfo = ImageModel(
-          imageName: imageName,
-          imageBytes: imageBytes,
-          imageErrorStatus: imageErrorStatus,
-          imageErrorMessage: imageErrorMessage,
-          imageErrorStackTrace: imageErrorStackTrace);
+        imageName: imageName,
+        imageBytes: imageBytes,
+        imageErrorStatus: imageErrorStatus,
+        imageErrorMessage: imageErrorMessage,
+        imageErrorStackTrace: imageErrorStackTrace,
+      );
       imagesInfo.add(imageInfo);
     }
     log('initImagesDataState Executed in ${stopwatch.elapsed}');
@@ -69,7 +71,9 @@ class _ImageToPDFState extends State<ImageToPDF> {
   void initState() {
     initImagesData = initImagesDataState();
     editorKeys = List.generate(
-        widget.files.length, (index) => GlobalKey<ExtendedImageEditorState>());
+      widget.files.length,
+      (int index) => GlobalKey<ExtendedImageEditorState>(),
+    );
 
     _aspectRatio = aspectRatios.first;
     _cropLayerPainter = const EditorCropLayerPainter();
@@ -84,29 +88,37 @@ class _ImageToPDFState extends State<ImageToPDF> {
       children: [
         Padding(
           padding: const EdgeInsets.only(
-              top: 10.0, bottom: 10.0, left: 16.0, right: 16.0),
+            top: 10.0,
+            bottom: 10.0,
+            left: 16.0,
+            right: 16.0,
+          ),
           child: CheckboxListTile(
-              tristate: true,
-              tileColor: Theme.of(context).colorScheme.surfaceVariant,
-              // contentPadding: EdgeInsets.zero,
-              visualDensity: VisualDensity.compact,
-              title: Text('Create Multiple PDFs',
-                  style: Theme.of(context).textTheme.bodyMedium),
-              value: createMultiplePdfs,
-              onChanged: (bool? value) {
-                setState(() {
-                  createMultiplePdfs = value ?? !createMultiplePdfs;
-                });
-              }),
+            tristate: true,
+            tileColor: Theme.of(context).colorScheme.surfaceVariant,
+            // contentPadding: EdgeInsets.zero,
+            visualDensity: VisualDensity.compact,
+            title: Text(
+              'Create Multiple PDFs',
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
+            value: createMultiplePdfs,
+            onChanged: (bool? value) {
+              setState(() {
+                createMultiplePdfs = value ?? !createMultiplePdfs;
+              });
+            },
+          ),
         ),
         const Divider(indent: 16.0, endIndent: 16.0),
         FutureBuilder<bool>(
           future: initImagesData, // async work
-          builder: (context, AsyncSnapshot<bool> snapshot) {
+          builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
             switch (snapshot.connectionState) {
               case ConnectionState.waiting:
                 return const Expanded(
-                    child: Loading(loadingText: 'Loading images...'));
+                  child: Loading(loadingText: 'Loading images...'),
+                );
               default:
                 if (snapshot.hasError) {
                   log(snapshot.error.toString());
@@ -166,13 +178,8 @@ class _ImageToPDFState extends State<ImageToPDF> {
                                               (ExtendedImageState? state) {
                                             return EditorConfig(
                                               maxScale: 8.0,
-                                              cropRectPadding:
-                                                  const EdgeInsets.all(20.0),
-                                              hitTestSize: 20.0,
                                               cropLayerPainter:
                                                   _cropLayerPainter!,
-                                              initCropRectType:
-                                                  InitCropRectType.imageRect,
                                               cropAspectRatio:
                                                   _aspectRatio!.value,
                                             );
@@ -188,7 +195,8 @@ class _ImageToPDFState extends State<ImageToPDF> {
                                               .imageErrorStackTrace,
                                         ),
                                   key: ValueKey<InputFileModel>(
-                                      widget.files[index]),
+                                    widget.files[index],
+                                  ),
                                 );
                               },
                               childCount: widget.files.length,
@@ -200,11 +208,11 @@ class _ImageToPDFState extends State<ImageToPDF> {
                           child: LevitatingOptionsBar(
                             optionsList: [
                               Expanded(
-                                flex: 1,
                                 child: FilledButton.tonal(
                                   style: FilledButton.styleFrom(
                                     shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(0)),
+                                      borderRadius: BorderRadius.circular(0),
+                                    ),
                                   ),
                                   onPressed: !imagesInfo[currentIndexOfPageView]
                                           .imageErrorStatus
@@ -215,36 +223,38 @@ class _ImageToPDFState extends State<ImageToPDF> {
                                         }
                                       : null,
                                   child: const SizedBox.expand(
-                                      child: Icon(Icons.rotate_left)),
+                                    child: Icon(Icons.rotate_left),
+                                  ),
                                 ),
                               ),
                               const VerticalDivider(width: 1),
                               Expanded(
-                                flex: 1,
                                 child: FilledButton.tonal(
                                   style: FilledButton.styleFrom(
                                     shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(0)),
+                                      borderRadius: BorderRadius.circular(0),
+                                    ),
                                   ),
                                   onPressed: !imagesInfo[currentIndexOfPageView]
                                           .imageErrorStatus
                                       ? () {
                                           editorKeys[currentIndexOfPageView]
                                               .currentState
-                                              ?.rotate(right: true);
+                                              ?.rotate();
                                         }
                                       : null,
                                   child: const SizedBox.expand(
-                                      child: Icon(Icons.rotate_right)),
+                                    child: Icon(Icons.rotate_right),
+                                  ),
                                 ),
                               ),
                               const VerticalDivider(width: 1),
                               Expanded(
-                                flex: 1,
                                 child: FilledButton.tonal(
                                   style: FilledButton.styleFrom(
                                     shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(0)),
+                                      borderRadius: BorderRadius.circular(0),
+                                    ),
                                   ),
                                   onPressed: !imagesInfo[currentIndexOfPageView]
                                           .imageErrorStatus
@@ -257,16 +267,17 @@ class _ImageToPDFState extends State<ImageToPDF> {
                                         }
                                       : null,
                                   child: const SizedBox.expand(
-                                      child: Icon(Icons.flip)),
+                                    child: Icon(Icons.flip),
+                                  ),
                                 ),
                               ),
                               const VerticalDivider(width: 1),
                               Expanded(
-                                flex: 1,
                                 child: FilledButton.tonal(
                                   style: FilledButton.styleFrom(
                                     shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(0)),
+                                      borderRadius: BorderRadius.circular(0),
+                                    ),
                                   ),
                                   onPressed: !imagesInfo[currentIndexOfPageView]
                                           .imageErrorStatus
@@ -277,15 +288,19 @@ class _ImageToPDFState extends State<ImageToPDF> {
                                         }
                                       : null,
                                   child: const SizedBox.expand(
-                                      child: Icon(Icons.restart_alt)),
+                                    child: Icon(Icons.restart_alt),
+                                  ),
                                 ),
                               ),
                               const VerticalDivider(width: 1),
                               Expanded(
                                 flex: 2,
                                 child: Consumer(
-                                  builder: (BuildContext context, WidgetRef ref,
-                                      Widget? child) {
+                                  builder: (
+                                    BuildContext context,
+                                    WidgetRef ref,
+                                    Widget? child,
+                                  ) {
                                     final ToolsActionsState
                                         watchToolsActionsStateProviderValue =
                                         ref.watch(toolsActionsStateProvider);
@@ -293,30 +308,41 @@ class _ImageToPDFState extends State<ImageToPDF> {
                                     return FilledButton(
                                       style: FilledButton.styleFrom(
                                         shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(0)),
+                                          borderRadius:
+                                              BorderRadius.circular(0),
+                                        ),
                                       ),
                                       onPressed: () {
                                         watchToolsActionsStateProviderValue
-                                            .imageToPdf(
-                                          files: widget.files
-                                              .whereIndexed((index, element) =>
-                                                  imagesInfo[index]
-                                                      .imageErrorStatus ==
-                                                  false)
+                                            .mangeConvertImageFileAction(
+                                          toolAction: ToolAction.imageToPdf,
+                                          sourceFiles: widget.files
+                                              .whereIndexed(
+                                                (int index,
+                                                        InputFileModel
+                                                            element) =>
+                                                    imagesInfo[index]
+                                                        .imageErrorStatus ==
+                                                    false,
+                                              )
                                               .toList(),
                                           createSinglePdf: !createMultiplePdfs,
                                           editorKeys: editorKeys
-                                              .whereIndexed((index, element) =>
-                                                  imagesInfo[index]
-                                                      .imageErrorStatus ==
-                                                  false)
+                                              .whereIndexed(
+                                                (int index,
+                                                        GlobalKey<
+                                                                ExtendedImageEditorState>
+                                                            element) =>
+                                                    imagesInfo[index]
+                                                        .imageErrorStatus ==
+                                                    false,
+                                              )
                                               .toList(),
                                         );
 
                                         Navigator.pushNamed(
                                           context,
-                                          route.resultPage,
+                                          route.AppRoutes.resultPage,
                                         );
                                       },
                                       child: SizedBox.expand(

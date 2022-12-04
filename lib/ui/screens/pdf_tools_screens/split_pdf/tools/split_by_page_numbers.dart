@@ -1,5 +1,5 @@
 import 'package:files_tools/models/file_model.dart';
-import 'package:files_tools/route/route.dart' as route;
+import 'package:files_tools/route/app_routes.dart' as route;
 import 'package:files_tools/state/providers.dart';
 import 'package:files_tools/state/tools_actions_state.dart';
 import 'package:files_tools/ui/components/tools_about_card.dart';
@@ -8,9 +8,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class SplitByPageNumbers extends StatelessWidget {
-  const SplitByPageNumbers(
-      {Key? key, required this.pdfPageCount, required this.file})
-      : super(key: key);
+  const SplitByPageNumbers({
+    Key? key,
+    required this.pdfPageCount,
+    required this.file,
+  }) : super(key: key);
 
   final int pdfPageCount;
   final InputFileModel file;
@@ -36,9 +38,11 @@ class SplitByPageNumbers extends StatelessWidget {
 }
 
 class SplitByPageNumbersActionCard extends StatefulWidget {
-  const SplitByPageNumbersActionCard(
-      {Key? key, required this.pdfPageCount, required this.file})
-      : super(key: key);
+  const SplitByPageNumbersActionCard({
+    Key? key,
+    required this.pdfPageCount,
+    required this.file,
+  }) : super(key: key);
 
   final int pdfPageCount;
   final InputFileModel file;
@@ -50,15 +54,17 @@ class SplitByPageNumbersActionCard extends StatefulWidget {
 
 class _SplitByPageNumbersActionCardState
     extends State<SplitByPageNumbersActionCard> {
-  final _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   TextEditingController pageNumbersController = TextEditingController();
   List<int> pageNumbers = [];
 
   List<String> sets = [];
 
-  List<String> getSetsFromPageNumbers(
-      {required List<int> pageNumbers, required int pdfPageCount}) {
+  List<String> getSetsFromPageNumbers({
+    required List<int> pageNumbers,
+    required int pdfPageCount,
+  }) {
     List<String> sets = [];
     for (int i = 0; i < pageNumbers.length; i++) {
       int setStart = pageNumbers[i];
@@ -113,47 +119,59 @@ class _SplitByPageNumbersActionCardState
                           ),
                           keyboardType: TextInputType.number,
                           inputFormatters: [
-                            FilteringTextInputFormatter(RegExp('[0-9,]'),
-                                allow: true),
+                            FilteringTextInputFormatter(
+                              RegExp('[0-9,]'),
+                              allow: true,
+                            ),
                           ],
                           onChanged: (String value) {
                             pageNumbers.clear();
                             List<String> pageNumbersStringList = value
                                 .split(',') //splits string from comma
-                                .map((e) => e
-                                    .trim()) //removes all leading and trailing with spaces
-                                .map((e) => e.replaceAll(RegExp(r'^0+(?=.)'),
-                                    '')) //removes all leading zeros
+                                .map(
+                                  (String e) => e.trim(),
+                                ) //removes all leading and trailing with spaces
+                                .map(
+                                  (String e) => e.replaceAll(
+                                    RegExp(r'^0+(?=.)'),
+                                    '',
+                                  ),
+                                ) //removes all leading zeros
                                 .toSet() //combines all identical strings
                                 .toList();
                             // removes all empty and longer strings than maximum page number possible
-                            pageNumbersStringList.removeWhere((element) =>
-                                element.isEmpty ||
-                                element.length >
-                                    widget.pdfPageCount.toString().length);
+                            pageNumbersStringList.removeWhere(
+                              (String element) =>
+                                  element.isEmpty ||
+                                  element.length >
+                                      widget.pdfPageCount.toString().length,
+                            );
                             // converts strings to integer
-                            for (var pageNumberString
+                            for (String pageNumberString
                                 in pageNumbersStringList) {
                               pageNumbers.add(int.parse(pageNumberString));
                             }
                             // Sorting list into ascending order
-                            pageNumbers.sort((a, b) => a.compareTo(b));
+                            pageNumbers.sort((int a, int b) => a.compareTo(b));
                             // removes all number less than 1 and greater than maximum page number possible
-                            pageNumbers.removeWhere((element) =>
-                                element < 1 || element > widget.pdfPageCount);
+                            pageNumbers.removeWhere(
+                              (int element) =>
+                                  element < 1 || element > widget.pdfPageCount,
+                            );
                             // Inserts 1 ate index 0 if not found
                             if (pageNumbers.isNotEmpty && pageNumbers[0] != 1) {
                               pageNumbers.insert(0, 1);
                             }
                             setState(() {
                               sets = getSetsFromPageNumbers(
-                                  pageNumbers: pageNumbers,
-                                  pdfPageCount: widget.pdfPageCount);
+                                pageNumbers: pageNumbers,
+                                pdfPageCount: widget.pdfPageCount,
+                              );
                             });
                           },
                           autovalidateMode: AutovalidateMode.onUserInteraction,
                           // The validator receives the text that the user has entered.
-                          validator: (value) {
+                          validator: (String? value) {
                             if (pageNumbers.isEmpty) {
                               return 'Enter numbers separated by "," from 1 to ${widget.pdfPageCount} ';
                             }
@@ -175,14 +193,17 @@ class _SplitByPageNumbersActionCardState
                               // minimumSize: Size(0, 0),
                             ),
                             onPressed: () {
-                              pageNumbers.removeWhere((element) =>
-                                  element < 1 || element > widget.pdfPageCount);
+                              pageNumbers.removeWhere(
+                                (int element) =>
+                                    element < 1 ||
+                                    element > widget.pdfPageCount,
+                              );
                               pageNumbersController.text =
                                   pageNumbers.join(',');
                               pageNumbersController.selection =
                                   TextSelection.collapsed(
-                                      offset:
-                                          pageNumbersController.text.length);
+                                offset: pageNumbersController.text.length,
+                              );
                             },
                             child: const Text('Sanitize Entered Data'),
                           ),
@@ -192,7 +213,6 @@ class _SplitByPageNumbersActionCardState
                       Column(
                         children: [
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               Text(
                                 'Input will generate PDF sets:-',
@@ -202,7 +222,6 @@ class _SplitByPageNumbersActionCardState
                             ],
                           ),
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               Flexible(
                                 child: Text(
@@ -217,8 +236,11 @@ class _SplitByPageNumbersActionCardState
                       ),
                       const Divider(),
                       Consumer(
-                        builder: (BuildContext context, WidgetRef ref,
-                            Widget? child) {
+                        builder: (
+                          BuildContext context,
+                          WidgetRef ref,
+                          Widget? child,
+                        ) {
                           final ToolsActionsState
                               watchToolsActionsStateProviderValue =
                               ref.watch(toolsActionsStateProvider);
@@ -226,12 +248,14 @@ class _SplitByPageNumbersActionCardState
                             onPressed: () async {
                               if (_formKey.currentState!.validate()) {
                                 watchToolsActionsStateProviderValue
-                                    .splitSelectedFile(
-                                        files: [widget.file],
-                                        pageNumbers: pageNumbers);
+                                    .mangeSplitPdfFileAction(
+                                  toolAction: ToolAction.splitPdfByPageNumbers,
+                                  sourceFile: widget.file,
+                                  pageNumbers: pageNumbers,
+                                );
                                 Navigator.pushNamed(
                                   context,
-                                  route.resultPage,
+                                  route.AppRoutes.resultPage,
                                 );
                               }
                             },

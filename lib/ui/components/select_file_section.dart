@@ -2,9 +2,9 @@ import 'dart:ui';
 
 import 'package:files_tools/models/file_model.dart';
 import 'package:files_tools/state/providers.dart';
-import 'package:files_tools/state/select_file_state.dart';
+import 'package:files_tools/state/tools_screens_state.dart';
 import 'package:files_tools/ui/components/input_output_list_tile.dart';
-import 'package:files_tools/utils/clear_cache.dart';
+import 'package:files_tools/utils/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pick_or_save/pick_or_save.dart';
@@ -13,14 +13,14 @@ import 'package:rive/rive.dart';
 enum SelectFileType { single, multiple, both }
 
 class SelectFilesCard extends StatelessWidget {
-  const SelectFilesCard(
-      {Key? key,
-      required this.selectFileType,
-      required this.files,
-      required this.filePickerParams,
-      this.discardInvalidPdfFiles = false,
-      this.discardProtectedPdfFiles = false})
-      : super(key: key);
+  const SelectFilesCard({
+    Key? key,
+    required this.selectFileType,
+    required this.files,
+    required this.filePickerParams,
+    this.discardInvalidPdfFiles = false,
+    this.discardProtectedPdfFiles = false,
+  }) : super(key: key);
 
   final SelectFileType selectFileType;
   final List<InputFileModel> files;
@@ -36,10 +36,9 @@ class SelectFilesCard extends StatelessWidget {
             kBottomNavigationBarHeight);
     return ConstrainedBox(
       constraints: BoxConstraints(
-          minHeight: 0,
-          maxHeight: heightWithoutAppBarNavBar < 500
-              ? heightWithoutAppBarNavBar
-              : 500),
+        maxHeight:
+            heightWithoutAppBarNavBar < 500 ? heightWithoutAppBarNavBar : 500,
+      ),
       child: Card(
         clipBehavior: Clip.antiAlias,
         margin: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -75,14 +74,14 @@ class SelectFilesCard extends StatelessWidget {
 }
 
 class FilesSelected extends StatelessWidget {
-  const FilesSelected(
-      {Key? key,
-      required this.selectFileType,
-      required this.files,
-      required this.filePickerParams,
-      required this.discardInvalidPdfFiles,
-      required this.discardProtectedPdfFiles})
-      : super(key: key);
+  const FilesSelected({
+    Key? key,
+    required this.selectFileType,
+    required this.files,
+    required this.filePickerParams,
+    required this.discardInvalidPdfFiles,
+    required this.discardProtectedPdfFiles,
+  }) : super(key: key);
 
   final SelectFileType selectFileType;
   final List<InputFileModel> files;
@@ -96,41 +95,44 @@ class FilesSelected extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         Flexible(
-            child: files.length > 1
-                ? ReorderableFilesListView(files: files)
-                : Consumer(
-                    builder:
-                        (BuildContext context, WidgetRef ref, Widget? child) {
-                      final ToolScreenState readToolScreenStateProviderValue =
-                          ref.watch(toolScreenStateProvider);
+          child: files.length > 1
+              ? ReorderableFilesListView(files: files)
+              : Consumer(
+                  builder:
+                      (BuildContext context, WidgetRef ref, Widget? child) {
+                    final ToolsScreensState readToolScreenStateProviderValue =
+                        ref.watch(toolsScreensStateProvider);
 
-                      return FileTile(
-                        fileName: files[0].fileName,
-                        fileTime: files[0].fileTime,
-                        fileDate: files[0].fileDate,
-                        fileUri: files[0].fileUri,
-                        fileSize: files[0].fileSizeFormatBytes,
-                        onRemove: () {
-                          final List<InputFileModel> selectedFiles =
-                              ref.watch(toolScreenStateProvider).selectedFiles;
-                          selectedFiles.remove(files[0]);
-                          readToolScreenStateProviderValue.updateSelectedFiles(
-                            files: selectedFiles,
-                          );
-                        },
-                      );
-                    },
-                  )),
+                    return FileTile(
+                      fileName: files[0].fileName,
+                      fileTime: files[0].fileTime,
+                      fileDate: files[0].fileDate,
+                      fileUri: files[0].fileUri,
+                      fileSize: files[0].fileSizeFormatBytes,
+                      onRemove: () {
+                        final List<InputFileModel> selectedFiles =
+                            ref.watch(toolsScreensStateProvider).selectedFiles;
+                        selectedFiles.remove(files[0]);
+                        readToolScreenStateProviderValue.updateSelectedFiles(
+                          files: selectedFiles,
+                        );
+                      },
+                    );
+                  },
+                ),
+        ),
         Consumer(
           builder: (BuildContext context, WidgetRef ref, Widget? child) {
             final bool isPickingFile =
-                ref.watch(toolScreenStateProvider).isPickingFile;
+                ref.watch(toolsScreensStateProvider).isPickingFile;
             return isPickingFile
                 ? Column(
                     children: [
                       const SizedBox(height: 10),
-                      Text('Picking files please wait ...',
-                          style: Theme.of(context).textTheme.bodySmall),
+                      Text(
+                        'Picking files please wait ...',
+                        style: Theme.of(context).textTheme.bodySmall,
+                      ),
                       const Divider()
                     ],
                   )
@@ -144,7 +146,8 @@ class FilesSelected extends StatelessWidget {
                                 .textTheme
                                 .bodySmall
                                 ?.copyWith(
-                                    color: Theme.of(context).colorScheme.error),
+                                  color: Theme.of(context).colorScheme.error,
+                                ),
                           ),
                           const Divider()
                         ],
@@ -167,10 +170,10 @@ class FilesSelected extends StatelessWidget {
         ),
         Consumer(
           builder: (BuildContext context, WidgetRef ref, Widget? child) {
-            final ToolScreenState readToolScreenStateProviderValue =
-                ref.watch(toolScreenStateProvider);
+            final ToolsScreensState readToolScreenStateProviderValue =
+                ref.watch(toolsScreensStateProvider);
             final bool isPickingFile =
-                ref.watch(toolScreenStateProvider).isPickingFile;
+                ref.watch(toolsScreensStateProvider).isPickingFile;
             return Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -213,13 +216,16 @@ class FilesSelected extends StatelessWidget {
                                 .updateSelectedFiles(
                               files: [],
                             );
-                            clearCache(
-                                clearCacheCommandFrom: 'Clear File Selection');
+                            Utility.clearCache(
+                              clearCacheCommandFrom: 'Clear File Selection',
+                            );
                           }
                         : null,
-                    label: const Text('Clear All',
-                        textAlign: TextAlign.center,
-                        overflow: TextOverflow.visible),
+                    label: const Text(
+                      'Clear All',
+                      textAlign: TextAlign.center,
+                      overflow: TextOverflow.visible,
+                    ),
                     icon: const Icon(Icons.clear),
                   ),
                 ),
@@ -233,13 +239,13 @@ class FilesSelected extends StatelessWidget {
 }
 
 class NoFilesSelected extends StatelessWidget {
-  const NoFilesSelected(
-      {Key? key,
-      required this.selectFileType,
-      required this.filePickerParams,
-      required this.discardInvalidPdfFiles,
-      required this.discardProtectedPdfFiles})
-      : super(key: key);
+  const NoFilesSelected({
+    Key? key,
+    required this.selectFileType,
+    required this.filePickerParams,
+    required this.discardInvalidPdfFiles,
+    required this.discardProtectedPdfFiles,
+  }) : super(key: key);
 
   final SelectFileType selectFileType;
   final FilePickerParams filePickerParams;
@@ -267,10 +273,10 @@ class NoFilesSelected extends StatelessWidget {
         ),
         Consumer(
           builder: (BuildContext context, WidgetRef ref, Widget? child) {
-            final ToolScreenState readToolScreenStateProviderValue =
-                ref.watch(toolScreenStateProvider);
+            final ToolsScreensState readToolScreenStateProviderValue =
+                ref.watch(toolsScreensStateProvider);
             final bool isPickingFile =
-                ref.watch(toolScreenStateProvider).isPickingFile;
+                ref.watch(toolsScreensStateProvider).isPickingFile;
             return FilledButton.icon(
               onPressed: !isPickingFile
                   ? () {
@@ -286,7 +292,8 @@ class NoFilesSelected extends StatelessWidget {
                     }
                   : null,
               label: Text(
-                  'Select ${selectFileType == SelectFileType.multiple || selectFileType == SelectFileType.both ? "files" : "file"}'),
+                'Select ${selectFileType == SelectFileType.multiple || selectFileType == SelectFileType.both ? "files" : "file"}',
+              ),
               icon: const Icon(Icons.upload_file),
             );
           },
@@ -324,14 +331,16 @@ class _ReorderableFilesListViewState extends State<ReorderableFilesListView> {
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
 
     Widget proxyDecorator(
-        Widget child, int index, Animation<double> animation) {
+      Widget child,
+      int index,
+      Animation<double> animation,
+    ) {
       return AnimatedBuilder(
         animation: animation,
         builder: (BuildContext context, Widget? child) {
           final double animValue = Curves.easeInOut.transform(animation.value);
           final double elevation = lerpDouble(0, 6, animValue)!;
           return Material(
-            elevation: 0,
             color: Colors.transparent,
             child: Stack(
               children: [
@@ -364,30 +373,30 @@ class _ReorderableFilesListViewState extends State<ReorderableFilesListView> {
           key: Key('$index'),
           children: [
             Material(
-                color: Colors.transparent,
-                child: Consumer(
-                  builder:
-                      (BuildContext context, WidgetRef ref, Widget? child) {
-                    final ToolScreenState readToolScreenStateProviderValue =
-                        ref.watch(toolScreenStateProvider);
+              color: Colors.transparent,
+              child: Consumer(
+                builder: (BuildContext context, WidgetRef ref, Widget? child) {
+                  final ToolsScreensState readToolScreenStateProviderValue =
+                      ref.watch(toolsScreensStateProvider);
 
-                    return FileTile(
-                      fileName: _files[index].fileName,
-                      fileTime: _files[index].fileTime,
-                      fileDate: _files[index].fileDate,
-                      fileUri: _files[index].fileUri,
-                      fileSize: _files[index].fileSizeFormatBytes,
-                      onRemove: () {
-                        final List<InputFileModel> selectedFiles =
-                            ref.watch(toolScreenStateProvider).selectedFiles;
-                        selectedFiles.remove(_files[index]);
-                        readToolScreenStateProviderValue.updateSelectedFiles(
-                          files: selectedFiles,
-                        );
-                      },
-                    );
-                  },
-                )),
+                  return FileTile(
+                    fileName: _files[index].fileName,
+                    fileTime: _files[index].fileTime,
+                    fileDate: _files[index].fileDate,
+                    fileUri: _files[index].fileUri,
+                    fileSize: _files[index].fileSizeFormatBytes,
+                    onRemove: () {
+                      final List<InputFileModel> selectedFiles =
+                          ref.watch(toolsScreensStateProvider).selectedFiles;
+                      selectedFiles.remove(_files[index]);
+                      readToolScreenStateProviderValue.updateSelectedFiles(
+                        files: selectedFiles,
+                      );
+                    },
+                  );
+                },
+              ),
+            ),
             index != _files.length - 1
                 ? const SizedBox(height: 10)
                 : const SizedBox(),

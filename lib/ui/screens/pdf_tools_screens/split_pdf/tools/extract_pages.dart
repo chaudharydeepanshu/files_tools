@@ -1,22 +1,24 @@
 import 'package:collection/collection.dart';
 import 'package:files_tools/models/file_model.dart';
 import 'package:files_tools/models/pdf_page_model.dart';
-import 'package:files_tools/route/route.dart' as route;
+import 'package:files_tools/route/app_routes.dart' as route;
 import 'package:files_tools/state/providers.dart';
 import 'package:files_tools/state/tools_actions_state.dart';
 import 'package:files_tools/ui/components/levitating_options_bar.dart';
 import 'package:files_tools/ui/components/loading.dart';
 import 'package:files_tools/ui/components/view_error.dart';
-import 'package:files_tools/utils/get_pdf_bitmaps.dart';
+import 'package:files_tools/utils/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pdf_manipulator/pdf_manipulator.dart';
 import 'package:reorderable_grid_view/reorderable_grid_view.dart';
 
 class ExtractByPageSelection extends StatefulWidget {
-  const ExtractByPageSelection(
-      {Key? key, required this.pdfPages, required this.file})
-      : super(key: key);
+  const ExtractByPageSelection({
+    Key? key,
+    required this.pdfPages,
+    required this.file,
+  }) : super(key: key);
 
   final List<PdfPageModel> pdfPages;
   final InputFileModel file;
@@ -35,7 +37,7 @@ class _ExtractByPageSelectionState extends State<ExtractByPageSelection> {
         pdfPages[index].pageErrorStatus == false &&
         isPageProcessing == false) {
       isPageProcessing = true;
-      PdfPageModel updatedPdfPage = await getUpdatedPdfPage(
+      PdfPageModel updatedPdfPage = await Utility.getUpdatedPdfPage(
         index: index,
         pdfPath: widget.file.fileUri,
         scale: 0.3,
@@ -62,34 +64,42 @@ class _ExtractByPageSelectionState extends State<ExtractByPageSelection> {
       children: [
         Padding(
           padding: const EdgeInsets.only(
-              top: 10.0, bottom: 10.0, left: 16.0, right: 16.0),
+            top: 10.0,
+            bottom: 10.0,
+            left: 16.0,
+            right: 16.0,
+          ),
           child: CheckboxListTile(
-              tristate: true,
-              tileColor: Theme.of(context).colorScheme.surfaceVariant,
-              // contentPadding: EdgeInsets.zero,
-              visualDensity: VisualDensity.compact,
-              title: Text('Select All Pages',
-                  style: Theme.of(context).textTheme.bodyMedium),
-              value: isSelectAllEnabled,
-              onChanged: (bool? value) {
-                setState(() {
-                  isSelectAllEnabled = isSelectAllEnabled == null
-                      ? true
-                      : isSelectAllEnabled == true
-                          ? isSelectAllEnabled == false
-                          : true;
-                });
-                for (int i = 0; i < pdfPages.length; i++) {
-                  PdfPageModel temp = pdfPages[i];
-                  pdfPages[i] = PdfPageModel(
-                      pageIndex: temp.pageIndex,
-                      pageBytes: temp.pageBytes,
-                      pageErrorStatus: temp.pageErrorStatus,
-                      pageSelected: isSelectAllEnabled ?? temp.pageSelected,
-                      pageRotationAngle: temp.pageRotationAngle,
-                      pageHidden: temp.pageHidden);
-                }
-              }),
+            tristate: true,
+            tileColor: Theme.of(context).colorScheme.surfaceVariant,
+            // contentPadding: EdgeInsets.zero,
+            visualDensity: VisualDensity.compact,
+            title: Text(
+              'Select All Pages',
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
+            value: isSelectAllEnabled,
+            onChanged: (bool? value) {
+              setState(() {
+                isSelectAllEnabled = isSelectAllEnabled == null
+                    ? true
+                    : isSelectAllEnabled == true
+                        ? isSelectAllEnabled == false
+                        : true;
+              });
+              for (int i = 0; i < pdfPages.length; i++) {
+                PdfPageModel temp = pdfPages[i];
+                pdfPages[i] = PdfPageModel(
+                  pageIndex: temp.pageIndex,
+                  pageBytes: temp.pageBytes,
+                  pageErrorStatus: temp.pageErrorStatus,
+                  pageSelected: isSelectAllEnabled ?? temp.pageSelected,
+                  pageRotationAngle: temp.pageRotationAngle,
+                  pageHidden: temp.pageHidden,
+                );
+              }
+            },
+          ),
         ),
         const Divider(indent: 16.0, endIndent: 16.0),
         const SizedBox(height: 10),
@@ -99,10 +109,11 @@ class _ExtractByPageSelectionState extends State<ExtractByPageSelection> {
                   children: [
                     ReorderableGridView.builder(
                       padding: const EdgeInsets.symmetric(
-                          vertical: 16.0, horizontal: 16.0),
+                        vertical: 16.0,
+                        horizontal: 16.0,
+                      ),
                       gridDelegate:
                           const SliverGridDelegateWithMaxCrossAxisExtent(
-                        childAspectRatio: 1,
                         maxCrossAxisExtent: 150,
                         mainAxisExtent: 150,
                         mainAxisSpacing: 8,
@@ -117,18 +128,20 @@ class _ExtractByPageSelectionState extends State<ExtractByPageSelection> {
                         return Transform.scale(
                           scale: 1.1,
                           child: GridElement(
-                              child: PageImageView(
-                            pdfPage: pdfPages[index],
-                            pageIndex: index,
-                          )),
+                            child: PageImageView(
+                              pdfPage: pdfPages[index],
+                              pageIndex: index,
+                            ),
+                          ),
                         );
                       },
                       itemBuilder: (BuildContext context, int index) {
                         updatePdfPages(index: index);
                         if (pdfPages[index].pageErrorStatus) {
                           return GridElement(
-                              key: Key('$index'),
-                              child: const ErrorIndicator());
+                            key: Key('$index'),
+                            child: const ErrorIndicator(),
+                          );
                         } else if (pdfPages[index].pageBytes != null) {
                           return GridElement(
                             key: Key('$index'),
@@ -140,13 +153,15 @@ class _ExtractByPageSelectionState extends State<ExtractByPageSelection> {
                                   pdfPages[index] = value;
                                 });
 
-                                if (pdfPages.every((PdfPageModel w) =>
-                                    w.pageSelected == true)) {
+                                if (pdfPages.every(
+                                  (PdfPageModel w) => w.pageSelected == true,
+                                )) {
                                   setState(() {
                                     isSelectAllEnabled = true;
                                   });
-                                } else if (pdfPages.every((PdfPageModel w) =>
-                                    w.pageSelected == false)) {
+                                } else if (pdfPages.every(
+                                  (PdfPageModel w) => w.pageSelected == false,
+                                )) {
                                   setState(() {
                                     isSelectAllEnabled = false;
                                   });
@@ -160,18 +175,23 @@ class _ExtractByPageSelectionState extends State<ExtractByPageSelection> {
                           );
                         } else {
                           return GridElement(
-                              key: Key('$index'),
-                              child: const LoadingIndicator());
+                            key: Key('$index'),
+                            child: const LoadingIndicator(),
+                          );
                         }
                       },
-                      onReorder: (oldIndex, newIndex) {
+                      onReorder: (int oldIndex, int newIndex) {
                         setState(() {
-                          final element = pdfPages.removeAt(oldIndex);
+                          final PdfPageModel element =
+                              pdfPages.removeAt(oldIndex);
                           pdfPages.insert(newIndex, element);
                         });
                       },
-                      scrollSpeedController: (int timeInMilliSecond,
-                          double overSize, double itemSize) {
+                      scrollSpeedController: (
+                        int timeInMilliSecond,
+                        double overSize,
+                        double itemSize,
+                      ) {
                         if (timeInMilliSecond > 1500) {
                           scrollSpeedVariable = 20;
                         } else {
@@ -185,15 +205,17 @@ class _ExtractByPageSelectionState extends State<ExtractByPageSelection> {
                       child: LevitatingOptionsBar(
                         optionsList: [
                           Expanded(
-                            flex: 1,
                             child: FilledButton.tonal(
                               style: FilledButton.styleFrom(
                                 shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(0)),
+                                  borderRadius: BorderRadius.circular(0),
+                                ),
                               ),
                               onPressed: pdfPages
-                                      .where((PdfPageModel w) =>
-                                          w.pageSelected == true)
+                                      .where(
+                                        (PdfPageModel w) =>
+                                            w.pageSelected == true,
+                                      )
                                       .isEmpty
                                   ? null
                                   : () {
@@ -204,33 +226,37 @@ class _ExtractByPageSelectionState extends State<ExtractByPageSelection> {
                                           PdfPageModel temp = pdfPages[i];
                                           if (temp.pageSelected) {
                                             pdfPages[i] = PdfPageModel(
-                                                pageIndex: temp.pageIndex,
-                                                pageBytes: temp.pageBytes,
-                                                pageErrorStatus:
-                                                    temp.pageErrorStatus,
-                                                pageSelected: temp.pageSelected,
-                                                pageRotationAngle:
-                                                    temp.pageRotationAngle - 90,
-                                                pageHidden: temp.pageHidden);
+                                              pageIndex: temp.pageIndex,
+                                              pageBytes: temp.pageBytes,
+                                              pageErrorStatus:
+                                                  temp.pageErrorStatus,
+                                              pageSelected: temp.pageSelected,
+                                              pageRotationAngle:
+                                                  temp.pageRotationAngle - 90,
+                                              pageHidden: temp.pageHidden,
+                                            );
                                           }
                                         }
                                       });
                                     },
                               child: const SizedBox.expand(
-                                  child: Icon(Icons.rotate_left)),
+                                child: Icon(Icons.rotate_left),
+                              ),
                             ),
                           ),
                           const VerticalDivider(width: 1),
                           Expanded(
-                            flex: 1,
                             child: FilledButton.tonal(
                               style: FilledButton.styleFrom(
                                 shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(0)),
+                                  borderRadius: BorderRadius.circular(0),
+                                ),
                               ),
                               onPressed: pdfPages
-                                      .where((PdfPageModel w) =>
-                                          w.pageSelected == true)
+                                      .where(
+                                        (PdfPageModel w) =>
+                                            w.pageSelected == true,
+                                      )
                                       .isEmpty
                                   ? null
                                   : () {
@@ -241,63 +267,76 @@ class _ExtractByPageSelectionState extends State<ExtractByPageSelection> {
                                           PdfPageModel temp = pdfPages[i];
                                           if (temp.pageSelected) {
                                             pdfPages[i] = PdfPageModel(
-                                                pageIndex: temp.pageIndex,
-                                                pageBytes: temp.pageBytes,
-                                                pageErrorStatus:
-                                                    temp.pageErrorStatus,
-                                                pageSelected: temp.pageSelected,
-                                                pageRotationAngle:
-                                                    temp.pageRotationAngle + 90,
-                                                pageHidden: temp.pageHidden);
+                                              pageIndex: temp.pageIndex,
+                                              pageBytes: temp.pageBytes,
+                                              pageErrorStatus:
+                                                  temp.pageErrorStatus,
+                                              pageSelected: temp.pageSelected,
+                                              pageRotationAngle:
+                                                  temp.pageRotationAngle + 90,
+                                              pageHidden: temp.pageHidden,
+                                            );
                                           }
                                         }
                                       });
                                     },
                               child: const SizedBox.expand(
-                                  child: Icon(Icons.rotate_right)),
+                                child: Icon(Icons.rotate_right),
+                              ),
                             ),
                           ),
                           const VerticalDivider(width: 1),
                           Expanded(
                             flex: 2,
                             child: Consumer(
-                              builder: (BuildContext context, WidgetRef ref,
-                                  Widget? child) {
+                              builder: (
+                                BuildContext context,
+                                WidgetRef ref,
+                                Widget? child,
+                              ) {
                                 final ToolsActionsState
                                     watchToolsActionsStateProviderValue =
                                     ref.watch(toolsActionsStateProvider);
 
                                 List<PageRotationInfo> pagesRotationInfo =
                                     pdfPages
-                                        .where((element) =>
-                                            element.pageRotationAngle != 0)
-                                        .map((e) => PageRotationInfo(
+                                        .where(
+                                          (PdfPageModel element) =>
+                                              element.pageRotationAngle != 0,
+                                        )
+                                        .map(
+                                          (PdfPageModel e) => PageRotationInfo(
                                             pageNumber: e.pageIndex + 1,
-                                            rotationAngle: e.pageRotationAngle))
+                                            rotationAngle: e.pageRotationAngle,
+                                          ),
+                                        )
                                         .toList();
                                 List<int> pageNumbersForReorder;
                                 if (const ListEquality().equals(
-                                    pdfPages
-                                        .map((e) => e.pageIndex + 1)
-                                        .toList(),
-                                    widget.pdfPages
-                                        .map((e) => e.pageIndex + 1)
-                                        .toList())) {
+                                  pdfPages
+                                      .map((PdfPageModel e) => e.pageIndex + 1)
+                                      .toList(),
+                                  widget.pdfPages
+                                      .map((PdfPageModel e) => e.pageIndex + 1)
+                                      .toList(),
+                                )) {
                                   pageNumbersForReorder = [];
                                 } else {
                                   pageNumbersForReorder = pdfPages
-                                      .map((e) => e.pageIndex + 1)
+                                      .map((PdfPageModel e) => e.pageIndex + 1)
                                       .toList();
                                 }
                                 List<int> pageNumbersForDeleter = pdfPages
-                                    .where((w) => w.pageSelected == false)
-                                    .map((e) => e.pageIndex + 1)
+                                    .where((PdfPageModel w) =>
+                                        w.pageSelected == false)
+                                    .map((PdfPageModel e) => e.pageIndex + 1)
                                     .toList();
 
                                 return FilledButton(
                                   style: FilledButton.styleFrom(
                                     shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(0)),
+                                      borderRadius: BorderRadius.circular(0),
+                                    ),
                                   ),
                                   onPressed: pageNumbersForDeleter.length ==
                                               pdfPages.length ||
@@ -307,8 +346,10 @@ class _ExtractByPageSelectionState extends State<ExtractByPageSelection> {
                                       ? null
                                       : () {
                                           watchToolsActionsStateProviderValue
-                                              .modifySelectedFile(
-                                            files: [widget.file],
+                                              .mangeModifyPdfFileAction(
+                                            toolAction: ToolAction
+                                                .extractPdfByPageSelection,
+                                            sourceFile: widget.file,
                                             pagesRotationInfo:
                                                 pagesRotationInfo,
                                             pageNumbersForDeleter:
@@ -319,7 +360,7 @@ class _ExtractByPageSelectionState extends State<ExtractByPageSelection> {
 
                                           Navigator.pushNamed(
                                             context,
-                                            route.resultPage,
+                                            route.AppRoutes.resultPage,
                                           );
                                         },
                                   child: SizedBox.expand(
@@ -386,20 +427,23 @@ class GridElementPlaceholder extends StatelessWidget {
       elevation: 0,
       // color: Theme.of(context).colorScheme.surfaceVariant,
       child: Align(
-          alignment: Alignment.bottomCenter,
-          child: Text((index + 1).toString(),
-              style: Theme.of(context).textTheme.headlineSmall)),
+        alignment: Alignment.bottomCenter,
+        child: Text(
+          (index + 1).toString(),
+          style: Theme.of(context).textTheme.headlineSmall,
+        ),
+      ),
     );
   }
 }
 
 class PageImageView extends StatelessWidget {
-  const PageImageView(
-      {Key? key,
-      required this.pageIndex,
-      required this.pdfPage,
-      this.onUpdatePdfPage})
-      : super(key: key);
+  const PageImageView({
+    Key? key,
+    required this.pageIndex,
+    required this.pdfPage,
+    this.onUpdatePdfPage,
+  }) : super(key: key);
 
   final PdfPageModel pdfPage;
 
@@ -420,19 +464,22 @@ class PageImageView extends StatelessWidget {
                 child: Center(
                   child: Image.memory(
                     pdfPage.pageBytes!,
-                    frameBuilder:
-                        ((context, child, frame, wasSynchronouslyLoaded) {
+                    frameBuilder: ((BuildContext context, Widget child,
+                        int? frame, bool wasSynchronouslyLoaded) {
                       if (wasSynchronouslyLoaded) {
                         return FittedBox(
-                            child:
-                                ImageChild(pageIndex: pageIndex, child: child));
+                          child: ImageChild(pageIndex: pageIndex, child: child),
+                        );
                       } else {
                         return AnimatedSwitcher(
                           duration: const Duration(milliseconds: 200),
                           child: frame != null
                               ? FittedBox(
                                   child: ImageChild(
-                                      pageIndex: pageIndex, child: child))
+                                    pageIndex: pageIndex,
+                                    child: child,
+                                  ),
+                                )
                               : const LoadingIndicator(),
                         );
                       }
@@ -455,7 +502,9 @@ class PageImageView extends StatelessWidget {
                     ),
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 5.0, vertical: 2.0),
+                        horizontal: 5.0,
+                        vertical: 2.0,
+                      ),
                       child: Text(
                         (pageIndex + 1).toString(),
                         style: Theme.of(context).textTheme.labelSmall?.copyWith(
@@ -491,12 +540,13 @@ class PageImageView extends StatelessWidget {
             onTap: () {
               PdfPageModel temp = pdfPage;
               temp = PdfPageModel(
-                  pageIndex: temp.pageIndex,
-                  pageBytes: temp.pageBytes,
-                  pageErrorStatus: temp.pageErrorStatus,
-                  pageSelected: !temp.pageSelected,
-                  pageRotationAngle: temp.pageRotationAngle,
-                  pageHidden: temp.pageHidden);
+                pageIndex: temp.pageIndex,
+                pageBytes: temp.pageBytes,
+                pageErrorStatus: temp.pageErrorStatus,
+                pageSelected: !temp.pageSelected,
+                pageRotationAngle: temp.pageRotationAngle,
+                pageHidden: temp.pageHidden,
+              );
               onUpdatePdfPage?.call(temp);
             },
           ),

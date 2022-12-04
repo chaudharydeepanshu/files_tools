@@ -1,5 +1,5 @@
 import 'package:files_tools/models/file_model.dart';
-import 'package:files_tools/route/route.dart' as route;
+import 'package:files_tools/route/app_routes.dart' as route;
 import 'package:files_tools/state/providers.dart';
 import 'package:files_tools/state/tools_actions_state.dart';
 import 'package:files_tools/ui/components/color_picker.dart';
@@ -30,9 +30,11 @@ class WatermarkPDF extends StatelessWidget {
 }
 
 class WatermarkPdfActionCard extends StatefulWidget {
-  const WatermarkPdfActionCard(
-      {Key? key, required this.pdfPageCount, required this.file})
-      : super(key: key);
+  const WatermarkPdfActionCard({
+    Key? key,
+    required this.pdfPageCount,
+    required this.file,
+  }) : super(key: key);
 
   final int pdfPageCount;
   final InputFileModel file;
@@ -42,7 +44,7 @@ class WatermarkPdfActionCard extends StatefulWidget {
 }
 
 class _WatermarkPdfActionCardState extends State<WatermarkPdfActionCard> {
-  final _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   TextEditingController textController =
       TextEditingController(text: 'Watermark Text');
@@ -89,7 +91,7 @@ class _WatermarkPdfActionCardState extends State<WatermarkPdfActionCard> {
                     ),
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     // The validator receives the text that the user has entered.
-                    validator: (value) {
+                    validator: (String? value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter watermark text';
                       }
@@ -114,7 +116,7 @@ class _WatermarkPdfActionCardState extends State<WatermarkPdfActionCard> {
                     ],
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     // The validator receives the text that the user has entered.
-                    validator: (value) {
+                    validator: (String? value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter number greater than 0';
                       } else if (double.parse(value) <= 0) {
@@ -141,7 +143,7 @@ class _WatermarkPdfActionCardState extends State<WatermarkPdfActionCard> {
                     ],
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     // The validator receives the text that the user has entered.
-                    validator: (value) {
+                    validator: (String? value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter number from 0 to 1';
                       } else if (double.parse(value) <= 0) {
@@ -165,12 +167,15 @@ class _WatermarkPdfActionCardState extends State<WatermarkPdfActionCard> {
                     keyboardType:
                         const TextInputType.numberWithOptions(decimal: true),
                     inputFormatters: [
-                      FilteringTextInputFormatter(RegExp('[0-9.-]'),
-                          allow: true),
-                      TextInputFormatter.withFunction(
-                          (TextEditingValue oldValue,
-                              TextEditingValue newValue) {
-                        final newValueText = newValue.text;
+                      FilteringTextInputFormatter(
+                        RegExp('[0-9.-]'),
+                        allow: true,
+                      ),
+                      TextInputFormatter.withFunction((
+                        TextEditingValue oldValue,
+                        TextEditingValue newValue,
+                      ) {
+                        final String newValueText = newValue.text;
 
                         if (newValueText == '-' ||
                             newValueText == '-.' ||
@@ -195,7 +200,7 @@ class _WatermarkPdfActionCardState extends State<WatermarkPdfActionCard> {
                     ],
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     // The validator receives the text that the user has entered.
-                    validator: (value) {
+                    validator: (String? value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter watermark rotation angle';
                       } else {
@@ -216,13 +221,16 @@ class _WatermarkPdfActionCardState extends State<WatermarkPdfActionCard> {
             const SizedBox(height: 10),
             ListTile(
               tileColor: Theme.of(context).colorScheme.surfaceVariant,
-              title: Text('Choose watermark color',
-                  style: Theme.of(context).textTheme.bodyMedium),
+              title: Text(
+                'Choose watermark color',
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
               visualDensity: VisualDensity.compact,
               subtitle: Text(
-                  '${ColorTools.materialNameAndCode(watermarkColor, colorSwatchNameMap: colorsNameMap)} '
-                  'aka ${ColorTools.nameThatColor(watermarkColor)}',
-                  style: Theme.of(context).textTheme.bodySmall),
+                '${ColorTools.materialNameAndCode(watermarkColor, colorSwatchNameMap: colorsNameMap)} '
+                'aka ${ColorTools.nameThatColor(watermarkColor)}',
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
               trailing: ColorIndicator(
                 width: 42,
                 height: 42,
@@ -234,13 +242,14 @@ class _WatermarkPdfActionCardState extends State<WatermarkPdfActionCard> {
                 // Wait for the picker to close, if dialog was dismissed,
                 // then restore the color we had before it was opened.
                 await colorPickerDialog(
-                    context: context,
-                    dialogPickerColor: watermarkColor,
-                    onColorChanged: (Color value) {
-                      setState(() {
-                        watermarkColor = value;
-                      });
+                  context: context,
+                  dialogPickerColor: watermarkColor,
+                  onColorChanged: (Color value) {
+                    setState(() {
+                      watermarkColor = value;
                     });
+                  },
+                );
               },
             ),
             const SizedBox(height: 10),
@@ -248,11 +257,13 @@ class _WatermarkPdfActionCardState extends State<WatermarkPdfActionCard> {
             SegmentedButton<WatermarkLayer>(
               segments: const [
                 ButtonSegment(
-                    value: WatermarkLayer.overContent,
-                    label: Text('Over Content')),
+                  value: WatermarkLayer.overContent,
+                  label: Text('Over Content'),
+                ),
                 ButtonSegment(
-                    value: WatermarkLayer.underContent,
-                    label: Text('Under Content')),
+                  value: WatermarkLayer.underContent,
+                  label: Text('Under Content'),
+                ),
               ],
               selected: <WatermarkLayer>{watermarkLayer},
               onSelectionChanged: (Set<WatermarkLayer> value) {
@@ -271,10 +282,7 @@ class _WatermarkPdfActionCardState extends State<WatermarkPdfActionCard> {
                   physics: const NeverScrollableScrollPhysics(),
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 3,
-                    childAspectRatio: 1,
                     mainAxisExtent: 50,
-                    mainAxisSpacing: 0,
-                    crossAxisSpacing: 0,
                   ),
                   itemCount: 9,
                   itemBuilder: (BuildContext context, int index) {
@@ -289,7 +297,8 @@ class _WatermarkPdfActionCardState extends State<WatermarkPdfActionCard> {
                           });
                         },
                         positionBorderRadius: const BorderRadius.only(
-                            topLeft: Radius.circular(12)),
+                          topLeft: Radius.circular(12),
+                        ),
                       );
                     } else if (index == 1) {
                       return WatermarkPositionButton(
@@ -314,7 +323,8 @@ class _WatermarkPdfActionCardState extends State<WatermarkPdfActionCard> {
                           });
                         },
                         positionBorderRadius: const BorderRadius.only(
-                            topRight: Radius.circular(12)),
+                          topRight: Radius.circular(12),
+                        ),
                       );
                     } else if (index == 3) {
                       return WatermarkPositionButton(
@@ -362,7 +372,8 @@ class _WatermarkPdfActionCardState extends State<WatermarkPdfActionCard> {
                           });
                         },
                         positionBorderRadius: const BorderRadius.only(
-                            bottomLeft: Radius.circular(12)),
+                          bottomLeft: Radius.circular(12),
+                        ),
                       );
                     } else if (index == 7) {
                       return WatermarkPositionButton(
@@ -387,7 +398,8 @@ class _WatermarkPdfActionCardState extends State<WatermarkPdfActionCard> {
                           });
                         },
                         positionBorderRadius: const BorderRadius.only(
-                            bottomRight: Radius.circular(12)),
+                          bottomRight: Radius.circular(12),
+                        ),
                       );
                     }
                   },
@@ -408,8 +420,8 @@ class _WatermarkPdfActionCardState extends State<WatermarkPdfActionCard> {
                       onPressed: () async {
                         if (_formKey.currentState!.validate()) {
                           watchToolsActionsStateProviderValue
-                              .watermarkSelectedFile(
-                            files: [widget.file],
+                              .mangeWatermarkPdfFileAction(
+                            sourceFile: widget.file,
                             text: textController.value.text,
                             fontSize:
                                 double.parse(fontSizeController.value.text),
@@ -417,13 +429,14 @@ class _WatermarkPdfActionCardState extends State<WatermarkPdfActionCard> {
                             opacity:
                                 double.parse(textOpacityController.value.text),
                             rotationAngle: double.parse(
-                                textRotationAngleController.value.text),
+                              textRotationAngleController.value.text,
+                            ),
                             watermarkColor: watermarkColor,
                             positionType: positionType,
                           );
                           Navigator.pushNamed(
                             context,
-                            route.resultPage,
+                            route.AppRoutes.resultPage,
                           );
                         }
                       },
@@ -442,13 +455,13 @@ class _WatermarkPdfActionCardState extends State<WatermarkPdfActionCard> {
 }
 
 class WatermarkPositionButton extends StatelessWidget {
-  const WatermarkPositionButton(
-      {Key? key,
-      required this.positionText,
-      this.onPositionChange,
-      required this.isPositionSelected,
-      required this.positionBorderRadius})
-      : super(key: key);
+  const WatermarkPositionButton({
+    Key? key,
+    required this.positionText,
+    this.onPositionChange,
+    required this.isPositionSelected,
+    required this.positionBorderRadius,
+  }) : super(key: key);
 
   final String positionText;
   final void Function()? onPositionChange;
@@ -473,7 +486,8 @@ class WatermarkPositionButton extends StatelessWidget {
         textAlign: TextAlign.center,
         style: isPositionSelected
             ? Theme.of(context).textTheme.labelLarge?.copyWith(
-                color: Theme.of(context).colorScheme.onSecondaryContainer)
+                  color: Theme.of(context).colorScheme.onSecondaryContainer,
+                )
             : null,
       ),
     );

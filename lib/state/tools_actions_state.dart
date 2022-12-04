@@ -1,426 +1,411 @@
 import 'dart:developer';
-import 'dart:io';
 
+import 'package:collection/collection.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:files_tools/models/file_model.dart';
 import 'package:files_tools/models/pdf_page_model.dart';
-import 'package:files_tools/utils/cleanup_file_name_for_android.dart';
-import 'package:files_tools/utils/clear_cache.dart';
-import 'package:files_tools/utils/edit_image.dart';
-import 'package:files_tools/utils/get_absolute_file_path_from_file_uri.dart';
-import 'package:files_tools/utils/get_file_model_from_uri.dart';
-import 'package:files_tools/utils/get_file_name_extension.dart';
-import 'package:files_tools/utils/get_file_name_without_extension.dart';
-import 'package:files_tools/utils/get_pdf_bitmaps.dart';
-import 'package:files_tools/utils/get_uint8list_from_absolute_file_path_or_uri.dart';
+import 'package:files_tools/utils/image_tools_actions.dart';
+import 'package:files_tools/utils/pdf_tools_actions.dart';
+import 'package:files_tools/utils/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_image_compress/flutter_image_compress.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:pdf_manipulator/pdf_manipulator.dart';
 import 'package:pick_or_save/pick_or_save.dart';
 
-enum ToolsActions {
-  // Actions for PDF
+/// All types of tools action.
+enum ToolAction {
+  /// Merge PDF tool action type for merging multiple PDFs.
   mergePdfs,
+
+  /// Split PDF tool action type for splitting PDF by page count.
   splitPdfByPageCount,
+
+  /// Split PDF tool action type for splitting PDF by size(KB, MB, GB).
   splitPdfByByteSize,
+
+  /// Split PDF tool action type for splitting PDF by page numbers.
   splitPdfByPageNumbers,
+
+  /// Split PDF tool action type for splitting PDF by page ranges.
   splitPdfByPageRanges,
+
+  /// Split PDF tool action type for splitting PDF by page range.
   extractPdfByPageRange,
+
+  /// Split PDF tool action type for extracting chosen pages from a PDF.
   extractPdfByPageSelection,
+
+  /// Modify PDF tool action type for rotating, deleting & reordering PDF pages.
   modifyPdf,
+
+  /// Convert PDF tool action type for converting PDF to images.
   convertPdfToImage,
+
+  /// Compress PDF tool action type for compressing PDF.
   compressPdf,
+
+  /// Watermark PDF tool action type for watermarking PDF.
   watermarkPdf,
+
+  /// Encrypt PDF tool action type for encrypting PDF.
   encryptPdf,
+
+  /// Decrypt PDF tool action type for decrypting PDF.
   decryptPdf,
-  // Actions for Image
+
+  /// Compress image tool action type for compressing image.
   compressImages,
+
+  /// Image tool action type for rotating, deleting & reordering PDF pages.
   cropRotateFlipImages,
-  // Actions for both Image and PDF
+
+  /// PDF & Image tool action type for converting images to PDF.
   imageToPdf,
 }
 
+/// App tools actions screens state class.
 class ToolsActionsState extends ChangeNotifier {
-  List<OutputFileModel> _outputFiles = [];
+  List<OutputFileModel> _outputFiles = <OutputFileModel>[];
+
+  /// Provides tools actions result files.
   List<OutputFileModel> get outputFiles => _outputFiles;
 
   bool _actionErrorStatus = false;
+
+  /// Provides tools actions error status.
   bool get actionErrorStatus => _actionErrorStatus;
 
   String _errorMessage = 'Unknown error';
+
+  /// Provides tools actions error message.
   String get errorMessage => _errorMessage;
 
   StackTrace _errorStackTrace = StackTrace.current;
+
+  /// Provides tools actions error StackTrace.
   StackTrace get errorStackTrace => _errorStackTrace;
 
   bool _isActionProcessing = false;
+
+  /// Provides tools actions processing status.
   bool get isActionProcessing => _isActionProcessing;
 
   bool _isSaveProcessing = false;
+
+  /// Provides tools actions result save processing status.
   bool get isSaveProcessing => _isSaveProcessing;
 
   bool _saveErrorStatus = false;
+
+  /// Provides tools actions result save error status.
   bool get saveErrorStatus => _saveErrorStatus;
 
-  late ToolsActions _currentActionType;
-  ToolsActions get currentActionType => _currentActionType;
+  late ToolAction _currentActionType;
+
+  /// Provides tools actions current action type.
+  ToolAction get currentActionType => _currentActionType;
 
   bool _mounted = true;
+
+  /// Provides ToolsActionsState provider mounted status.
   bool get mounted => _mounted;
 
   @override
   void dispose() {
     super.dispose();
+    // Setting ToolsActionsState provider mounted status false on disposing
+    // provider.
     _mounted = false;
   }
 
-  Future<void> mergeSelectedFiles({required List<InputFileModel> files}) async {
+  /// [ToolAction.mergePdfs] action for merging multiple PDFs.
+  Future<void> mangeMergePdfFileAction({
+    required List<InputFileModel> sourceFiles,
+  }) async {
+    // Clearing any leftover output files.
+    _outputFiles.clear();
+    // Updating action error status to false.
     updateActionErrorStatus(false);
+    // Updating action processing status to true.
     updateActionProcessingStatus(true);
-    updateActionType(ToolsActions.mergePdfs);
-    List<String> uriPathsOfFilesToMerge = List<String>.generate(
-        files.length, (int index) => files[index].fileUri);
-    String? result;
+    // Updating action type to current action.
+    updateActionType(ToolAction.mergePdfs);
+
     try {
-      result = await PdfManipulator().mergePDFs(
-          params: PDFMergerParams(
-        pdfsPaths: uriPathsOfFilesToMerge,
-      ));
+      // Merging the PDFs and storing result in output files.
+      _outputFiles = <OutputFileModel>[
+        await PdfToolsActions.mergePdfFiles(sourceFiles: sourceFiles),
+      ];
     } on PlatformException catch (e, s) {
+      updateActionErrorStatus(true);
       log(e.toString());
       _errorMessage = e.toString();
       _errorStackTrace = s;
     } catch (e, s) {
+      updateActionErrorStatus(true);
       log(e.toString());
       _errorMessage = e.toString();
       _errorStackTrace = s;
-    }
-    if (result != null) {
-      OutputFileModel file =
-          await getOutputFileModelFromPath(filePathOrUri: result);
-      DateTime currentDateTime = DateTime.now();
-      String outputFileName =
-          getCleanedUpFileName('Merged File $currentDateTime.pdf');
-      _outputFiles = [
-        OutputFileModel(
-            fileName: outputFileName,
-            fileDate: file.fileDate,
-            fileTime: file.fileTime,
-            fileSizeFormatBytes: file.fileSizeFormatBytes,
-            fileSizeBytes: file.fileSizeBytes,
-            filePath: file.filePath)
-      ];
-    } else {
-      updateActionErrorStatus(true);
+    } finally {
+      // Updating action processing status to false.
+      updateActionProcessingStatus(false);
 
-      // We can use this place to get the exact time of cancellation action.
-      // But don't just put clear cache here as at this state user may have started another task.
-      // So we avoid clearing cache here as we don't want the user to wait till cancellation for next task will.
+      // Notifying ToolsActionsState listeners.
+      customNotifyListener();
     }
-    updateActionProcessingStatus(false);
-    customNotifyListener();
   }
 
-  Future<void> splitSelectedFile({
-    required List<InputFileModel> files,
+  /// For splitting PDF.
+  ///
+  /// For split tool actions: [ToolAction.splitPdfByByteSize],
+  /// [ToolAction.splitPdfByPageCount], [ToolAction.splitPdfByPageNumbers],
+  /// [ToolAction.extractPdfByPageRange], [ToolAction.splitPdfByPageRanges]
+  Future<void> mangeSplitPdfFileAction({
+    required ToolAction toolAction,
+    required InputFileModel sourceFile,
     int? pageCount,
     int? byteSize,
     List<int>? pageNumbers,
     List<String>? pageRanges,
     String? pageRange,
   }) async {
+    // Clearing any leftover output files.
+    _outputFiles.clear();
+    // Updating action error status to false.
     updateActionErrorStatus(false);
+    // Updating action processing status to true.
     updateActionProcessingStatus(true);
-    String nameOfFileToSplit = files[0].fileName;
-    String extensionOfFileToSplit =
-        getFileNameExtension(fileName: nameOfFileToSplit);
-    String nameOfFileToSplitWithoutExtension =
-        getFileNameWithoutExtension(fileName: nameOfFileToSplit);
-    String uriPathOfFileToSplit = files[0].fileUri;
-    List<String>? result;
-    List<String> outputFilesNames = [];
+    // Updating action type to current action.
+    updateActionType(toolAction);
+
     try {
-      if (pageCount != null) {
-        updateActionType(ToolsActions.splitPdfByPageCount);
-        result = await PdfManipulator().splitPDF(
-            params: PDFSplitterParams(
-          pdfPath: uriPathOfFileToSplit,
-          pageCount: pageCount,
-        ));
-      } else if (byteSize != null) {
-        updateActionType(ToolsActions.splitPdfByByteSize);
-        result = await PdfManipulator().splitPDF(
-            params: PDFSplitterParams(
-          pdfPath: uriPathOfFileToSplit,
-          byteSize: byteSize,
-        ));
-      } else if (pageNumbers != null) {
-        updateActionType(ToolsActions.splitPdfByPageNumbers);
-        result = await PdfManipulator().splitPDF(
-            params: PDFSplitterParams(
-          pdfPath: uriPathOfFileToSplit,
-          pageNumbers: pageNumbers,
-        ));
-      } else if (pageRange != null) {
-        updateActionType(ToolsActions.extractPdfByPageRange);
-        result = await PdfManipulator().splitPDF(
-            params: PDFSplitterParams(
-          pdfPath: uriPathOfFileToSplit,
-          pageRange: pageRange,
-        ));
-      } else if (pageRanges != null) {
-        updateActionType(ToolsActions.splitPdfByPageRanges);
-        result = await PdfManipulator().splitPDF(
-            params: PDFSplitterParams(
-          pdfPath: uriPathOfFileToSplit,
-          pageRanges: pageRanges,
-        ));
-      }
-      if (result != null) {
-        outputFilesNames = List<String>.generate(result.length, (int index) {
-          DateTime currentDateTime = DateTime.now();
-          return getCleanedUpFileName(
-              '$nameOfFileToSplitWithoutExtension - ${index + 1} - $currentDateTime$extensionOfFileToSplit');
-        }, growable: false);
+      // Splitting the PDF based on action type and then storing result PDF
+      // files paths in resultFilesPaths.
+      if (toolAction == ToolAction.splitPdfByPageCount) {
+        // If ToolAction.splitPdfByPageCount then use pageCount.
+        if (pageCount != null) {
+          _outputFiles = await PdfToolsActions.splitPdfFile(
+            sourceFile: sourceFile,
+            pageCount: pageCount,
+          );
+        } else {
+          throw 'PageCount is null for ToolAction.splitPdfByPageCount';
+        }
+      } else if (toolAction == ToolAction.splitPdfByByteSize) {
+        // If ToolAction.splitPdfByByteSize then use byteSize.
+        if (byteSize != null) {
+          _outputFiles = await PdfToolsActions.splitPdfFile(
+            sourceFile: sourceFile,
+            byteSize: byteSize,
+          );
+        } else {
+          throw 'ByteSize is null for ToolAction.splitPdfByByteSize';
+        }
+      } else if (toolAction == ToolAction.splitPdfByPageNumbers) {
+        // If ToolAction.splitPdfByPageNumbers then use pageNumbers.
+        if (pageNumbers != null) {
+          _outputFiles = await PdfToolsActions.splitPdfFile(
+            sourceFile: sourceFile,
+            pageNumbers: pageNumbers,
+          );
+        } else {
+          throw 'PageNumbers is null for ToolAction.splitPdfByPageNumbers';
+        }
+      } else if (toolAction == ToolAction.extractPdfByPageRange) {
+        // If ToolAction.extractPdfByPageRange then use pageRange.
+        if (pageRange != null) {
+          _outputFiles = await PdfToolsActions.splitPdfFile(
+            sourceFile: sourceFile,
+            pageRange: pageRange,
+          );
+        } else {
+          throw 'PageRange is null for ToolAction.extractPdfByPageRange';
+        }
+      } else if (toolAction == ToolAction.splitPdfByPageRanges) {
+        // If ToolAction.splitPdfByPageRanges then use pageRanges.
+        if (pageRanges != null) {
+          _outputFiles = await PdfToolsActions.splitPdfFile(
+            sourceFile: sourceFile,
+            pageRanges: pageRanges,
+          );
+        } else {
+          throw 'PageRanges is null for ToolAction.splitPdfByPageRanges';
+        }
+      } else {
+        throw 'No splitting set for ToolAction: $toolAction';
       }
     } on PlatformException catch (e, s) {
+      updateActionErrorStatus(true);
       log(e.toString());
       _errorMessage = e.toString();
       _errorStackTrace = s;
     } catch (e, s) {
+      updateActionErrorStatus(true);
       log(e.toString());
       _errorMessage = e.toString();
       _errorStackTrace = s;
-    }
-    if (result != null && result.isNotEmpty) {
-      outputFiles.clear();
-      for (int i = 0; i < result.length; i++) {
-        OutputFileModel file =
-            await getOutputFileModelFromPath(filePathOrUri: result[i]);
-        file = OutputFileModel(
-            fileName: outputFilesNames[i],
-            fileDate: file.fileDate,
-            fileTime: file.fileTime,
-            fileSizeFormatBytes: file.fileSizeFormatBytes,
-            fileSizeBytes: file.fileSizeBytes,
-            filePath: file.filePath);
-        outputFiles.add(file);
-      }
-    } else {
-      updateActionErrorStatus(true);
+    } finally {
+      // Updating action processing status to false.
+      updateActionProcessingStatus(false);
 
-      // We can use this place to get the exact time of cancellation action.
-      // But don't just put clear cache here as at this state user may have started another task.
-      // So we avoid clearing cache here as we don't want the user to wait till cancellation for next task will.
+      // Notifying ToolsActionsState listeners.
+      customNotifyListener();
     }
-    updateActionProcessingStatus(false);
-    customNotifyListener();
   }
 
-  Future<void> modifySelectedFile({
-    required List<InputFileModel> files,
+  /// For modifying PDF.
+  ///
+  /// For tools actions:
+  /// [ToolAction.modifyPdf] for rotating, deleting & reordering PDF pages.
+  /// [ToolAction.extractPdfByPageSelection] for extracting chosen PDF pages.
+  Future<void> mangeModifyPdfFileAction({
+    required ToolAction toolAction,
+    required InputFileModel sourceFile,
     List<PageRotationInfo>? pagesRotationInfo,
     List<int>? pageNumbersForReorder,
     List<int>? pageNumbersForDeleter,
   }) async {
+    // Clearing any leftover output files.
+    _outputFiles.clear();
+    // Updating action error status to false.
     updateActionErrorStatus(false);
+    // Updating action processing status to true.
     updateActionProcessingStatus(true);
-    String nameOfFileToSplit = files[0].fileName;
-    String extensionOfFileToSplit =
-        getFileNameExtension(fileName: nameOfFileToSplit);
-    String nameOfFileToSplitWithoutExtension =
-        getFileNameWithoutExtension(fileName: nameOfFileToSplit);
-    String uriPathOfFileToModify = files[0].fileUri;
-    String? result;
-    String outputFileName = 'Unknown File$extensionOfFileToSplit';
-    try {
-      updateActionType(ToolsActions.modifyPdf);
-      result = await PdfManipulator().pdfPageRotatorDeleterReorder(
-          params: PDFPageRotatorDeleterReorderParams(
-        pdfPath: uriPathOfFileToModify,
-        pagesRotationInfo: pagesRotationInfo,
-        pageNumbersForDeleter: pageNumbersForDeleter,
-        pageNumbersForReorder: pageNumbersForReorder,
-      ));
+    // Updating action type to current action.
+    updateActionType(toolAction);
 
-      if (result != null) {
-        DateTime currentDateTime = DateTime.now();
-        outputFileName = getCleanedUpFileName(
-            '$nameOfFileToSplitWithoutExtension - $currentDateTime$extensionOfFileToSplit');
-      }
+    try {
+      // Modifying the PDF and storing result PDF file path in outputFiles.
+      _outputFiles = <OutputFileModel>[
+        await PdfToolsActions.modifyPdfFile(
+          sourceFile: sourceFile,
+          pagesRotationInfo: pagesRotationInfo,
+          pageNumbersForReorder: pageNumbersForReorder,
+          pageNumbersForDeleter: pageNumbersForDeleter,
+        ),
+      ];
     } on PlatformException catch (e, s) {
+      updateActionErrorStatus(true);
       log(e.toString());
       _errorMessage = e.toString();
       _errorStackTrace = s;
     } catch (e, s) {
+      updateActionErrorStatus(true);
       log(e.toString());
       _errorMessage = e.toString();
       _errorStackTrace = s;
-    }
-    if (result != null && result.isNotEmpty) {
-      outputFiles.clear();
-      OutputFileModel file =
-          await getOutputFileModelFromPath(filePathOrUri: result);
-      file = OutputFileModel(
-          fileName: outputFileName,
-          fileDate: file.fileDate,
-          fileTime: file.fileTime,
-          fileSizeFormatBytes: file.fileSizeFormatBytes,
-          fileSizeBytes: file.fileSizeBytes,
-          filePath: file.filePath);
-      outputFiles.add(file);
-    } else {
-      updateActionErrorStatus(true);
+    } finally {
+      // Updating action processing status to false.
+      updateActionProcessingStatus(false);
 
-      // We can use this place to get the exact time of cancellation action.
-      // But don't just put clear cache here as at this state user may have started another task.
-      // So we avoid clearing cache here as we don't want the user to wait till cancellation for next task will.
+      // Notifying ToolsActionsState listeners.
+      customNotifyListener();
     }
-    updateActionProcessingStatus(false);
-    customNotifyListener();
   }
 
-  Future<void> convertSelectedFile({
-    required List<InputFileModel> files,
+  /// For converting PDF.
+  ///
+  /// For tools actions:
+  /// [ToolAction.convertPdfToImage] for converting PDF pages to images.
+  Future<void> mangeConvertPdfFileAction({
+    required ToolAction toolAction,
+    required InputFileModel sourceFile,
     required List<PdfPageModel> selectedPages,
     double? imageScaling,
   }) async {
+    // Clearing any leftover output files.
+    _outputFiles.clear();
+    // Updating action error status to false.
     updateActionErrorStatus(false);
+    // Updating action processing status to true.
     updateActionProcessingStatus(true);
-    String nameOfFileToConvert = files[0].fileName;
-    // String extensionOfFileToCovert =
-    //     getFileNameExtension(fileName: nameOfFileToConvert);
-    String nameOfFileToConvertWithoutExtension =
-        getFileNameWithoutExtension(fileName: nameOfFileToConvert);
-    String uriPathOfFileToConvert = files[0].fileUri;
-    List<String> result = [];
-    List<String> outputFilesNames = [];
+    // Updating action type to current action.
+    updateActionType(toolAction);
+
     try {
-      if (imageScaling != null) {
-        String imageTypeExtension = '.png';
-        updateActionType(ToolsActions.convertPdfToImage);
-        String tempPath = (await getTemporaryDirectory()).path;
-        for (var page in selectedPages) {
-          Uint8List? pageBytes;
-          pageBytes = await getPdfPageBitmap(
-              index: page.pageIndex,
-              pdfPath: uriPathOfFileToConvert,
-              scale: imageScaling,
-              rotationAngle: page.pageRotationAngle);
-          DateTime currentDateTime = DateTime.now();
-          String tempFileName =
-              getCleanedUpFileName('$currentDateTime$imageTypeExtension');
-          File file = File('$tempPath/$tempFileName');
-          await file.writeAsBytes(pageBytes!.buffer
-              .asUint8List(pageBytes.offsetInBytes, pageBytes.lengthInBytes));
-          result.add(file.path);
+      // Converting the PDF based on action type and then storing result
+      // files paths in resultFilesPaths.
+      if (toolAction == ToolAction.convertPdfToImage) {
+        // If ToolAction.convertPdfToImage then use imageScaling.
+        if (imageScaling != null) {
+          _outputFiles = await PdfToolsActions.convertPdfFilePagesToImages(
+            sourceFile: sourceFile,
+            selectedPages: selectedPages,
+            imageScaling: imageScaling,
+          );
+        } else {
+          throw 'ImageScaling is null for ToolAction.convertPdfToImage';
         }
-        outputFilesNames = List<String>.generate(result.length, (int index) {
-          DateTime currentDateTime = DateTime.now();
-          return getCleanedUpFileName(
-              '$nameOfFileToConvertWithoutExtension - ${index + 1} - $currentDateTime$imageTypeExtension');
-        }, growable: false);
+      } else {
+        throw 'No converting set for ToolAction: $toolAction';
       }
     } on PlatformException catch (e, s) {
+      updateActionErrorStatus(true);
       log(e.toString());
       _errorMessage = e.toString();
       _errorStackTrace = s;
     } catch (e, s) {
+      updateActionErrorStatus(true);
       log(e.toString());
       _errorMessage = e.toString();
       _errorStackTrace = s;
-    }
-    if (result.isNotEmpty) {
-      outputFiles.clear();
-      for (int i = 0; i < result.length; i++) {
-        OutputFileModel file =
-            await getOutputFileModelFromPath(filePathOrUri: result[i]);
-        file = OutputFileModel(
-            fileName: outputFilesNames[i],
-            fileDate: file.fileDate,
-            fileTime: file.fileTime,
-            fileSizeFormatBytes: file.fileSizeFormatBytes,
-            fileSizeBytes: file.fileSizeBytes,
-            filePath: file.filePath);
-        outputFiles.add(file);
-      }
-    } else {
-      updateActionErrorStatus(true);
+    } finally {
+      // Updating action processing status to false.
+      updateActionProcessingStatus(false);
 
-      // We can use this place to get the exact time of cancellation action.
-      // But don't just put clear cache here as at this state user may have started another task.
-      // So we avoid clearing cache here as we don't want the user to wait till cancellation for next task will.
+      // Notifying ToolsActionsState listeners.
+      customNotifyListener();
     }
-    updateActionProcessingStatus(false);
-    customNotifyListener();
   }
 
-  Future<void> compressSelectedFile({
-    required List<InputFileModel> files,
+  /// [ToolAction.compressPdf] action for compressing PDF.
+  Future<void> mangeCompressPdfFileAction({
+    required InputFileModel sourceFile,
     double? imageScale,
     int? imageQuality,
     bool? unEmbedFonts,
   }) async {
+    // Clearing any leftover output files.
+    _outputFiles.clear();
+    // Updating action error status to false.
     updateActionErrorStatus(false);
+    // Updating action processing status to true.
     updateActionProcessingStatus(true);
-    String nameOfFileToCompress = files[0].fileName;
-    String extensionOfFileToCompress =
-        getFileNameExtension(fileName: nameOfFileToCompress);
-    String nameOfFileToCompressWithoutExtension =
-        getFileNameWithoutExtension(fileName: nameOfFileToCompress);
-    String uriPathOfFileToCompress = files[0].fileUri;
-    String? result;
-    String outputFileName = 'Unknown File$extensionOfFileToCompress';
+    // Updating action type to current action.
+    updateActionType(ToolAction.compressPdf);
+
     try {
-      updateActionType(ToolsActions.compressPdf);
-      result = await PdfManipulator().pdfCompressor(
-          params: PDFCompressorParams(
-        pdfPath: uriPathOfFileToCompress,
-        imageScale: imageScale ?? 1,
-        imageQuality: imageQuality ?? 100,
-        unEmbedFonts: unEmbedFonts ?? false,
-      ));
-      if (result != null) {
-        DateTime currentDateTime = DateTime.now();
-        outputFileName = getCleanedUpFileName(
-            '$nameOfFileToCompressWithoutExtension - Compressed - $currentDateTime$extensionOfFileToCompress');
-      }
+      // Compressing the PDF and storing result PDF file path in outputFiles.
+      _outputFiles = <OutputFileModel>[
+        await PdfToolsActions.compressPdfFile(
+          sourceFile: sourceFile,
+          imageScale: imageScale ?? 1,
+          imageQuality: imageQuality ?? 100,
+          unEmbedFonts: unEmbedFonts ?? false,
+        ),
+      ];
     } on PlatformException catch (e, s) {
+      updateActionErrorStatus(true);
       log(e.toString());
       _errorMessage = e.toString();
       _errorStackTrace = s;
     } catch (e, s) {
+      updateActionErrorStatus(true);
       log(e.toString());
       _errorMessage = e.toString();
       _errorStackTrace = s;
-    }
-    if (result != null && result.isNotEmpty) {
-      outputFiles.clear();
-      OutputFileModel file =
-          await getOutputFileModelFromPath(filePathOrUri: result);
-      file = OutputFileModel(
-          fileName: outputFileName,
-          fileDate: file.fileDate,
-          fileTime: file.fileTime,
-          fileSizeFormatBytes: file.fileSizeFormatBytes,
-          fileSizeBytes: file.fileSizeBytes,
-          filePath: file.filePath);
-      outputFiles.add(file);
-    } else {
-      updateActionErrorStatus(true);
+    } finally {
+      // Updating action processing status to false.
+      updateActionProcessingStatus(false);
 
-      // We can use this place to get the exact time of cancellation action.
-      // But don't just put clear cache here as at this state user may have started another task.
-      // So we avoid clearing cache here as we don't want the user to wait till cancellation for next task will.
+      // Notifying ToolsActionsState listeners.
+      customNotifyListener();
     }
-    updateActionProcessingStatus(false);
-    customNotifyListener();
   }
 
-  Future<void> watermarkSelectedFile({
-    required List<InputFileModel> files,
+  /// [ToolAction.watermarkPdf] action for watermarking PDF.
+  Future<void> mangeWatermarkPdfFileAction({
+    required InputFileModel sourceFile,
     required String text,
     double? fontSize,
     WatermarkLayer? watermarkLayer,
@@ -429,68 +414,51 @@ class ToolsActionsState extends ChangeNotifier {
     Color? watermarkColor,
     PositionType? positionType,
   }) async {
+    // Clearing any leftover output files.
+    _outputFiles.clear();
+    // Updating action error status to false.
     updateActionErrorStatus(false);
+    // Updating action processing status to true.
     updateActionProcessingStatus(true);
-    String nameOfFileToWatermark = files[0].fileName;
-    String extensionOfFileToWatermark =
-        getFileNameExtension(fileName: nameOfFileToWatermark);
-    String nameOfFileToWatermarkWithoutExtension =
-        getFileNameWithoutExtension(fileName: nameOfFileToWatermark);
-    String uriPathOfFileToWatermark = files[0].fileUri;
-    String? result;
-    String outputFileName = 'Unknown File$extensionOfFileToWatermark';
+    // Updating action type to current action.
+    updateActionType(ToolAction.watermarkPdf);
+
     try {
-      updateActionType(ToolsActions.watermarkPdf);
-      result = await PdfManipulator().pdfWatermark(
-          params: PDFWatermarkParams(
-        pdfPath: uriPathOfFileToWatermark,
-        text: text,
-        fontSize: fontSize ?? 30,
-        watermarkLayer: watermarkLayer ?? WatermarkLayer.overContent,
-        opacity: opacity ?? 0.5,
-        rotationAngle: rotationAngle ?? 45,
-        watermarkColor: watermarkColor ?? Colors.black,
-        positionType: positionType ?? PositionType.center,
-      ));
-      if (result != null) {
-        DateTime currentDateTime = DateTime.now();
-        outputFileName = getCleanedUpFileName(
-            '$nameOfFileToWatermarkWithoutExtension - Watermarked - $currentDateTime$extensionOfFileToWatermark');
-      }
+      // Watermark the PDF and storing result PDF file path in outputFiles.
+      _outputFiles = <OutputFileModel>[
+        await PdfToolsActions.watermarkPdfFile(
+          sourceFile: sourceFile,
+          text: text,
+          fontSize: fontSize ?? 30,
+          watermarkLayer: watermarkLayer ?? WatermarkLayer.overContent,
+          opacity: opacity ?? 0.5,
+          rotationAngle: rotationAngle ?? 45,
+          watermarkColor: watermarkColor ?? Colors.black,
+          positionType: positionType ?? PositionType.center,
+        ),
+      ];
     } on PlatformException catch (e, s) {
+      updateActionErrorStatus(true);
       log(e.toString());
       _errorMessage = e.toString();
       _errorStackTrace = s;
     } catch (e, s) {
+      updateActionErrorStatus(true);
       log(e.toString());
       _errorMessage = e.toString();
       _errorStackTrace = s;
-    }
-    if (result != null && result.isNotEmpty) {
-      outputFiles.clear();
-      OutputFileModel file =
-          await getOutputFileModelFromPath(filePathOrUri: result);
-      file = OutputFileModel(
-          fileName: outputFileName,
-          fileDate: file.fileDate,
-          fileTime: file.fileTime,
-          fileSizeFormatBytes: file.fileSizeFormatBytes,
-          fileSizeBytes: file.fileSizeBytes,
-          filePath: file.filePath);
-      outputFiles.add(file);
-    } else {
-      updateActionErrorStatus(true);
+    } finally {
+      // Updating action processing status to false.
+      updateActionProcessingStatus(false);
 
-      // We can use this place to get the exact time of cancellation action.
-      // But don't just put clear cache here as at this state user may have started another task.
-      // So we avoid clearing cache here as we don't want the user to wait till cancellation for next task will.
+      // Notifying ToolsActionsState listeners.
+      customNotifyListener();
     }
-    updateActionProcessingStatus(false);
-    customNotifyListener();
   }
 
-  Future<void> encryptSelectedFile({
-    required List<InputFileModel> files,
+  /// [ToolAction.encryptPdf] action for encrypting PDF.
+  Future<void> mangeEncryptPdfFileAction({
+    required InputFileModel sourceFile,
     String? ownerPassword,
     String? userPassword,
     bool? allowPrinting,
@@ -508,399 +476,265 @@ class ToolsActionsState extends ChangeNotifier {
     bool? encryptEmbeddedFilesOnly,
     bool? doNotEncryptMetadata,
   }) async {
+    // Clearing any leftover output files.
+    _outputFiles.clear();
+    // Updating action error status to false.
     updateActionErrorStatus(false);
+    // Updating action processing status to true.
     updateActionProcessingStatus(true);
-    String nameOfFileToEncrypt = files[0].fileName;
-    String extensionOfFileToEncrypt =
-        getFileNameExtension(fileName: nameOfFileToEncrypt);
-    String nameOfFileToEncryptWithoutExtension =
-        getFileNameWithoutExtension(fileName: nameOfFileToEncrypt);
-    String uriPathOfFileToEncrypt = files[0].fileUri;
-    String? result;
-    String outputFileName = 'Unknown File$extensionOfFileToEncrypt';
+    // Updating action type to current action.
+    updateActionType(ToolAction.encryptPdf);
+
     try {
-      updateActionType(ToolsActions.encryptPdf);
-      result = await PdfManipulator().pdfEncryption(
-          params: PDFEncryptionParams(
-        pdfPath: uriPathOfFileToEncrypt,
-        ownerPassword: ownerPassword ?? '',
-        userPassword: userPassword ?? '',
-        allowPrinting: allowPrinting ?? false,
-        allowModifyContents: allowModifyContents ?? false,
-        allowCopy: allowCopy ?? false,
-        allowModifyAnnotations: allowModifyAnnotations ?? false,
-        allowFillIn: allowFillIn ?? false,
-        allowScreenReaders: allowScreenReaders ?? false,
-        allowAssembly: allowAssembly ?? false,
-        allowDegradedPrinting: allowDegradedPrinting ?? false,
-        standardEncryptionAES40: standardEncryptionAES40 ?? false,
-        standardEncryptionAES128: standardEncryptionAES128 ?? false,
-        encryptionAES128: encryptionAES128 ?? false,
-        encryptionAES256: encryptionAES256 ?? false,
-        encryptEmbeddedFilesOnly: encryptEmbeddedFilesOnly ?? false,
-        doNotEncryptMetadata: doNotEncryptMetadata ?? false,
-      ));
-      if (result != null) {
-        DateTime currentDateTime = DateTime.now();
-        outputFileName = outputFileName = getCleanedUpFileName(
-            '$nameOfFileToEncryptWithoutExtension - Encrypted - $currentDateTime$extensionOfFileToEncrypt');
-      }
+      // Encrypting the PDF and storing result PDF file path in outputFiles.
+      _outputFiles = <OutputFileModel>[
+        await PdfToolsActions.encryptPdfFile(
+          sourceFile: sourceFile,
+          ownerPassword: ownerPassword ?? '',
+          userPassword: userPassword ?? '',
+          allowPrinting: allowPrinting ?? false,
+          allowModifyContents: allowModifyContents ?? false,
+          allowCopy: allowCopy ?? false,
+          allowModifyAnnotations: allowModifyAnnotations ?? false,
+          allowFillIn: allowFillIn ?? false,
+          allowScreenReaders: allowScreenReaders ?? false,
+          allowAssembly: allowAssembly ?? false,
+          allowDegradedPrinting: allowDegradedPrinting ?? false,
+          standardEncryptionAES40: standardEncryptionAES40 ?? false,
+          standardEncryptionAES128: standardEncryptionAES128 ?? false,
+          encryptionAES128: encryptionAES128 ?? false,
+          encryptionAES256: encryptionAES256 ?? false,
+          encryptEmbeddedFilesOnly: encryptEmbeddedFilesOnly ?? false,
+          doNotEncryptMetadata: doNotEncryptMetadata ?? false,
+        ),
+      ];
     } on PlatformException catch (e, s) {
+      updateActionErrorStatus(true);
       log(e.toString());
       _errorMessage = e.toString();
       _errorStackTrace = s;
     } catch (e, s) {
+      updateActionErrorStatus(true);
       log(e.toString());
       _errorMessage = e.toString();
       _errorStackTrace = s;
-    }
-    if (result != null && result.isNotEmpty) {
-      outputFiles.clear();
-      OutputFileModel file =
-          await getOutputFileModelFromPath(filePathOrUri: result);
-      file = OutputFileModel(
-          fileName: outputFileName,
-          fileDate: file.fileDate,
-          fileTime: file.fileTime,
-          fileSizeFormatBytes: file.fileSizeFormatBytes,
-          fileSizeBytes: file.fileSizeBytes,
-          filePath: file.filePath);
-      outputFiles.add(file);
-    } else {
-      updateActionErrorStatus(true);
+    } finally {
+      // Updating action processing status to false.
+      updateActionProcessingStatus(false);
 
-      // We can use this place to get the exact time of cancellation action.
-      // But don't just put clear cache here as at this state user may have started another task.
-      // So we avoid clearing cache here as we don't want the user to wait till cancellation for next task will.
+      // Notifying ToolsActionsState listeners.
+      customNotifyListener();
     }
-    updateActionProcessingStatus(false);
-    customNotifyListener();
   }
 
-  Future<void> decryptSelectedFile({
-    required List<InputFileModel> files,
+  /// [ToolAction.decryptPdf] action for decrypting PDF.
+  Future<void> mangeDecryptPdfFileAction({
+    required InputFileModel sourceFile,
     String? password,
   }) async {
+    // Clearing any leftover output files.
+    _outputFiles.clear();
+    // Updating action error status to false.
     updateActionErrorStatus(false);
+    // Updating action processing status to true.
     updateActionProcessingStatus(true);
-    String nameOfFileToDecrypt = files[0].fileName;
-    String extensionOfFileToDecrypt =
-        getFileNameExtension(fileName: nameOfFileToDecrypt);
-    String nameOfFileToDecryptWithoutExtension =
-        getFileNameWithoutExtension(fileName: nameOfFileToDecrypt);
-    String uriPathOfFileToDecrypt = files[0].fileUri;
-    String? result;
-    String outputFileName = 'Unknown File$extensionOfFileToDecrypt';
+    // Updating action type to current action.
+    updateActionType(ToolAction.decryptPdf);
+
     try {
-      updateActionType(ToolsActions.decryptPdf);
-      result = await PdfManipulator().pdfDecryption(
-          params: PDFDecryptionParams(
-        pdfPath: uriPathOfFileToDecrypt,
-        password: password ?? '',
-      ));
-      if (result != null) {
-        DateTime currentDateTime = DateTime.now();
-        outputFileName = getCleanedUpFileName(
-            '$nameOfFileToDecryptWithoutExtension - Decrypted - $currentDateTime$extensionOfFileToDecrypt');
-      }
+      // Decrypting the PDF and storing result PDF file path in outputFiles.
+      _outputFiles = <OutputFileModel>[
+        await PdfToolsActions.decryptPdfFile(
+          sourceFile: sourceFile,
+          password: password ?? '',
+        ),
+      ];
     } on PlatformException catch (e, s) {
-      log(e.toString());
-      if (e.toString().contains('BadPasswordException')) {
-        _errorMessage = 'Password provided was wrong';
-      } else {
-        _errorMessage = e.toString();
-        _errorStackTrace = s;
-      }
-    } catch (e, s) {
+      updateActionErrorStatus(true);
       log(e.toString());
       _errorMessage = e.toString();
       _errorStackTrace = s;
-    }
-    if (result != null && result.isNotEmpty) {
-      outputFiles.clear();
-      OutputFileModel file =
-          await getOutputFileModelFromPath(filePathOrUri: result);
-      file = OutputFileModel(
-          fileName: outputFileName,
-          fileDate: file.fileDate,
-          fileTime: file.fileTime,
-          fileSizeFormatBytes: file.fileSizeFormatBytes,
-          fileSizeBytes: file.fileSizeBytes,
-          filePath: file.filePath);
-      outputFiles.add(file);
-    } else {
+    } catch (e, s) {
       updateActionErrorStatus(true);
-      // We can use this place to get the exact time of cancellation action.
-      // But don't just put clear cache here as at this state user may have started another task.
-      // So we avoid clearing cache here as we don't want the user to wait till cancellation for next task will.
+      log(e.toString());
+      _errorMessage = e.toString();
+      _errorStackTrace = s;
+    } finally {
+      // Updating action processing status to false.
+      updateActionProcessingStatus(false);
+
+      // Notifying ToolsActionsState listeners.
+      customNotifyListener();
     }
-    updateActionProcessingStatus(false);
-    customNotifyListener();
   }
 
-  Future<void> imageToPdf({
-    required List<InputFileModel> files,
+  /// For converting Image.
+  ///
+  /// For tools actions:
+  /// [ToolAction.imageToPdf] for converting images to PDFs.
+  Future<void> mangeConvertImageFileAction({
+    required ToolAction toolAction,
+    required List<InputFileModel> sourceFiles,
     required bool createSinglePdf,
     required List<GlobalKey<ExtendedImageEditorState>> editorKeys,
   }) async {
+    // Clearing any leftover output files.
+    _outputFiles.clear();
+    // Updating action error status to false.
     updateActionErrorStatus(false);
+    // Updating action processing status to true.
     updateActionProcessingStatus(true);
-    updateActionType(ToolsActions.imageToPdf);
-    List<String>? result;
-    List<String> outputFilesNames = [];
+    // Updating action type to current action.
+    updateActionType(toolAction);
+
     try {
-      List<InputFileModel> images = [];
-      for (int i = 0; i < files.length; i++) {
-        ExtendedImageEditorState? currentState = editorKeys[i].currentState;
-        InputFileModel image = files[i];
-        if (currentState != null) {
-          Uint8List? imageData = await modifyImage(currentState);
-          Directory tempDir = await getTemporaryDirectory();
-          String tempPath = tempDir.path;
-          // Directory appDocDir = await getApplicationDocumentsDirectory();
-          // String appDocPath = appDocDir.path;
-          String nameOfFile = image.fileName;
-          String imageTypeExtension =
-              getFileNameExtension(fileName: nameOfFile);
-          DateTime currentDateTime = DateTime.now();
-          String tempFileName =
-              getCleanedUpFileName('$currentDateTime$imageTypeExtension');
-          File file = File('$tempPath/$tempFileName');
-          await file.writeAsBytes(imageData!.buffer
-              .asUint8List(imageData.offsetInBytes, imageData.lengthInBytes));
-          image = InputFileModel(
-              fileName: image.fileName,
-              fileDate: image.fileDate,
-              fileTime: image.fileTime,
-              fileSizeFormatBytes: image.fileSizeFormatBytes,
-              fileSizeBytes: image.fileSizeBytes,
-              fileUri: file.path);
-        }
-        images.add(image);
-      }
+      // Updating the source images based on editorKeys.
+      List<OutputFileModel> modifiedOutputFiles =
+          await ImageToolsActions.modifyImageFiles(
+        sourceFiles: sourceFiles,
+        editorKeys: editorKeys,
+      );
 
-      List<String> uriPathsOfImages = List<String>.generate(
-          images.length, (int index) => images[index].fileUri);
+      // Now converting modifiedOutputFiles OutputFileModel to InputFileModel
+      // and then resetting the name of updated source files back to to the
+      // original source files names and then storing in updatedSourceImages.
+      List<InputFileModel> updatedSourceFiles = modifiedOutputFiles
+          .mapIndexed(
+            (int index, OutputFileModel element) => InputFileModel(
+              fileName: sourceFiles[index].fileName,
+              fileDate: element.fileDate,
+              fileTime: element.fileTime,
+              fileSizeFormatBytes: element.fileSizeFormatBytes,
+              fileSizeBytes: element.fileSizeBytes,
+              fileUri: element.filePath,
+            ),
+          )
+          .toList();
 
-      result = await PdfManipulator().imagesToPdfs(
-          params: ImagesToPDFsParams(
-        imagesPaths: uriPathsOfImages,
-        createSinglePdf: createSinglePdf,
-      ));
-      if (result != null) {
-        DateTime currentDateTime = DateTime.now();
-        outputFilesNames = List.generate(result.length, (index) {
-          String nameOfFile = files[index].fileName;
-          String nameOfFileWithoutExtension =
-              getFileNameWithoutExtension(fileName: nameOfFile);
-          return getCleanedUpFileName(
-              '$nameOfFileWithoutExtension - $currentDateTime.pdf');
-        });
+      // Converting the updated images based on action type and then
+      // storing result Image file path in outputFiles.
+      if (toolAction == ToolAction.imageToPdf) {
+        _outputFiles = await ImageToolsActions.convertImageFilesToPdfs(
+          sourceFiles: updatedSourceFiles,
+          createSinglePdf: createSinglePdf,
+        );
+      } else {
+        throw 'No image converting set for ToolAction: $toolAction';
       }
     } on PlatformException catch (e, s) {
+      updateActionErrorStatus(true);
       log(e.toString());
       _errorMessage = e.toString();
       _errorStackTrace = s;
     } catch (e, s) {
+      updateActionErrorStatus(true);
       log(e.toString());
       _errorMessage = e.toString();
       _errorStackTrace = s;
-    }
-    if (result != null && result.isNotEmpty) {
-      outputFiles.clear();
-      for (int i = 0; i < result.length; i++) {
-        OutputFileModel file =
-            await getOutputFileModelFromPath(filePathOrUri: result[i]);
-        file = OutputFileModel(
-            fileName: outputFilesNames[i],
-            fileDate: file.fileDate,
-            fileTime: file.fileTime,
-            fileSizeFormatBytes: file.fileSizeFormatBytes,
-            fileSizeBytes: file.fileSizeBytes,
-            filePath: file.filePath);
-        outputFiles.add(file);
-      }
-    } else {
-      updateActionErrorStatus(true);
+    } finally {
+      // Updating action processing status to false.
+      updateActionProcessingStatus(false);
 
-      // We can use this place to get the exact time of cancellation action.
-      // But don't just put clear cache here as at this state user may have started another task.
-      // So we avoid clearing cache here as we don't want the user to wait till cancellation for next task will.
+      // Notifying ToolsActionsState listeners.
+      customNotifyListener();
     }
-    updateActionProcessingStatus(false);
-    customNotifyListener();
   }
 
-  Future<void> compressSelectedImage({
-    required List<InputFileModel> files,
+  /// [ToolAction.compressImages] action for compressing images.
+  Future<void> mangeCompressImageFileAction({
+    required List<InputFileModel> sourceFiles,
     double? imageScale,
     int? imageQuality,
     bool? removeExifData,
   }) async {
+    // Clearing any leftover output files.
+    _outputFiles.clear();
+    // Updating action error status to false.
     updateActionErrorStatus(false);
+    // Updating action processing status to true.
     updateActionProcessingStatus(true);
-    updateActionType(ToolsActions.compressImages);
-    List<String> result = [];
-    List<String> outputFilesNames = [];
+    // Updating action type to current action.
+    updateActionType(ToolAction.compressImages);
+
     try {
-      for (int i = 0; i < files.length; i++) {
-        InputFileModel image = files[i];
-        Uint8List? imageData = await getBytesFromFilePathOrUri(
-            filePath: null, fileUri: image.fileUri);
-        var decodedImage = await decodeImageFromList(imageData);
-        Uint8List? compressedImageData =
-            await FlutterImageCompress.compressWithList(
-          imageData,
-          minWidth: (decodedImage.width * imageScale!).toInt(),
-          minHeight: (decodedImage.height * imageScale).toInt(),
-          quality: imageQuality ?? 100,
-          keepExif: removeExifData != null ? !removeExifData : true,
-        );
-        // Using original image if compressed image is larger in bytes then original image.
-        if (imageData.lengthInBytes < compressedImageData.lengthInBytes) {
-          compressedImageData = imageData;
-        }
-        Directory tempDir = await getTemporaryDirectory();
-        String tempPath = tempDir.path;
-        String nameOfFile = image.fileName;
-        String imageTypeExtension = getFileNameExtension(fileName: nameOfFile);
-        DateTime currentDateTime = DateTime.now();
-        String tempFileName =
-            getCleanedUpFileName('$currentDateTime$imageTypeExtension');
-        File file = File('$tempPath/$tempFileName');
-        await file.writeAsBytes(compressedImageData.buffer.asUint8List(
-            compressedImageData.offsetInBytes,
-            compressedImageData.lengthInBytes));
-        result.add(file.path);
-      }
-      if (result.isNotEmpty) {
-        DateTime currentDateTime = DateTime.now();
-        outputFilesNames = List.generate(result.length, (index) {
-          String nameOfFile = files[index].fileName;
-          String nameOfFileWithoutExtension =
-              getFileNameWithoutExtension(fileName: nameOfFile);
-          String extensionOfFile = getFileNameExtension(fileName: nameOfFile);
-          return getCleanedUpFileName(
-              '$nameOfFileWithoutExtension - Compressed - $currentDateTime$extensionOfFile');
-        });
-      }
+      // Compressing images and storing result image file path in outputFiles.
+      _outputFiles = await ImageToolsActions.compressImageFiles(
+        sourceFiles: sourceFiles,
+        imageScale: imageScale,
+        imageQuality: imageQuality,
+        removeExifData: removeExifData,
+      );
     } on PlatformException catch (e, s) {
+      updateActionErrorStatus(true);
       log(e.toString());
       _errorMessage = e.toString();
       _errorStackTrace = s;
     } catch (e, s) {
+      updateActionErrorStatus(true);
       log(e.toString());
       _errorMessage = e.toString();
       _errorStackTrace = s;
-    }
-    if (result.isNotEmpty) {
-      outputFiles.clear();
-      for (int i = 0; i < result.length; i++) {
-        OutputFileModel file =
-            await getOutputFileModelFromPath(filePathOrUri: result[i]);
-        file = OutputFileModel(
-            fileName: outputFilesNames[i],
-            fileDate: file.fileDate,
-            fileTime: file.fileTime,
-            fileSizeFormatBytes: file.fileSizeFormatBytes,
-            fileSizeBytes: file.fileSizeBytes,
-            filePath: file.filePath);
-        outputFiles.add(file);
-      }
-    } else {
-      updateActionErrorStatus(true);
+    } finally {
+      // Updating action processing status to false.
+      updateActionProcessingStatus(false);
 
-      // We can use this place to get the exact time of cancellation action.
-      // But don't just put clear cache here as at this state user may have started another task.
-      // So we avoid clearing cache here as we don't want the user to wait till cancellation for next task will.
+      // Notifying ToolsActionsState listeners.
+      customNotifyListener();
     }
-    updateActionProcessingStatus(false);
-    customNotifyListener();
   }
 
-  Future<void> cropRotateFlipImages({
-    required List<InputFileModel> files,
+  /// [ToolAction.cropRotateFlipImages] action for rotating, cropping and
+  /// flipping images.
+  Future<void> mangeModifyImageFileAction({
+    required List<InputFileModel> sourceFiles,
     required List<GlobalKey<ExtendedImageEditorState>> editorKeys,
   }) async {
+    // Clearing any leftover output files.
+    _outputFiles.clear();
+    // Updating action error status to false.
     updateActionErrorStatus(false);
+    // Updating action processing status to true.
     updateActionProcessingStatus(true);
-    updateActionType(ToolsActions.cropRotateFlipImages);
-    List<String> result = [];
-    List<String> outputFilesNames = [];
-    try {
-      for (int i = 0; i < files.length; i++) {
-        ExtendedImageEditorState? currentState = editorKeys[i].currentState;
-        InputFileModel image = files[i];
-        if (currentState != null) {
-          Uint8List? imageData = await modifyImage(currentState);
-          Directory tempDir = await getTemporaryDirectory();
-          String tempPath = tempDir.path;
-          // Directory appDocDir = await getApplicationDocumentsDirectory();
-          // String appDocPath = appDocDir.path;
-          String nameOfFile = image.fileName;
-          String imageTypeExtension =
-              getFileNameExtension(fileName: nameOfFile);
-          DateTime currentDateTime = DateTime.now();
-          String tempFileName =
-              getCleanedUpFileName('$currentDateTime$imageTypeExtension');
-          File file = File('$tempPath/$tempFileName');
-          await file.writeAsBytes(imageData!.buffer
-              .asUint8List(imageData.offsetInBytes, imageData.lengthInBytes));
-          result.add(file.path);
-        } else {
-          String filePath =
-              await getAbsoluteFilePathFromFileUri(fileUri: image.fileUri);
-          result.add(filePath);
-        }
-      }
+    // Updating action type to current action.
+    updateActionType(ToolAction.cropRotateFlipImages);
 
-      if (result.isNotEmpty) {
-        DateTime currentDateTime = DateTime.now();
-        outputFilesNames = List.generate(result.length, (index) {
-          String nameOfFile = files[index].fileName;
-          String nameOfFileWithoutExtension =
-              getFileNameWithoutExtension(fileName: nameOfFile);
-          String extensionOfFile = getFileNameExtension(fileName: nameOfFile);
-          return getCleanedUpFileName(
-              '$nameOfFileWithoutExtension - $currentDateTime$extensionOfFile');
-        });
-      }
+    try {
+      // Modifying images and storing result image file path in outputFiles.
+      _outputFiles = await ImageToolsActions.modifyImageFiles(
+        sourceFiles: sourceFiles,
+        editorKeys: editorKeys,
+      );
     } on PlatformException catch (e, s) {
+      updateActionErrorStatus(true);
       log(e.toString());
       _errorMessage = e.toString();
       _errorStackTrace = s;
     } catch (e, s) {
+      updateActionErrorStatus(true);
       log(e.toString());
       _errorMessage = e.toString();
       _errorStackTrace = s;
-    }
-    if (result.isNotEmpty) {
-      outputFiles.clear();
-      for (int i = 0; i < result.length; i++) {
-        OutputFileModel file =
-            await getOutputFileModelFromPath(filePathOrUri: result[i]);
-        file = OutputFileModel(
-            fileName: outputFilesNames[i],
-            fileDate: file.fileDate,
-            fileTime: file.fileTime,
-            fileSizeFormatBytes: file.fileSizeFormatBytes,
-            fileSizeBytes: file.fileSizeBytes,
-            filePath: file.filePath);
-        outputFiles.add(file);
-      }
-    } else {
-      updateActionErrorStatus(true);
+    } finally {
+      // Updating action processing status to false.
+      updateActionProcessingStatus(false);
 
-      // We can use this place to get the exact time of cancellation action.
-      // But don't just put clear cache here as at this state user may have started another task.
-      // So we avoid clearing cache here as we don't want the user to wait till cancellation for next task will.
+      // Notifying ToolsActionsState listeners.
+      customNotifyListener();
     }
-    updateActionProcessingStatus(false);
-    customNotifyListener();
   }
 
+  /// Called to cancel any running action.
+  ///
+  /// It was specifically designed to free resources from cancelled heavy tasks
+  /// such as merging, splitting, etc of PDFs. So for now it will not quickly
+  /// free resources of other kind of light tasks and will let them
+  /// continue in the background till they complete.
+  /// Also, all cancelled tasks result is rejected even if we already
+  /// have the result.
+  ///
+  /// It will make the app reusable for using any new tool immediately.
   void cancelAction() {
-    clearCache(clearCacheCommandFrom: 'Cancel Running Action');
+    Utility.clearCache(clearCacheCommandFrom: 'Cancel Running Action');
     updateActionProcessingStatus(true);
     try {
       PdfManipulator().cancelManipulations();
@@ -917,11 +751,12 @@ class ToolsActionsState extends ChangeNotifier {
     customNotifyListener();
   }
 
+  /// Called to cancel any running saving of output files.
   void cancelFileSaving() {
     try {
       PickOrSave().cancelActions(
-          params:
-              const CancelActionsParams(cancelType: CancelType.filesSaving));
+        params: const CancelActionsParams(cancelType: CancelType.filesSaving),
+      );
     } on PlatformException catch (e, s) {
       log(e.toString());
       _errorMessage = e.toString();
@@ -935,49 +770,75 @@ class ToolsActionsState extends ChangeNotifier {
     customNotifyListener();
   }
 
+  /// Called to update an action error status.
   void updateActionErrorStatus(bool status) {
     _actionErrorStatus = status;
     customNotifyListener();
   }
 
+  /// Called to update an action processing status.
   void updateActionProcessingStatus(bool status) {
     _isActionProcessing = status;
     customNotifyListener();
   }
 
+  /// Called to update an saving error status.
+  void updateSaveErrorStatus(bool status) {
+    _saveErrorStatus = status;
+    customNotifyListener();
+  }
+
+  /// Called to update saving of output files processing status.
   void updateSaveProcessingStatus(bool status) {
     _isSaveProcessing = status;
     customNotifyListener();
   }
 
-  void updateActionType(ToolsActions actionType) {
+  /// Called to update current action type.
+  void updateActionType(ToolAction actionType) {
     _currentActionType = actionType;
     customNotifyListener();
   }
 
+  /// Called to notify ToolsActionsState listeners.
   void customNotifyListener() {
-    // Using mounted because the state might be disposed when the cancellation was in progress due to manual cancellation.
-    // And once cancellation completes it get called.
+    // Due to cancelling a running action the state gets disposed but
+    // cancellation action or any other action may still be running and can
+    // call [customNotifyListener] once they finish which will lead to getting
+    // error of using disposed state. So, checking state before
+    // calling notifyListeners.
     if (_mounted) {
       notifyListeners();
     }
   }
 
-  Future<void> saveFile(
-      {required List<OutputFileModel> files,
-      List<String>? mimeTypesFilter}) async {
+  /// Called to save output files.
+  Future<void> mangeSaveFileAction({
+    required List<OutputFileModel> files,
+    List<String>? mimeTypesFilter,
+  }) async {
+    // Updating save error status to false.
+    updateSaveErrorStatus(false);
+    // Updating save processing status to true.
     updateSaveProcessingStatus(true);
+
+    List<String>? saveResult;
+
+    // Preparing save files.
     List<SaveFileInfo> saveFiles = List<SaveFileInfo>.generate(
-        files.length,
-        (int index) => SaveFileInfo(
-            filePath: files[index].filePath, fileName: files[index].fileName));
-    List<String>? result;
+      files.length,
+      (int index) => SaveFileInfo(
+        filePath: files[index].filePath,
+        fileName: files[index].fileName,
+      ),
+    );
+
     try {
-      result = await PickOrSave().fileSaver(
-          params: FileSaverParams(
+      // Saving files and storing result paths in saveResult.
+      saveResult = await Utility.saveFiles(
         saveFiles: saveFiles,
         mimeTypesFilter: mimeTypesFilter,
-      ));
+      );
     } on PlatformException catch (e, s) {
       log(e.toString());
       _errorMessage = e.toString();
@@ -986,12 +847,18 @@ class ToolsActionsState extends ChangeNotifier {
       log(e.toString());
       _errorMessage = e.toString();
       _errorStackTrace = s;
+    } finally {
+      if (saveResult != null) {
+        _saveErrorStatus = false;
+      } else {
+        _saveErrorStatus = true;
+      }
+
+      // Updating action processing status to false.
+      updateSaveProcessingStatus(false);
+
+      // Notifying ToolsActionsState listeners.
+      customNotifyListener();
     }
-    if (result != null) {
-    } else {
-      _saveErrorStatus = true;
-    }
-    updateSaveProcessingStatus(false);
-    customNotifyListener();
   }
 }

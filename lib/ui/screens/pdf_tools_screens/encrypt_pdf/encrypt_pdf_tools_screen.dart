@@ -28,8 +28,11 @@ class _EncryptPDFToolsPageState extends State<EncryptPDFToolsPage> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Text(getAppBarTitleForActionType(
-              actionType: widget.arguments.actionType)),
+          title: Text(
+            getAppBarTitleForActionType(
+              actionType: widget.arguments.actionType,
+            ),
+          ),
           centerTitle: true,
         ),
         body: EncryptPDFToolsBody(
@@ -42,23 +45,24 @@ class _EncryptPDFToolsPageState extends State<EncryptPDFToolsPage> {
 }
 
 class EncryptPDFToolsPageArguments {
-  final ToolsActions actionType;
-  final InputFileModel file;
-
   EncryptPDFToolsPageArguments({required this.actionType, required this.file});
+  final ToolAction actionType;
+  final InputFileModel file;
 }
 
 class EncryptPDFToolsBody extends StatelessWidget {
-  const EncryptPDFToolsBody(
-      {Key? key, required this.actionType, required this.file})
-      : super(key: key);
+  const EncryptPDFToolsBody({
+    Key? key,
+    required this.actionType,
+    required this.file,
+  }) : super(key: key);
 
-  final ToolsActions actionType;
+  final ToolAction actionType;
   final InputFileModel file;
 
   @override
   Widget build(BuildContext context) {
-    if (actionType == ToolsActions.encryptPdf) {
+    if (actionType == ToolAction.encryptPdf) {
       return EncryptPDF(file: file);
     } else {
       return Container();
@@ -66,9 +70,9 @@ class EncryptPDFToolsBody extends StatelessWidget {
   }
 }
 
-String getAppBarTitleForActionType({required ToolsActions actionType}) {
+String getAppBarTitleForActionType({required ToolAction actionType}) {
   String title = 'Action Successful';
-  if (actionType == ToolsActions.encryptPdf) {
+  if (actionType == ToolAction.encryptPdf) {
     title = 'Select Encryption Config';
   }
   return title;

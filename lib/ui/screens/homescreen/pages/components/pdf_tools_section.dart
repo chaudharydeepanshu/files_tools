@@ -1,7 +1,6 @@
-import 'package:files_tools/route/route.dart' as route;
-import 'package:flutter/material.dart';
-
+import 'package:files_tools/route/app_routes.dart' as route;
 import 'package:files_tools/ui/screens/homescreen/pages/components/grid_view_in_card_view.dart';
+import 'package:flutter/material.dart';
 
 class PDFToolsPage extends StatelessWidget {
   const PDFToolsPage({Key? key, required this.arguments}) : super(key: key);
@@ -19,7 +18,6 @@ class PDFToolsPage extends StatelessWidget {
       ),
       body: GridView.builder(
         gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-          childAspectRatio: 1,
           maxCrossAxisExtent: 200,
           mainAxisExtent: 100,
           mainAxisSpacing: 8,
@@ -38,9 +36,8 @@ class PDFToolsPage extends StatelessWidget {
 }
 
 class PDFToolsPageArguments {
-  final List<GridCardDetail> cardsDetails;
-
   PDFToolsPageArguments({required this.cardsDetails});
+  final List<GridCardDetail> cardsDetails;
 }
 
 class PDFToolsSection extends StatelessWidget {
@@ -55,7 +52,7 @@ class PDFToolsSection extends StatelessWidget {
         cardOnTap: () {
           Navigator.pushNamed(
             context,
-            route.mergePDFsPage,
+            route.AppRoutes.mergePDFsPage,
           );
         },
       ),
@@ -65,7 +62,7 @@ class PDFToolsSection extends StatelessWidget {
         cardOnTap: () {
           Navigator.pushNamed(
             context,
-            route.splitPDFPage,
+            route.AppRoutes.splitPDFPage,
           );
         },
       ),
@@ -103,7 +100,7 @@ class PDFToolsSection extends StatelessWidget {
         cardOnTap: () {
           Navigator.pushNamed(
             context,
-            route.modifyPDFPage,
+            route.AppRoutes.modifyPDFPage,
           );
         },
       ),
@@ -113,7 +110,7 @@ class PDFToolsSection extends StatelessWidget {
         cardOnTap: () {
           Navigator.pushNamed(
             context,
-            route.convertPDFPage,
+            route.AppRoutes.convertPDFPage,
           );
         },
       ),
@@ -123,7 +120,7 @@ class PDFToolsSection extends StatelessWidget {
         cardOnTap: () {
           Navigator.pushNamed(
             context,
-            route.compressPDFPage,
+            route.AppRoutes.compressPDFPage,
           );
         },
       ),
@@ -133,7 +130,7 @@ class PDFToolsSection extends StatelessWidget {
         cardOnTap: () {
           Navigator.pushNamed(
             context,
-            route.watermarkPDFPage,
+            route.AppRoutes.watermarkPDFPage,
           );
         },
       ),
@@ -152,7 +149,7 @@ class PDFToolsSection extends StatelessWidget {
         cardOnTap: () {
           Navigator.pushNamed(
             context,
-            route.imageToPDFPage,
+            route.AppRoutes.imageToPDFPage,
           );
         },
       ),
@@ -162,7 +159,7 @@ class PDFToolsSection extends StatelessWidget {
         cardOnTap: () {
           Navigator.pushNamed(
             context,
-            route.encryptPDFPage,
+            route.AppRoutes.encryptPDFPage,
           );
         },
       ),
@@ -172,7 +169,7 @@ class PDFToolsSection extends StatelessWidget {
         cardOnTap: () {
           Navigator.pushNamed(
             context,
-            route.decryptPDFPage,
+            route.AppRoutes.decryptPDFPage,
           );
         },
       ),
@@ -185,7 +182,7 @@ class PDFToolsSection extends StatelessWidget {
       cardShowAllOnTap: () {
         Navigator.pushNamed(
           context,
-          route.pdfToolsPage,
+          route.AppRoutes.pdfToolsPage,
           arguments: PDFToolsPageArguments(cardsDetails: exploreCardsDetails),
         );
       },

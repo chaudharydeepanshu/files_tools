@@ -1,22 +1,41 @@
 import 'dart:typed_data';
 
+/// Model class for an individual PDF page.
+///
+/// It holds all the information about an PDF page.
+/// For example: If a PDF page fails to load in the app then we can update the
+/// [pageErrorStatus] in model to use that updated status somewhere in the
+/// app for further actions.
 class PdfPageModel {
-  final int pageIndex;
-  final Uint8List? pageBytes;
-  final bool pageErrorStatus;
-  final bool pageSelected;
-  final int pageRotationAngle;
-  final bool pageHidden;
-
+  /// Defining PdfPageModel constructor.
   PdfPageModel({
     required this.pageIndex,
     required this.pageBytes,
-    required this.pageErrorStatus,
     required this.pageSelected,
     required this.pageRotationAngle,
     required this.pageHidden,
+    required this.pageErrorStatus,
   });
 
+  /// PDF page index.
+  final int pageIndex;
+
+  /// PDF page data.
+  final Uint8List? pageBytes;
+
+  /// PDF page selection status.
+  final bool pageSelected;
+
+  /// PDF page rotation angle.
+  final int pageRotationAngle;
+
+  /// PDF page hidden status.
+  final bool pageHidden;
+
+  /// PDF page error status.
+  final bool pageErrorStatus;
+
+  /// Overriding PdfPageModel equality operator.
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -24,24 +43,32 @@ class PdfPageModel {
           runtimeType == other.runtimeType &&
           pageIndex == other.pageIndex &&
           pageBytes == other.pageBytes &&
-          pageErrorStatus == other.pageErrorStatus &&
+          pageHidden == other.pageHidden &&
           pageSelected == other.pageSelected &&
           pageRotationAngle == other.pageRotationAngle &&
-          pageHidden == other.pageHidden;
+          pageErrorStatus == other.pageErrorStatus;
 
+  /// Overriding PdfPageModel hashCode.
   @override
   int get hashCode =>
       pageIndex.hashCode ^
       pageBytes.hashCode ^
-      pageErrorStatus.hashCode ^
+      pageHidden.hashCode ^
       pageSelected.hashCode ^
       pageRotationAngle.hashCode ^
-      pageHidden.hashCode;
+      pageErrorStatus.hashCode;
 
-  // Implement toString to make it easier to see information
-  // when using the print statement.
+  /// Overriding PdfPageModel toString to make it easier to see information.
+  /// when using the print statement.
   @override
   String toString() {
-    return 'PdfPageModel{pageIndex: $pageIndex, pageBytes: $pageBytes, pageErrorStatus: $pageErrorStatus, pageSelected: $pageSelected, pageRotationAngle: $pageRotationAngle, pageHidden: $pageHidden}';
+    return 'PdfPageModel{'
+        'pageIndex: $pageIndex, '
+        'pageBytes: $pageBytes, '
+        'pageErrorStatus: $pageErrorStatus, '
+        'pageSelected: $pageSelected, '
+        'pageRotationAngle: $pageRotationAngle, '
+        'pageHidden: $pageHidden'
+        '}';
   }
 }

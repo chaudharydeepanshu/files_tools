@@ -1,13 +1,13 @@
 import 'package:files_tools/models/file_model.dart';
 import 'package:files_tools/models/tool_actions_model.dart';
-import 'package:files_tools/route/route.dart' as route;
+import 'package:files_tools/route/app_routes.dart' as route;
 import 'package:files_tools/state/providers.dart';
-import 'package:files_tools/state/select_file_state.dart';
 import 'package:files_tools/state/tools_actions_state.dart';
+import 'package:files_tools/state/tools_screens_state.dart';
 import 'package:files_tools/ui/components/select_file_section.dart';
 import 'package:files_tools/ui/components/tool_actions_section.dart';
 import 'package:files_tools/ui/screens/image_tools_screens/crop_rotate_flip_images/crop_rotate_flip_images_tools_screen.dart';
-import 'package:files_tools/utils/clear_cache.dart';
+import 'package:files_tools/utils/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pick_or_save/pick_or_save.dart';
@@ -23,7 +23,7 @@ class CropRotateFlipImagesPage extends StatefulWidget {
 class _CropRotateFlipImagesPageState extends State<CropRotateFlipImagesPage> {
   @override
   void initState() {
-    clearCache(clearCacheCommandFrom: 'CropRotateFlipImagesPage');
+    Utility.clearCache(clearCacheCommandFrom: 'CropRotateFlipImagesPage');
     super.initState();
   }
 
@@ -49,14 +49,15 @@ class _CropRotateFlipImagesPageState extends State<CropRotateFlipImagesPage> {
           ),
           body: Consumer(
             builder: (BuildContext context, WidgetRef ref, Widget? child) {
-              final ToolScreenState watchToolScreenStateProviderValue =
-                  ref.watch(toolScreenStateProvider);
+              final ToolsScreensState watchToolScreenStateProviderValue =
+                  ref.watch(toolsScreensStateProvider);
               // final List<InputFileModel> selectedImages = ref.watch(
               //     toolScreenStateProvider
               //         .select((value) => value.selectedImages));
               final List<InputFileModel> selectedFiles = ref.watch(
-                  toolScreenStateProvider
-                      .select((value) => value.selectedFiles));
+                toolsScreensStateProvider
+                    .select((ToolsScreensState value) => value.selectedFiles),
+              );
               return ListView(
                 children: [
                   const SizedBox(height: 16),
@@ -65,7 +66,6 @@ class _CropRotateFlipImagesPageState extends State<CropRotateFlipImagesPage> {
                     files: watchToolScreenStateProviderValue.selectedFiles,
                     filePickerParams: FilePickerParams(
                       getCachedFilePath: false,
-                      pickerType: PickerType.file,
                       enableMultipleSelection: true,
                       mimeTypesFilter: [
                         // "image/*",
@@ -90,7 +90,7 @@ class _CropRotateFlipImagesPageState extends State<CropRotateFlipImagesPage> {
                   const SizedBox(height: 16),
                   ToolActionsCard(
                     toolActions: [
-                      ToolActionsModel(
+                      ToolActionModel(
                         actionText: 'Crop, Rotate & Flip Images',
                         actionOnTap: selectedFiles.isNotEmpty
                             ? () {
@@ -101,12 +101,12 @@ class _CropRotateFlipImagesPageState extends State<CropRotateFlipImagesPage> {
 
                                 Navigator.pushNamed(
                                   context,
-                                  route.cropRotateFlipImagesToolsPage,
+                                  route.AppRoutes.cropRotateFlipImagesToolsPage,
                                   arguments:
                                       CropRotateFlipImagesToolsPageArguments(
-                                          actionType:
-                                              ToolsActions.cropRotateFlipImages,
-                                          files: selectedFiles),
+                                    actionType: ToolAction.cropRotateFlipImages,
+                                    files: selectedFiles,
+                                  ),
                                 );
                               }
                             : null,

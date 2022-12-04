@@ -28,36 +28,41 @@ class _DecryptPDFToolsPageState extends State<DecryptPDFToolsPage> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Text(getAppBarTitleForActionType(
-              actionType: widget.arguments.actionType)),
+          title: Text(
+            getAppBarTitleForActionType(
+              actionType: widget.arguments.actionType,
+            ),
+          ),
           centerTitle: true,
         ),
         body: DecryptPDFToolsBody(
-            actionType: widget.arguments.actionType,
-            file: widget.arguments.file),
+          actionType: widget.arguments.actionType,
+          file: widget.arguments.file,
+        ),
       ),
     );
   }
 }
 
 class DecryptPDFToolsPageArguments {
-  final ToolsActions actionType;
-  final InputFileModel file;
-
   DecryptPDFToolsPageArguments({required this.actionType, required this.file});
+  final ToolAction actionType;
+  final InputFileModel file;
 }
 
 class DecryptPDFToolsBody extends StatelessWidget {
-  const DecryptPDFToolsBody(
-      {Key? key, required this.actionType, required this.file})
-      : super(key: key);
+  const DecryptPDFToolsBody({
+    Key? key,
+    required this.actionType,
+    required this.file,
+  }) : super(key: key);
 
-  final ToolsActions actionType;
+  final ToolAction actionType;
   final InputFileModel file;
 
   @override
   Widget build(BuildContext context) {
-    if (actionType == ToolsActions.decryptPdf) {
+    if (actionType == ToolAction.decryptPdf) {
       return DecryptPDF(file: file);
     } else {
       return Container();
@@ -65,9 +70,9 @@ class DecryptPDFToolsBody extends StatelessWidget {
   }
 }
 
-String getAppBarTitleForActionType({required ToolsActions actionType}) {
+String getAppBarTitleForActionType({required ToolAction actionType}) {
   String title = 'Action Successful';
-  if (actionType == ToolsActions.decryptPdf) {
+  if (actionType == ToolAction.decryptPdf) {
     title = 'Decryption Config';
   }
   return title;

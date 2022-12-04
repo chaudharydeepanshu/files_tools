@@ -1,3 +1,4 @@
+import 'package:files_tools/state/app_theme_state.dart';
 import 'package:files_tools/state/providers.dart';
 import 'package:files_tools/ui/components/color_picker.dart';
 import 'package:flex_color_picker/flex_color_picker.dart';
@@ -12,7 +13,7 @@ class ThemeChooserWidget extends StatelessWidget {
     return Consumer(
       builder: (BuildContext context, WidgetRef ref, Widget? child) {
         Color userColorSchemeSeedColor = ref.watch(appThemeStateProvider
-            .select((value) => value.userColorSchemeSeedColor));
+            .select((AppThemeState value) => value.userColorSchemeSeedColor),);
         return ListTile(
           title: const Text('Theme color'),
           subtitle: Text(
@@ -37,7 +38,7 @@ class ThemeChooserWidget extends StatelessWidget {
                 dialogPickerColor: userColorSchemeSeedColor,
                 onColorChanged: (Color value) {
                   ref.read(appThemeStateProvider).updateUserTheme(value);
-                });
+                },);
 
             if (!dialogStatus) {
               ref

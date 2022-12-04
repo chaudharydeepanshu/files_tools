@@ -1,3 +1,4 @@
+import 'package:files_tools/state/app_theme_state.dart';
 import 'package:files_tools/state/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -10,7 +11,7 @@ class ThemeModeSwitcher extends StatelessWidget {
     return Consumer(
       builder: (BuildContext context, WidgetRef ref, Widget? child) {
         ThemeMode themeMode =
-            ref.watch(appThemeStateProvider.select((value) => value.themeMode));
+            ref.watch(appThemeStateProvider.select((AppThemeState value) => value.themeMode));
         String buttonText = themeMode == ThemeMode.light
             ? 'Light'
             : themeMode == ThemeMode.dark

@@ -1,5 +1,5 @@
 import 'package:files_tools/models/file_model.dart';
-import 'package:files_tools/route/route.dart' as route;
+import 'package:files_tools/route/app_routes.dart' as route;
 import 'package:files_tools/state/providers.dart';
 import 'package:files_tools/state/tools_actions_state.dart';
 import 'package:files_tools/ui/components/tools_about_card.dart';
@@ -8,9 +8,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class SplitByPageCount extends StatelessWidget {
-  const SplitByPageCount(
-      {Key? key, required this.pdfPageCount, required this.file})
-      : super(key: key);
+  const SplitByPageCount({
+    Key? key,
+    required this.pdfPageCount,
+    required this.file,
+  }) : super(key: key);
 
   final int pdfPageCount;
   final InputFileModel file;
@@ -36,9 +38,11 @@ class SplitByPageCount extends StatelessWidget {
 }
 
 class SplitByPageCountActionCard extends StatefulWidget {
-  const SplitByPageCountActionCard(
-      {Key? key, required this.pdfPageCount, required this.file})
-      : super(key: key);
+  const SplitByPageCountActionCard({
+    Key? key,
+    required this.pdfPageCount,
+    required this.file,
+  }) : super(key: key);
 
   final int pdfPageCount;
   final InputFileModel file;
@@ -50,7 +54,7 @@ class SplitByPageCountActionCard extends StatefulWidget {
 
 class _SplitByPageCountActionCardState
     extends State<SplitByPageCountActionCard> {
-  final _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   TextEditingController pageCountController = TextEditingController();
 
@@ -91,7 +95,7 @@ class _SplitByPageCountActionCardState
                           ],
                           autovalidateMode: AutovalidateMode.onUserInteraction,
                           // The validator receives the text that the user has entered.
-                          validator: (value) {
+                          validator: (String? value) {
                             if (value == null || value.isEmpty) {
                               return 'Please enter number between 0 to ${widget.pdfPageCount}';
                             } else if (int.parse(value) <= 0) {
@@ -105,8 +109,11 @@ class _SplitByPageCountActionCardState
                       ),
                       const Divider(),
                       Consumer(
-                        builder: (BuildContext context, WidgetRef ref,
-                            Widget? child) {
+                        builder: (
+                          BuildContext context,
+                          WidgetRef ref,
+                          Widget? child,
+                        ) {
                           final ToolsActionsState
                               watchToolsActionsStateProviderValue =
                               ref.watch(toolsActionsStateProvider);
@@ -114,13 +121,16 @@ class _SplitByPageCountActionCardState
                             onPressed: () async {
                               if (_formKey.currentState!.validate()) {
                                 watchToolsActionsStateProviderValue
-                                    .splitSelectedFile(
-                                        files: [widget.file],
-                                        pageCount: int.parse(
-                                            pageCountController.value.text));
+                                    .mangeSplitPdfFileAction(
+                                  toolAction: ToolAction.splitPdfByPageCount,
+                                  sourceFile: widget.file,
+                                  pageCount: int.parse(
+                                    pageCountController.value.text,
+                                  ),
+                                );
                                 Navigator.pushNamed(
                                   context,
-                                  route.resultPage,
+                                  route.AppRoutes.resultPage,
                                 );
                               }
                             },

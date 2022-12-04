@@ -1,4 +1,4 @@
-import 'package:files_tools/shared_preferences/preferences.dart';
+import 'package:files_tools/state/preferences.dart';
 import 'package:files_tools/state/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -16,10 +16,13 @@ class ResetAppThemeSettings extends StatelessWidget {
             tapTargetSize: MaterialTapTargetSize.shrinkWrap,
           ),
           onPressed: () async {
-            sharedPreferencesInstance.remove(themeModePerfKey);
-            sharedPreferencesInstance.remove(userThemeSeedColorValuePerfKey);
-            sharedPreferencesInstance.remove(dynamicThemeStatusPerfKey);
-            // sharedPreferencesInstance.remove(onBoardingStatusPerfKey);
+            sharedPreferencesInstance.remove(Preferences.themeModePerfKey);
+            sharedPreferencesInstance
+                .remove(Preferences.userThemeSeedColorValuePerfKey);
+            sharedPreferencesInstance
+                .remove(Preferences.dynamicThemeStatusPerfKey);
+            // sharedPreferencesInstance
+            //     .remove(Preferences.onBoardingStatusPerfKey);
             ref.read(appThemeStateProvider).updateTheme();
           },
           child: const Text('Reset'),

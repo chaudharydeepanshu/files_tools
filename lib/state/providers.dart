@@ -1,35 +1,25 @@
-import 'package:files_tools/state/package_info_state.dart';
-import 'package:files_tools/state/select_file_state.dart';
-import 'package:files_tools/state/tools_actions_state.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:package_info_plus/package_info_plus.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
-import 'package:files_tools/shared_preferences/preferences.dart';
 import 'package:files_tools/state/app_theme_state.dart';
+import 'package:files_tools/state/tools_actions_state.dart';
+import 'package:files_tools/state/tools_screens_state.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-late final PackageInfo packageInfo;
-late final SharedPreferences sharedPreferencesInstance;
+/// App theme state provider.
+final ChangeNotifierProvider<AppThemeState> appThemeStateProvider =
+    ChangeNotifierProvider<AppThemeState>(
+  (ChangeNotifierProviderRef<AppThemeState> ref) =>
+      AppThemeState()..initTheme(),
+);
 
-Future<void> initPackageInfo() async {
-  packageInfo = await PackageInfo.fromPlatform();
-}
+/// App tools screens state provider.
+final AutoDisposeChangeNotifierProvider<ToolsScreensState>
+    toolsScreensStateProvider = ChangeNotifierProvider.autoDispose(
+  (AutoDisposeChangeNotifierProviderRef<ToolsScreensState> ref) =>
+      ToolsScreensState(),
+);
 
-Future<void> initSharedPreferences() async {
-  sharedPreferencesInstance = await SharedPreferences.getInstance();
-}
-
-final packageInfoCalcProvider =
-    ChangeNotifierProvider((ref) => PackageInfoCalc()..init(packageInfo));
-
-final preferencesProvider = ChangeNotifierProvider(
-    (ref) => Preferences()..init(sharedPreferencesInstance));
-
-final appThemeStateProvider =
-    ChangeNotifierProvider((ref) => AppThemeState(ref)..initTheme());
-
-final toolScreenStateProvider =
-    ChangeNotifierProvider.autoDispose((ref) => ToolScreenState());
-
-final toolsActionsStateProvider =
-    ChangeNotifierProvider.autoDispose((ref) => ToolsActionsState());
+/// App tools actions screens state provider.
+final AutoDisposeChangeNotifierProvider<ToolsActionsState>
+    toolsActionsStateProvider = ChangeNotifierProvider.autoDispose(
+  (AutoDisposeChangeNotifierProviderRef<ToolsActionsState> ref) =>
+      ToolsActionsState(),
+);

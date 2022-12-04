@@ -30,37 +30,44 @@ class _CropRotateFlipImagesToolsPageState
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Text(getAppBarTitleForActionType(
-              actionType: widget.arguments.actionType)),
+          title: Text(
+            getAppBarTitleForActionType(
+              actionType: widget.arguments.actionType,
+            ),
+          ),
           centerTitle: true,
         ),
         body: ModifyImageToolsBody(
-            actionType: widget.arguments.actionType,
-            files: widget.arguments.files),
+          actionType: widget.arguments.actionType,
+          files: widget.arguments.files,
+        ),
       ),
     );
   }
 }
 
 class CropRotateFlipImagesToolsPageArguments {
-  final ToolsActions actionType;
+  CropRotateFlipImagesToolsPageArguments({
+    required this.actionType,
+    required this.files,
+  });
+  final ToolAction actionType;
   final List<InputFileModel> files;
-
-  CropRotateFlipImagesToolsPageArguments(
-      {required this.actionType, required this.files});
 }
 
 class ModifyImageToolsBody extends StatelessWidget {
-  const ModifyImageToolsBody(
-      {Key? key, required this.actionType, required this.files})
-      : super(key: key);
+  const ModifyImageToolsBody({
+    Key? key,
+    required this.actionType,
+    required this.files,
+  }) : super(key: key);
 
-  final ToolsActions actionType;
+  final ToolAction actionType;
   final List<InputFileModel> files;
 
   @override
   Widget build(BuildContext context) {
-    if (actionType == ToolsActions.cropRotateFlipImages) {
+    if (actionType == ToolAction.cropRotateFlipImages) {
       return CropRotateFlipImages(files: files);
     } else {
       return Container();
@@ -68,9 +75,9 @@ class ModifyImageToolsBody extends StatelessWidget {
   }
 }
 
-String getAppBarTitleForActionType({required ToolsActions actionType}) {
+String getAppBarTitleForActionType({required ToolAction actionType}) {
   String title = 'Action Successful';
-  if (actionType == ToolsActions.cropRotateFlipImages) {
+  if (actionType == ToolAction.cropRotateFlipImages) {
     title = 'Edit Images';
   }
   return title;

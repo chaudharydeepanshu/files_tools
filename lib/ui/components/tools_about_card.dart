@@ -5,7 +5,7 @@ class AboutActionCard extends StatelessWidget {
       {Key? key,
       required this.aboutText,
       this.aboutTextBody,
-      this.aboutTextBodyTitle})
+      this.aboutTextBodyTitle,})
       : super(key: key);
 
   final String aboutText;
@@ -49,7 +49,7 @@ class AboutActionCard extends StatelessWidget {
                   ),
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 16.0, vertical: 10.0),
+                        horizontal: 16.0, vertical: 10.0,),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
@@ -61,7 +61,7 @@ class AboutActionCard extends StatelessWidget {
                                 .textTheme
                                 .bodyMedium
                                 ?.copyWith(
-                                    decoration: TextDecoration.underline),
+                                    decoration: TextDecoration.underline,),
                             textAlign: TextAlign.center,
                           ),
                         Text(

@@ -9,7 +9,7 @@ class CustomEditorCropLayerPainter extends EditorCropLayerPainter {
   const CustomEditorCropLayerPainter();
   @override
   void paintCorners(
-      Canvas canvas, Size size, ExtendedImageCropLayerPainter painter) {
+      Canvas canvas, Size size, ExtendedImageCropLayerPainter painter,) {
     final Paint paint = Paint()
       ..color = painter.cornerColor
       ..style = PaintingStyle.fill;
@@ -27,13 +27,13 @@ class CircleEditorCropLayerPainter extends EditorCropLayerPainter {
 
   @override
   void paintCorners(
-      Canvas canvas, Size size, ExtendedImageCropLayerPainter painter) {
+      Canvas canvas, Size size, ExtendedImageCropLayerPainter painter,) {
     // do nothing
   }
 
   @override
   void paintMask(
-      Canvas canvas, Size size, ExtendedImageCropLayerPainter painter) {
+      Canvas canvas, Size size, ExtendedImageCropLayerPainter painter,) {
     final Rect rect = Offset.zero & size;
     final Rect cropRect = painter.cropRect;
     final Color maskColor = painter.maskColor;
@@ -42,15 +42,15 @@ class CircleEditorCropLayerPainter extends EditorCropLayerPainter {
         rect,
         Paint()
           ..style = PaintingStyle.fill
-          ..color = maskColor);
+          ..color = maskColor,);
     canvas.drawCircle(cropRect.center, cropRect.width / 2.0,
-        Paint()..blendMode = BlendMode.clear);
+        Paint()..blendMode = BlendMode.clear,);
     canvas.restore();
   }
 
   @override
   void paintLines(
-      Canvas canvas, Size size, ExtendedImageCropLayerPainter painter) {
+      Canvas canvas, Size size, ExtendedImageCropLayerPainter painter,) {
     final Rect cropRect = painter.cropRect;
     if (painter.pointerDown) {
       canvas.save();
@@ -73,7 +73,7 @@ class AspectRatioWidget extends StatefulWidget {
       this.aspectRatioS,
       this.aspectRatio,
       this.isSelected,
-      required this.onTap})
+      required this.onTap,})
       : super(key: key);
 
   final String? aspectRatioS;
@@ -89,7 +89,6 @@ class _AspectRatioWidgetState extends State<AspectRatioWidget> {
   Future<double?> specifyDialog(BuildContext context) async {
     double? aspectRatio;
     await showDialog<bool>(
-      barrierDismissible: true,
       context: context,
       builder: (BuildContext context) {
         TextEditingController xAxisTextEditingController =
@@ -97,9 +96,9 @@ class _AspectRatioWidgetState extends State<AspectRatioWidget> {
         TextEditingController yAxisTextEditingController =
             TextEditingController();
 
-        final formKey = GlobalKey<FormState>();
+        final GlobalKey<FormState> formKey = GlobalKey<FormState>();
         return StatefulBuilder(
-          builder: (context, setState) {
+          builder: (BuildContext context, setState) {
             return GestureDetector(
               onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
               child: SimpleDialog(
@@ -134,7 +133,7 @@ class _AspectRatioWidgetState extends State<AspectRatioWidget> {
                                     ? 'x unit can\'t be Empty'
                                     : (int.parse(value) >=
                                             int.parse(yAxisTextEditingController
-                                                .text))
+                                                .text,))
                                         ? 'x can\'t be >= to x'
                                         : null;
                               },
@@ -212,7 +211,7 @@ class _AspectRatioWidgetState extends State<AspectRatioWidget> {
                 if (widget.aspectRatioS! != 'specific') {
                   widget.onTap.call(widget.aspectRatio);
                 } else if (widget.aspectRatioS! == 'specific') {
-                  specifyDialog(context).then((value) {
+                  specifyDialog(context).then((double? value) {
                     debugPrint('it run');
                     if (value != null) {
                       widget.onTap.call(value);
@@ -264,9 +263,9 @@ class _AspectRatioWidgetState extends State<AspectRatioWidget> {
 }
 
 final List<AspectRatioItem> aspectRatios = <AspectRatioItem>[
-  AspectRatioItem(text: 'custom', value: CropAspectRatios.custom),
+  AspectRatioItem(text: 'custom'),
   AspectRatioItem(text: 'original', value: CropAspectRatios.original),
-  AspectRatioItem(text: 'specific', value: CropAspectRatios.custom),
+  AspectRatioItem(text: 'specific'),
   AspectRatioItem(text: '1*1', value: CropAspectRatios.ratio1_1),
   AspectRatioItem(text: '4*3', value: CropAspectRatios.ratio4_3),
   AspectRatioItem(text: '3*4', value: CropAspectRatios.ratio3_4),
@@ -276,7 +275,7 @@ final List<AspectRatioItem> aspectRatios = <AspectRatioItem>[
 
 Future<Uint8List?> modifyImage(ExtendedImageEditorState currentState) async {
   Future<Uint8List?> cropImageDataWithNativeLibrary(
-      {required ExtendedImageEditorState state}) async {
+      {required ExtendedImageEditorState state,}) async {
     log('Native library start cropping');
 
     final Rect? cropRect = state.getCropRect();
@@ -295,7 +294,7 @@ Future<Uint8List?> modifyImage(ExtendedImageEditorState currentState) async {
 
     if (action.needFlip) {
       option.addOption(
-          FlipOption(horizontal: flipHorizontal, vertical: flipVertical));
+          FlipOption(horizontal: flipHorizontal, vertical: flipVertical),);
     }
 
     if (action.hasRotateAngle) {

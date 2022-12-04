@@ -10,13 +10,13 @@ class AppThemeData {
 
   static ThemeData lightThemeData(ColorScheme? customLightColorScheme) =>
       themeData(customLightColorScheme, defaultLightColorScheme,
-          _lightFocusColor, lightCustomColors);
+          _lightFocusColor, lightCustomColors,);
   static ThemeData darkThemeData(ColorScheme? customDarkColorScheme) =>
       themeData(customDarkColorScheme, defaultDarkColorScheme, _darkFocusColor,
-          darkCustomColors);
+          darkCustomColors,);
 
   static ThemeData themeData(ColorScheme? customColorScheme,
-      ColorScheme colorScheme, Color focusColor, CustomColors customColors) {
+      ColorScheme colorScheme, Color focusColor, CustomColors customColors,) {
     if (customColorScheme != null) {
       colorScheme = customColorScheme.harmonized();
       customColors = customColors.harmonized(colorScheme);

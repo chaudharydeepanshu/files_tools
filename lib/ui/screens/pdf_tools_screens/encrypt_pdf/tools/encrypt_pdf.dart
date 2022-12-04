@@ -1,5 +1,5 @@
 import 'package:files_tools/models/file_model.dart';
-import 'package:files_tools/route/route.dart' as route;
+import 'package:files_tools/route/app_routes.dart' as route;
 import 'package:files_tools/state/providers.dart';
 import 'package:files_tools/state/tools_actions_state.dart';
 import 'package:files_tools/ui/components/tools_about_card.dart';
@@ -40,7 +40,7 @@ class EncryptPDFActionCard extends StatefulWidget {
 }
 
 class _EncryptPDFActionCardState extends State<EncryptPDFActionCard> {
-  final _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   TextEditingController ownerPasswordController =
       TextEditingController(text: '');
@@ -116,7 +116,7 @@ class _EncryptPDFActionCardState extends State<EncryptPDFActionCard> {
                     ],
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     // The validator receives the text that the user has entered.
-                    validator: (value) {
+                    validator: (String? value) {
                       if ((value == null || value.isEmpty) &&
                           (allowPrinting == true ||
                               allowModifyContents == true ||
@@ -146,7 +146,7 @@ class _EncryptPDFActionCardState extends State<EncryptPDFActionCard> {
                     ],
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     // The validator receives the text that the user has entered.
-                    validator: (value) {
+                    validator: (String? value) {
                       if ((value == null || value.isEmpty) &&
                           (ownerPasswordController.value.text.isEmpty)) {
                         return 'Please provide at least user or owner Password';
@@ -159,7 +159,6 @@ class _EncryptPDFActionCardState extends State<EncryptPDFActionCard> {
             ),
             const SizedBox(height: 10),
             Row(
-              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Text(
                   'Set Permissions :-',
@@ -169,111 +168,134 @@ class _EncryptPDFActionCardState extends State<EncryptPDFActionCard> {
             ),
             const SizedBox(height: 5),
             CheckboxListTile(
-                tileColor: Theme.of(context).colorScheme.surfaceVariant,
-                // contentPadding: EdgeInsets.zero,
-                visualDensity: VisualDensity.compact,
-                title: Text('Allow Printing',
-                    style: Theme.of(context).textTheme.bodyMedium),
-                value: allowPrinting,
-                onChanged: (bool? value) {
-                  setState(() {
-                    allowPrinting = value ?? !allowPrinting;
-                  });
-                }),
+              tileColor: Theme.of(context).colorScheme.surfaceVariant,
+              // contentPadding: EdgeInsets.zero,
+              visualDensity: VisualDensity.compact,
+              title: Text(
+                'Allow Printing',
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
+              value: allowPrinting,
+              onChanged: (bool? value) {
+                setState(() {
+                  allowPrinting = value ?? !allowPrinting;
+                });
+              },
+            ),
             const SizedBox(height: 5),
             CheckboxListTile(
-                tileColor: Theme.of(context).colorScheme.surfaceVariant,
-                // contentPadding: EdgeInsets.zero,
-                visualDensity: VisualDensity.compact,
-                title: Text('Allow Modifying Contents',
-                    style: Theme.of(context).textTheme.bodyMedium),
-                value: allowModifyContents,
-                onChanged: (bool? value) {
-                  setState(() {
-                    allowModifyContents = value ?? !allowModifyContents;
-                  });
-                }),
+              tileColor: Theme.of(context).colorScheme.surfaceVariant,
+              // contentPadding: EdgeInsets.zero,
+              visualDensity: VisualDensity.compact,
+              title: Text(
+                'Allow Modifying Contents',
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
+              value: allowModifyContents,
+              onChanged: (bool? value) {
+                setState(() {
+                  allowModifyContents = value ?? !allowModifyContents;
+                });
+              },
+            ),
             const SizedBox(height: 5),
             CheckboxListTile(
-                tileColor: Theme.of(context).colorScheme.surfaceVariant,
-                // contentPadding: EdgeInsets.zero,
-                visualDensity: VisualDensity.compact,
-                title: Text('Allow Copy',
-                    style: Theme.of(context).textTheme.bodyMedium),
-                value: allowCopy,
-                onChanged: (bool? value) {
-                  setState(() {
-                    allowCopy = value ?? !allowCopy;
-                  });
-                }),
+              tileColor: Theme.of(context).colorScheme.surfaceVariant,
+              // contentPadding: EdgeInsets.zero,
+              visualDensity: VisualDensity.compact,
+              title: Text(
+                'Allow Copy',
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
+              value: allowCopy,
+              onChanged: (bool? value) {
+                setState(() {
+                  allowCopy = value ?? !allowCopy;
+                });
+              },
+            ),
             const SizedBox(height: 5),
             CheckboxListTile(
-                tileColor: Theme.of(context).colorScheme.surfaceVariant,
-                // contentPadding: EdgeInsets.zero,
-                visualDensity: VisualDensity.compact,
-                title: Text('Allow Modifying Annotations',
-                    style: Theme.of(context).textTheme.bodyMedium),
-                value: allowModifyAnnotations,
-                onChanged: (bool? value) {
-                  setState(() {
-                    allowModifyAnnotations = value ?? !allowModifyAnnotations;
-                  });
-                }),
+              tileColor: Theme.of(context).colorScheme.surfaceVariant,
+              // contentPadding: EdgeInsets.zero,
+              visualDensity: VisualDensity.compact,
+              title: Text(
+                'Allow Modifying Annotations',
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
+              value: allowModifyAnnotations,
+              onChanged: (bool? value) {
+                setState(() {
+                  allowModifyAnnotations = value ?? !allowModifyAnnotations;
+                });
+              },
+            ),
             const SizedBox(height: 5),
             CheckboxListTile(
-                tileColor: Theme.of(context).colorScheme.surfaceVariant,
-                // contentPadding: EdgeInsets.zero,
-                visualDensity: VisualDensity.compact,
-                title: Text('Allow Fill In',
-                    style: Theme.of(context).textTheme.bodyMedium),
-                value: allowFillIn,
-                onChanged: (bool? value) {
-                  setState(() {
-                    allowFillIn = value ?? !allowFillIn;
-                  });
-                }),
+              tileColor: Theme.of(context).colorScheme.surfaceVariant,
+              // contentPadding: EdgeInsets.zero,
+              visualDensity: VisualDensity.compact,
+              title: Text(
+                'Allow Fill In',
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
+              value: allowFillIn,
+              onChanged: (bool? value) {
+                setState(() {
+                  allowFillIn = value ?? !allowFillIn;
+                });
+              },
+            ),
             const SizedBox(height: 5),
             CheckboxListTile(
-                tileColor: Theme.of(context).colorScheme.surfaceVariant,
-                // contentPadding: EdgeInsets.zero,
-                visualDensity: VisualDensity.compact,
-                title: Text('Allow Screen Readers',
-                    style: Theme.of(context).textTheme.bodyMedium),
-                value: allowScreenReaders,
-                onChanged: (bool? value) {
-                  setState(() {
-                    allowScreenReaders = value ?? !allowScreenReaders;
-                  });
-                }),
+              tileColor: Theme.of(context).colorScheme.surfaceVariant,
+              // contentPadding: EdgeInsets.zero,
+              visualDensity: VisualDensity.compact,
+              title: Text(
+                'Allow Screen Readers',
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
+              value: allowScreenReaders,
+              onChanged: (bool? value) {
+                setState(() {
+                  allowScreenReaders = value ?? !allowScreenReaders;
+                });
+              },
+            ),
             const SizedBox(height: 5),
             CheckboxListTile(
-                tileColor: Theme.of(context).colorScheme.surfaceVariant,
-                // contentPadding: EdgeInsets.zero,
-                visualDensity: VisualDensity.compact,
-                title: Text('Allow Assembly',
-                    style: Theme.of(context).textTheme.bodyMedium),
-                value: allowAssembly,
-                onChanged: (bool? value) {
-                  setState(() {
-                    allowAssembly = value ?? !allowAssembly;
-                  });
-                }),
+              tileColor: Theme.of(context).colorScheme.surfaceVariant,
+              // contentPadding: EdgeInsets.zero,
+              visualDensity: VisualDensity.compact,
+              title: Text(
+                'Allow Assembly',
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
+              value: allowAssembly,
+              onChanged: (bool? value) {
+                setState(() {
+                  allowAssembly = value ?? !allowAssembly;
+                });
+              },
+            ),
             const SizedBox(height: 5),
             CheckboxListTile(
-                tileColor: Theme.of(context).colorScheme.surfaceVariant,
-                // contentPadding: EdgeInsets.zero,
-                visualDensity: VisualDensity.compact,
-                title: Text('Allow Degraded Printing',
-                    style: Theme.of(context).textTheme.bodyMedium),
-                value: allowDegradedPrinting,
-                onChanged: (bool? value) {
-                  setState(() {
-                    allowDegradedPrinting = value ?? !allowDegradedPrinting;
-                  });
-                }),
+              tileColor: Theme.of(context).colorScheme.surfaceVariant,
+              // contentPadding: EdgeInsets.zero,
+              visualDensity: VisualDensity.compact,
+              title: Text(
+                'Allow Degraded Printing',
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
+              value: allowDegradedPrinting,
+              onChanged: (bool? value) {
+                setState(() {
+                  allowDegradedPrinting = value ?? !allowDegradedPrinting;
+                });
+              },
+            ),
             const SizedBox(height: 10),
             Row(
-              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Text(
                   'Set Encryption :-',
@@ -301,31 +323,36 @@ class _EncryptPDFActionCardState extends State<EncryptPDFActionCard> {
             ),
             const SizedBox(height: 5),
             CheckboxListTile(
-                tileColor: Theme.of(context).colorScheme.surfaceVariant,
-                // contentPadding: EdgeInsets.zero,
-                visualDensity: VisualDensity.compact,
-                title: Text('Encrypt Embedded Files Only',
-                    style: Theme.of(context).textTheme.bodyMedium),
-                value: encryptEmbeddedFilesOnly,
-                onChanged: (bool? value) {
-                  setState(() {
-                    encryptEmbeddedFilesOnly =
-                        value ?? !encryptEmbeddedFilesOnly;
-                  });
-                }),
+              tileColor: Theme.of(context).colorScheme.surfaceVariant,
+              // contentPadding: EdgeInsets.zero,
+              visualDensity: VisualDensity.compact,
+              title: Text(
+                'Encrypt Embedded Files Only',
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
+              value: encryptEmbeddedFilesOnly,
+              onChanged: (bool? value) {
+                setState(() {
+                  encryptEmbeddedFilesOnly = value ?? !encryptEmbeddedFilesOnly;
+                });
+              },
+            ),
             const SizedBox(height: 5),
             CheckboxListTile(
-                tileColor: Theme.of(context).colorScheme.surfaceVariant,
-                // contentPadding: EdgeInsets.zero,
-                visualDensity: VisualDensity.compact,
-                title: Text('Do Not Encrypt Metadata',
-                    style: Theme.of(context).textTheme.bodyMedium),
-                value: doNotEncryptMetadata,
-                onChanged: (bool? value) {
-                  setState(() {
-                    doNotEncryptMetadata = value ?? !doNotEncryptMetadata;
-                  });
-                }),
+              tileColor: Theme.of(context).colorScheme.surfaceVariant,
+              // contentPadding: EdgeInsets.zero,
+              visualDensity: VisualDensity.compact,
+              title: Text(
+                'Do Not Encrypt Metadata',
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
+              value: doNotEncryptMetadata,
+              onChanged: (bool? value) {
+                setState(() {
+                  doNotEncryptMetadata = value ?? !doNotEncryptMetadata;
+                });
+              },
+            ),
             const SizedBox(height: 10),
             Column(
               children: [
@@ -340,8 +367,8 @@ class _EncryptPDFActionCardState extends State<EncryptPDFActionCard> {
                       onPressed: () async {
                         if (_formKey.currentState!.validate()) {
                           watchToolsActionsStateProviderValue
-                              .encryptSelectedFile(
-                            files: [widget.file],
+                              .mangeEncryptPdfFileAction(
+                            sourceFile: widget.file,
                             ownerPassword: ownerPasswordController.value.text,
                             userPassword: userPasswordController.value.text,
                             allowPrinting: allowPrinting,
@@ -363,7 +390,7 @@ class _EncryptPDFActionCardState extends State<EncryptPDFActionCard> {
                           );
                           Navigator.pushNamed(
                             context,
-                            route.resultPage,
+                            route.AppRoutes.resultPage,
                           );
                         }
                       },

@@ -26,14 +26,12 @@ final Map<ColorSwatch<Object>, String> colorsNameMap =
 Future<bool> colorPickerDialog(
     {required BuildContext context,
     required Color dialogPickerColor,
-    required ValueChanged<Color> onColorChanged}) async {
+    required ValueChanged<Color> onColorChanged,}) async {
   return ColorPicker(
     // Use the dialogPickerColor as start color.
     color: dialogPickerColor,
     // Update the dialogPickerColor using the callback.
     onColorChanged: (Color color) => onColorChanged.call(color),
-    width: 40,
-    height: 40,
     borderRadius: 4,
     spacing: 5,
     runSpacing: 5,

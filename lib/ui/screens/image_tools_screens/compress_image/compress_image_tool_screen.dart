@@ -28,8 +28,11 @@ class _CompressPDFToolsPageState extends State<CompressImageToolsPage> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Text(getAppBarTitleForActionType(
-              actionType: widget.arguments.actionType)),
+          title: Text(
+            getAppBarTitleForActionType(
+              actionType: widget.arguments.actionType,
+            ),
+          ),
           centerTitle: true,
         ),
         body: CompressImageToolsBody(
@@ -42,24 +45,27 @@ class _CompressPDFToolsPageState extends State<CompressImageToolsPage> {
 }
 
 class CompressImageToolsPageArguments {
-  final ToolsActions actionType;
+  CompressImageToolsPageArguments({
+    required this.actionType,
+    required this.files,
+  });
+  final ToolAction actionType;
   final List<InputFileModel> files;
-
-  CompressImageToolsPageArguments(
-      {required this.actionType, required this.files});
 }
 
 class CompressImageToolsBody extends StatelessWidget {
-  const CompressImageToolsBody(
-      {Key? key, required this.actionType, required this.files})
-      : super(key: key);
+  const CompressImageToolsBody({
+    Key? key,
+    required this.actionType,
+    required this.files,
+  }) : super(key: key);
 
-  final ToolsActions actionType;
+  final ToolAction actionType;
   final List<InputFileModel> files;
 
   @override
   Widget build(BuildContext context) {
-    if (actionType == ToolsActions.compressImages) {
+    if (actionType == ToolAction.compressImages) {
       return CompressImage(files: files);
     } else {
       return Container();
@@ -67,9 +73,9 @@ class CompressImageToolsBody extends StatelessWidget {
   }
 }
 
-String getAppBarTitleForActionType({required ToolsActions actionType}) {
+String getAppBarTitleForActionType({required ToolAction actionType}) {
   String title = 'Action Successful';
-  if (actionType == ToolsActions.compressImages) {
+  if (actionType == ToolAction.compressImages) {
     title = 'Select Compress Config';
   }
   return title;

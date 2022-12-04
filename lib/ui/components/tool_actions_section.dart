@@ -5,7 +5,7 @@ class ToolActionsCard extends StatelessWidget {
   const ToolActionsCard({Key? key, required this.toolActions})
       : super(key: key);
 
-  final List<ToolActionsModel> toolActions;
+  final List<ToolActionModel> toolActions;
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +19,7 @@ class ToolActionsCard extends StatelessWidget {
             const Icon(Icons.looks_two),
             const Divider(),
             ConstrainedBox(
-              constraints: const BoxConstraints(minHeight: 0, maxHeight: 300),
+              constraints: const BoxConstraints(maxHeight: 300),
               child: ListView.separated(
                 physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,

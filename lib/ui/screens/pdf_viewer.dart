@@ -5,7 +5,7 @@ import 'package:files_tools/models/pdf_page_model.dart';
 import 'package:files_tools/ui/components/loading.dart';
 import 'package:files_tools/ui/components/view_error.dart';
 import 'package:files_tools/ui/screens/image_viewer.dart';
-import 'package:files_tools/utils/get_pdf_bitmaps.dart';
+import 'package:files_tools/utils/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pdf_bitmaps/pdf_bitmaps.dart';
@@ -20,7 +20,7 @@ class PdfViewer extends StatefulWidget {
 }
 
 class _PdfViewerState extends State<PdfViewer> {
-  final pageController = PageController(viewportFraction: 1.02);
+  final PageController pageController = PageController(viewportFraction: 1.02);
 
   bool isPageProcessing = false;
 
@@ -31,7 +31,7 @@ class _PdfViewerState extends State<PdfViewer> {
         pdfPages[index].pageErrorStatus == false &&
         isPageProcessing == false) {
       isPageProcessing = true;
-      PdfPageModel updatedPdfPage = await getUpdatedPdfPage(
+      PdfPageModel updatedPdfPage = await Utility.getUpdatedPdfPage(
         index: index,
         pdfPath: widget.arguments.filePathOrUri,
         pdfPageModel: pdfPages[index],
@@ -49,10 +49,12 @@ class _PdfViewerState extends State<PdfViewer> {
   late Future<bool> initPdfPages;
   Future<bool> initPdfPagesState() async {
     Stopwatch stopwatch = Stopwatch()..start();
-    PdfValidityAndProtection? pdfValidityAndProtectionInfo = await PdfBitmaps()
-        .pdfValidityAndProtection(
-            params: PDFValidityAndProtectionParams(
-                pdfPath: widget.arguments.filePathOrUri));
+    PdfValidityAndProtection? pdfValidityAndProtectionInfo =
+        await PdfBitmaps().pdfValidityAndProtection(
+      params: PDFValidityAndProtectionParams(
+        pdfPath: widget.arguments.filePathOrUri,
+      ),
+    );
     if (pdfValidityAndProtectionInfo == null) {
       throw Exception('Failed to verify pdf validity.');
     } else if (pdfValidityAndProtectionInfo.isPDFValid == false) {
@@ -60,8 +62,8 @@ class _PdfViewerState extends State<PdfViewer> {
     } else if (pdfValidityAndProtectionInfo.isOpenPasswordProtected == true) {
       throw Exception('Pdf is found to be password protected.');
     }
-    pdfPages =
-        await generatePdfPagesList(pdfPath: widget.arguments.filePathOrUri);
+    pdfPages = await Utility.generatePdfPagesList(
+        pdfPath: widget.arguments.filePathOrUri);
     if (pdfPages.isEmpty) {
       throw Exception('No pages found for the pdf.');
     }
@@ -95,7 +97,7 @@ class _PdfViewerState extends State<PdfViewer> {
         ),
         body: FutureBuilder<bool>(
           future: initPdfPages, // async work
-          builder: (context, AsyncSnapshot<bool> snapshot) {
+          builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
             switch (snapshot.connectionState) {
               case ConnectionState.waiting:
                 return const LoadingPdf();
@@ -145,10 +147,9 @@ class _PdfViewerState extends State<PdfViewer> {
 }
 
 class PdfViewerArguments {
+  PdfViewerArguments({required this.fileName, required this.filePathOrUri});
   final String fileName;
   final String filePathOrUri;
-
-  PdfViewerArguments({required this.fileName, required this.filePathOrUri});
 }
 
 class PageImageView extends StatefulWidget {
@@ -169,21 +170,24 @@ class _PageImageViewState extends State<PageImageView> {
     return Stack(
       fit: StackFit.passthrough,
       children: [
-        ImageView(
-          imageData: widget.bytes,
-          frameBuilder: ((context, child, frame, wasSynchronouslyLoaded) {
-            if (wasSynchronouslyLoaded) {
-              return child;
-            } else {
-              return AnimatedSwitcher(
-                duration: const Duration(milliseconds: 200),
-                child: frame != null
-                    ? child
-                    : const Loading(loadingText: 'Loading page...'),
-              );
-            }
-          }),
-          transformationController: _transformationController,
+        Align(
+          child: ImageView(
+            imageData: widget.bytes,
+            frameBuilder: ((BuildContext context, Widget child, int? frame,
+                bool wasSynchronouslyLoaded) {
+              if (wasSynchronouslyLoaded) {
+                return child;
+              } else {
+                return AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 200),
+                  child: frame != null
+                      ? child
+                      : const Loading(loadingText: 'Loading page...'),
+                );
+              }
+            }),
+            transformationController: _transformationController,
+          ),
         ),
         Align(
           alignment: Alignment.topLeft,
@@ -203,12 +207,12 @@ class _PageImageViewState extends State<PageImageView> {
 }
 
 class PDFPageView extends StatelessWidget {
-  const PDFPageView(
-      {Key? key,
-      required this.viewportFraction,
-      required this.imageView,
-      required this.pageIndex})
-      : super(key: key);
+  const PDFPageView({
+    Key? key,
+    required this.viewportFraction,
+    required this.imageView,
+    required this.pageIndex,
+  }) : super(key: key);
 
   final double viewportFraction;
 
@@ -223,6 +227,8 @@ class PDFPageView extends StatelessWidget {
       child: Container(
         color: Theme.of(context).colorScheme.surfaceVariant,
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Expanded(
               child: imageView,
@@ -264,13 +270,17 @@ class PageNumber extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
-          color: Theme.of(context).colorScheme.onSurfaceVariant),
+        borderRadius: BorderRadius.circular(12),
+        color: Theme.of(context).colorScheme.onSurfaceVariant,
+      ),
       child: Padding(
         padding: const EdgeInsets.all(3.0),
-        child: Text('Page - ${pageIndex + 1}',
-            style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                color: Theme.of(context).colorScheme.surfaceVariant)),
+        child: Text(
+          'Page - ${pageIndex + 1}',
+          style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                color: Theme.of(context).colorScheme.surfaceVariant,
+              ),
+        ),
       ),
     );
   }

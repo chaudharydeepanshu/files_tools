@@ -1,12 +1,12 @@
 import 'dart:math' as math;
 
 import 'package:files_tools/models/file_model.dart';
-import 'package:files_tools/route/route.dart' as route;
+import 'package:files_tools/route/app_routes.dart' as route;
 import 'package:files_tools/state/providers.dart';
 import 'package:files_tools/state/tools_actions_state.dart';
 import 'package:files_tools/ui/components/tools_about_card.dart';
 import 'package:files_tools/utils/decimal_text_input_formatter.dart';
-import 'package:files_tools/utils/format_bytes.dart';
+import 'package:files_tools/utils/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -39,9 +39,11 @@ class SplitBySize extends StatelessWidget {
 }
 
 class SplitBySizeActionCard extends StatefulWidget {
-  const SplitBySizeActionCard(
-      {Key? key, required this.pdfPageCount, required this.file})
-      : super(key: key);
+  const SplitBySizeActionCard({
+    Key? key,
+    required this.pdfPageCount,
+    required this.file,
+  }) : super(key: key);
 
   final int pdfPageCount;
   final InputFileModel file;
@@ -51,7 +53,7 @@ class SplitBySizeActionCard extends StatefulWidget {
 }
 
 class _SplitBySizeActionCardState extends State<SplitBySizeActionCard> {
-  final _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   TextEditingController sizeController = TextEditingController();
 
@@ -63,18 +65,27 @@ class _SplitBySizeActionCardState extends State<SplitBySizeActionCard> {
 
   @override
   void initState() {
-    fileSizeInKB = double.parse(formatBytes(
+    fileSizeInKB = double.parse(
+      Utility.formatBytes(
         bytes: widget.file.fileSizeBytes,
         decimals: 2,
-        formatType: BytesFormatType.KB));
-    fileSizeInMB = double.parse(formatBytes(
+        formatType: BytesFormatType.KB,
+      ),
+    );
+    fileSizeInMB = double.parse(
+      Utility.formatBytes(
         bytes: widget.file.fileSizeBytes,
         decimals: 2,
-        formatType: BytesFormatType.MB));
-    fileSizeInGB = double.parse(formatBytes(
+        formatType: BytesFormatType.MB,
+      ),
+    );
+    fileSizeInGB = double.parse(
+      Utility.formatBytes(
         bytes: widget.file.fileSizeBytes,
         decimals: 2,
-        formatType: BytesFormatType.GB));
+        formatType: BytesFormatType.GB,
+      ),
+    );
     super.initState();
   }
 
@@ -101,11 +112,17 @@ class _SplitBySizeActionCardState extends State<SplitBySizeActionCard> {
                       SegmentedButton<BytesFormatType>(
                         segments: const [
                           ButtonSegment(
-                              value: BytesFormatType.KB, label: Text('KB')),
+                            value: BytesFormatType.KB,
+                            label: Text('KB'),
+                          ),
                           ButtonSegment(
-                              value: BytesFormatType.MB, label: Text('MB')),
+                            value: BytesFormatType.MB,
+                            label: Text('MB'),
+                          ),
                           ButtonSegment(
-                              value: BytesFormatType.GB, label: Text('GB')),
+                            value: BytesFormatType.GB,
+                            label: Text('GB'),
+                          ),
                         ],
                         selected: <BytesFormatType>{selected},
                         onSelectionChanged: (Set<BytesFormatType> value) {
@@ -138,26 +155,31 @@ class _SplitBySizeActionCardState extends State<SplitBySizeActionCard> {
                                 ),
                                 keyboardType:
                                     const TextInputType.numberWithOptions(
-                                        decimal: true),
+                                  decimal: true,
+                                ),
                                 inputFormatters: [
                                   DecimalTextInputFormatter(decimalRange: 2),
                                   FilteringTextInputFormatter.allow(
-                                      RegExp(r'[0-9.]')),
+                                    RegExp(r'[0-9.]'),
+                                  ),
                                 ],
                                 autovalidateMode:
                                     AutovalidateMode.onUserInteraction,
                                 // The validator receives the text that the user has entered.
-                                validator: (value) {
+                                validator: (String? value) {
                                   if (selected == BytesFormatType.KB) {
                                     if (value == null || value.isEmpty) {
                                       return 'Please enter number between 0 to $fileSizeInKB';
                                     } else if (double.parse(value) <= 0) {
                                       return 'Please enter number bigger than 0';
                                     } else if (double.parse(value) >
-                                        double.parse(formatBytes(
+                                        double.parse(
+                                          Utility.formatBytes(
                                             bytes: widget.file.fileSizeBytes,
                                             decimals: 2,
-                                            formatType: BytesFormatType.KB))) {
+                                            formatType: BytesFormatType.KB,
+                                          ),
+                                        )) {
                                       return 'Please enter number lower than $fileSizeInKB';
                                     }
                                     return null;
@@ -167,10 +189,13 @@ class _SplitBySizeActionCardState extends State<SplitBySizeActionCard> {
                                     } else if (double.parse(value) <= 0) {
                                       return 'Please enter number bigger than 0';
                                     } else if (double.parse(value) >
-                                        double.parse(formatBytes(
+                                        double.parse(
+                                          Utility.formatBytes(
                                             bytes: widget.file.fileSizeBytes,
                                             decimals: 2,
-                                            formatType: BytesFormatType.MB))) {
+                                            formatType: BytesFormatType.MB,
+                                          ),
+                                        )) {
                                       return 'Please enter number lower than $fileSizeInMB';
                                     }
                                     return null;
@@ -180,10 +205,13 @@ class _SplitBySizeActionCardState extends State<SplitBySizeActionCard> {
                                     } else if (double.parse(value) <= 0) {
                                       return 'Please enter number bigger than 0';
                                     } else if (double.parse(value) >
-                                        double.parse(formatBytes(
+                                        double.parse(
+                                          Utility.formatBytes(
                                             bytes: widget.file.fileSizeBytes,
                                             decimals: 2,
-                                            formatType: BytesFormatType.GB))) {
+                                            formatType: BytesFormatType.GB,
+                                          ),
+                                        )) {
                                       return 'Please enter number lower than $fileSizeInGB';
                                     }
                                     return null;
@@ -196,16 +224,19 @@ class _SplitBySizeActionCardState extends State<SplitBySizeActionCard> {
                                     .textTheme
                                     .bodySmall
                                     ?.copyWith(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .error),
+                                      color:
+                                          Theme.of(context).colorScheme.error,
+                                    ),
                                 textAlign: TextAlign.center,
                               ),
                       ),
                       const Divider(),
                       Consumer(
-                        builder: (BuildContext context, WidgetRef ref,
-                            Widget? child) {
+                        builder: (
+                          BuildContext context,
+                          WidgetRef ref,
+                          Widget? child,
+                        ) {
                           final ToolsActionsState
                               watchToolsActionsStateProviderValue =
                               ref.watch(toolsActionsStateProvider);
@@ -213,26 +244,30 @@ class _SplitBySizeActionCardState extends State<SplitBySizeActionCard> {
                             onPressed: () async {
                               if (_formKey.currentState!.validate()) {
                                 watchToolsActionsStateProviderValue
-                                    .splitSelectedFile(
-                                  files: [widget.file],
+                                    .mangeSplitPdfFileAction(
+                                  toolAction: ToolAction.splitPdfByByteSize,
+                                  sourceFile: widget.file,
                                   byteSize: selected == BytesFormatType.KB
                                       ? (math.pow(1000, 1) *
                                               double.parse(
-                                                  sizeController.value.text))
+                                                sizeController.value.text,
+                                              ))
                                           .toInt()
                                       : selected == BytesFormatType.MB
                                           ? (math.pow(1000, 2) *
-                                                  double.parse(sizeController
-                                                      .value.text))
+                                                  double.parse(
+                                                    sizeController.value.text,
+                                                  ))
                                               .toInt()
                                           : (math.pow(1000, 3) *
-                                                  double.parse(sizeController
-                                                      .value.text))
+                                                  double.parse(
+                                                    sizeController.value.text,
+                                                  ))
                                               .toInt(),
                                 );
                                 Navigator.pushNamed(
                                   context,
-                                  route.resultPage,
+                                  route.AppRoutes.resultPage,
                                 );
                               }
                             },

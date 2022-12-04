@@ -1,7 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:files_tools/route/route.dart' as route;
-import 'package:files_tools/shared_preferences/preferences.dart';
-import 'package:files_tools/state/providers.dart';
+import 'package:files_tools/route/app_routes.dart' as route;
+import 'package:files_tools/state/preferences.dart';
 import 'package:files_tools/ui/components/dynamic_theme_switch_tile.dart';
 import 'package:files_tools/ui/components/reset_app_theme_settings.dart';
 import 'package:files_tools/ui/components/theme_chooser_widget.dart';
@@ -15,24 +14,24 @@ class OnBoardingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-        onWillPop: () async {
-          // You can do some work here.
-          onBoardingFinish(context);
-          // Returning true allows the pop to happen, returning false prevents it.
-          return false;
-        },
-        child: const OnBoardScreenPageView());
+      onWillPop: () async {
+        // You can do some work here.
+        onBoardingFinish(context);
+        // Returning true allows the pop to happen, returning false prevents it.
+        return false;
+      },
+      child: const OnBoardScreenPageView(),
+    );
   }
 }
 
 void onBoardingFinish(BuildContext context) async {
   Navigator.pushReplacementNamed(
     context,
-    route.homePage,
+    route.AppRoutes.homePage,
   );
   Preferences preferences = Preferences();
-  preferences.init(sharedPreferencesInstance);
-  preferences.persistOnBoardingStatus(true);
+  Preferences.persistOnBoardingStatus(true);
   // if (Navigator.canPop(context)) {
   //   // Popping only if it can be popped.
   //   Navigator.pop(context);
@@ -40,17 +39,17 @@ void onBoardingFinish(BuildContext context) async {
 }
 
 class HoledScaffold extends StatelessWidget {
-  const HoledScaffold(
-      {Key? key,
-      required this.firstHoleColor,
-      required this.secondHoleColor,
-      required this.firstHoleBorderColor,
-      required this.secondHoleBorderColor,
-      this.firstHoleChild,
-      this.secondHoleChild,
-      this.disableFirstHoleBorder = true,
-      this.disableSecondHoleBorder = true})
-      : super(key: key);
+  const HoledScaffold({
+    Key? key,
+    required this.firstHoleColor,
+    required this.secondHoleColor,
+    required this.firstHoleBorderColor,
+    required this.secondHoleBorderColor,
+    this.firstHoleChild,
+    this.secondHoleChild,
+    this.disableFirstHoleBorder = true,
+    this.disableSecondHoleBorder = true,
+  }) : super(key: key);
 
   final Color firstHoleColor;
   final Color secondHoleColor;
@@ -176,11 +175,11 @@ class _OnBoardScreenPageViewState extends State<OnBoardScreenPageView>
             ),
           ),
           IgnorePointer(
-            ignoring: true,
             child: ColorFiltered(
               colorFilter: ColorFilter.mode(
-                  Theme.of(context).scaffoldBackgroundColor.withOpacity(0.7),
-                  BlendMode.srcOut), // This one will create the magic
+                Theme.of(context).scaffoldBackgroundColor.withOpacity(0.7),
+                BlendMode.srcOut,
+              ), // This one will create the magic
               child: Stack(
                 fit: StackFit.expand,
                 children: [
@@ -201,7 +200,6 @@ class _OnBoardScreenPageViewState extends State<OnBoardScreenPageView>
             ),
           ),
           IgnorePointer(
-            ignoring: true,
             child: HoledScaffold(
               firstHoleColor: Colors.transparent,
               secondHoleColor: Colors.transparent,
@@ -274,13 +272,13 @@ class _OnBoardScreenPageViewState extends State<OnBoardScreenPageView>
 }
 
 class PageViewControlArrows extends StatelessWidget {
-  const PageViewControlArrows(
-      {Key? key,
-      required this.currentIndex,
-      required this.totalPages,
-      required this.onBackward,
-      required this.onForward})
-      : super(key: key);
+  const PageViewControlArrows({
+    Key? key,
+    required this.currentIndex,
+    required this.totalPages,
+    required this.onBackward,
+    required this.onForward,
+  }) : super(key: key);
 
   final int currentIndex;
   final int totalPages;
@@ -326,22 +324,25 @@ class PageViewFirstScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: const [
             ToolsMovingList1(
-                noOfElementsToRemoveFromList: 10,
-                noOfElementsToAddInIndex: 0,
-                delayMilliseconds: 100,
-                durationSeconds: 100),
+              noOfElementsToRemoveFromList: 10,
+              noOfElementsToAddInIndex: 0,
+              delayMilliseconds: 100,
+              durationSeconds: 100,
+            ),
             VerticalDivider(width: 0),
             ToolsMovingList1(
-                noOfElementsToRemoveFromList: 10,
-                noOfElementsToAddInIndex: 5,
-                delayMilliseconds: 100,
-                durationSeconds: 100),
+              noOfElementsToRemoveFromList: 10,
+              noOfElementsToAddInIndex: 5,
+              delayMilliseconds: 100,
+              durationSeconds: 100,
+            ),
             VerticalDivider(width: 0),
             ToolsMovingList1(
-                noOfElementsToRemoveFromList: 10,
-                noOfElementsToAddInIndex: 10,
-                delayMilliseconds: 100,
-                durationSeconds: 100),
+              noOfElementsToRemoveFromList: 10,
+              noOfElementsToAddInIndex: 10,
+              delayMilliseconds: 100,
+              durationSeconds: 100,
+            ),
           ],
         ),
       ),
@@ -357,35 +358,37 @@ class PageViewSecondScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return HoledScaffold(
-        firstHoleColor: Colors.transparent,
-        secondHoleColor: Colors.transparent,
-        firstHoleBorderColor: Theme.of(context).colorScheme.outline,
-        secondHoleBorderColor: Colors.transparent,
-        disableFirstHoleBorder: false,
-        firstHoleChild: AbsorbPointer(
-          absorbing: false,
-          child: Material(
-            color: Colors.transparent,
-            child: Scrollbar(
-              thumbVisibility: true,
-              child: ListView(
-                // mainAxisAlignment: MainAxisAlignment.center,
-                // crossAxisAlignment: CrossAxisAlignment.center,
-                children: const [
-                  ThemeChooserWidget(),
-                  DynamicThemeSwitchTile(),
-                  ThemeModeSwitcher(),
-                  Align(
-                    alignment: Alignment.topRight,
-                    child: ResetAppThemeSettings(),
-                  ),
-                ],
-              ),
+      firstHoleColor: Colors.transparent,
+      secondHoleColor: Colors.transparent,
+      firstHoleBorderColor: Theme.of(context).colorScheme.outline,
+      secondHoleBorderColor: Colors.transparent,
+      disableFirstHoleBorder: false,
+      firstHoleChild: AbsorbPointer(
+        absorbing: false,
+        child: Material(
+          color: Colors.transparent,
+          child: Scrollbar(
+            thumbVisibility: true,
+            child: ListView(
+              // mainAxisAlignment: MainAxisAlignment.center,
+              // crossAxisAlignment: CrossAxisAlignment.center,
+              children: const [
+                ThemeChooserWidget(),
+                DynamicThemeSwitchTile(),
+                ThemeModeSwitcher(),
+                Align(
+                  alignment: Alignment.topRight,
+                  child: ResetAppThemeSettings(),
+                ),
+              ],
             ),
           ),
         ),
-        secondHoleChild: const Center(
-            child: OnBoardingText(onBoardingText: 'Customize App Theme!')));
+      ),
+      secondHoleChild: const Center(
+        child: OnBoardingText(onBoardingText: 'Customize App Theme!'),
+      ),
+    );
   }
 }
 
@@ -425,13 +428,13 @@ class OnBoardingText extends StatelessWidget {
 }
 
 class ToolsMovingList1 extends StatelessWidget {
-  const ToolsMovingList1(
-      {Key? key,
-      required this.noOfElementsToRemoveFromList,
-      required this.noOfElementsToAddInIndex,
-      required this.delayMilliseconds,
-      required this.durationSeconds})
-      : super(key: key);
+  const ToolsMovingList1({
+    Key? key,
+    required this.noOfElementsToRemoveFromList,
+    required this.noOfElementsToAddInIndex,
+    required this.delayMilliseconds,
+    required this.durationSeconds,
+  }) : super(key: key);
 
   final int noOfElementsToRemoveFromList;
   final int noOfElementsToAddInIndex;
@@ -466,16 +469,13 @@ class ToolsMovingList1 extends StatelessWidget {
             double viewportFraction = 1 / (boxConstraints.maxHeight / 100);
             return CarouselSlider.builder(
               options: CarouselOptions(
-                  pageSnapping: false,
-                  viewportFraction: viewportFraction,
-                  height: boxConstraints.maxHeight,
-                  enableInfiniteScroll: true,
-                  reverse: false,
-                  autoPlay: true,
-                  autoPlayInterval: const Duration(seconds: 3),
-                  autoPlayAnimationDuration: const Duration(milliseconds: 800),
-                  autoPlayCurve: Curves.fastOutSlowIn,
-                  scrollDirection: Axis.vertical),
+                pageSnapping: false,
+                viewportFraction: viewportFraction,
+                height: boxConstraints.maxHeight,
+                autoPlay: true,
+                autoPlayInterval: const Duration(seconds: 3),
+                scrollDirection: Axis.vertical,
+              ),
               itemCount: appTools.length - noOfElementsToRemoveFromList,
               itemBuilder: (BuildContext context, int index, int realIndex) {
                 final int first = index + noOfElementsToAddInIndex;
@@ -539,23 +539,26 @@ class AppToolDisplayElement extends StatelessWidget {
 }
 
 class AppTool {
+  const AppTool({required this.toolName, required this.toolIconsData});
   final String toolName;
   final IconData toolIconsData;
-
-  const AppTool({required this.toolName, required this.toolIconsData});
 }
 
 final List<AppTool> appTools = [
   const AppTool(toolName: 'Merge PDF', toolIconsData: Icons.merge),
   const AppTool(toolName: 'Split PDF', toolIconsData: Icons.call_split),
   const AppTool(
-      toolName: 'Rotate PDF Pages', toolIconsData: Icons.rotate_right),
+    toolName: 'Rotate PDF Pages',
+    toolIconsData: Icons.rotate_right,
+  ),
   const AppTool(toolName: 'Delete PDF Pages', toolIconsData: Icons.delete),
   const AppTool(toolName: 'Reorder PDF Pages', toolIconsData: Icons.reorder),
   const AppTool(toolName: 'PDF To Image', toolIconsData: Icons.image),
   const AppTool(toolName: 'Compress PDF', toolIconsData: Icons.compress),
   const AppTool(
-      toolName: 'Watermark PDF', toolIconsData: Icons.branding_watermark),
+    toolName: 'Watermark PDF',
+    toolIconsData: Icons.branding_watermark,
+  ),
   const AppTool(toolName: 'Image To PDF', toolIconsData: Icons.picture_as_pdf),
   const AppTool(toolName: 'Encrypt PDF', toolIconsData: Icons.lock),
   const AppTool(toolName: 'Decrypt PDF', toolIconsData: Icons.lock_open),

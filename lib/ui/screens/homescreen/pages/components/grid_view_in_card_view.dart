@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 
 class GridCardDetail {
-  final List<Widget> cardIcons;
-
-  final String cardTitle;
-  final Function()? cardOnTap;
 
   GridCardDetail({
     required this.cardIcons,
     required this.cardTitle,
     this.cardOnTap,
   });
+  final List<Widget> cardIcons;
+
+  final String cardTitle;
+  final Function()? cardOnTap;
 
   // Implement toString to make it easier to see information
   // when using the print statement.
@@ -69,7 +69,6 @@ class GridViewInCardSection extends StatelessWidget {
                         physics: const NeverScrollableScrollPhysics(),
                         gridDelegate:
                             const SliverGridDelegateWithMaxCrossAxisExtent(
-                          childAspectRatio: 1,
                           maxCrossAxisExtent: 200,
                           mainAxisExtent: 100,
                           mainAxisSpacing: 8,
@@ -144,7 +143,7 @@ class GridViewCard extends StatelessWidget {
               width: 0,
               color: gridCardDetail.cardOnTap == null
                   ? Theme.of(context).disabledColor
-                  : Theme.of(context).colorScheme.onSecondaryContainer)
+                  : Theme.of(context).colorScheme.onSecondaryContainer,)
       ]);
     }
 
@@ -155,7 +154,6 @@ class GridViewCard extends StatelessWidget {
         alignment: AlignmentDirectional.topCenter,
         children: [
           Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Expanded(
@@ -176,7 +174,6 @@ class GridViewCard extends StatelessWidget {
           ),
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               IntrinsicHeight(
                 child: Row(

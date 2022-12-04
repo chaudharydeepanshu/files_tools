@@ -1,5 +1,5 @@
 import 'package:files_tools/models/file_model.dart';
-import 'package:files_tools/route/route.dart' as route;
+import 'package:files_tools/route/app_routes.dart' as route;
 import 'package:files_tools/state/providers.dart';
 import 'package:files_tools/state/tools_actions_state.dart';
 import 'package:files_tools/ui/components/tools_about_card.dart';
@@ -45,7 +45,7 @@ class CompressImageActionCard extends StatefulWidget {
 enum CompressionTypes { less, medium, extreme, custom }
 
 class _CompressImageActionCardState extends State<CompressImageActionCard> {
-  final _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   TextEditingController imageScalingController =
       TextEditingController(text: '0.6');
@@ -138,16 +138,18 @@ class _CompressImageActionCardState extends State<CompressImageActionCard> {
                               ),
                               keyboardType:
                                   const TextInputType.numberWithOptions(
-                                      decimal: true),
+                                decimal: true,
+                              ),
                               inputFormatters: [
                                 DecimalTextInputFormatter(decimalRange: 2),
                                 FilteringTextInputFormatter.allow(
-                                    RegExp(r'[0-9.]')),
+                                  RegExp(r'[0-9.]'),
+                                ),
                               ],
                               autovalidateMode:
                                   AutovalidateMode.onUserInteraction,
                               // The validator receives the text that the user has entered.
-                              validator: (value) {
+                              validator: (String? value) {
                                 if (value == null || value.isEmpty) {
                                   return 'Please enter number from 0 to 1';
                                 } else if (double.parse(value) <= 0) {
@@ -175,7 +177,7 @@ class _CompressImageActionCardState extends State<CompressImageActionCard> {
                               autovalidateMode:
                                   AutovalidateMode.onUserInteraction,
                               // The validator receives the text that the user has entered.
-                              validator: (value) {
+                              validator: (String? value) {
                                 if (value == null || value.isEmpty) {
                                   return 'Please enter number from 1 to 100';
                                 } else if (int.parse(value) <= 0) {
@@ -200,17 +202,18 @@ class _CompressImageActionCardState extends State<CompressImageActionCard> {
             ),
             const SizedBox(height: 10),
             CheckboxListTile(
-                tileColor: Theme.of(context).colorScheme.surfaceVariant,
-                // contentPadding: EdgeInsets.zero,
-                visualDensity: VisualDensity.compact,
-                title: const Text('Remove exif data'),
-                subtitle: const Text('Only works for jpg format'),
-                value: removeExifData,
-                onChanged: (bool? value) {
-                  setState(() {
-                    removeExifData = value ?? !removeExifData;
-                  });
-                }),
+              tileColor: Theme.of(context).colorScheme.surfaceVariant,
+              // contentPadding: EdgeInsets.zero,
+              visualDensity: VisualDensity.compact,
+              title: const Text('Remove exif data'),
+              subtitle: const Text('Only works for jpg format'),
+              value: removeExifData,
+              onChanged: (bool? value) {
+                setState(() {
+                  removeExifData = value ?? !removeExifData;
+                });
+              },
+            ),
             const SizedBox(height: 10),
             Column(
               children: [
@@ -233,7 +236,8 @@ class _CompressImageActionCardState extends State<CompressImageActionCard> {
                                     ? 0.7
                                     : compressionType == CompressionTypes.custom
                                         ? double.parse(
-                                            imageScalingController.value.text)
+                                            imageScalingController.value.text,
+                                          )
                                         : 1;
                         int imageQuality = compressionType ==
                                 CompressionTypes.less
@@ -244,33 +248,34 @@ class _CompressImageActionCardState extends State<CompressImageActionCard> {
                                     ? 60
                                     : compressionType == CompressionTypes.custom
                                         ? int.parse(
-                                            imageQualityController.value.text)
+                                            imageQualityController.value.text,
+                                          )
                                         : 100;
 
                         if (compressionType == CompressionTypes.custom &&
                             _formKey.currentState!.validate()) {
                           watchToolsActionsStateProviderValue
-                              .compressSelectedImage(
-                            files: widget.files,
+                              .mangeCompressImageFileAction(
+                            sourceFiles: widget.files,
                             imageScale: imageScale,
                             imageQuality: imageQuality,
                             removeExifData: removeExifData,
                           );
                           Navigator.pushNamed(
                             context,
-                            route.resultPage,
+                            route.AppRoutes.resultPage,
                           );
                         } else {
                           watchToolsActionsStateProviderValue
-                              .compressSelectedImage(
-                            files: widget.files,
+                              .mangeCompressImageFileAction(
+                            sourceFiles: widget.files,
                             imageScale: imageScale,
                             imageQuality: imageQuality,
                             removeExifData: removeExifData,
                           );
                           Navigator.pushNamed(
                             context,
-                            route.resultPage,
+                            route.AppRoutes.resultPage,
                           );
                         }
                       },

@@ -1,5 +1,5 @@
 import 'package:files_tools/models/file_model.dart';
-import 'package:files_tools/route/route.dart' as route;
+import 'package:files_tools/route/app_routes.dart' as route;
 import 'package:files_tools/state/providers.dart';
 import 'package:files_tools/state/tools_actions_state.dart';
 import 'package:files_tools/ui/components/tools_about_card.dart';
@@ -40,7 +40,7 @@ class DecryptPDFActionCard extends StatefulWidget {
 }
 
 class _DecryptPDFActionCardState extends State<DecryptPDFActionCard> {
-  final _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   TextEditingController passwordController = TextEditingController(text: '');
 
@@ -75,7 +75,7 @@ class _DecryptPDFActionCardState extends State<DecryptPDFActionCard> {
                     ],
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     // The validator receives the text that the user has entered.
-                    validator: (value) {
+                    validator: (String? value) {
                       return null;
                     },
                   ),
@@ -96,13 +96,13 @@ class _DecryptPDFActionCardState extends State<DecryptPDFActionCard> {
                       onPressed: () async {
                         if (_formKey.currentState!.validate()) {
                           watchToolsActionsStateProviderValue
-                              .decryptSelectedFile(
-                            files: [widget.file],
+                              .mangeDecryptPdfFileAction(
+                            sourceFile: widget.file,
                             password: passwordController.value.text,
                           );
                           Navigator.pushNamed(
                             context,
-                            route.resultPage,
+                            route.AppRoutes.resultPage,
                           );
                         }
                       },

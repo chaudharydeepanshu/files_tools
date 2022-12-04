@@ -5,7 +5,7 @@ import 'package:files_tools/state/tools_actions_state.dart';
 import 'package:files_tools/ui/components/loading.dart';
 import 'package:files_tools/ui/components/view_error.dart';
 import 'package:files_tools/ui/screens/pdf_tools_screens/compress_pdf/tools/compress_pdf.dart';
-import 'package:files_tools/utils/get_pdf_bitmaps.dart';
+import 'package:files_tools/utils/utility.dart';
 import 'package:flutter/material.dart';
 
 class CompressPDFToolsPage extends StatefulWidget {
@@ -24,7 +24,7 @@ class _CompressPDFToolsPageState extends State<CompressPDFToolsPage> {
 
   Future<bool> initPdfPageCount() async {
     pdfPageCount =
-        await getPdfPageCount(pdfPath: widget.arguments.file.fileUri);
+        await Utility.getPdfPageCount(pdfPath: widget.arguments.file.fileUri);
     return true;
   }
 
@@ -43,36 +43,43 @@ class _CompressPDFToolsPageState extends State<CompressPDFToolsPage> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Text(getAppBarTitleForActionType(
-              actionType: widget.arguments.actionType)),
+          title: Text(
+            getAppBarTitleForActionType(
+              actionType: widget.arguments.actionType,
+            ),
+          ),
           centerTitle: true,
         ),
         body: FutureBuilder<bool>(
           future: initPageCount, // async work
-          builder: (context, AsyncSnapshot<bool> snapshot) {
+          builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
             switch (snapshot.connectionState) {
               case ConnectionState.waiting:
                 return const Loading(
-                    loadingText: 'Getting pdf info please wait ...');
+                  loadingText: 'Getting pdf info please wait ...',
+                );
               default:
                 if (snapshot.hasError) {
                   log(snapshot.error.toString());
                   return ShowError(
-                      taskMessage: 'Sorry, failed to process the pdf.',
-                      errorMessage: snapshot.error.toString(),
-                      errorStackTrace: snapshot.stackTrace,
-                      allowBack: true);
+                    taskMessage: 'Sorry, failed to process the pdf.',
+                    errorMessage: snapshot.error.toString(),
+                    errorStackTrace: snapshot.stackTrace,
+                    allowBack: true,
+                  );
                 } else if (pdfPageCount == null) {
                   return ShowError(
-                      taskMessage: 'Sorry, failed to process the pdf.',
-                      errorMessage: 'PDF page count is null',
-                      errorStackTrace: snapshot.stackTrace,
-                      allowBack: true);
+                    taskMessage: 'Sorry, failed to process the pdf.',
+                    errorMessage: 'PDF page count is null',
+                    errorStackTrace: snapshot.stackTrace,
+                    allowBack: true,
+                  );
                 } else {
                   return CompressPDFToolsBody(
-                      actionType: widget.arguments.actionType,
-                      file: widget.arguments.file,
-                      pdfPageCount: pdfPageCount!);
+                    actionType: widget.arguments.actionType,
+                    file: widget.arguments.file,
+                    pdfPageCount: pdfPageCount!,
+                  );
                 }
             }
           },
@@ -83,27 +90,26 @@ class _CompressPDFToolsPageState extends State<CompressPDFToolsPage> {
 }
 
 class CompressPDFToolsPageArguments {
-  final ToolsActions actionType;
-  final InputFileModel file;
-
   CompressPDFToolsPageArguments({required this.actionType, required this.file});
+  final ToolAction actionType;
+  final InputFileModel file;
 }
 
 class CompressPDFToolsBody extends StatelessWidget {
-  const CompressPDFToolsBody(
-      {Key? key,
-      required this.actionType,
-      required this.file,
-      required this.pdfPageCount})
-      : super(key: key);
+  const CompressPDFToolsBody({
+    Key? key,
+    required this.actionType,
+    required this.file,
+    required this.pdfPageCount,
+  }) : super(key: key);
 
-  final ToolsActions actionType;
+  final ToolAction actionType;
   final InputFileModel file;
   final int pdfPageCount;
 
   @override
   Widget build(BuildContext context) {
-    if (actionType == ToolsActions.compressPdf) {
+    if (actionType == ToolAction.compressPdf) {
       return CompressPDF(pdfPageCount: pdfPageCount, file: file);
     } else {
       return Container();
@@ -111,9 +117,9 @@ class CompressPDFToolsBody extends StatelessWidget {
   }
 }
 
-String getAppBarTitleForActionType({required ToolsActions actionType}) {
+String getAppBarTitleForActionType({required ToolAction actionType}) {
   String title = 'Action Successful';
-  if (actionType == ToolsActions.compressPdf) {
+  if (actionType == ToolAction.compressPdf) {
     title = 'Select Compress Config';
   }
   return title;

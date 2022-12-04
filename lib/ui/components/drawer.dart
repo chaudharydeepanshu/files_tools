@@ -1,6 +1,6 @@
 import 'package:files_tools/constants.dart';
-import 'package:files_tools/route/route.dart' as route;
-import 'package:files_tools/state/providers.dart';
+import 'package:files_tools/route/app_routes.dart' as route;
+import 'package:files_tools/state/package_info_state.dart';
 import 'package:files_tools/ui/components/link_button.dart';
 import 'package:files_tools/ui/components/theme_mode_switcher.dart';
 import 'package:flutter/material.dart';
@@ -13,10 +13,10 @@ class AppDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Drawer(
       child: Stack(
-        children: [
+        children: <Widget>[
           Column(
             mainAxisSize: MainAxisSize.min,
-            children: [
+            children: <Widget>[
               Flexible(
                 child: Consumer(
                   builder:
@@ -24,23 +24,22 @@ class AppDrawer extends StatelessWidget {
                     return DrawerHeader(
                       decoration: BoxDecoration(
                         color: Theme.of(context).colorScheme.surface,
-                        border: const Border(
-                          bottom: BorderSide.none,
-                        ),
+                        border: const Border(),
                       ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
+                        children: <Widget>[
                           Column(
-                            children: [
+                            children: <Widget>[
                               Flexible(
                                 child: Image.asset(
                                   'assets/app_icon.png',
                                 ),
                               ),
-                              Text(ref.read(packageInfoCalcProvider).appName,
-                                  style:
-                                      Theme.of(context).textTheme.titleLarge),
+                              Text(
+                                packageInfo.appName,
+                                style: Theme.of(context).textTheme.titleLarge,
+                              ),
                             ],
                           ),
                         ],
@@ -53,7 +52,7 @@ class AppDrawer extends StatelessWidget {
                 child: ListView(
                   // Important: Remove any padding from the ListView.
                   padding: EdgeInsets.zero,
-                  children: [
+                  children: <Widget>[
                     const ThemeModeSwitcher(),
                     const Divider(indent: 16, endIndent: 16),
                     ListTile(
@@ -62,7 +61,7 @@ class AppDrawer extends StatelessWidget {
                       onTap: () {
                         Navigator.pushNamed(
                           context,
-                          route.settingsPage,
+                          route.AppRoutes.settingsPage,
                         );
                       },
                     ),
@@ -72,7 +71,7 @@ class AppDrawer extends StatelessWidget {
                       onTap: () {
                         Navigator.pushNamed(
                           context,
-                          route.aboutPage,
+                          route.AppRoutes.aboutPage,
                         );
                       },
                     ),
@@ -86,28 +85,30 @@ class AppDrawer extends StatelessWidget {
           ),
           Column(
             mainAxisAlignment: MainAxisAlignment.end,
-            children: [
+            children: <Widget>[
               Container(
                 color: Theme.of(context).colorScheme.surface,
                 child: Column(
-                  children: [
+                  children: <Widget>[
                     const Divider(height: 0),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
+                        children: <Widget>[
                           LinkButton(
-                              urlLabel: 'Privacy Policy',
-                              urlIcon: Icons.privacy_tip,
-                              url: privacyPolicyUrl),
+                            urlLabel: 'Privacy Policy',
+                            urlIcon: Icons.privacy_tip,
+                            url: privacyPolicyUrl,
+                          ),
                           const Text(
                             ' - ',
                           ),
                           LinkButton(
-                              urlLabel: 'Terms and Conditions',
-                              urlIcon: Icons.gavel,
-                              url: termsAndConditionsUrl),
+                            urlLabel: 'Terms and Conditions',
+                            urlIcon: Icons.gavel,
+                            url: termsAndConditionsUrl,
+                          ),
                         ],
                       ),
                     ),

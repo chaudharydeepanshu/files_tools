@@ -3,7 +3,7 @@ import 'dart:typed_data';
 
 import 'package:files_tools/ui/components/loading.dart';
 import 'package:files_tools/ui/components/view_error.dart';
-import 'package:files_tools/utils/get_uint8list_from_absolute_file_path_or_uri.dart';
+import 'package:files_tools/utils/utility.dart';
 import 'package:flutter/material.dart';
 
 class ImageViewer extends StatefulWidget {
@@ -22,8 +22,10 @@ class _ImageViewerState extends State<ImageViewer> {
   Future<bool> initImageDataState() async {
     Stopwatch stopwatch = Stopwatch()..start();
     // Todo: Look is using ImageModel here will suit or not.
-    imageData = await getBytesFromFilePathOrUri(
-        filePath: widget.arguments.filePath, fileUri: widget.arguments.fileUri);
+    imageData = await Utility.getBytesFromFilePathOrUri(
+      filePath: widget.arguments.filePath,
+      fileUri: widget.arguments.fileUri,
+    );
     log('initImageDataState Executed in ${stopwatch.elapsed}');
     return true;
   }
@@ -56,7 +58,7 @@ class _ImageViewerState extends State<ImageViewer> {
         ),
         body: FutureBuilder<bool>(
           future: initImageData, // async work
-          builder: (context, AsyncSnapshot<bool> snapshot) {
+          builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
             switch (snapshot.connectionState) {
               case ConnectionState.waiting:
                 return const Loading(loadingText: 'Loading image...');
@@ -78,8 +80,12 @@ class _ImageViewerState extends State<ImageViewer> {
                           children: [
                             ImageView(
                               imageData: imageData!,
-                              frameBuilder: ((context, child, frame,
-                                  wasSynchronouslyLoaded) {
+                              frameBuilder: ((
+                                BuildContext context,
+                                Widget child,
+                                int? frame,
+                                bool wasSynchronouslyLoaded,
+                              ) {
                                 if (wasSynchronouslyLoaded) {
                                   return child;
                                 } else {
@@ -88,7 +94,8 @@ class _ImageViewerState extends State<ImageViewer> {
                                     child: frame != null
                                         ? child
                                         : const Loading(
-                                            loadingText: 'Loading image...'),
+                                            loadingText: 'Loading image...',
+                                          ),
                                   );
                                 }
                               }),
@@ -123,20 +130,19 @@ class _ImageViewerState extends State<ImageViewer> {
 }
 
 class ImageViewerArguments {
+  ImageViewerArguments({required this.fileName, this.filePath, this.fileUri});
   final String fileName;
   final String? filePath;
   final String? fileUri;
-
-  ImageViewerArguments({required this.fileName, this.filePath, this.fileUri});
 }
 
 class ImageView extends StatelessWidget {
-  const ImageView(
-      {Key? key,
-      required this.imageData,
-      this.frameBuilder,
-      this.transformationController})
-      : super(key: key);
+  const ImageView({
+    Key? key,
+    required this.imageData,
+    this.frameBuilder,
+    this.transformationController,
+  }) : super(key: key);
 
   final Uint8List imageData;
   final Widget Function(BuildContext, Widget, int?, bool)? frameBuilder;
@@ -145,19 +151,22 @@ class ImageView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InteractiveViewer(
-      panEnabled: true,
       minScale: 1,
       maxScale: 5,
       transformationController: transformationController,
-      child: Image.memory(imageData,
-          frameBuilder: frameBuilder,
-          fit: BoxFit.contain, errorBuilder: (context, error, stackTrace) {
-        return ShowError(
-          taskMessage: 'Sorry! Failed to show image',
-          errorMessage: error.toString(),
-          errorStackTrace: stackTrace,
-        );
-      }),
+      child: Image.memory(
+        imageData,
+        frameBuilder: frameBuilder,
+        fit: BoxFit.contain,
+        errorBuilder:
+            (BuildContext context, Object error, StackTrace? stackTrace) {
+          return ShowError(
+            taskMessage: 'Sorry! Failed to show image',
+            errorMessage: error.toString(),
+            errorStackTrace: stackTrace,
+          );
+        },
+      ),
     );
 //   ExtendedImage.memory(
 //       imageData,

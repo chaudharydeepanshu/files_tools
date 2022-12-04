@@ -1,13 +1,13 @@
 import 'package:files_tools/models/file_model.dart';
 import 'package:files_tools/models/tool_actions_model.dart';
-import 'package:files_tools/route/route.dart' as route;
+import 'package:files_tools/route/app_routes.dart' as route;
 import 'package:files_tools/state/providers.dart';
-import 'package:files_tools/state/select_file_state.dart';
 import 'package:files_tools/state/tools_actions_state.dart';
+import 'package:files_tools/state/tools_screens_state.dart';
 import 'package:files_tools/ui/components/select_file_section.dart';
 import 'package:files_tools/ui/components/tool_actions_section.dart';
 import 'package:files_tools/ui/screens/image_tools_screens/compress_image/compress_image_tool_screen.dart';
-import 'package:files_tools/utils/clear_cache.dart';
+import 'package:files_tools/utils/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pick_or_save/pick_or_save.dart';
@@ -22,7 +22,7 @@ class CompressImagePage extends StatefulWidget {
 class _CompressPDFPageState extends State<CompressImagePage> {
   @override
   void initState() {
-    clearCache(clearCacheCommandFrom: 'CompressImagePage');
+    Utility.clearCache(clearCacheCommandFrom: 'CompressImagePage');
     super.initState();
   }
 
@@ -48,11 +48,12 @@ class _CompressPDFPageState extends State<CompressImagePage> {
           ),
           body: Consumer(
             builder: (BuildContext context, WidgetRef ref, Widget? child) {
-              final ToolScreenState watchToolScreenStateProviderValue =
-                  ref.watch(toolScreenStateProvider);
+              final ToolsScreensState watchToolScreenStateProviderValue =
+                  ref.watch(toolsScreensStateProvider);
               final List<InputFileModel> selectedFiles = ref.watch(
-                  toolScreenStateProvider
-                      .select((value) => value.selectedFiles));
+                toolsScreensStateProvider
+                    .select((ToolsScreensState value) => value.selectedFiles),
+              );
               return ListView(
                 children: [
                   const SizedBox(height: 16),
@@ -61,7 +62,6 @@ class _CompressPDFPageState extends State<CompressImagePage> {
                     files: watchToolScreenStateProviderValue.selectedFiles,
                     filePickerParams: FilePickerParams(
                       getCachedFilePath: false,
-                      pickerType: PickerType.file,
                       enableMultipleSelection: true,
                       mimeTypesFilter: [
                         'image/png',
@@ -74,7 +74,7 @@ class _CompressPDFPageState extends State<CompressImagePage> {
                   const SizedBox(height: 16),
                   ToolActionsCard(
                     toolActions: [
-                      ToolActionsModel(
+                      ToolActionModel(
                         actionText: 'Compress images',
                         actionOnTap: selectedFiles.isNotEmpty
                             ? () {
@@ -85,10 +85,11 @@ class _CompressPDFPageState extends State<CompressImagePage> {
 
                                 Navigator.pushNamed(
                                   context,
-                                  route.compressImageToolsPage,
+                                  route.AppRoutes.compressImageToolsPage,
                                   arguments: CompressImageToolsPageArguments(
-                                      actionType: ToolsActions.compressImages,
-                                      files: selectedFiles),
+                                    actionType: ToolAction.compressImages,
+                                    files: selectedFiles,
+                                  ),
                                 );
                               }
                             : null,

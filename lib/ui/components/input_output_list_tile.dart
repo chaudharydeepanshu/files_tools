@@ -1,23 +1,23 @@
 import 'dart:developer';
 
-import 'package:files_tools/route/route.dart' as route;
+import 'package:files_tools/route/app_routes.dart' as route;
 import 'package:files_tools/ui/components/custom_snack_bar.dart';
 import 'package:files_tools/ui/screens/image_viewer.dart';
 import 'package:files_tools/ui/screens/pdf_viewer.dart';
-import 'package:files_tools/utils/get_file_name_extension.dart';
+import 'package:files_tools/utils/utility.dart';
 import 'package:flutter/material.dart';
 
 class FileTile extends StatelessWidget {
-  const FileTile(
-      {Key? key,
-      required this.fileName,
-      required this.fileTime,
-      required this.fileDate,
-      this.filePath,
-      this.fileUri,
-      required this.fileSize,
-      this.onRemove})
-      : super(key: key);
+  const FileTile({
+    Key? key,
+    required this.fileName,
+    required this.fileTime,
+    required this.fileDate,
+    this.filePath,
+    this.fileUri,
+    required this.fileSize,
+    this.onRemove,
+  }) : super(key: key);
 
   final String fileName;
   final String fileTime;
@@ -38,14 +38,16 @@ class FileTile extends StatelessWidget {
       visualDensity: VisualDensity.comfortable,
       dense: true,
       onTap: () {
-        String fileExtension = getFileNameExtension(fileName: fileName);
+        String fileExtension = Utility.getFileNameExtension(fileName: fileName);
         if (fileExtension.toLowerCase() == '.pdf') {
           if (filePath != null || fileUri != null) {
             Navigator.pushNamed(
               context,
-              route.pdfViewer,
+              route.AppRoutes.pdfViewer,
               arguments: PdfViewerArguments(
-                  fileName: fileName, filePathOrUri: filePath ?? fileUri!),
+                fileName: fileName,
+                filePathOrUri: filePath ?? fileUri!,
+              ),
             );
           } else {
             log('File path or file uri both are null for opening file with extension $fileExtension');
@@ -56,9 +58,12 @@ class FileTile extends StatelessWidget {
             fileExtension.toLowerCase() == '.webp') {
           Navigator.pushNamed(
             context,
-            route.imageViewer,
+            route.AppRoutes.imageViewer,
             arguments: ImageViewerArguments(
-                fileName: fileName, filePath: filePath, fileUri: fileUri),
+              fileName: fileName,
+              filePath: filePath,
+              fileUri: fileUri,
+            ),
           );
         } else {
           log('No action found for opening file with extension $fileExtension');
@@ -102,16 +107,18 @@ class FileTile extends StatelessWidget {
       subtitle: IntrinsicHeight(
         child: Row(
           mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Expanded(
-              child: Text(fileDate,
-                  style: Theme.of(context).textTheme.bodySmall,
-                  overflow: TextOverflow.ellipsis),
+              child: Text(
+                fileDate,
+                style: Theme.of(context).textTheme.bodySmall,
+                overflow: TextOverflow.ellipsis,
+              ),
             ),
             VerticalDivider(
-                color: Theme.of(context).colorScheme.onSecondaryContainer,
-                width: 0),
+              color: Theme.of(context).colorScheme.onSecondaryContainer,
+              width: 0,
+            ),
             Expanded(
               child: Text(
                 fileTime,
@@ -121,8 +128,9 @@ class FileTile extends StatelessWidget {
               ),
             ),
             VerticalDivider(
-                color: Theme.of(context).colorScheme.onSecondaryContainer,
-                width: 0),
+              color: Theme.of(context).colorScheme.onSecondaryContainer,
+              width: 0,
+            ),
             Expanded(
               child: Text(
                 fileSize,

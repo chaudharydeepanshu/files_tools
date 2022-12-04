@@ -1,17 +1,16 @@
 import 'package:files_tools/models/file_model.dart';
 import 'package:files_tools/models/tool_actions_model.dart';
-import 'package:files_tools/route/route.dart' as route;
+import 'package:files_tools/route/app_routes.dart' as route;
 import 'package:files_tools/state/providers.dart';
-import 'package:files_tools/state/select_file_state.dart';
 import 'package:files_tools/state/tools_actions_state.dart';
+import 'package:files_tools/state/tools_screens_state.dart';
+import 'package:files_tools/ui/components/select_file_section.dart';
 import 'package:files_tools/ui/components/tool_actions_section.dart';
 import 'package:files_tools/ui/screens/pdf_tools_screens/image_to_pdf/image_to_pdf_tools_screen.dart';
-import 'package:files_tools/utils/clear_cache.dart';
+import 'package:files_tools/utils/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pick_or_save/pick_or_save.dart';
-
-import 'package:files_tools/ui/components/select_file_section.dart';
 
 class ImageToPDFPage extends StatefulWidget {
   const ImageToPDFPage({Key? key}) : super(key: key);
@@ -23,7 +22,7 @@ class ImageToPDFPage extends StatefulWidget {
 class _ImageToPDFPageState extends State<ImageToPDFPage> {
   @override
   void initState() {
-    clearCache(clearCacheCommandFrom: 'ImageToPDFPage');
+    Utility.clearCache(clearCacheCommandFrom: 'ImageToPDFPage');
     super.initState();
   }
 
@@ -49,14 +48,15 @@ class _ImageToPDFPageState extends State<ImageToPDFPage> {
           ),
           body: Consumer(
             builder: (BuildContext context, WidgetRef ref, Widget? child) {
-              final ToolScreenState watchToolScreenStateProviderValue =
-                  ref.watch(toolScreenStateProvider);
+              final ToolsScreensState watchToolScreenStateProviderValue =
+                  ref.watch(toolsScreensStateProvider);
               // final List<InputFileModel> selectedImages = ref.watch(
               //     toolScreenStateProvider
               //         .select((value) => value.selectedImages));
               final List<InputFileModel> selectedFiles = ref.watch(
-                  toolScreenStateProvider
-                      .select((value) => value.selectedFiles));
+                toolsScreensStateProvider
+                    .select((ToolsScreensState value) => value.selectedFiles),
+              );
               return ListView(
                 children: [
                   const SizedBox(height: 16),
@@ -65,7 +65,6 @@ class _ImageToPDFPageState extends State<ImageToPDFPage> {
                     files: watchToolScreenStateProviderValue.selectedFiles,
                     filePickerParams: FilePickerParams(
                       getCachedFilePath: false,
-                      pickerType: PickerType.file,
                       enableMultipleSelection: true,
                       mimeTypesFilter: [
                         // "image/*",
@@ -106,7 +105,7 @@ class _ImageToPDFPageState extends State<ImageToPDFPage> {
                   const SizedBox(height: 16),
                   ToolActionsCard(
                     toolActions: [
-                      ToolActionsModel(
+                      ToolActionModel(
                         actionText: 'Image To PDF',
                         actionOnTap: selectedFiles.isNotEmpty
                             ? () {
@@ -117,10 +116,11 @@ class _ImageToPDFPageState extends State<ImageToPDFPage> {
 
                                 Navigator.pushNamed(
                                   context,
-                                  route.imageToPDFToolsPage,
+                                  route.AppRoutes.imageToPDFToolsPage,
                                   arguments: ImageToPDFToolsPageArguments(
-                                      actionType: ToolsActions.imageToPdf,
-                                      files: selectedFiles),
+                                    actionType: ToolAction.imageToPdf,
+                                    files: selectedFiles,
+                                  ),
                                 );
                               }
                             : null,

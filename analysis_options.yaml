@@ -8,6 +8,28 @@
 # The following line activates a set of recommended lints for Flutter apps,
 # packages, and plugins designed to encourage good coding practices.
 include: package:flutter_lints/flutter.yaml
+analyzer:
+  exclude:
+    - "**/*.g.dart"
+    - "**/*.freezed.dart"
+    - "test/.test_coverage.dart"
+    - "bin/cache/**"
+    - "lib/generated_plugin_registrant.dart"
+    - "lib/firebase_options.dart"
+
+  # For more information see:
+  # https://dart.dev/guides/language/analysis-options#enabling-additional-type-checks
+  language:
+    strict-casts: true
+    strict-inference: true
+    strict-raw-types: true
+
+  errors:
+    missing_required_param: error
+    missing_return: error
+    deprecated_member_use_from_same_package: ignore
+    parameter_assignments: warning
+    todo: ignore
 
 linter:
   # The lint rules applied to this project can be customized in the
@@ -22,10 +44,38 @@ linter:
   # `// ignore_for_file: name_of_lint` syntax on the line or in the file
   # producing the lint.
   rules:
-    - always_declare_return_types
-    - prefer_single_quotes
-    - always_use_package_imports
-    - avoid_relative_lib_imports
+    always_put_control_body_on_new_line: true
+    always_put_required_named_parameters_first: false
+    always_specify_types: true
+    always_use_package_imports: true
+    avoid_relative_lib_imports: true
+    avoid_annotating_with_dynamic: false
+    avoid_catches_without_on_clauses: false
+    avoid_classes_with_only_static_members: false
+    avoid_final_parameters: false
+    avoid_positional_boolean_parameters: false
+    avoid_print: true
+    avoid_redundant_argument_values: true
+    avoid_types_on_closure_parameters: false
+    cascade_invocations: false
+    close_sinks: false
+    flutter_style_todos: true
+    lines_longer_than_80_chars: true
+    no_default_cases: true
+    omit_local_variable_types: false
+    prefer_asserts_with_message: false
+    prefer_constructors_over_static_methods: false
+    prefer_double_quotes: false
+    prefer_expression_function_bodies: false
+    prefer_final_parameters: false # Enable for cleanup and then disable it as it causes false positives.
+    prefer_int_literals: false
+    public_member_api_docs: true
+    require_trailing_commas: true
+    sort_constructors_first: true
+    unnecessary_final: false
+    sort_pub_dependencies: false
 
 # Additional information about this file can be found at
 # https://dart.dev/guides/language/analysis-options
+
+# Credits on reasoning behind many lints goes to https://gist.github.com/rydmike/fdb53ddd933c37d20e6f3188a936cd4c

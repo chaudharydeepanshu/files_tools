@@ -28,36 +28,41 @@ class _ImageToPDFToolsPageState extends State<ImageToPDFToolsPage> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Text(getAppBarTitleForActionType(
-              actionType: widget.arguments.actionType)),
+          title: Text(
+            getAppBarTitleForActionType(
+              actionType: widget.arguments.actionType,
+            ),
+          ),
           centerTitle: true,
         ),
         body: ImageToPDFToolsBody(
-            actionType: widget.arguments.actionType,
-            files: widget.arguments.files),
+          actionType: widget.arguments.actionType,
+          files: widget.arguments.files,
+        ),
       ),
     );
   }
 }
 
 class ImageToPDFToolsPageArguments {
-  final ToolsActions actionType;
-  final List<InputFileModel> files;
-
   ImageToPDFToolsPageArguments({required this.actionType, required this.files});
+  final ToolAction actionType;
+  final List<InputFileModel> files;
 }
 
 class ImageToPDFToolsBody extends StatelessWidget {
-  const ImageToPDFToolsBody(
-      {Key? key, required this.actionType, required this.files})
-      : super(key: key);
+  const ImageToPDFToolsBody({
+    Key? key,
+    required this.actionType,
+    required this.files,
+  }) : super(key: key);
 
-  final ToolsActions actionType;
+  final ToolAction actionType;
   final List<InputFileModel> files;
 
   @override
   Widget build(BuildContext context) {
-    if (actionType == ToolsActions.imageToPdf) {
+    if (actionType == ToolAction.imageToPdf) {
       return ImageToPDF(files: files);
     } else {
       return Container();
@@ -65,9 +70,9 @@ class ImageToPDFToolsBody extends StatelessWidget {
   }
 }
 
-String getAppBarTitleForActionType({required ToolsActions actionType}) {
+String getAppBarTitleForActionType({required ToolAction actionType}) {
   String title = 'Action Successful';
-  if (actionType == ToolsActions.imageToPdf) {
+  if (actionType == ToolAction.imageToPdf) {
     title = 'Prepare Images For PDF';
   }
   return title;

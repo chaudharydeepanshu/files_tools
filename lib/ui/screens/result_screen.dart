@@ -1,12 +1,12 @@
 import 'package:files_tools/models/file_model.dart';
-import 'package:files_tools/route/route.dart' as route;
+import 'package:files_tools/route/app_routes.dart' as route;
 import 'package:files_tools/state/providers.dart';
 import 'package:files_tools/state/tools_actions_state.dart';
 import 'package:files_tools/ui/components/custom_snack_bar.dart';
 import 'package:files_tools/ui/components/input_output_list_tile.dart';
 import 'package:files_tools/ui/components/loading.dart';
 import 'package:files_tools/ui/components/view_error.dart';
-import 'package:files_tools/utils/clear_cache.dart';
+import 'package:files_tools/utils/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rive/rive.dart';
@@ -25,7 +25,7 @@ class ResultPage extends StatelessWidget {
             // Canceling running actions.
             ref.read(toolsActionsStateProvider).cancelAction();
             // Remove result cached Files
-            clearCache(clearCacheCommandFrom: 'WillPopScope');
+            Utility.clearCache(clearCacheCommandFrom: 'WillPopScope');
             // Returning true allows the pop to happen, returning false prevents it.
             return true;
           },
@@ -39,20 +39,25 @@ class ResultPage extends StatelessWidget {
               body: Consumer(
                 builder: (BuildContext context, WidgetRef ref, Widget? child) {
                   final bool isActionProcessing = ref.watch(
-                      toolsActionsStateProvider
-                          .select((value) => value.isActionProcessing));
+                    toolsActionsStateProvider.select(
+                        (ToolsActionsState value) => value.isActionProcessing),
+                  );
                   final bool actionErrorStatus = ref.watch(
-                      toolsActionsStateProvider
-                          .select((value) => value.actionErrorStatus));
+                    toolsActionsStateProvider.select(
+                        (ToolsActionsState value) => value.actionErrorStatus),
+                  );
                   final String errorMessage = ref.watch(
-                      toolsActionsStateProvider
-                          .select((value) => value.errorMessage));
+                    toolsActionsStateProvider.select(
+                        (ToolsActionsState value) => value.errorMessage),
+                  );
                   final StackTrace errorStackTrace = ref.watch(
-                      toolsActionsStateProvider
-                          .select((value) => value.errorStackTrace));
-                  final ToolsActions currentActionType = ref.watch(
-                      toolsActionsStateProvider
-                          .select((value) => value.currentActionType));
+                    toolsActionsStateProvider.select(
+                        (ToolsActionsState value) => value.errorStackTrace),
+                  );
+                  final ToolAction currentActionType = ref.watch(
+                    toolsActionsStateProvider.select(
+                        (ToolsActionsState value) => value.currentActionType),
+                  );
                   if (isActionProcessing) {
                     return const ProcessingResult();
                   } else if (actionErrorStatus) {
@@ -64,8 +69,9 @@ class ResultPage extends StatelessWidget {
                     );
                   } else {
                     return SingleChildScrollView(
-                        padding: const EdgeInsets.symmetric(vertical: 16.0),
-                        child: ResultBody(actionType: currentActionType));
+                      padding: const EdgeInsets.symmetric(vertical: 16.0),
+                      child: ResultBody(actionType: currentActionType),
+                    );
                   }
                 },
               ),
@@ -87,21 +93,28 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
   Widget build(BuildContext context) {
     return Consumer(
       builder: (BuildContext context, WidgetRef ref, Widget? child) {
-        final bool isActionProcessing = ref.watch(toolsActionsStateProvider
-            .select((value) => value.isActionProcessing));
-        final bool actionErrorStatus = ref.watch(toolsActionsStateProvider
-            .select((value) => value.actionErrorStatus));
-        final ToolsActions currentActionType = ref.watch(
-            toolsActionsStateProvider
-                .select((value) => value.currentActionType));
+        final bool isActionProcessing = ref.watch(
+          toolsActionsStateProvider
+              .select((ToolsActionsState value) => value.isActionProcessing),
+        );
+        final bool actionErrorStatus = ref.watch(
+          toolsActionsStateProvider
+              .select((ToolsActionsState value) => value.actionErrorStatus),
+        );
+        final ToolAction currentActionType = ref.watch(
+          toolsActionsStateProvider
+              .select((ToolsActionsState value) => value.currentActionType),
+        );
         String actionAppbarTitle =
             getAppBarTitleForActionType(actionType: currentActionType);
         return AppBar(
-          title: Text(isActionProcessing
-              ? 'Processing Data'
-              : actionErrorStatus
-                  ? 'Error Occurred'
-                  : actionAppbarTitle),
+          title: Text(
+            isActionProcessing
+                ? 'Processing Data'
+                : actionErrorStatus
+                    ? 'Error Occurred'
+                    : actionAppbarTitle,
+          ),
           centerTitle: true,
           actions: [
             IconButton(
@@ -112,7 +125,10 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
                 // Canceling running actions.
                 ref.read(toolsActionsStateProvider).cancelAction();
                 Navigator.pushNamedAndRemoveUntil(
-                    context, route.homePage, (Route<dynamic> route) => false);
+                  context,
+                  route.AppRoutes.homePage,
+                  (Route<dynamic> route) => false,
+                );
               },
             ),
           ],
@@ -122,7 +138,7 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
   }
 }
 
-String getAppBarTitleForActionType({required ToolsActions actionType}) {
+String getAppBarTitleForActionType({required ToolAction actionType}) {
   String title = 'Action Successful';
   // if (actionType == ToolsActions.mergePdfs) {
   //   title = "Successfully Merged Files";
@@ -136,22 +152,26 @@ String getAppBarTitleForActionType({required ToolsActions actionType}) {
 class ResultBody extends StatelessWidget {
   const ResultBody({Key? key, required this.actionType}) : super(key: key);
 
-  final ToolsActions actionType;
+  final ToolAction actionType;
 
   @override
   Widget build(BuildContext context) {
     return Consumer(
-        builder: (BuildContext context, WidgetRef ref, Widget? child) {
-      final List<OutputFileModel> outputFiles = ref.watch(
-          toolsActionsStateProvider.select((value) => value.outputFiles));
-      if (outputFiles.length == 1) {
-        return SavingSingleFile(file: outputFiles[0], actionType: actionType);
-      } else if (outputFiles.length > 1) {
-        return SavingMultipleFiles(files: outputFiles, actionType: actionType);
-      } else {
-        return const Text('No save for action.');
-      }
-    });
+      builder: (BuildContext context, WidgetRef ref, Widget? child) {
+        final List<OutputFileModel> outputFiles = ref.watch(
+          toolsActionsStateProvider
+              .select((ToolsActionsState value) => value.outputFiles),
+        );
+        if (outputFiles.length == 1) {
+          return SavingSingleFile(file: outputFiles[0], actionType: actionType);
+        } else if (outputFiles.length > 1) {
+          return SavingMultipleFiles(
+              files: outputFiles, actionType: actionType);
+        } else {
+          return const Text('No save for action.');
+        }
+      },
+    );
   }
 }
 
@@ -183,12 +203,14 @@ class ProcessingResult extends StatelessWidget {
 }
 
 class SavingSingleFile extends StatelessWidget {
-  const SavingSingleFile(
-      {Key? key, required this.file, required this.actionType})
-      : super(key: key);
+  const SavingSingleFile({
+    Key? key,
+    required this.file,
+    required this.actionType,
+  }) : super(key: key);
 
   final OutputFileModel file;
-  final ToolsActions actionType;
+  final ToolAction actionType;
 
   @override
   Widget build(BuildContext context) {
@@ -204,11 +226,12 @@ class SavingSingleFile extends StatelessWidget {
             const Flexible(child: SuccessAnimation()),
             const Divider(),
             FileTile(
-                fileName: file.fileName,
-                fileTime: file.fileTime,
-                fileDate: file.fileDate,
-                filePath: file.filePath,
-                fileSize: file.fileSizeFormatBytes),
+              fileName: file.fileName,
+              fileTime: file.fileTime,
+              fileDate: file.fileDate,
+              filePath: file.filePath,
+              fileSize: file.fileSizeFormatBytes,
+            ),
             const SizedBox(height: 10),
             Text(
               'To view files click over them.',
@@ -219,7 +242,8 @@ class SavingSingleFile extends StatelessWidget {
               builder: (BuildContext context, WidgetRef ref, Widget? child) {
                 ref.listen(
                     toolsActionsStateProvider.select(
-                        (value) => value.isSaveProcessing), (previous, next) {
+                      (ToolsActionsState value) => value.isSaveProcessing,
+                    ), (bool? previous, bool next) {
                   if (previous != next && next == true) {
                     String? contentText = 'Saving file! Please wait...';
                     Color? backgroundColor;
@@ -240,8 +264,10 @@ class SavingSingleFile extends StatelessWidget {
                   }
                 });
 
-                bool isSaveProcessing = ref.watch(toolsActionsStateProvider
-                    .select((value) => value.isSaveProcessing));
+                bool isSaveProcessing = ref.watch(
+                  toolsActionsStateProvider.select(
+                      (ToolsActionsState value) => value.isSaveProcessing),
+                );
 
                 return FilledButton.icon(
                   style: ElevatedButton.styleFrom(
@@ -251,7 +277,9 @@ class SavingSingleFile extends StatelessWidget {
                   onPressed: isSaveProcessing
                       ? null
                       : () {
-                          ref.read(toolsActionsStateProvider).saveFile(
+                          ref
+                              .read(toolsActionsStateProvider)
+                              .mangeSaveFileAction(
                             files: [file],
                           );
                         },
@@ -270,12 +298,14 @@ class SavingSingleFile extends StatelessWidget {
 }
 
 class SavingMultipleFiles extends StatelessWidget {
-  const SavingMultipleFiles(
-      {Key? key, required this.files, required this.actionType})
-      : super(key: key);
+  const SavingMultipleFiles({
+    Key? key,
+    required this.files,
+    required this.actionType,
+  }) : super(key: key);
 
   final List<OutputFileModel> files;
-  final ToolsActions actionType;
+  final ToolAction actionType;
 
   @override
   Widget build(BuildContext context) {
@@ -285,10 +315,9 @@ class SavingMultipleFiles extends StatelessWidget {
             kBottomNavigationBarHeight);
     return ConstrainedBox(
       constraints: BoxConstraints(
-          minHeight: 0,
-          maxHeight: heightWithoutAppBarNavBar < 500
-              ? heightWithoutAppBarNavBar
-              : 500),
+        maxHeight:
+            heightWithoutAppBarNavBar < 500 ? heightWithoutAppBarNavBar : 500,
+      ),
       child: Card(
         clipBehavior: Clip.antiAlias,
         margin: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -301,8 +330,11 @@ class SavingMultipleFiles extends StatelessWidget {
               const Flexible(child: SuccessAnimation()),
               const Divider(),
               Flexible(
-                  child: NonReorderableFilesListView(
-                      files: files, actionType: actionType)),
+                child: NonReorderableFilesListView(
+                  files: files,
+                  actionType: actionType,
+                ),
+              ),
               const SizedBox(height: 10),
               const SizedBox(height: 10),
               Text(
@@ -314,7 +346,8 @@ class SavingMultipleFiles extends StatelessWidget {
                 builder: (BuildContext context, WidgetRef ref, Widget? child) {
                   ref.listen(
                       toolsActionsStateProvider.select(
-                          (value) => value.isSaveProcessing), (previous, next) {
+                        (ToolsActionsState value) => value.isSaveProcessing,
+                      ), (bool? previous, bool next) {
                     if (previous != next && next == true) {
                       String? contentText = 'Saving files! Please wait...';
                       Color? backgroundColor;
@@ -335,8 +368,10 @@ class SavingMultipleFiles extends StatelessWidget {
                     }
                   });
 
-                  bool isSaveProcessing = ref.watch(toolsActionsStateProvider
-                      .select((value) => value.isSaveProcessing));
+                  bool isSaveProcessing = ref.watch(
+                    toolsActionsStateProvider.select(
+                        (ToolsActionsState value) => value.isSaveProcessing),
+                  );
 
                   return FilledButton.icon(
                     style: ElevatedButton.styleFrom(
@@ -346,7 +381,9 @@ class SavingMultipleFiles extends StatelessWidget {
                     onPressed: isSaveProcessing
                         ? null
                         : () {
-                            ref.read(toolsActionsStateProvider).saveFile(
+                            ref
+                                .read(toolsActionsStateProvider)
+                                .mangeSaveFileAction(
                                   files: files,
                                 );
                           },
@@ -382,12 +419,14 @@ class SuccessAnimation extends StatelessWidget {
 }
 
 class NonReorderableFilesListView extends StatelessWidget {
-  const NonReorderableFilesListView(
-      {Key? key, required this.files, required this.actionType})
-      : super(key: key);
+  const NonReorderableFilesListView({
+    Key? key,
+    required this.files,
+    required this.actionType,
+  }) : super(key: key);
 
   final List<OutputFileModel> files;
-  final ToolsActions actionType;
+  final ToolAction actionType;
 
   @override
   Widget build(BuildContext context) {
@@ -400,11 +439,12 @@ class NonReorderableFilesListView extends StatelessWidget {
         return Material(
           color: Colors.transparent,
           child: FileTile(
-              fileName: files[index].fileName,
-              fileTime: files[index].fileTime,
-              fileDate: files[index].fileDate,
-              filePath: files[index].filePath,
-              fileSize: files[index].fileSizeFormatBytes),
+            fileName: files[index].fileName,
+            fileTime: files[index].fileTime,
+            fileDate: files[index].fileDate,
+            filePath: files[index].filePath,
+            fileSize: files[index].fileSizeFormatBytes,
+          ),
         );
       },
       itemCount: files.length,
