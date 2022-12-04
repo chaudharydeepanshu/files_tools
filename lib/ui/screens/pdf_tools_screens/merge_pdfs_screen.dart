@@ -1,4 +1,5 @@
 import 'package:files_tools/models/file_model.dart';
+import 'package:files_tools/models/file_pick_save_model.dart';
 import 'package:files_tools/models/tool_actions_model.dart';
 import 'package:files_tools/route/app_routes.dart' as route;
 import 'package:files_tools/state/providers.dart';
@@ -9,7 +10,6 @@ import 'package:files_tools/ui/components/tool_actions_section.dart';
 import 'package:files_tools/utils/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pick_or_save/pick_or_save.dart';
 
 class MergePDFsPage extends StatefulWidget {
   const MergePDFsPage({Key? key}) : super(key: key);
@@ -51,7 +51,7 @@ class _MergePDFsPageState extends State<MergePDFsPage> {
                   ref.watch(toolsScreensStateProvider);
               final List<InputFileModel> selectedFiles = ref.watch(
                 toolsScreensStateProvider
-                    .select((ToolsScreensState value) => value.selectedFiles),
+                    .select((ToolsScreensState value) => value.inputFiles),
               );
               final ToolsActionsState watchToolsActionsStateProviderValue =
                   ref.watch(toolsActionsStateProvider);
@@ -59,16 +59,19 @@ class _MergePDFsPageState extends State<MergePDFsPage> {
                 children: [
                   const SizedBox(height: 16),
                   SelectFilesCard(
-                    selectFileType: SelectFileType.multiple,
-                    files: watchToolScreenStateProviderValue.selectedFiles,
-                    filePickerParams: FilePickerParams(
-                      getCachedFilePath: false,
+                    files: watchToolScreenStateProviderValue.inputFiles,
+                    filePickModel: const FilePickModel(
+                      allowedExtensions: <String>[
+                        '.pdf',
+                      ],
+                      mimeTypesFilter: <String>[
+                        'application/pdf',
+                      ],
                       enableMultipleSelection: true,
-                      mimeTypesFilter: ['application/pdf'],
-                      allowedExtensions: ['.pdf'],
+                      discardInvalidPdfFiles: true,
+                      discardProtectedPdfFiles: true,
+                      multipleFilePickRequired: true,
                     ),
-                    discardInvalidPdfFiles: true,
-                    discardProtectedPdfFiles: true,
                   ),
                   const SizedBox(height: 16),
                   ToolActionsCard(

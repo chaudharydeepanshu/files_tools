@@ -3,9 +3,11 @@ import 'dart:developer';
 import 'package:collection/collection.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:files_tools/models/file_model.dart';
+import 'package:files_tools/models/file_pick_save_model.dart';
 import 'package:files_tools/models/pdf_page_model.dart';
 import 'package:files_tools/utils/image_tools_actions.dart';
 import 'package:files_tools/utils/pdf_tools_actions.dart';
+import 'package:files_tools/utils/pick_save.dart';
 import 'package:files_tools/utils/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -95,10 +97,10 @@ class ToolsActionsState extends ChangeNotifier {
   /// Provides tools actions result save processing status.
   bool get isSaveProcessing => _isSaveProcessing;
 
-  bool _saveErrorStatus = false;
+  bool _fileSaveErrorStatus = false;
 
   /// Provides tools actions result save error status.
-  bool get saveErrorStatus => _saveErrorStatus;
+  bool get saveErrorStatus => _fileSaveErrorStatus;
 
   late ToolAction _currentActionType;
 
@@ -751,6 +753,57 @@ class ToolsActionsState extends ChangeNotifier {
     customNotifyListener();
   }
 
+  /// Called to save output files.
+  Future<void> mangeSaveFileAction({
+    required FileSaveModel fileSaveModel,
+  }) async {
+    // Updating save error status to false.
+    updateFileSaveErrorStatus(false);
+    // Updating save processing status to true.
+    updateFileSaveProcessingStatus(true);
+
+    List<String>? saveResult;
+
+    // Preparing save files.
+    List<SaveFileInfo> saveFiles = List<SaveFileInfo>.generate(
+      fileSaveModel.saveFiles.length,
+      (int index) => SaveFileInfo(
+        filePath: fileSaveModel.saveFiles[index].filePath,
+        fileName: fileSaveModel.saveFiles[index].fileName,
+      ),
+    );
+    FileSaverParams params = FileSaverParams(
+      saveFiles: saveFiles,
+      mimeTypesFilter: fileSaveModel.mimeTypesFilter,
+    );
+
+    // Todo: Provide user option to report save error or exception.
+    try {
+      // Saving files and storing result paths in saveResult.
+      saveResult = await PickSave.saveFiles(
+        params: params,
+      );
+    } on PlatformException catch (e, s) {
+      log(e.toString());
+      log(s.toString());
+      _fileSaveErrorStatus = true;
+    } catch (e, s) {
+      log(e.toString());
+      log(s.toString());
+      _fileSaveErrorStatus = true;
+    } finally {
+      if (saveResult == null) {
+        // Means save cancelled not an error.
+      }
+
+      // Updating action processing status to false.
+      updateFileSaveProcessingStatus(false);
+
+      // Notifying ToolsActionsState listeners.
+      customNotifyListener();
+    }
+  }
+
   /// Called to cancel any running saving of output files.
   void cancelFileSaving() {
     try {
@@ -766,7 +819,7 @@ class ToolsActionsState extends ChangeNotifier {
       _errorMessage = e.toString();
       _errorStackTrace = s;
     }
-    updateSaveProcessingStatus(false);
+    updateFileSaveProcessingStatus(false);
     customNotifyListener();
   }
 
@@ -783,13 +836,13 @@ class ToolsActionsState extends ChangeNotifier {
   }
 
   /// Called to update an saving error status.
-  void updateSaveErrorStatus(bool status) {
-    _saveErrorStatus = status;
+  void updateFileSaveErrorStatus(bool status) {
+    _fileSaveErrorStatus = status;
     customNotifyListener();
   }
 
   /// Called to update saving of output files processing status.
-  void updateSaveProcessingStatus(bool status) {
+  void updateFileSaveProcessingStatus(bool status) {
     _isSaveProcessing = status;
     customNotifyListener();
   }
@@ -809,56 +862,6 @@ class ToolsActionsState extends ChangeNotifier {
     // calling notifyListeners.
     if (_mounted) {
       notifyListeners();
-    }
-  }
-
-  /// Called to save output files.
-  Future<void> mangeSaveFileAction({
-    required List<OutputFileModel> files,
-    List<String>? mimeTypesFilter,
-  }) async {
-    // Updating save error status to false.
-    updateSaveErrorStatus(false);
-    // Updating save processing status to true.
-    updateSaveProcessingStatus(true);
-
-    List<String>? saveResult;
-
-    // Preparing save files.
-    List<SaveFileInfo> saveFiles = List<SaveFileInfo>.generate(
-      files.length,
-      (int index) => SaveFileInfo(
-        filePath: files[index].filePath,
-        fileName: files[index].fileName,
-      ),
-    );
-
-    try {
-      // Saving files and storing result paths in saveResult.
-      saveResult = await Utility.saveFiles(
-        saveFiles: saveFiles,
-        mimeTypesFilter: mimeTypesFilter,
-      );
-    } on PlatformException catch (e, s) {
-      log(e.toString());
-      _errorMessage = e.toString();
-      _errorStackTrace = s;
-    } catch (e, s) {
-      log(e.toString());
-      _errorMessage = e.toString();
-      _errorStackTrace = s;
-    } finally {
-      if (saveResult != null) {
-        _saveErrorStatus = false;
-      } else {
-        _saveErrorStatus = true;
-      }
-
-      // Updating action processing status to false.
-      updateSaveProcessingStatus(false);
-
-      // Notifying ToolsActionsState listeners.
-      customNotifyListener();
     }
   }
 }

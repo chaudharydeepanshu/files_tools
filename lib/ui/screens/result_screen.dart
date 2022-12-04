@@ -1,4 +1,5 @@
 import 'package:files_tools/models/file_model.dart';
+import 'package:files_tools/models/file_pick_save_model.dart';
 import 'package:files_tools/route/app_routes.dart' as route;
 import 'package:files_tools/state/providers.dart';
 import 'package:files_tools/state/tools_actions_state.dart';
@@ -162,14 +163,10 @@ class ResultBody extends StatelessWidget {
           toolsActionsStateProvider
               .select((ToolsActionsState value) => value.outputFiles),
         );
-        if (outputFiles.length == 1) {
-          return SavingSingleFile(file: outputFiles[0], actionType: actionType);
-        } else if (outputFiles.length > 1) {
-          return SavingMultipleFiles(
-              files: outputFiles, actionType: actionType);
-        } else {
-          return const Text('No save for action.');
-        }
+        return SavingMultipleFiles(
+          files: outputFiles,
+          actionType: actionType,
+        );
       },
     );
   }
@@ -197,101 +194,6 @@ class ProcessingResult extends StatelessWidget {
             },
           ),
         ],
-      ),
-    );
-  }
-}
-
-class SavingSingleFile extends StatelessWidget {
-  const SavingSingleFile({
-    Key? key,
-    required this.file,
-    required this.actionType,
-  }) : super(key: key);
-
-  final OutputFileModel file;
-  final ToolAction actionType;
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      clipBehavior: Clip.antiAlias,
-      margin: const EdgeInsets.symmetric(horizontal: 16.0),
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            // const Icon(Icons.looks_3),
-            const Flexible(child: SuccessAnimation()),
-            const Divider(),
-            FileTile(
-              fileName: file.fileName,
-              fileTime: file.fileTime,
-              fileDate: file.fileDate,
-              filePath: file.filePath,
-              fileSize: file.fileSizeFormatBytes,
-            ),
-            const SizedBox(height: 10),
-            Text(
-              'To view files click over them.',
-              style: Theme.of(context).textTheme.bodySmall,
-            ),
-            const Divider(),
-            Consumer(
-              builder: (BuildContext context, WidgetRef ref, Widget? child) {
-                ref.listen(
-                    toolsActionsStateProvider.select(
-                      (ToolsActionsState value) => value.isSaveProcessing,
-                    ), (bool? previous, bool next) {
-                  if (previous != next && next == true) {
-                    String? contentText = 'Saving file! Please wait...';
-                    Color? backgroundColor;
-                    Duration? duration = const Duration(days: 365);
-                    IconData? iconData = Icons.save;
-                    Color? iconAndTextColor;
-
-                    showCustomSnackBar(
-                      context: context,
-                      contentText: contentText,
-                      backgroundColor: backgroundColor,
-                      duration: duration,
-                      iconData: iconData,
-                      iconAndTextColor: iconAndTextColor,
-                    );
-                  } else if (next == false) {
-                    ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                  }
-                });
-
-                bool isSaveProcessing = ref.watch(
-                  toolsActionsStateProvider.select(
-                      (ToolsActionsState value) => value.isSaveProcessing),
-                );
-
-                return FilledButton.icon(
-                  style: ElevatedButton.styleFrom(
-                    foregroundColor: Theme.of(context).colorScheme.onPrimary,
-                    backgroundColor: Theme.of(context).colorScheme.primary,
-                  ).copyWith(elevation: ButtonStyleButton.allOrNull(0.0)),
-                  onPressed: isSaveProcessing
-                      ? null
-                      : () {
-                          ref
-                              .read(toolsActionsStateProvider)
-                              .mangeSaveFileAction(
-                            files: [file],
-                          );
-                        },
-                  label: isSaveProcessing
-                      ? const Text('Saving File. Please wait')
-                      : const Text('Save File'),
-                  icon: const Icon(Icons.save),
-                );
-              },
-            ),
-          ],
-        ),
       ),
     );
   }
@@ -338,7 +240,9 @@ class SavingMultipleFiles extends StatelessWidget {
               const SizedBox(height: 10),
               const SizedBox(height: 10),
               Text(
-                'To view files click over them.',
+                files.length == 1
+                    ? 'To view file click over them.'
+                    : 'To view files click over them.',
                 style: Theme.of(context).textTheme.bodySmall,
               ),
               const Divider(),
@@ -349,7 +253,9 @@ class SavingMultipleFiles extends StatelessWidget {
                         (ToolsActionsState value) => value.isSaveProcessing,
                       ), (bool? previous, bool next) {
                     if (previous != next && next == true) {
-                      String? contentText = 'Saving files! Please wait...';
+                      String? contentText = files.length == 1
+                          ? 'Saving file! Please wait...'
+                          : 'Saving files! Please wait...';
                       Color? backgroundColor;
                       Duration? duration = const Duration(days: 365);
                       IconData? iconData = Icons.save;
@@ -384,12 +290,20 @@ class SavingMultipleFiles extends StatelessWidget {
                             ref
                                 .read(toolsActionsStateProvider)
                                 .mangeSaveFileAction(
-                                  files: files,
+                                  fileSaveModel: FileSaveModel(
+                                    saveFiles: files,
+                                  ),
                                 );
                           },
                     label: isSaveProcessing
-                        ? const Text('Saving Files. Please wait')
-                        : const Text('Save Files'),
+                        ? Text(
+                            files.length == 1
+                                ? 'Saving file. Please wait'
+                                : 'Saving Files. Please wait',
+                          )
+                        : Text(
+                            files.length == 1 ? 'Save file' : 'Save Files',
+                          ),
                     icon: const Icon(Icons.save),
                   );
                 },

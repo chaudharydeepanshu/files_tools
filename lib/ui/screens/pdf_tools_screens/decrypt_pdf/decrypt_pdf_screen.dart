@@ -1,4 +1,5 @@
 import 'package:files_tools/models/file_model.dart';
+import 'package:files_tools/models/file_pick_save_model.dart';
 import 'package:files_tools/models/tool_actions_model.dart';
 import 'package:files_tools/route/app_routes.dart' as route;
 import 'package:files_tools/state/providers.dart';
@@ -10,7 +11,6 @@ import 'package:files_tools/ui/screens/pdf_tools_screens/decrypt_pdf/decrypt_pdf
 import 'package:files_tools/utils/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pick_or_save/pick_or_save.dart';
 
 class DecryptPDFPage extends StatefulWidget {
   const DecryptPDFPage({Key? key}) : super(key: key);
@@ -52,20 +52,22 @@ class _DecryptPDFPageState extends State<DecryptPDFPage> {
                   ref.watch(toolsScreensStateProvider);
               final List<InputFileModel> selectedFiles = ref.watch(
                 toolsScreensStateProvider
-                    .select((ToolsScreensState value) => value.selectedFiles),
+                    .select((ToolsScreensState value) => value.inputFiles),
               );
               return ListView(
                 children: [
                   const SizedBox(height: 16),
                   SelectFilesCard(
-                    selectFileType: SelectFileType.single,
-                    files: watchToolScreenStateProviderValue.selectedFiles,
-                    filePickerParams: FilePickerParams(
-                      getCachedFilePath: false,
-                      mimeTypesFilter: ['application/pdf'],
-                      allowedExtensions: ['.pdf'],
+                    files: watchToolScreenStateProviderValue.inputFiles,
+                    filePickModel: const FilePickModel(
+                      allowedExtensions: <String>[
+                        '.pdf',
+                      ],
+                      mimeTypesFilter: <String>[
+                        'application/pdf',
+                      ],
+                      discardInvalidPdfFiles: true,
                     ),
-                    discardInvalidPdfFiles: true,
                   ),
                   const SizedBox(height: 16),
                   ToolActionsCard(

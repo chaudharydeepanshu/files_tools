@@ -1,13 +1,13 @@
 import 'dart:ui';
 
 import 'package:files_tools/models/file_model.dart';
+import 'package:files_tools/models/file_pick_save_model.dart';
 import 'package:files_tools/state/providers.dart';
 import 'package:files_tools/state/tools_screens_state.dart';
 import 'package:files_tools/ui/components/input_output_list_tile.dart';
 import 'package:files_tools/utils/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pick_or_save/pick_or_save.dart';
 import 'package:rive/rive.dart';
 
 enum SelectFileType { single, multiple, both }
@@ -15,18 +15,12 @@ enum SelectFileType { single, multiple, both }
 class SelectFilesCard extends StatelessWidget {
   const SelectFilesCard({
     Key? key,
-    required this.selectFileType,
     required this.files,
-    required this.filePickerParams,
-    this.discardInvalidPdfFiles = false,
-    this.discardProtectedPdfFiles = false,
+    required this.filePickModel,
   }) : super(key: key);
 
-  final SelectFileType selectFileType;
   final List<InputFileModel> files;
-  final FilePickerParams filePickerParams;
-  final bool discardInvalidPdfFiles;
-  final bool discardProtectedPdfFiles;
+  final FilePickModel filePickModel;
 
   @override
   Widget build(BuildContext context) {
@@ -52,18 +46,12 @@ class SelectFilesCard extends StatelessWidget {
               files.isNotEmpty
                   ? Flexible(
                       child: FilesSelected(
-                        selectFileType: selectFileType,
                         files: files,
-                        filePickerParams: filePickerParams,
-                        discardInvalidPdfFiles: discardInvalidPdfFiles,
-                        discardProtectedPdfFiles: discardProtectedPdfFiles,
+                        filePickModel: filePickModel,
                       ),
                     )
                   : NoFilesSelected(
-                      selectFileType: selectFileType,
-                      filePickerParams: filePickerParams,
-                      discardInvalidPdfFiles: discardInvalidPdfFiles,
-                      discardProtectedPdfFiles: discardProtectedPdfFiles,
+                      filePickModel: filePickModel,
                     ),
             ],
           ),
@@ -76,18 +64,12 @@ class SelectFilesCard extends StatelessWidget {
 class FilesSelected extends StatelessWidget {
   const FilesSelected({
     Key? key,
-    required this.selectFileType,
     required this.files,
-    required this.filePickerParams,
-    required this.discardInvalidPdfFiles,
-    required this.discardProtectedPdfFiles,
+    required this.filePickModel,
   }) : super(key: key);
 
-  final SelectFileType selectFileType;
   final List<InputFileModel> files;
-  final FilePickerParams filePickerParams;
-  final bool discardInvalidPdfFiles;
-  final bool discardProtectedPdfFiles;
+  final FilePickModel filePickModel;
 
   @override
   Widget build(BuildContext context) {
@@ -111,7 +93,7 @@ class FilesSelected extends StatelessWidget {
                       fileSize: files[0].fileSizeFormatBytes,
                       onRemove: () {
                         final List<InputFileModel> selectedFiles =
-                            ref.watch(toolsScreensStateProvider).selectedFiles;
+                            ref.watch(toolsScreensStateProvider).inputFiles;
                         selectedFiles.remove(files[0]);
                         readToolScreenStateProviderValue.updateSelectedFiles(
                           files: selectedFiles,
@@ -124,7 +106,7 @@ class FilesSelected extends StatelessWidget {
         Consumer(
           builder: (BuildContext context, WidgetRef ref, Widget? child) {
             final bool isPickingFile =
-                ref.watch(toolsScreensStateProvider).isPickingFile;
+                ref.watch(toolsScreensStateProvider).isFilePickProcessing;
             return isPickingFile
                 ? Column(
                     children: [
@@ -136,7 +118,7 @@ class FilesSelected extends StatelessWidget {
                       const Divider()
                     ],
                   )
-                : selectFileType == SelectFileType.multiple && files.length == 1
+                : filePickModel.multipleFilePickRequired && files.length == 1
                     ? Column(
                         children: [
                           const SizedBox(height: 10),
@@ -152,8 +134,8 @@ class FilesSelected extends StatelessWidget {
                           const Divider()
                         ],
                       )
-                    : selectFileType == SelectFileType.multiple ||
-                            selectFileType == SelectFileType.both &&
+                    : filePickModel.multipleFilePickRequired ||
+                            filePickModel.enableMultipleSelection &&
                                 files.length > 1
                         ? Column(
                             children: [
@@ -173,12 +155,12 @@ class FilesSelected extends StatelessWidget {
             final ToolsScreensState readToolScreenStateProviderValue =
                 ref.watch(toolsScreensStateProvider);
             final bool isPickingFile =
-                ref.watch(toolsScreensStateProvider).isPickingFile;
+                ref.watch(toolsScreensStateProvider).isFilePickProcessing;
             return Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                if (selectFileType == SelectFileType.multiple ||
-                    selectFileType == SelectFileType.both)
+                if (filePickModel.multipleFilePickRequired ||
+                    filePickModel.enableMultipleSelection)
                   Flexible(
                     child: FilledButton.tonalIcon(
                       onPressed: !isPickingFile
@@ -188,11 +170,10 @@ class FilesSelected extends StatelessWidget {
                               ScaffoldMessenger.of(context)
                                   .hideCurrentSnackBar();
 
-                              readToolScreenStateProviderValue.selectFiles(
-                                params: filePickerParams,
-                                discardInvalidPdfFiles: discardInvalidPdfFiles,
-                                discardProtectedPdfFiles:
-                                    discardProtectedPdfFiles,
+                              readToolScreenStateProviderValue
+                                  .mangePickFileAction(
+                                filePickModel: filePickModel.copyWith(
+                                    continuePicking: true),
                               );
                             }
                           : null,
@@ -241,16 +222,10 @@ class FilesSelected extends StatelessWidget {
 class NoFilesSelected extends StatelessWidget {
   const NoFilesSelected({
     Key? key,
-    required this.selectFileType,
-    required this.filePickerParams,
-    required this.discardInvalidPdfFiles,
-    required this.discardProtectedPdfFiles,
+    required this.filePickModel,
   }) : super(key: key);
 
-  final SelectFileType selectFileType;
-  final FilePickerParams filePickerParams;
-  final bool discardInvalidPdfFiles;
-  final bool discardProtectedPdfFiles;
+  final FilePickModel filePickModel;
 
   @override
   Widget build(BuildContext context) {
@@ -268,7 +243,10 @@ class NoFilesSelected extends StatelessWidget {
           ),
         ),
         Text(
-          'Please select ${selectFileType == SelectFileType.multiple || selectFileType == SelectFileType.both ? "some files" : "a file"}',
+          filePickModel.multipleFilePickRequired ||
+                  filePickModel.enableMultipleSelection
+              ? 'Please select some files'
+              : 'Please select a file',
           style: Theme.of(context).textTheme.bodySmall,
         ),
         Consumer(
@@ -276,7 +254,7 @@ class NoFilesSelected extends StatelessWidget {
             final ToolsScreensState readToolScreenStateProviderValue =
                 ref.watch(toolsScreensStateProvider);
             final bool isPickingFile =
-                ref.watch(toolsScreensStateProvider).isPickingFile;
+                ref.watch(toolsScreensStateProvider).isFilePickProcessing;
             return FilledButton.icon(
               onPressed: !isPickingFile
                   ? () {
@@ -284,15 +262,16 @@ class NoFilesSelected extends StatelessWidget {
                       FocusManager.instance.primaryFocus?.unfocus();
                       ScaffoldMessenger.of(context).hideCurrentSnackBar();
 
-                      readToolScreenStateProviderValue.selectFiles(
-                        params: filePickerParams,
-                        discardInvalidPdfFiles: discardInvalidPdfFiles,
-                        discardProtectedPdfFiles: discardProtectedPdfFiles,
+                      readToolScreenStateProviderValue.mangePickFileAction(
+                        filePickModel: filePickModel,
                       );
                     }
                   : null,
               label: Text(
-                'Select ${selectFileType == SelectFileType.multiple || selectFileType == SelectFileType.both ? "files" : "file"}',
+                filePickModel.multipleFilePickRequired ||
+                        filePickModel.enableMultipleSelection
+                    ? 'Select files'
+                    : 'Select file',
               ),
               icon: const Icon(Icons.upload_file),
             );
@@ -387,7 +366,7 @@ class _ReorderableFilesListViewState extends State<ReorderableFilesListView> {
                     fileSize: _files[index].fileSizeFormatBytes,
                     onRemove: () {
                       final List<InputFileModel> selectedFiles =
-                          ref.watch(toolsScreensStateProvider).selectedFiles;
+                          ref.watch(toolsScreensStateProvider).inputFiles;
                       selectedFiles.remove(_files[index]);
                       readToolScreenStateProviderValue.updateSelectedFiles(
                         files: selectedFiles,

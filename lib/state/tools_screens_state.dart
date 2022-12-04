@@ -2,186 +2,215 @@ import 'dart:developer';
 
 import 'package:files_tools/main.dart';
 import 'package:files_tools/models/file_model.dart';
+import 'package:files_tools/models/file_pick_save_model.dart';
 import 'package:files_tools/ui/components/custom_snack_bar.dart';
+import 'package:files_tools/utils/pdf_tools_actions.dart';
+import 'package:files_tools/utils/pick_save.dart';
 import 'package:files_tools/utils/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pdf_bitmaps/pdf_bitmaps.dart';
 import 'package:pick_or_save/pick_or_save.dart';
 
+/// App tools screens state class.
 class ToolsScreensState extends ChangeNotifier {
-  List<InputFileModel> removedFiles = [];
+  /// Provides tools screen picked / input files.
+  List<InputFileModel> get inputFiles => _inputFiles;
+  List<InputFileModel> _inputFiles = <InputFileModel>[];
 
-  List<InputFileModel> _selectedFiles = [];
-  List<InputFileModel> get selectedFiles => _selectedFiles;
+  /// Provides tools screen file picking processing status.
+  bool get isFilePickProcessing => _isFilePickProcessing;
+  bool _isFilePickProcessing = false;
 
-  bool _isPickingFile = false;
-  bool get isPickingFile => _isPickingFile;
+  /// Provides tools screen file picking error status.
+  bool get filePickErrorStatus => _filePickErrorStatus;
+  bool _filePickErrorStatus = false;
 
-  void updateSelectedFiles({required List<InputFileModel> files}) {
-    _selectedFiles = files;
-    notifyListeners();
+  /// Provides ToolsScreensState provider mounted status.
+  bool get mounted => _mounted;
+  bool _mounted = true;
+
+  @override
+  void dispose() {
+    super.dispose();
+    // Setting ToolsScreensState provider mounted status false on disposing
+    // provider.
+    _mounted = false;
   }
 
-  Future<List<InputFileModel>> _filePicker(FilePickerParams params) async {
-    List<String>? result;
-    try {
-      updateFilePickingStatus(status: true);
-      _isPickingFile = true;
-      result = await PickOrSave().filePicker(params: params);
-      // log(result.toString());
-    } on PlatformException catch (e) {
-      log(e.toString());
-    } catch (e) {
-      log(e.toString());
-    }
-    List<InputFileModel> files = [];
-    if (result != null && result.isNotEmpty) {
-      for (int i = 0; i < result.length; i++) {
-        InputFileModel file =
-            await Utility.getInputFileModelFromUri(filePathOrUri: result[i]);
-        files.add(file);
-      }
-    }
-    return files;
-  }
-
-  void updateFilePickingStatus({required bool status}) {
-    _isPickingFile = status;
-
-    BuildContext? context = navigatorKey.currentState?.context;
-    if (context != null) {
-      ScaffoldMessenger.of(context).hideCurrentSnackBar();
-      if (removedFiles.isNotEmpty) {
-        String? contentText =
-            "Discarded invalid or encrypted pdf files:\n${List<String>.generate(removedFiles.length, (int index) => removedFiles[index].fileName).join("\n")}";
-        //'Oh...No! There is no old data available.';
-        Color? backgroundColor = Theme.of(context).colorScheme.errorContainer;
-        Duration? duration = const Duration(seconds: 20);
-        IconData? iconData = Icons.warning;
-        Color? iconAndTextColor = Theme.of(context).colorScheme.error;
-        TextStyle? textStyle = Theme.of(context).textTheme.bodySmall;
-
-        showCustomSnackBar(
-          context: context,
-          contentText: contentText,
-          backgroundColor: backgroundColor,
-          duration: duration,
-          iconData: iconData,
-          iconAndTextColor: iconAndTextColor,
-          textStyle: textStyle,
-        );
-      }
-    }
-
-    notifyListeners();
-  }
-
-  void selectFiles({
-    required FilePickerParams params,
-    required bool discardInvalidPdfFiles,
-    required bool discardProtectedPdfFiles,
+  /// Called to pick input files.
+  Future<void> mangePickFileAction({
+    required FilePickModel filePickModel,
   }) async {
-    removedFiles = [];
+    if (!filePickModel.continuePicking) {
+      // Clearing any leftover input files.
+      _inputFiles.clear();
+    }
+    // Updating file pick error status to false.
+    updateFilePickErrorStatus(false);
+    // Updating save processing status to true.
+    updateFilePickProcessingStatus(true);
 
-    _selectedFiles = _selectedFiles + await _filePicker(params);
+    List<String>? pickResult;
 
-    removedFiles = await fileFiltering(
-      files: selectedFiles,
-      discardInvalidPdfFiles: discardInvalidPdfFiles,
-      discardProtectedPdfFiles: discardProtectedPdfFiles,
+    // Preparing file picking params.
+    FilePickerParams params = FilePickerParams(
+      allowedExtensions: filePickModel.allowedExtensions,
+      mimeTypesFilter: filePickModel.mimeTypesFilter,
+      localOnly: filePickModel.localOnly,
+      getCachedFilePath: filePickModel.getCachedFilePath,
+      pickerType: filePickModel.pickerType,
+      enableMultipleSelection: filePickModel.enableMultipleSelection,
     );
 
-    _selectedFiles.removeWhere(
-      (InputFileModel element) => removedFiles
-          .map((InputFileModel e) => e.fileUri)
-          .contains(element.fileUri),
-    );
-
-    updateSelectedFiles(files: _selectedFiles);
-
-    updateFilePickingStatus(status: false);
-  }
-}
-
-Future<List<InputFileModel>> fileFiltering({
-  required List<InputFileModel> files,
-  required bool discardInvalidPdfFiles,
-  required bool discardProtectedPdfFiles,
-}) async {
-  List<InputFileModel> filesToRemoveFromSelection = [];
-  for (InputFileModel element in files) {
-    String extensionOfFile =
-        Utility.getFileNameExtension(fileName: element.fileName);
-    if ((discardInvalidPdfFiles || discardProtectedPdfFiles) &&
-        extensionOfFile == '.pdf') {
-      PdfValidityAndProtection? pdfValidityAndProtectionInfo =
-          await PdfBitmaps().pdfValidityAndProtection(
-        params: PDFValidityAndProtectionParams(pdfPath: element.fileUri),
+    // Todo: Provide user option to report pick error or exception.
+    try {
+      // Picking files and storing result paths in pickResult.
+      pickResult = await PickSave.pickFile(
+        params: params,
       );
-      if (pdfValidityAndProtectionInfo == null) {
-        InputFileModel temp = InputFileModel(
-          fileName: '${element.fileName} (Invalid)',
-          fileDate: element.fileDate,
-          fileTime: element.fileTime,
-          fileSizeFormatBytes: element.fileSizeFormatBytes,
-          fileSizeBytes: element.fileSizeBytes,
-          fileUri: element.fileUri,
+    } on PlatformException catch (e, s) {
+      log(e.toString());
+      log(s.toString());
+      _filePickErrorStatus = true;
+    } catch (e, s) {
+      log(e.toString());
+      log(s.toString());
+      _filePickErrorStatus = true;
+    } finally {
+      if (pickResult == null) {
+        // Means pick cancelled not an error.
+      } else if (pickResult.isNotEmpty) {
+        // Means some files were picked.
+        // If pickResult not empty generating input files.
+        for (int i = 0; i < pickResult.length; i++) {
+          InputFileModel file = await Utility.getInputFileModelFromUri(
+            filePathOrUri: pickResult[i],
+          );
+          _inputFiles.add(file);
+        }
+        // Now processing picked files based on other provided parameters.
+        List<InputFileModel> discardedFiles = await getFilteredPickedFiles(
+          filePickModel: filePickModel,
+          pickedInputFiles: inputFiles,
         );
-        filesToRemoveFromSelection.add(temp);
-      } else if (pdfValidityAndProtectionInfo.isPDFValid == false &&
-          discardInvalidPdfFiles) {
-        InputFileModel temp = InputFileModel(
-          fileName: '${element.fileName} (Invalid)',
-          fileDate: element.fileDate,
-          fileTime: element.fileTime,
-          fileSizeFormatBytes: element.fileSizeFormatBytes,
-          fileSizeBytes: element.fileSizeBytes,
-          fileUri: element.fileUri,
-        );
-        filesToRemoveFromSelection.add(temp);
-      } else if (pdfValidityAndProtectionInfo.isOpenPasswordProtected == true &&
-          discardProtectedPdfFiles) {
-        InputFileModel temp = InputFileModel(
-          fileName: '${element.fileName} (Protected)',
-          fileDate: element.fileDate,
-          fileTime: element.fileTime,
-          fileSizeFormatBytes: element.fileSizeFormatBytes,
-          fileSizeBytes: element.fileSizeBytes,
-          fileUri: element.fileUri,
-        );
-        filesToRemoveFromSelection.add(temp);
+        _inputFiles = _inputFiles
+            .where((InputFileModel e) => !discardedFiles.contains(e))
+            .toList();
+
+        showDiscardedFilesSnackBar(discardedFiles: discardedFiles);
       }
+
+      // Updating action processing status to false.
+      updateFilePickProcessingStatus(false);
+
+      // Notifying ToolsActionsState listeners.
+      customNotifyListener();
     }
   }
 
-  return filesToRemoveFromSelection;
+  /// Called for updating selected files.
+  void updateSelectedFiles({required List<InputFileModel> files}) {
+    _inputFiles = files;
+    customNotifyListener();
+  }
+
+  /// Called to update an file pick error status.
+  void updateFilePickErrorStatus(bool status) {
+    _filePickErrorStatus = status;
+    customNotifyListener();
+  }
+
+  /// Called for initiating file picking.
+  void updateFilePickProcessingStatus(bool status) {
+    _isFilePickProcessing = status;
+    notifyListeners();
+  }
+
+  /// Called to notify ToolsActionsState listeners.
+  void customNotifyListener() {
+    // Due to cancelling a running action the state gets disposed but
+    // cancellation action or any other action may still be running and can
+    // call [customNotifyListener] once they finish which will lead to getting
+    // error of using disposed state. So, checking state before
+    // calling notifyListeners.
+    if (_mounted) {
+      notifyListeners();
+    }
+  }
 }
 
-Future<List<InputFileModel>> imagesFiltering({
-  required List<InputFileModel> images,
-  required List<String> allowedExtensions,
+/// For filtering picked files based on various parameters.
+Future<List<InputFileModel>> getFilteredPickedFiles({
+  required FilePickModel filePickModel,
+  required List<InputFileModel> pickedInputFiles,
 }) async {
-  List<InputFileModel> filesToRemoveFromSelection = [];
-  for (InputFileModel element in images) {
-    String extensionOfFile =
-        Utility.getFileNameExtension(fileName: element.fileName).toLowerCase();
-    allowedExtensions =
-        allowedExtensions.map((String e) => e.toLowerCase()).toList();
+  // Holds input files to be discarded.
+  List<InputFileModel> discardedInputFiles = <InputFileModel>[];
 
-    if (allowedExtensions.isNotEmpty &&
-        !allowedExtensions.contains(extensionOfFile)) {
-      InputFileModel temp = InputFileModel(
-        fileName: '${element.fileName} (Unsupported File Type)',
-        fileDate: element.fileDate,
-        fileTime: element.fileTime,
-        fileSizeFormatBytes: element.fileSizeFormatBytes,
-        fileSizeBytes: element.fileSizeBytes,
-        fileUri: element.fileUri,
+  for (int i = 0; i < pickedInputFiles.length; i++) {
+    String extensionOfFile =
+        Utility.getFileNameExtension(fileName: pickedInputFiles[i].fileName);
+
+    if ((filePickModel.discardInvalidPdfFiles ||
+            filePickModel.discardProtectedPdfFiles) &&
+        extensionOfFile == '.pdf') {
+      // Means discarding was chosen and file is also PDF.
+      PdfValidityAndProtection? pdfInfo = await PdfToolsActions.pdfInfo(
+        sourceFile: pickedInputFiles[i],
       );
-      filesToRemoveFromSelection.add(temp);
+      if (pdfInfo == null) {
+        // If pdfInfo is null then it's a high probability that this PDF file
+        // is a trouble and should be discarded as invalid.
+        discardedInputFiles.add(pickedInputFiles[i]);
+      } else {
+        if (pdfInfo.isPDFValid == false &&
+            filePickModel.discardInvalidPdfFiles) {
+          // If true then PDF file is invalid and should be discarded.
+          discardedInputFiles.add(pickedInputFiles[i]);
+        }
+        if (pdfInfo.isOpenPasswordProtected == true &&
+            filePickModel.discardProtectedPdfFiles) {
+          // If true then PDF file is protected and should be discarded.
+          discardedInputFiles.add(pickedInputFiles[i]);
+        }
+      }
+    } else {
+      // Not doing anything as either no discarding for PDF was chosen or
+      // the file is not a PDF so it should not be checked or discarded.
     }
   }
+  return discardedInputFiles;
+}
 
-  return filesToRemoveFromSelection;
+/// Called to show snackBar displaying discarded files.
+void showDiscardedFilesSnackBar(
+    {required List<InputFileModel> discardedFiles}) {
+  BuildContext? context = navigatorKey.currentState?.context;
+  if (context != null) {
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+    if (discardedFiles.isNotEmpty) {
+      // Only show snackBar if discardedFiles is not empty.
+      List<String> discardedFilesNames = List<String>.generate(
+          discardedFiles.length, (int index) => discardedFiles[index].fileName);
+      String? contentText = "Discarded invalid or encrypted pdf files:\n"
+          "${discardedFilesNames.join("\n")}";
+      //'Oh...No! There is no old data available.';
+      Color? backgroundColor = Theme.of(context).colorScheme.errorContainer;
+      Duration? duration = const Duration(seconds: 20);
+      IconData? iconData = Icons.warning;
+      Color? iconAndTextColor = Theme.of(context).colorScheme.error;
+      TextStyle? textStyle = Theme.of(context).textTheme.bodySmall;
+
+      showCustomSnackBar(
+        context: context,
+        contentText: contentText,
+        backgroundColor: backgroundColor,
+        duration: duration,
+        iconData: iconData,
+        iconAndTextColor: iconAndTextColor,
+        textStyle: textStyle,
+      );
+    }
+  }
 }

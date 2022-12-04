@@ -1,4 +1,5 @@
 import 'package:files_tools/models/file_model.dart';
+import 'package:files_tools/models/file_pick_save_model.dart';
 import 'package:files_tools/models/tool_actions_model.dart';
 import 'package:files_tools/route/app_routes.dart' as route;
 import 'package:files_tools/state/providers.dart';
@@ -10,7 +11,6 @@ import 'package:files_tools/ui/screens/image_tools_screens/crop_rotate_flip_imag
 import 'package:files_tools/utils/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pick_or_save/pick_or_save.dart';
 
 class CropRotateFlipImagesPage extends StatefulWidget {
   const CropRotateFlipImagesPage({Key? key}) : super(key: key);
@@ -56,24 +56,15 @@ class _CropRotateFlipImagesPageState extends State<CropRotateFlipImagesPage> {
               //         .select((value) => value.selectedImages));
               final List<InputFileModel> selectedFiles = ref.watch(
                 toolsScreensStateProvider
-                    .select((ToolsScreensState value) => value.selectedFiles),
+                    .select((ToolsScreensState value) => value.inputFiles),
               );
               return ListView(
                 children: [
                   const SizedBox(height: 16),
                   SelectFilesCard(
-                    selectFileType: SelectFileType.both,
-                    files: watchToolScreenStateProviderValue.selectedFiles,
-                    filePickerParams: FilePickerParams(
-                      getCachedFilePath: false,
-                      enableMultipleSelection: true,
-                      mimeTypesFilter: [
-                        // "image/*",
-                        'image/png',
-                        'image/gif',
-                        'image/jpeg',
-                      ],
-                      allowedExtensions: [
+                    files: watchToolScreenStateProviderValue.inputFiles,
+                    filePickModel: const FilePickModel(
+                      allowedExtensions: <String>[
                         '.JPEG',
                         '.JPG',
                         '.JP2',
@@ -85,6 +76,13 @@ class _CropRotateFlipImagesPageState extends State<CropRotateFlipImagesPage> {
                         '.CCITT',
                         '.JBIG2'
                       ],
+                      mimeTypesFilter: <String>[
+                        // "image/*",
+                        'image/png',
+                        'image/gif',
+                        'image/jpeg',
+                      ],
+                      enableMultipleSelection: true,
                     ),
                   ),
                   const SizedBox(height: 16),

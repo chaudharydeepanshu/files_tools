@@ -1,4 +1,5 @@
 import 'package:files_tools/models/file_model.dart';
+import 'package:files_tools/models/file_pick_save_model.dart';
 import 'package:files_tools/models/tool_actions_model.dart';
 import 'package:files_tools/route/app_routes.dart' as route;
 import 'package:files_tools/state/providers.dart';
@@ -10,7 +11,6 @@ import 'package:files_tools/ui/screens/image_tools_screens/compress_image/compre
 import 'package:files_tools/utils/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pick_or_save/pick_or_save.dart';
 
 class CompressImagePage extends StatefulWidget {
   const CompressImagePage({Key? key}) : super(key: key);
@@ -52,23 +52,26 @@ class _CompressPDFPageState extends State<CompressImagePage> {
                   ref.watch(toolsScreensStateProvider);
               final List<InputFileModel> selectedFiles = ref.watch(
                 toolsScreensStateProvider
-                    .select((ToolsScreensState value) => value.selectedFiles),
+                    .select((ToolsScreensState value) => value.inputFiles),
               );
               return ListView(
                 children: [
                   const SizedBox(height: 16),
                   SelectFilesCard(
-                    selectFileType: SelectFileType.both,
-                    files: watchToolScreenStateProviderValue.selectedFiles,
-                    filePickerParams: FilePickerParams(
-                      getCachedFilePath: false,
-                      enableMultipleSelection: true,
-                      mimeTypesFilter: [
+                    files: watchToolScreenStateProviderValue.inputFiles,
+                    filePickModel: const FilePickModel(
+                      allowedExtensions: <String>[
+                        '.png',
+                        '.jpeg',
+                        '.jpg',
+                        '.webp',
+                      ],
+                      mimeTypesFilter: <String>[
                         'image/png',
                         'image/jpeg',
-                        'image/webp'
+                        'image/webp',
                       ],
-                      allowedExtensions: ['.png', '.jpeg', '.jpg', '.webp'],
+                      enableMultipleSelection: true,
                     ),
                   ),
                   const SizedBox(height: 16),

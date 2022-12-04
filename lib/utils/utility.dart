@@ -429,29 +429,4 @@ class Utility {
 
     return filedData;
   }
-
-  /// For saving files.
-  static Future<List<String>?> saveFiles({
-    required List<SaveFileInfo> saveFiles,
-    List<String>? mimeTypesFilter,
-  }) async {
-    // Holds save result.
-    List<String>? saveResult;
-
-    try {
-      // Saving the files and storing result paths in saveResult.
-      saveResult = await PickOrSave().fileSaver(
-        params: FileSaverParams(
-          saveFiles: saveFiles,
-          mimeTypesFilter: mimeTypesFilter,
-        ),
-      );
-    } on PlatformException {
-      rethrow;
-    } catch (e) {
-      rethrow;
-    }
-
-    return saveResult;
-  }
 }

@@ -5,6 +5,7 @@ import 'package:files_tools/models/pdf_page_model.dart';
 import 'package:files_tools/utils/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:pdf_bitmaps/pdf_bitmaps.dart' as bitmaps;
 import 'package:pdf_manipulator/pdf_manipulator.dart';
 
 /// PdfToolsActions is a utility class for all the actions of PDF tools.
@@ -535,5 +536,30 @@ class PdfToolsActions {
     }
 
     return outputFile;
+  }
+
+  /// For various info about a PDF.
+  static Future<bitmaps.PdfValidityAndProtection?> pdfInfo({
+    required InputFileModel sourceFile,
+  }) async {
+    String pathOfSourceFile = sourceFile.fileUri;
+
+    // Holds result info about a file.
+    bitmaps.PdfValidityAndProtection? result;
+
+    try {
+      // Getting various info about a pdf file.
+      result = await bitmaps.PdfBitmaps().pdfValidityAndProtection(
+        params: bitmaps.PDFValidityAndProtectionParams(
+          pdfPath: pathOfSourceFile,
+        ),
+      );
+    } on PlatformException {
+      rethrow;
+    } catch (e) {
+      rethrow;
+    }
+
+    return result;
   }
 }
