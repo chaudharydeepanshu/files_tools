@@ -22,7 +22,7 @@ class WatermarkPDFPage extends StatefulWidget {
 class _WatermarkPDFPageState extends State<WatermarkPDFPage> {
   @override
   void initState() {
-    Utility.clearCache(clearCacheCommandFrom: 'WatermarkPDFPage');
+    Utility.clearTempDirectory(clearCacheCommandFrom: 'WatermarkPDFPage');
     super.initState();
   }
 

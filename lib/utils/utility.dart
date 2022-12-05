@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:math' as math;
 import 'dart:ui' as ui;
 
+import 'package:files_tools/constants.dart';
 import 'package:files_tools/models/file_model.dart';
 import 'package:files_tools/models/pdf_page_model.dart';
 import 'package:flutter/material.dart';
@@ -12,33 +13,46 @@ import 'package:path_provider/path_provider.dart';
 import 'package:pdf_bitmaps/pdf_bitmaps.dart';
 import 'package:pick_or_save/pick_or_save.dart';
 
-// ignore: constant_identifier_names
-enum BytesFormatType { auto, B, KB, MB, GB, TB, PB, EB, ZB, YB }
-
+/// A general utility class containing many small helpful methods which are
+/// useful through out the app.
 class Utility {
-  static Future<ui.Image> imageFromUint8List(
-      {required Uint8List uint8list}) async {
+  /// For getting [ui.Image] object from provided [Uint8List].
+  static Future<ui.Image> imageFromUint8List({
+    required Uint8List uint8list,
+  }) async {
     return await painting.decodeImageFromList(uint8list);
   }
 
-  static Future<String> getAbsoluteFilePathFromFileUri(
-      {required String fileUri}) async {
-    String? absoluteFilePath;
+  /// For getting cached file path from provided file uri.
+  static Future<String> getCachedFilePathFromFileUri({
+    required String fileUri,
+  }) async {
+    // Holds cached file path from uri path.
+    String? cachedFilePath;
 
-    absoluteFilePath = await PickOrSave().cacheFilePathFromPath(
-      params: CacheFilePathFromPathParams(filePath: fileUri),
-    );
-    if (absoluteFilePath == null) {
-      throw Exception('File cached file path from Uri was null.');
+    try {
+      // Getting cached file path and storing result path in cachedFilePath.
+      cachedFilePath = await PickOrSave().cacheFilePathFromPath(
+        params: CacheFilePathFromPathParams(filePath: fileUri),
+      );
+    } on PlatformException {
+      rethrow;
+    } catch (e) {
+      rethrow;
+    }
+    if (cachedFilePath == null) {
+      throw 'Cached file path from Uri is null.';
     }
 
-    return absoluteFilePath;
+    return cachedFilePath;
   }
 
+  /// For cleaning up a file name to make it suitable for saving in Android.
   static String getCleanedUpFileName(String fileName) {
     return fileName.replaceAll(RegExp('[\\\\/:*?"<>|\\[\\]]'), '_');
   }
 
+  /// For getting a file extension from provided file name.
   static String getFileNameExtension({required String fileName}) {
     int indexOfLastDot = fileName.lastIndexOf('.');
     if (indexOfLastDot == -1) {
@@ -49,6 +63,7 @@ class Utility {
     }
   }
 
+  /// For getting a file name without extension from provided file name.
   static String getFileNameWithoutExtension({required String fileName}) {
     String fileExt = getFileNameExtension(fileName: fileName);
     String fileNameWithoutExtension =
@@ -56,6 +71,10 @@ class Utility {
     return fileNameWithoutExtension;
   }
 
+  /// For getting platform temporary directory used for save cache files.
+  ///
+  /// If a temporary directory doesn't exists in the device then it creates
+  /// the directory and returns the created directory.
   static Future<Directory> getTempDirectory() async {
     Directory directory = await getTemporaryDirectory();
 
@@ -67,8 +86,10 @@ class Utility {
     return directory;
   }
 
-  static Future<void> clearCache(
-      {required String clearCacheCommandFrom}) async {
+  /// For clearing platform temporary directory.
+  static Future<void> clearTempDirectory({
+    required String clearCacheCommandFrom,
+  }) async {
     Directory directory = await getTempDirectory();
 
     final List<FileSystemEntity> entities = await directory.list().toList();
@@ -81,17 +102,11 @@ class Utility {
     log('Temporary directory emptied by $clearCacheCommandFrom');
   }
 
-  static Future<void> clearSelectiveFilesFromCache(
-      {required List<String> filesPaths,
-      required String clearCacheCommandFrom}) async {
-    Directory directory = await getTemporaryDirectory();
-
-    if (!(await directory.exists())) {
-      directory.create(recursive: true);
-      log("Temporary directory didn't exist so created");
-    }
-
-    final List<FileSystemEntity> entities = await directory.list().toList();
+  /// For deleting selective files from platform through provided files paths.
+  static Future<void> deleteSelectiveFiles({
+    required List<String> filesPaths,
+    required String deleteCommandFrom,
+  }) async {
     for (String filePath in filesPaths) {
       File tempFile = File(filePath);
       if (!(await tempFile.exists())) {
@@ -99,11 +114,19 @@ class Utility {
       }
     }
 
-    log('Temporary directory emptied by $clearCacheCommandFrom');
-    log('Deleted temporary directory files paths are $filesPaths');
+    log('Selective files deleted by $deleteCommandFrom');
+    log('Deleted files paths: $filesPaths');
   }
 
-  // This is for MB etc not MiB etc as they use 1024 instead of 1000.
+  /// For formatting file size bytes provided to human readable string.
+  ///
+  /// Can format provided bytes to string with numeral part having certain
+  /// no. decimal range in a specific [BytesFormatType].
+  ///
+  /// We use 1000 as a factor(base 10) for conversion of byte to different
+  /// formats instead of 1024(base 2). As Android file system compute file
+  /// sizes in Mebibyte (MiB = 1024 KB), Gib, etc but it report results as
+  /// Megabyte (MB = 1000 KB), GB, etc.
   static String formatBytes({
     required int bytes,
     required int decimals,
@@ -184,6 +207,11 @@ class Utility {
     }
   }
 
+  /// For getting [InputFileModel] from provided file uri.
+  ///
+  /// A [InputFileModel] can be used to get a file last modified date, time
+  /// size in bytes, formatted size, file name used for displaying
+  /// user, its picked files info in UI picking screen.
   static Future<InputFileModel> getInputFileModelFromUri({
     required String filePathOrUri,
   }) async {
@@ -207,8 +235,8 @@ class Utility {
       fileDate =
           '${lastModifiedDateTime.day}/${lastModifiedDateTime.month}/${lastModifiedDateTime.year}';
       TimeOfDay time = TimeOfDay.fromDateTime(lastModifiedDateTime);
-      fileTime =
-          '${time.hourOfPeriod}:${time.minute} ${time.period.name.toUpperCase()}';
+      fileTime = '${time.hourOfPeriod}:${time.minute} '
+          '${time.period.name.toUpperCase()}';
     } else {
       fileDate = 'Unknown';
       fileTime = 'Unknown';
@@ -232,6 +260,11 @@ class Utility {
     return file;
   }
 
+  /// For getting [OutputFileModel] from provided file uri.
+  ///
+  /// A [OutputFileModel] can be used to get a file last modified date, time
+  /// size in bytes, formatted size, file name used for displaying
+  /// user, the processed result files info in UI result screen.
   static Future<OutputFileModel> getOutputFileModelFromPath({
     required String filePathOrUri,
   }) async {
@@ -255,8 +288,8 @@ class Utility {
       fileDate =
           '${lastModifiedDateTime.day}/${lastModifiedDateTime.month}/${lastModifiedDateTime.year}';
       TimeOfDay time = TimeOfDay.fromDateTime(lastModifiedDateTime);
-      fileTime =
-          '${time.hourOfPeriod}:${time.minute} ${time.period.name.toUpperCase()}';
+      fileTime = '${time.hourOfPeriod}:${time.minute} '
+          '${time.period.name.toUpperCase()}';
     } else {
       fileDate = 'Unknown';
       fileTime = 'Unknown';
@@ -280,7 +313,11 @@ class Utility {
     return file;
   }
 
-  static Future<Uint8List?> getPdfPageBitmap({
+  /// For getting [Uint8List] of the image of a PDF specific page.
+  ///
+  /// We can provide it further parameters to manipulate the image of that
+  /// pdf page like image rotation, background color, scaling, etc.
+  static Future<Uint8List?> getUint8ListOfPdfPageAsImage({
     required int index,
     required String pdfPath,
     double? scale,
@@ -305,19 +342,31 @@ class Utility {
               pdfRendererType ?? PdfRendererType.androidPdfRenderer,
         ),
       );
-      if (imageCachedPath != null) {
-        bytes = File(imageCachedPath).readAsBytesSync();
-      }
     } on PlatformException catch (e) {
       log(e.toString());
+      rethrow;
     } catch (e) {
       log(e.toString());
+      rethrow;
+    }
+
+    if (imageCachedPath != null) {
+      bytes = File(imageCachedPath).readAsBytesSync();
+    } else {
+      throw 'Cached image path of a PDF page is null.';
     }
 
     return bytes;
   }
 
-  static Future<PdfPageModel> getUpdatedPdfPage({
+  /// For getting updated [PdfPageModel] which is used for holding data of the
+  /// image of a PDF specific page.
+  ///
+  /// This method is generally used to update a dummy model of a PDF page with
+  /// [Uint8List] of the image of that PDF page. This is helpful if we are
+  /// working with large number of PDF pages and we don't want to create a
+  /// complete model for each PDF page as that would be very slow and expensive.
+  static Future<PdfPageModel> getUpdatedPdfPageModel({
     required int index,
     required String pdfPath,
     required PdfPageModel pdfPageModel,
@@ -326,77 +375,93 @@ class Utility {
     Color? backgroundColor,
     PdfRendererType? pdfRendererType,
   }) async {
-    Uint8List? bytes = await getPdfPageBitmap(
-      index: index,
-      pdfPath: pdfPath,
-      scale: scale,
-      rotationAngle: rotationAngle,
-      backgroundColor: backgroundColor,
-      pdfRendererType: pdfRendererType,
+    Uint8List? bytes;
+
+    try {
+      bytes = await getUint8ListOfPdfPageAsImage(
+        index: index,
+        pdfPath: pdfPath,
+        scale: scale,
+        rotationAngle: rotationAngle,
+        backgroundColor: backgroundColor,
+        pdfRendererType: pdfRendererType,
+      );
+    } on PlatformException catch (e) {
+      log(e.toString());
+    } catch (e) {
+      log(e.toString());
+    }
+
+    PdfPageModel updatedPdfPage = pdfPageModel.copyWith(
+      pageBytes: bytes,
+      pageErrorStatus: bytes == null,
     );
 
-    PdfPageModel updatedPdfPage;
-    if (bytes != null) {
-      updatedPdfPage = PdfPageModel(
-        pageIndex: pdfPageModel.pageIndex,
-        pageBytes: bytes,
-        pageErrorStatus: false,
-        pageSelected: pdfPageModel.pageSelected,
-        pageRotationAngle: pdfPageModel.pageRotationAngle,
-        pageHidden: pdfPageModel.pageHidden,
-      );
-    } else {
-      updatedPdfPage = PdfPageModel(
-        pageIndex: pdfPageModel.pageIndex,
-        pageBytes: null,
-        pageErrorStatus: true,
-        pageSelected: pdfPageModel.pageSelected,
-        pageRotationAngle: pdfPageModel.pageRotationAngle,
-        pageHidden: pdfPageModel.pageHidden,
-      );
-    }
     return updatedPdfPage;
   }
 
-  static Future<int?> getPdfPageCount({required String pdfPath}) async {
+  /// For getting page count of a PDF file through the provided PDF file path.
+  static Future<int> getPdfPageCount({required String pdfPath}) async {
     int? pdfPageCount;
     try {
       pdfPageCount = await PdfBitmaps()
           .pdfPageCount(params: PDFPageCountParams(pdfPath: pdfPath));
     } on PlatformException catch (e) {
       log(e.toString());
+      rethrow;
     } catch (e) {
       log(e.toString());
+      rethrow;
     }
+
+    if (pdfPageCount == null) {
+      throw 'Total page count of PDF is null.';
+    }
+
     return pdfPageCount;
   }
 
+  /// For generating a dummy list of [PdfPageModel] for a PDF through provided
+  /// PDF file path and total page count.
+  ///
+  /// This is helpful if we are working with large number of PDF pages and
+  /// we don't want to create a complete model for each PDF page as that would
+  /// be very slow and expensive so instead we create list of dummy models.
   static Future<List<PdfPageModel>> generatePdfPagesList({
     required String pdfPath,
     int? pageCount,
   }) async {
-    List<PdfPageModel> pdfPages = [];
+    List<PdfPageModel> pdfPages = <PdfPageModel>[];
     int? pdfPageCount;
 
-    pdfPageCount = pageCount ?? await getPdfPageCount(pdfPath: pdfPath);
-    if (pdfPageCount != null) {
-      pdfPages = List<PdfPageModel>.generate(
-        pdfPageCount,
-        (int index) => PdfPageModel(
-          pageIndex: index,
-          pageBytes: null,
-          pageErrorStatus: false,
-          pageSelected: false,
-          pageRotationAngle: 0,
-          pageHidden: false,
-        ),
-      );
+    try {
+      pdfPageCount = pageCount ?? await getPdfPageCount(pdfPath: pdfPath);
+    } on PlatformException catch (e) {
+      log(e.toString());
+      rethrow;
+    } catch (e) {
+      log(e.toString());
+      rethrow;
     }
+
+    pdfPages = List<PdfPageModel>.generate(
+      pdfPageCount,
+      (int index) => PdfPageModel(
+        pageIndex: index,
+        pageBytes: null,
+        pageErrorStatus: false,
+        pageSelected: false,
+        pageRotationAngle: 0,
+        pageHidden: false,
+      ),
+    );
 
     return pdfPages;
   }
 
-  static Future<Uint8List> getBytesFromFilePathOrUri({
+  /// For getting byte data as [Uint8List] of a file through the provided
+  /// file path or file uri.
+  static Future<Uint8List> getByteDataFromFilePathOrUri({
     String? filePath,
     String? fileUri,
   }) async {
@@ -410,9 +475,19 @@ class Utility {
         throw Exception('File not found at file path.');
       }
     } else if (fileUri != null) {
-      String? path = await PickOrSave().cacheFilePathFromPath(
-        params: CacheFilePathFromPathParams(filePath: fileUri),
-      );
+      String? path;
+      try {
+        path = await PickOrSave().cacheFilePathFromPath(
+          params: CacheFilePathFromPathParams(filePath: fileUri),
+        );
+      } on PlatformException catch (e) {
+        log(e.toString());
+        rethrow;
+      } catch (e) {
+        log(e.toString());
+        rethrow;
+      }
+
       if (path != null) {
         File tempFile = File(path);
         filedData = tempFile.readAsBytesSync();

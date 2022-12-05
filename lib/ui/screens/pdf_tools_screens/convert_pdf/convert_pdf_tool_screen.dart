@@ -20,13 +20,14 @@ class ConvertPDFToolsPage extends StatefulWidget {
 }
 
 class _ConvertPDFToolsPageState extends State<ConvertPDFToolsPage> {
-  List<PdfPageModel> pdfPages = [];
+  late List<PdfPageModel> pdfPages;
 
   late Future<bool> initPdfPages;
   Future<bool> initPdfPagesState() async {
     Stopwatch stopwatch = Stopwatch()..start();
     pdfPages = await Utility.generatePdfPagesList(
-        pdfPath: widget.arguments.file.fileUri);
+      pdfPath: widget.arguments.file.fileUri,
+    );
     log('initPdfPagesState Executed in ${stopwatch.elapsed}');
     return true;
   }

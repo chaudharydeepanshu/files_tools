@@ -20,7 +20,7 @@ class CompressPDFToolsPage extends StatefulWidget {
 
 class _CompressPDFToolsPageState extends State<CompressPDFToolsPage> {
   late Future<bool> initPageCount;
-  int? pdfPageCount;
+  late int pdfPageCount;
 
   Future<bool> initPdfPageCount() async {
     pdfPageCount =
@@ -67,18 +67,11 @@ class _CompressPDFToolsPageState extends State<CompressPDFToolsPage> {
                     errorStackTrace: snapshot.stackTrace,
                     allowBack: true,
                   );
-                } else if (pdfPageCount == null) {
-                  return ShowError(
-                    taskMessage: 'Sorry, failed to process the pdf.',
-                    errorMessage: 'PDF page count is null',
-                    errorStackTrace: snapshot.stackTrace,
-                    allowBack: true,
-                  );
                 } else {
                   return CompressPDFToolsBody(
                     actionType: widget.arguments.actionType,
                     file: widget.arguments.file,
-                    pdfPageCount: pdfPageCount!,
+                    pdfPageCount: pdfPageCount,
                   );
                 }
             }

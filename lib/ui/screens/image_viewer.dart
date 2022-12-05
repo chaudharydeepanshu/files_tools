@@ -1,14 +1,18 @@
 import 'dart:developer';
 import 'dart:typed_data';
 
+import 'package:files_tools/models/image_model.dart';
 import 'package:files_tools/ui/components/loading.dart';
 import 'package:files_tools/ui/components/view_error.dart';
 import 'package:files_tools/utils/utility.dart';
 import 'package:flutter/material.dart';
 
+/// It is the input / output files image viewing screen widget.
 class ImageViewer extends StatefulWidget {
+  /// Defining ImageViewer constructor.
   const ImageViewer({Key? key, required this.arguments}) : super(key: key);
 
+  /// ImageViewer arguments passed when ImageViewer was pushed.
   final ImageViewerArguments arguments;
 
   @override
@@ -16,15 +20,35 @@ class ImageViewer extends StatefulWidget {
 }
 
 class _ImageViewerState extends State<ImageViewer> {
-  Uint8List? imageData;
+  late ImageModel imageInfo;
 
+  // Initialization status of [initImageDataState].
   late Future<bool> initImageData;
+
+  // Initializes [imageInfo].
   Future<bool> initImageDataState() async {
     Stopwatch stopwatch = Stopwatch()..start();
-    // Todo: Look is using ImageModel here will suit or not.
-    imageData = await Utility.getBytesFromFilePathOrUri(
-      filePath: widget.arguments.filePath,
-      fileUri: widget.arguments.fileUri,
+    String imageName = widget.arguments.fileName;
+    Uint8List? imageBytes;
+    bool imageErrorStatus = false;
+    String imageErrorMessage = 'Unknown Error';
+    StackTrace imageErrorStackTrace = StackTrace.current;
+    try {
+      imageBytes = await Utility.getByteDataFromFilePathOrUri(
+        filePath: widget.arguments.filePath,
+        fileUri: widget.arguments.fileUri,
+      );
+    } catch (e, s) {
+      imageErrorStatus = true;
+      imageErrorMessage = e.toString();
+      imageErrorStackTrace = s;
+    }
+    imageInfo = ImageModel(
+      imageName: imageName,
+      imageBytes: imageBytes,
+      imageErrorStatus: imageErrorStatus,
+      imageErrorMessage: imageErrorMessage,
+      imageErrorStackTrace: imageErrorStackTrace,
     );
     log('initImageDataState Executed in ${stopwatch.elapsed}');
     return true;
@@ -32,6 +56,7 @@ class _ImageViewerState extends State<ImageViewer> {
 
   @override
   void initState() {
+    // Initializing [initImageDataState].
     initImageData = initImageDataState();
     super.initState();
   }
@@ -62,7 +87,11 @@ class _ImageViewerState extends State<ImageViewer> {
             switch (snapshot.connectionState) {
               case ConnectionState.waiting:
                 return const Loading(loadingText: 'Loading image...');
-              default:
+              case ConnectionState.none:
+                return const Loading(loadingText: 'Loading image...');
+              case ConnectionState.active:
+                return const Loading(loadingText: 'Loading image...');
+              case ConnectionState.done:
                 if (snapshot.hasError) {
                   log(snapshot.error.toString());
                   return ShowError(
@@ -72,14 +101,14 @@ class _ImageViewerState extends State<ImageViewer> {
                   );
                 } else {
                   return Column(
-                    children: [
+                    children: <Widget>[
                       Expanded(
                         child: Stack(
                           fit: StackFit.passthrough,
                           alignment: Alignment.center,
-                          children: [
+                          children: <Widget>[
                             ImageView(
-                              imageData: imageData!,
+                              bytes: imageInfo.imageBytes!,
                               frameBuilder: ((
                                 BuildContext context,
                                 Widget child,
@@ -129,23 +158,39 @@ class _ImageViewerState extends State<ImageViewer> {
   }
 }
 
+/// Takes ImageViewer arguments passed when ImageViewer was pushed.
 class ImageViewerArguments {
+  /// Defining ImageViewerArguments constructor.
   ImageViewerArguments({required this.fileName, this.filePath, this.fileUri});
+
+  /// Name of image file viewing.
   final String fileName;
+
+  /// Path of image file.
   final String? filePath;
+
+  /// Uri of image file.
   final String? fileUri;
 }
 
+/// Widget that shows a image through provided image bytes.
 class ImageView extends StatelessWidget {
+  /// Defining ImageView constructor.
   const ImageView({
     Key? key,
-    required this.imageData,
+    required this.bytes,
     this.frameBuilder,
     this.transformationController,
   }) : super(key: key);
 
-  final Uint8List imageData;
+  /// Byte data of a image.
+  final Uint8List bytes;
+
+  /// Used for showing different widgets for different state of image.
+  /// Like loading, error, done.
   final Widget Function(BuildContext, Widget, int?, bool)? frameBuilder;
+
+  /// Used for zooming out of the [InteractiveViewer].
   final TransformationController? transformationController;
 
   @override
@@ -155,7 +200,7 @@ class ImageView extends StatelessWidget {
       maxScale: 5,
       transformationController: transformationController,
       child: Image.memory(
-        imageData,
+        bytes,
         frameBuilder: frameBuilder,
         fit: BoxFit.contain,
         errorBuilder:
@@ -168,29 +213,5 @@ class ImageView extends StatelessWidget {
         },
       ),
     );
-//   ExtendedImage.memory(
-//       imageData,
-//       fit: BoxFit.contain,
-//       mode: ExtendedImageMode.gesture,
-//       enableLoadState: true,
-//       cacheRawData: true,
-//       loadStateChanged: (ExtendedImageState state) {
-//         switch (state.extendedImageLoadState) {
-//           case LoadState.loading:
-//             return const Loading(
-//               loadingText: 'Loading image...',
-//             );
-//           case LoadState.failed:
-//             return const ShowError(
-//               taskMessage: 'Sorry! Failed to show image',
-//               errorMessage: 'Image viewer failed to load image',
-//             );
-//           case LoadState.completed:
-//             return null;
-//         }
-//       },
-//       clearMemoryCacheWhenDispose: true,
-//       clearMemoryCacheIfFailed: true,
-//     );
   }
 }

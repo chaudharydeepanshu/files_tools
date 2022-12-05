@@ -22,7 +22,7 @@ class CompressImagePage extends StatefulWidget {
 class _CompressPDFPageState extends State<CompressImagePage> {
   @override
   void initState() {
-    Utility.clearCache(clearCacheCommandFrom: 'CompressImagePage');
+    Utility.clearTempDirectory(clearCacheCommandFrom: 'CompressImagePage');
     super.initState();
   }
 

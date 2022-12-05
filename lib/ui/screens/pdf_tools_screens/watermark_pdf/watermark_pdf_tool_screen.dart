@@ -20,7 +20,7 @@ class WatermarkPDFToolsPage extends StatefulWidget {
 
 class _WatermarkPDFToolsPageState extends State<WatermarkPDFToolsPage> {
   late Future<bool> initPageCount;
-  int? pdfPageCount;
+  late int pdfPageCount;
 
   Future<bool> initPdfPageCount() async {
     pdfPageCount =
@@ -67,18 +67,11 @@ class _WatermarkPDFToolsPageState extends State<WatermarkPDFToolsPage> {
                     errorStackTrace: snapshot.stackTrace,
                     allowBack: true,
                   );
-                } else if (pdfPageCount == null) {
-                  return ShowError(
-                    taskMessage: 'Sorry, failed to process the pdf.',
-                    errorMessage: 'PDF page count is null',
-                    errorStackTrace: StackTrace.current,
-                    allowBack: true,
-                  );
                 } else {
                   return WatermarkPDFToolsBody(
                     actionType: widget.arguments.actionType,
                     file: widget.arguments.file,
-                    pdfPageCount: pdfPageCount!,
+                    pdfPageCount: pdfPageCount,
                   );
                 }
             }

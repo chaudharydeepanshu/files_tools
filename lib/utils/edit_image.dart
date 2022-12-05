@@ -9,7 +9,10 @@ class CustomEditorCropLayerPainter extends EditorCropLayerPainter {
   const CustomEditorCropLayerPainter();
   @override
   void paintCorners(
-      Canvas canvas, Size size, ExtendedImageCropLayerPainter painter,) {
+    Canvas canvas,
+    Size size,
+    ExtendedImageCropLayerPainter painter,
+  ) {
     final Paint paint = Paint()
       ..color = painter.cornerColor
       ..style = PaintingStyle.fill;
@@ -27,30 +30,43 @@ class CircleEditorCropLayerPainter extends EditorCropLayerPainter {
 
   @override
   void paintCorners(
-      Canvas canvas, Size size, ExtendedImageCropLayerPainter painter,) {
+    Canvas canvas,
+    Size size,
+    ExtendedImageCropLayerPainter painter,
+  ) {
     // do nothing
   }
 
   @override
   void paintMask(
-      Canvas canvas, Size size, ExtendedImageCropLayerPainter painter,) {
+    Canvas canvas,
+    Size size,
+    ExtendedImageCropLayerPainter painter,
+  ) {
     final Rect rect = Offset.zero & size;
     final Rect cropRect = painter.cropRect;
     final Color maskColor = painter.maskColor;
     canvas.saveLayer(rect, Paint());
     canvas.drawRect(
-        rect,
-        Paint()
-          ..style = PaintingStyle.fill
-          ..color = maskColor,);
-    canvas.drawCircle(cropRect.center, cropRect.width / 2.0,
-        Paint()..blendMode = BlendMode.clear,);
+      rect,
+      Paint()
+        ..style = PaintingStyle.fill
+        ..color = maskColor,
+    );
+    canvas.drawCircle(
+      cropRect.center,
+      cropRect.width / 2.0,
+      Paint()..blendMode = BlendMode.clear,
+    );
     canvas.restore();
   }
 
   @override
   void paintLines(
-      Canvas canvas, Size size, ExtendedImageCropLayerPainter painter,) {
+    Canvas canvas,
+    Size size,
+    ExtendedImageCropLayerPainter painter,
+  ) {
     final Rect cropRect = painter.cropRect;
     if (painter.pointerDown) {
       canvas.save();
@@ -68,13 +84,13 @@ class AspectRatioItem {
 }
 
 class AspectRatioWidget extends StatefulWidget {
-  const AspectRatioWidget(
-      {Key? key,
-      this.aspectRatioS,
-      this.aspectRatio,
-      this.isSelected,
-      required this.onTap,})
-      : super(key: key);
+  const AspectRatioWidget({
+    Key? key,
+    this.aspectRatioS,
+    this.aspectRatio,
+    this.isSelected,
+    required this.onTap,
+  }) : super(key: key);
 
   final String? aspectRatioS;
   final double? aspectRatio;
@@ -132,8 +148,9 @@ class _AspectRatioWidgetState extends State<AspectRatioWidget> {
                                 return (value == null || value.isEmpty)
                                     ? 'x unit can\'t be Empty'
                                     : (int.parse(value) >=
-                                            int.parse(yAxisTextEditingController
-                                                .text,))
+                                            int.parse(
+                                              yAxisTextEditingController.text,
+                                            ))
                                         ? 'x can\'t be >= to x'
                                         : null;
                               },
@@ -274,8 +291,9 @@ final List<AspectRatioItem> aspectRatios = <AspectRatioItem>[
 ];
 
 Future<Uint8List?> modifyImage(ExtendedImageEditorState currentState) async {
-  Future<Uint8List?> cropImageDataWithNativeLibrary(
-      {required ExtendedImageEditorState state,}) async {
+  Future<Uint8List?> cropImageDataWithNativeLibrary({
+    required ExtendedImageEditorState state,
+  }) async {
     log('Native library start cropping');
 
     final Rect? cropRect = state.getCropRect();
@@ -294,7 +312,8 @@ Future<Uint8List?> modifyImage(ExtendedImageEditorState currentState) async {
 
     if (action.needFlip) {
       option.addOption(
-          FlipOption(horizontal: flipHorizontal, vertical: flipVertical),);
+        FlipOption(horizontal: flipHorizontal, vertical: flipVertical),
+      );
     }
 
     if (action.hasRotateAngle) {

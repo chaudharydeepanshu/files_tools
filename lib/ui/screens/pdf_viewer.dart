@@ -10,9 +10,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pdf_bitmaps/pdf_bitmaps.dart';
 
+/// It is the input / output files PDF viewing screen widget.
 class PdfViewer extends StatefulWidget {
+  /// Defining PdfViewer constructor.
   const PdfViewer({Key? key, required this.arguments}) : super(key: key);
 
+  /// PdfViewer arguments passed when PdfViewer was pushed.
   final PdfViewerArguments arguments;
 
   @override
@@ -20,18 +23,23 @@ class PdfViewer extends StatefulWidget {
 }
 
 class _PdfViewerState extends State<PdfViewer> {
+  // Controller to control the PdfViewer PDF pages.
   final PageController pageController = PageController(viewportFraction: 1.02);
 
+  // Is true if PDF an page is currently being processed.
   bool isPageProcessing = false;
 
-  List<PdfPageModel> pdfPages = [];
+  // List of models of PDF pages used to get various information about
+  // a specific page of PDF.
+  late List<PdfPageModel> pdfPages;
 
+  // Updates models in [pdfPages] as user scrolls.
   void updatePdfPages({required int index}) async {
     if (pdfPages[index].pageBytes == null &&
         pdfPages[index].pageErrorStatus == false &&
         isPageProcessing == false) {
       isPageProcessing = true;
-      PdfPageModel updatedPdfPage = await Utility.getUpdatedPdfPage(
+      PdfPageModel updatedPdfPage = await Utility.getUpdatedPdfPageModel(
         index: index,
         pdfPath: widget.arguments.filePathOrUri,
         pdfPageModel: pdfPages[index],
@@ -46,7 +54,11 @@ class _PdfViewerState extends State<PdfViewer> {
     }
   }
 
+  // Initialization status of [initPdfPagesState].
   late Future<bool> initPdfPages;
+
+  // Initializes [pdfPages] with a dummy models list with the total page count
+  // of a PDF.
   Future<bool> initPdfPagesState() async {
     Stopwatch stopwatch = Stopwatch()..start();
     PdfValidityAndProtection? pdfValidityAndProtectionInfo =
@@ -63,7 +75,8 @@ class _PdfViewerState extends State<PdfViewer> {
       throw Exception('Pdf is found to be password protected.');
     }
     pdfPages = await Utility.generatePdfPagesList(
-        pdfPath: widget.arguments.filePathOrUri);
+      pdfPath: widget.arguments.filePathOrUri,
+    );
     if (pdfPages.isEmpty) {
       throw Exception('No pages found for the pdf.');
     }
@@ -73,6 +86,7 @@ class _PdfViewerState extends State<PdfViewer> {
 
   @override
   void initState() {
+    // Initializing [pdfPages].
     initPdfPages = initPdfPagesState();
     super.initState();
   }
@@ -96,12 +110,16 @@ class _PdfViewerState extends State<PdfViewer> {
           // ],
         ),
         body: FutureBuilder<bool>(
-          future: initPdfPages, // async work
+          future: initPdfPages,
           builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
             switch (snapshot.connectionState) {
               case ConnectionState.waiting:
                 return const LoadingPdf();
-              default:
+              case ConnectionState.none:
+                return const LoadingPdf();
+              case ConnectionState.active:
+                return const LoadingPdf();
+              case ConnectionState.done:
                 if (snapshot.hasError) {
                   log(snapshot.error.toString());
                   return ShowError(
@@ -146,15 +164,24 @@ class _PdfViewerState extends State<PdfViewer> {
   }
 }
 
+/// Takes PdfViewer arguments passed when PdfViewer was pushed.
 class PdfViewerArguments {
+  /// Defining PdfViewerArguments constructor.
   PdfViewerArguments({required this.fileName, required this.filePathOrUri});
+
+  /// Name of PDF file viewing.
   final String fileName;
+
+  /// Path or Uri of PDF file.
   final String filePathOrUri;
 }
 
+/// Widget that shows a PDF page image through provided image bytes.
 class PageImageView extends StatefulWidget {
+  /// Defining PageImageView constructor.
   const PageImageView({Key? key, required this.bytes}) : super(key: key);
 
+  /// Byte data of a PDF page image.
   final Uint8List bytes;
 
   @override
@@ -169,12 +196,16 @@ class _PageImageViewState extends State<PageImageView> {
   Widget build(BuildContext context) {
     return Stack(
       fit: StackFit.passthrough,
-      children: [
+      children: <Widget>[
         Align(
           child: ImageView(
-            imageData: widget.bytes,
-            frameBuilder: ((BuildContext context, Widget child, int? frame,
-                bool wasSynchronouslyLoaded) {
+            bytes: widget.bytes,
+            frameBuilder: ((
+              BuildContext context,
+              Widget child,
+              int? frame,
+              bool wasSynchronouslyLoaded,
+            ) {
               if (wasSynchronouslyLoaded) {
                 return child;
               } else {
@@ -206,7 +237,9 @@ class _PageImageViewState extends State<PageImageView> {
   }
 }
 
+/// Widget that creates the [PDFViewer] individual page.
 class PDFPageView extends StatelessWidget {
+  /// Defining PDFPageView constructor.
   const PDFPageView({
     Key? key,
     required this.viewportFraction,
@@ -214,10 +247,14 @@ class PDFPageView extends StatelessWidget {
     required this.pageIndex,
   }) : super(key: key);
 
+  /// Viewport fraction of the [PageView] to determine space between each page
+  /// when scrolled.
   final double viewportFraction;
 
+  /// Takes the widget that shows a PDF page image.
   final Widget imageView;
 
+  /// Takes the PDF page index for which the page be created.
   final int pageIndex;
 
   @override
@@ -228,8 +265,7 @@ class PDFPageView extends StatelessWidget {
         color: Theme.of(context).colorScheme.surfaceVariant,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
+          children: <Widget>[
             Expanded(
               child: imageView,
             ),
@@ -243,7 +279,9 @@ class PDFPageView extends StatelessWidget {
   }
 }
 
+/// Widget for showing loading indicator for PDF in [PDFViewer].
 class LoadingPdf extends StatelessWidget {
+  /// Defining LoadingPdf constructor.
   const LoadingPdf({Key? key}) : super(key: key);
 
   @override
@@ -251,7 +289,7 @@ class LoadingPdf extends StatelessWidget {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: [
+        children: <Widget>[
           const Loading(loadingText: 'Loading page...'),
           const SizedBox(height: 16),
           Text('Loading pdf...', style: Theme.of(context).textTheme.bodySmall),
@@ -261,9 +299,12 @@ class LoadingPdf extends StatelessWidget {
   }
 }
 
+/// Widget for showing page number indicator for PDF pages in [PDFViewer].
 class PageNumber extends StatelessWidget {
+  /// Defining PageNumber constructor.
   const PageNumber({Key? key, required this.pageIndex}) : super(key: key);
 
+  /// Takes the PDF page index for which the page number indicator be created.
   final int pageIndex;
 
   @override
@@ -286,16 +327,19 @@ class PageNumber extends StatelessWidget {
   }
 }
 
+/// Widget for showing error indicator for PDF pages in [PDFViewer].
 class PageError extends StatelessWidget {
+  /// Defining PageError constructor.
   const PageError({Key? key, required this.pageIndex}) : super(key: key);
 
+  /// Takes the PDF page index for which the page error indicator be created.
   final int pageIndex;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
-      children: [
+      children: <Widget>[
         Icon(Icons.error, color: Theme.of(context).colorScheme.error),
         const SizedBox(height: 16),
         Text(

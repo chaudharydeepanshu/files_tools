@@ -15,48 +15,78 @@ import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final FirebaseCrashlytics crashlytics = FirebaseCrashlytics.instance;
-final FirebaseAnalytics analytics = FirebaseAnalytics.instance;
-final FirebaseAnalyticsObserver observer =
-    FirebaseAnalyticsObserver(analytics: analytics);
+/// Its true if the application is compiled in debug mode.
+///
+/// Use it in place of [kDebugMode] through out the app to check for debug mode.
+/// Useful in faking production mode in debug mode by setting it to false.
+bool isInDebugMode = kDebugMode;
+
+/// Key used when building the Navigator.
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
+/// Key used when building the ScaffoldMessenger.
+final GlobalKey<ScaffoldMessengerState> rootScaffoldMessengerKey =
+    GlobalKey<ScaffoldMessengerState>();
+
+/// An instance of FirebaseCrashlytics using the default FirebaseApp.
+final FirebaseCrashlytics crashlyticsInstance = FirebaseCrashlytics.instance;
+
+/// An instance of FirebaseAnalytics using the default FirebaseApp.
+final FirebaseAnalytics analyticsInstance = FirebaseAnalytics.instance;
+
+/// A NavigatorObserver that sends events to FirebaseAnalytics.
+///
+/// When a route is pushed or popped, it sends the route name to Firebase.
+final FirebaseAnalyticsObserver analyticsObserver =
+    FirebaseAnalyticsObserver(analytics: analyticsInstance);
 
 void main() async {
   runZonedGuarded<Future<void>>(
     () async {
+      // To perform some initialization before calling runApp.
       WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+      // To keep the splash screen.
       FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
+      // Initializing app info line name, version, etc.
       await AppPackageInfo.initPackageInfo();
+      // Initializing SharedPreferences instance.
       await Preferences.initSharedPreferences();
-
+      // Initializing FirebaseApp instance.
       await Firebase.initializeApp(
         options: DefaultFirebaseOptions.currentPlatform,
       );
 
       if (kDebugMode) {
         // Disable Crashlytics collection while doing every day development.
-        await FirebaseCrashlytics.instance
-            .setCrashlyticsCollectionEnabled(false);
-        await FirebaseAnalytics.instance.setUserId(id: 'debugModeId');
+        await crashlyticsInstance.setCrashlyticsCollectionEnabled(false);
+        await analyticsInstance.setUserId(id: 'debugModeId');
+      } else {
+        // Enable Crashlytics collection based on user preference in production.
+        await crashlyticsInstance.setCrashlyticsCollectionEnabled(
+          Preferences.crashlyticsCollectionStatus,
+        );
+        await analyticsInstance.setUserId(id: 'prodModeId');
       }
+      // This captures errors reported by the Flutter framework.
+      FlutterError.onError = crashlyticsInstance.recordFlutterFatalError;
 
-      FlutterError.onError = crashlytics.recordFlutterFatalError;
-
+      // To remove the splash screen once everything is initialized.
       FlutterNativeSplash.remove();
 
-      runApp(const ProviderScope(child: MyApp()));
+      runApp(const ProviderScope(child: DynamicColorApp()));
     },
     (Object error, StackTrace stack) =>
         FirebaseCrashlytics.instance.recordError(error, stack, fatal: true),
   );
 }
 
-final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
-final GlobalKey<ScaffoldMessengerState> rootScaffoldMessengerKey =
-    GlobalKey<ScaffoldMessengerState>();
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+/// Called before MaterialApp to get Material You color info from device.
+///
+/// It provides the color schemes based on users device wallpaper.
+class DynamicColorApp extends StatelessWidget {
+  /// Defining DynamicColorApp constructor.
+  const DynamicColorApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -64,19 +94,25 @@ class MyApp extends StatelessWidget {
       builder: (ColorScheme? lightDynamic, ColorScheme? darkDynamic) {
         return Consumer(
           builder: (BuildContext context, WidgetRef ref, Widget? child) {
+            // Initializing dynamic color schemes in [AppThemeState]
+            // ChangeNotifier class to access it through out the app.
             AppThemeState appThemeState = ref.read(appThemeStateProvider);
             appThemeState.initTheme(
               lightDynamic: lightDynamic,
               darkDynamic: darkDynamic,
             );
-            // This is needed because DynamicColorBuilder doesn't provide
-            // dynamic colorScheme if os is yet to respond.
-            // So we just update the color scheme once again when we get the
-            // new dynamic colorScheme.
+            // PostFrameCallback is necessary because DynamicColorBuilder
+            // doesn't provide dynamic colorScheme instantly as its an
+            // asynchronous process due to delayed response by OS.
+            // So whenever it gets the color scheme or the color scheme
+            // gets updated due to wallpaper change it will rebuild the builder
+            // and once the builder is built completely it will run
+            // updateTheme() in [AppThemeState] to update theme and
+            // to notifyListeners about the new dynamic colorScheme.
             WidgetsBinding.instance.addPostFrameCallback((_) {
               appThemeState.updateTheme();
             });
-            return const App();
+            return const MyApp();
           },
         );
       },
@@ -84,14 +120,17 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class App extends StatelessWidget {
-  const App({Key? key}) : super(key: key);
+/// This widget is the root of our application. It creates a MaterialApp.
+class MyApp extends StatelessWidget {
+  /// Defining MyApp constructor.
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Consumer(
       builder: (BuildContext context, WidgetRef ref, Widget? child) {
-        bool isUserOnBoarded = Preferences.isUserOnBoarded;
+        // Getting ThemeData and ThemeMode from [AppThemeState] ChangeNotifier
+        // class to use them through out the app.
         ThemeData lightThemeData = ref.watch(
           appThemeStateProvider
               .select((AppThemeState value) => value.appLightThemeData),
@@ -111,11 +150,11 @@ class App extends StatelessWidget {
           darkTheme: darkThemeData,
           themeMode: themeMode,
           onGenerateRoute: route.AppRoutes.controller,
-          initialRoute: isUserOnBoarded
+          initialRoute: Preferences.isUserOnBoarded
               ? route.AppRoutes.homePage
               : route.AppRoutes.onBoardingPage,
           navigatorKey: navigatorKey,
-          navigatorObservers: <NavigatorObserver>[observer],
+          navigatorObservers: <NavigatorObserver>[analyticsObserver],
           scaffoldMessengerKey: rootScaffoldMessengerKey,
         );
       },
@@ -123,10 +162,17 @@ class App extends StatelessWidget {
   }
 }
 
-// Todo: Improve appbar texts for smaller screens.
-// Todo: Use flutter_intro for first use step-by-step users guide for app.
-// Todo: Add localization.
-// Todo: Add extraction of pages from selection and splitting on the basis of ranges.
-// Todo: Use image mode instead of file mode for images selection in application such as images to pdf function. Can't do it due to https://issuetracker.google.com/issues/257642029.
-// Todo: Check on watermarking is failing for some large pdfs.
-// Todo: Add pdf redaction
+// General TODOs
+// TODO(chaudharydeepanshu): Improve appbar texts to be informative and smaller.
+// TODO(chaudharydeepanshu): Use flutter_intro to guide users step-by-step.
+// TODO(chaudharydeepanshu): Add localization.
+// TODO(chaudharydeepanshu): Page splitting on the basis of page ranges. It
+//  should take multiple ranges from user to create sets of pdf of those ranges.
+// TODO(chaudharydeepanshu): Fix watermarking failing for some large PDFs.
+// TODO(chaudharydeepanshu): Fix converting many large size images into single
+//  PDF crashing the application. Quick fix would be to create single PDFs and
+//  then merge those single PDFs.
+// TODO(chaudharydeepanshu): Add PDF redaction.
+// TODO(chaudharydeepanshu): Use image mode instead of file mode for images
+//  picking for functions like 'convert images to pdf'.
+//  Should be done once this issue resolves https://issuetracker.google.com/issues/257642029.

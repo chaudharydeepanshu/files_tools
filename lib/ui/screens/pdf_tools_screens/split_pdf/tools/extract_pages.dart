@@ -37,7 +37,7 @@ class _ExtractByPageSelectionState extends State<ExtractByPageSelection> {
         pdfPages[index].pageErrorStatus == false &&
         isPageProcessing == false) {
       isPageProcessing = true;
-      PdfPageModel updatedPdfPage = await Utility.getUpdatedPdfPage(
+      PdfPageModel updatedPdfPage = await Utility.getUpdatedPdfPageModel(
         index: index,
         pdfPath: widget.file.fileUri,
         scale: 0.3,

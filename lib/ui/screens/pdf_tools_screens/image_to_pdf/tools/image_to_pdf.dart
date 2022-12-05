@@ -46,7 +46,7 @@ class _ImageToPDFState extends State<ImageToPDF> {
       String imageErrorMessage = 'Unknown Error';
       StackTrace imageErrorStackTrace = StackTrace.current;
       try {
-        imageBytes = await Utility.getBytesFromFilePathOrUri(
+        imageBytes = await Utility.getByteDataFromFilePathOrUri(
           fileUri: file.fileUri,
         );
       } catch (e, s) {

@@ -20,7 +20,7 @@ class ModifyPDFToolsPage extends StatefulWidget {
 }
 
 class _ModifyPDFToolsPageState extends State<ModifyPDFToolsPage> {
-  List<PdfPageModel> pdfPages = [];
+  late List<PdfPageModel> pdfPages;
 
   late Future<bool> initPdfPages;
   Future<bool> initPdfPagesState() async {

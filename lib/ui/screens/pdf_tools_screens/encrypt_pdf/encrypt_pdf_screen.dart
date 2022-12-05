@@ -22,7 +22,7 @@ class EncryptPDFPage extends StatefulWidget {
 class _EncryptPDFPageState extends State<EncryptPDFPage> {
   @override
   void initState() {
-    Utility.clearCache(clearCacheCommandFrom: 'EncryptPDFPage');
+    Utility.clearTempDirectory(clearCacheCommandFrom: 'EncryptPDFPage');
     super.initState();
   }
 

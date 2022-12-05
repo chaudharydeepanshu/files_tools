@@ -16,7 +16,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
-    Utility.clearCache(clearCacheCommandFrom: 'HomePage');
+    Utility.clearTempDirectory(clearCacheCommandFrom: 'HomePage');
     super.initState();
   }
 

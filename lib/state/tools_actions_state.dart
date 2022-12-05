@@ -736,7 +736,7 @@ class ToolsActionsState extends ChangeNotifier {
   ///
   /// It will make the app reusable for using any new tool immediately.
   void cancelAction() {
-    Utility.clearCache(clearCacheCommandFrom: 'Cancel Running Action');
+    Utility.clearTempDirectory(clearCacheCommandFrom: 'Cancel Running Action');
     updateActionProcessingStatus(true);
     try {
       PdfManipulator().cancelManipulations();

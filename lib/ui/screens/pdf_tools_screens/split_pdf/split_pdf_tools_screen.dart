@@ -25,7 +25,7 @@ class SplitPDFToolsPage extends StatefulWidget {
 }
 
 class _SplitPDFToolsPageState extends State<SplitPDFToolsPage> {
-  List<PdfPageModel> pdfPages = [];
+  late List<PdfPageModel> pdfPages;
 
   late Future<bool> initPdfPages;
   Future<bool> initPdfPagesState() async {

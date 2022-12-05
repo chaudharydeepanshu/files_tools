@@ -4,7 +4,9 @@ import 'package:files_tools/ui/components/theme_chooser_widget.dart';
 import 'package:files_tools/ui/components/theme_mode_switcher.dart';
 import 'package:flutter/material.dart';
 
+/// It is the settings screen widget of our application.
 class SettingsPage extends StatelessWidget {
+  /// Defining SettingsPage constructor.
   const SettingsPage({Key? key}) : super(key: key);
 
   @override
@@ -22,8 +24,10 @@ class SettingsPage extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('App Theming',
-                    style: Theme.of(context).textTheme.bodyMedium,),
+                Text(
+                  'App Theming',
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
                 const ResetAppThemeSettings(),
               ],
             ),

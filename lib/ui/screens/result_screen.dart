@@ -12,8 +12,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rive/rive.dart';
 
-class ResultPage extends StatelessWidget {
-  const ResultPage({Key? key}) : super(key: key);
+/// It is the tools actions result screen widget.
+///
+/// Shows the processing, error and success screen of an action.
+class ActionResultPage extends StatelessWidget {
+  /// Defining ActionResultPage constructor.
+  const ActionResultPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,46 +25,52 @@ class ResultPage extends StatelessWidget {
       builder: (BuildContext context, WidgetRef ref, Widget? child) {
         return WillPopScope(
           onWillPop: () async {
-            // Canceling files save before screen popping,
+            // Canceling files saving before popping result screen.
             ref.read(toolsActionsStateProvider).cancelFileSaving();
-            // Canceling running actions.
+            // Canceling running actions before popping result screen.
             ref.read(toolsActionsStateProvider).cancelAction();
-            // Remove result cached Files
-            Utility.clearCache(clearCacheCommandFrom: 'WillPopScope');
-            // Returning true allows the pop to happen, returning false prevents it.
+            // Clearing temporary directory before popping result screen.
+            Utility.clearTempDirectory(clearCacheCommandFrom: 'WillPopScope');
+            // Now returning true to allow the pop, returning false prevents it.
             return true;
           },
           child: GestureDetector(
             onTap: () {
+              // Un focusing keyboard on tapping anywhere empty in screen.
               FocusManager.instance.primaryFocus?.unfocus();
+              // Hides SnackBar on tapping anywhere empty in screen.
               ScaffoldMessenger.of(context).hideCurrentSnackBar();
             },
             child: Scaffold(
-              appBar: const CustomAppBar(),
+              appBar: const ActionResultPageAppBar(),
               body: Consumer(
                 builder: (BuildContext context, WidgetRef ref, Widget? child) {
+                  // Watches action processing status.
                   final bool isActionProcessing = ref.watch(
                     toolsActionsStateProvider.select(
-                        (ToolsActionsState value) => value.isActionProcessing),
+                      (ToolsActionsState value) => value.isActionProcessing,
+                    ),
                   );
+                  // Watches action error status.
                   final bool actionErrorStatus = ref.watch(
                     toolsActionsStateProvider.select(
-                        (ToolsActionsState value) => value.actionErrorStatus),
+                      (ToolsActionsState value) => value.actionErrorStatus,
+                    ),
                   );
+                  // Watches action error message.
                   final String errorMessage = ref.watch(
                     toolsActionsStateProvider.select(
-                        (ToolsActionsState value) => value.errorMessage),
+                      (ToolsActionsState value) => value.errorMessage,
+                    ),
                   );
+                  // Watches action error StackTrace.
                   final StackTrace errorStackTrace = ref.watch(
                     toolsActionsStateProvider.select(
-                        (ToolsActionsState value) => value.errorStackTrace),
-                  );
-                  final ToolAction currentActionType = ref.watch(
-                    toolsActionsStateProvider.select(
-                        (ToolsActionsState value) => value.currentActionType),
+                      (ToolsActionsState value) => value.errorStackTrace,
+                    ),
                   );
                   if (isActionProcessing) {
-                    return const ProcessingResult();
+                    return const ActionResultProcessingBody();
                   } else if (actionErrorStatus) {
                     return ShowError(
                       taskMessage: 'Sorry, failed to complete the processing.',
@@ -69,9 +79,9 @@ class ResultPage extends StatelessWidget {
                       allowBack: true,
                     );
                   } else {
-                    return SingleChildScrollView(
-                      padding: const EdgeInsets.symmetric(vertical: 16.0),
-                      child: ResultBody(actionType: currentActionType),
+                    return const SingleChildScrollView(
+                      padding: EdgeInsets.symmetric(vertical: 16.0),
+                      child: ActionResultSuccessBody(),
                     );
                   }
                 },
@@ -84,8 +94,12 @@ class ResultPage extends StatelessWidget {
   }
 }
 
-class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
-  const CustomAppBar({Key? key}) : super(key: key);
+/// It is the tools actions result screen app bar widget.
+///
+/// Shows the processing, error and success app bar of an action.
+class ActionResultPageAppBar extends StatelessWidget with PreferredSizeWidget {
+  /// Defining ActionResultPageAppBar constructor.
+  const ActionResultPageAppBar({Key? key}) : super(key: key);
 
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
@@ -94,37 +108,42 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
   Widget build(BuildContext context) {
     return Consumer(
       builder: (BuildContext context, WidgetRef ref, Widget? child) {
+        // Watches action processing status.
         final bool isActionProcessing = ref.watch(
           toolsActionsStateProvider
               .select((ToolsActionsState value) => value.isActionProcessing),
         );
+        // Watches action error status.
         final bool actionErrorStatus = ref.watch(
           toolsActionsStateProvider
               .select((ToolsActionsState value) => value.actionErrorStatus),
         );
+        // Watches current action type.
         final ToolAction currentActionType = ref.watch(
           toolsActionsStateProvider
               .select((ToolsActionsState value) => value.currentActionType),
         );
+        // Getting current action app bar title.
         String actionAppbarTitle =
-            getAppBarTitleForActionType(actionType: currentActionType);
+            getAppBarTitleForActionResultPage(actionType: currentActionType);
         return AppBar(
           title: Text(
             isActionProcessing
-                ? 'Processing Data'
+                ? 'Processing Task'
                 : actionErrorStatus
                     ? 'Error Occurred'
                     : actionAppbarTitle,
           ),
           centerTitle: true,
-          actions: [
+          actions: <Widget>[
             IconButton(
               icon: const Icon(Icons.home),
               onPressed: () {
-                // Canceling files save before screen popping,
+                // Canceling files saving before pushing home screen.
                 ref.read(toolsActionsStateProvider).cancelFileSaving();
-                // Canceling running actions.
+                // Canceling running actions before pushing home screen.
                 ref.read(toolsActionsStateProvider).cancelAction();
+                // Now pushing home screen.
                 Navigator.pushNamedAndRemoveUntil(
                   context,
                   route.AppRoutes.homePage,
@@ -139,8 +158,9 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
   }
 }
 
-String getAppBarTitleForActionType({required ToolAction actionType}) {
-  String title = 'Action Successful';
+/// Gives appropriate app bar title based on type of action performed.
+String getAppBarTitleForActionResultPage({required ToolAction actionType}) {
+  String title = 'Task Successful';
   // if (actionType == ToolsActions.mergePdfs) {
   //   title = "Successfully Merged Files";
   // } else if (actionType == ToolsActions.splitPdfByPageCount ||
@@ -150,37 +170,39 @@ String getAppBarTitleForActionType({required ToolAction actionType}) {
   return title;
 }
 
-class ResultBody extends StatelessWidget {
-  const ResultBody({Key? key, required this.actionType}) : super(key: key);
-
-  final ToolAction actionType;
+/// It is the tools actions result success screen widget.
+class ActionResultSuccessBody extends StatelessWidget {
+  /// Defining ActionResultSuccessBody constructor.
+  const ActionResultSuccessBody({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Consumer(
       builder: (BuildContext context, WidgetRef ref, Widget? child) {
+        // Watches output / save files.
         final List<OutputFileModel> outputFiles = ref.watch(
           toolsActionsStateProvider
               .select((ToolsActionsState value) => value.outputFiles),
         );
-        return SavingMultipleFiles(
-          files: outputFiles,
-          actionType: actionType,
+        return SavingFiles(
+          saveFiles: outputFiles,
         );
       },
     );
   }
 }
 
-class ProcessingResult extends StatelessWidget {
-  const ProcessingResult({Key? key}) : super(key: key);
+/// It is the tools actions result processing screen widget.
+class ActionResultProcessingBody extends StatelessWidget {
+  /// Defining ActionResultProcessingBody constructor.
+  const ActionResultProcessingBody({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: [
+        children: <Widget>[
           const Loading(loadingText: 'Processing please wait ...'),
           Consumer(
             builder: (BuildContext context, WidgetRef ref, Widget? child) {
@@ -199,26 +221,26 @@ class ProcessingResult extends StatelessWidget {
   }
 }
 
-class SavingMultipleFiles extends StatelessWidget {
-  const SavingMultipleFiles({
+/// Widget for saving files in tools actions result success screen.
+class SavingFiles extends StatelessWidget {
+  /// Defining SavingFiles constructor.
+  const SavingFiles({
     Key? key,
-    required this.files,
-    required this.actionType,
+    required this.saveFiles,
   }) : super(key: key);
 
-  final List<OutputFileModel> files;
-  final ToolAction actionType;
+  /// List of files to save.
+  final List<OutputFileModel> saveFiles;
 
   @override
   Widget build(BuildContext context) {
-    double heightWithoutAppBarNavBar = MediaQuery.of(context).size.height -
+    double scaffoldBodySpace = MediaQuery.of(context).size.height -
         (MediaQuery.of(context).padding.top +
             kToolbarHeight +
             kBottomNavigationBarHeight);
     return ConstrainedBox(
       constraints: BoxConstraints(
-        maxHeight:
-            heightWithoutAppBarNavBar < 500 ? heightWithoutAppBarNavBar : 500,
+        maxHeight: scaffoldBodySpace < 500 ? scaffoldBodySpace : 500,
       ),
       child: Card(
         clipBehavior: Clip.antiAlias,
@@ -227,20 +249,18 @@ class SavingMultipleFiles extends StatelessWidget {
           padding: const EdgeInsets.all(16.0),
           child: Column(
             mainAxisSize: MainAxisSize.min,
-            children: [
-              // const Icon(Icons.looks_3),
+            children: <Widget>[
               const Flexible(child: SuccessAnimation()),
               const Divider(),
               Flexible(
                 child: NonReorderableFilesListView(
-                  files: files,
-                  actionType: actionType,
+                  saveFiles: saveFiles,
                 ),
               ),
               const SizedBox(height: 10),
               const SizedBox(height: 10),
               Text(
-                files.length == 1
+                saveFiles.length == 1
                     ? 'To view file click over them.'
                     : 'To view files click over them.',
                 style: Theme.of(context).textTheme.bodySmall,
@@ -253,7 +273,7 @@ class SavingMultipleFiles extends StatelessWidget {
                         (ToolsActionsState value) => value.isSaveProcessing,
                       ), (bool? previous, bool next) {
                     if (previous != next && next == true) {
-                      String? contentText = files.length == 1
+                      String? contentText = saveFiles.length == 1
                           ? 'Saving file! Please wait...'
                           : 'Saving files! Please wait...';
                       Color? backgroundColor;
@@ -273,10 +293,11 @@ class SavingMultipleFiles extends StatelessWidget {
                       ScaffoldMessenger.of(context).hideCurrentSnackBar();
                     }
                   });
-
+                  // Watches save processing status.
                   bool isSaveProcessing = ref.watch(
                     toolsActionsStateProvider.select(
-                        (ToolsActionsState value) => value.isSaveProcessing),
+                      (ToolsActionsState value) => value.isSaveProcessing,
+                    ),
                   );
 
                   return FilledButton.icon(
@@ -287,22 +308,23 @@ class SavingMultipleFiles extends StatelessWidget {
                     onPressed: isSaveProcessing
                         ? null
                         : () {
+                            // Calling save action through provide saveFiles.
                             ref
                                 .read(toolsActionsStateProvider)
                                 .mangeSaveFileAction(
                                   fileSaveModel: FileSaveModel(
-                                    saveFiles: files,
+                                    saveFiles: saveFiles,
                                   ),
                                 );
                           },
                     label: isSaveProcessing
                         ? Text(
-                            files.length == 1
+                            saveFiles.length == 1
                                 ? 'Saving file. Please wait'
                                 : 'Saving Files. Please wait',
                           )
                         : Text(
-                            files.length == 1 ? 'Save file' : 'Save Files',
+                            saveFiles.length == 1 ? 'Save file' : 'Save Files',
                           ),
                     icon: const Icon(Icons.save),
                   );
@@ -316,7 +338,9 @@ class SavingMultipleFiles extends StatelessWidget {
   }
 }
 
+/// Widget for showing an success animation using [RiveAnimation].
 class SuccessAnimation extends StatelessWidget {
+  /// Defining SuccessAnimation constructor.
   const SuccessAnimation({Key? key}) : super(key: key);
 
   @override
@@ -332,20 +356,28 @@ class SuccessAnimation extends StatelessWidget {
   }
 }
 
+/// A non-reorder able list view used for showing output / save files.
 class NonReorderableFilesListView extends StatelessWidget {
+  /// Defining NonReorderableFilesListView constructor.
   const NonReorderableFilesListView({
     Key? key,
-    required this.files,
-    required this.actionType,
+    required this.saveFiles,
   }) : super(key: key);
 
-  final List<OutputFileModel> files;
-  final ToolAction actionType;
+  /// List of output / save files.
+  final List<OutputFileModel> saveFiles;
 
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
-      shrinkWrap: files.length < 10,
+      // This shrink wrap condition is required to prevent using shrinkWrap in
+      // list view for large number of files.
+      // And we shrinkwrap list view for less than 10 files to avoid it from
+      // taking [SavingFiles] available space which will create empty space in
+      // the card. But in case of large number of files the [SavingFiles]
+      // available space will and should definitely fully occupy it so
+      // shrinkwrap is not required.
+      shrinkWrap: saveFiles.length < 10,
       separatorBuilder: (BuildContext context, int index) {
         return const SizedBox(height: 10);
       },
@@ -353,15 +385,15 @@ class NonReorderableFilesListView extends StatelessWidget {
         return Material(
           color: Colors.transparent,
           child: FileTile(
-            fileName: files[index].fileName,
-            fileTime: files[index].fileTime,
-            fileDate: files[index].fileDate,
-            filePath: files[index].filePath,
-            fileSize: files[index].fileSizeFormatBytes,
+            fileName: saveFiles[index].fileName,
+            fileTime: saveFiles[index].fileTime,
+            fileDate: saveFiles[index].fileDate,
+            filePath: saveFiles[index].filePath,
+            fileSize: saveFiles[index].fileSizeFormatBytes,
           ),
         );
       },
-      itemCount: files.length,
+      itemCount: saveFiles.length,
     );
   }
 }

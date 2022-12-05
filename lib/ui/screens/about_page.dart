@@ -3,7 +3,9 @@ import 'package:files_tools/ui/components/link_button.dart';
 import 'package:files_tools/ui/components/url_launcher.dart';
 import 'package:flutter/material.dart';
 
+/// It is the about screen widget of our application.
 class AboutPage extends StatelessWidget {
+  /// Defining AboutPage constructor.
   const AboutPage({Key? key}) : super(key: key);
 
   @override
@@ -14,7 +16,7 @@ class AboutPage extends StatelessWidget {
         centerTitle: true,
       ),
       body: ListView(
-        children: const [
+        children: const <Widget>[
           SizedBox(
             height: 16,
           ),
@@ -26,10 +28,11 @@ class AboutPage extends StatelessWidget {
           SizedBox(
             height: 16,
           ),
-          AppAuthor(),
+          AppCreator(),
           SizedBox(
             height: 16,
           ),
+          // Uncomment to add app contributors.
           // AppContributions(),
           // SizedBox(
           //   height: 16,
@@ -44,7 +47,9 @@ class AboutPage extends StatelessWidget {
   }
 }
 
+/// App description widget of about screen.
 class AppDescription extends StatelessWidget {
+  /// Defining AppDescription constructor.
   const AppDescription({Key? key}) : super(key: key);
 
   @override
@@ -52,17 +57,12 @@ class AppDescription extends StatelessWidget {
     return Card(
       clipBehavior: Clip.antiAlias,
       margin: const EdgeInsets.symmetric(horizontal: 16.0),
-      // elevation: 0,
-      // shape: RoundedRectangleBorder(
-      //   side: BorderSide(
-      //     color: Theme.of(context).colorScheme.outline,
-      //   ),
-      //   borderRadius: const BorderRadius.all(Radius.circular(12)),
-      // ),
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Text(
-          'Files Tools is an application on which I worked during my spare time. It provides tools to perform various operations on files (documents and media), which helps everyone in their everyday life.',
+          'Files Tools is an application on which I worked during my spare '
+          'time. It provides tools to perform various operations on files '
+          '(documents and media), which helps everyone in their everyday life.',
           style: Theme.of(context).textTheme.bodyMedium,
           textAlign: TextAlign.center,
         ),
@@ -71,7 +71,9 @@ class AppDescription extends StatelessWidget {
   }
 }
 
+/// Widget for showing badges related to app like open source, ad free, etc.
 class AppBadges extends StatelessWidget {
+  /// Defining AppBadges constructor.
   const AppBadges({Key? key}) : super(key: key);
 
   @override
@@ -79,23 +81,16 @@ class AppBadges extends StatelessWidget {
     return Card(
       clipBehavior: Clip.antiAlias,
       margin: const EdgeInsets.symmetric(horizontal: 16.0),
-      // elevation: 0,
-      // shape: RoundedRectangleBorder(
-      //   side: BorderSide(
-      //     color: Theme.of(context).colorScheme.outline,
-      //   ),
-      //   borderRadius: const BorderRadius.all(Radius.circular(12)),
-      // ),
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           mainAxisSize: MainAxisSize.min,
-          children: [
+          children: <Widget>[
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
+              children: <Widget>[
                 Column(
-                  children: [
+                  children: <Widget>[
                     Image.asset(
                       'assets/open_source.png',
                       height: 100,
@@ -109,7 +104,7 @@ class AppBadges extends StatelessWidget {
                   ],
                 ),
                 Column(
-                  children: [
+                  children: <Widget>[
                     Image.asset(
                       'assets/no_ads.png',
                       height: 100,
@@ -136,27 +131,22 @@ class AppBadges extends StatelessWidget {
   }
 }
 
-class AppAuthor extends StatelessWidget {
-  const AppAuthor({Key? key}) : super(key: key);
+/// Widget for showing app creator info.
+class AppCreator extends StatelessWidget {
+  /// Defining AppCreator constructor.
+  const AppCreator({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Card(
       clipBehavior: Clip.antiAlias,
       margin: const EdgeInsets.symmetric(horizontal: 16.0),
-      // elevation: 0,
-      // shape: RoundedRectangleBorder(
-      //   side: BorderSide(
-      //     color: Theme.of(context).colorScheme.outline,
-      //   ),
-      //   borderRadius: const BorderRadius.all(Radius.circular(12)),
-      // ),
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
-          children: [
+          children: <Widget>[
             Text(
-              'Author',
+              'Creator',
               style: Theme.of(context).textTheme.titleLarge,
               textAlign: TextAlign.center,
             ),
@@ -168,15 +158,15 @@ class AppAuthor extends StatelessWidget {
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                LinkButton(urlLabel: 'LinkedIn', url: authorLinkedInUrl),
+              children: <Widget>[
+                LinkButton(urlLabel: 'LinkedIn', url: creatorLinkedInUrl),
               ],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
+              children: <Widget>[
                 Column(
-                  children: [
+                  children: <Widget>[
                     Text(
                       'Follow',
                       style: Theme.of(context).textTheme.bodySmall,
@@ -184,12 +174,12 @@ class AppAuthor extends StatelessWidget {
                     ),
                     FilledButton.tonal(
                       onPressed: () {
-                        urlLauncher(authorGithubUrl);
+                        urlLauncher(creatorGithubUrl);
                       },
                       child: Padding(
                         padding: const EdgeInsets.all(4.0),
                         child: Column(
-                          children: [
+                          children: <Widget>[
                             Image.asset(
                               'assets/github_3d_icon.png',
                               height: 30,
@@ -203,7 +193,7 @@ class AppAuthor extends StatelessWidget {
                   ],
                 ),
                 Column(
-                  children: [
+                  children: <Widget>[
                     Text(
                       '⭐ Project',
                       style: Theme.of(context).textTheme.bodySmall,
@@ -216,7 +206,7 @@ class AppAuthor extends StatelessWidget {
                       child: Padding(
                         padding: const EdgeInsets.all(4.0),
                         child: Column(
-                          children: [
+                          children: <Widget>[
                             Image.asset(
                               'assets/github_3d_icon.png',
                               height: 30,
@@ -238,7 +228,9 @@ class AppAuthor extends StatelessWidget {
   }
 }
 
+/// Widget for showing app contributors info.
 class AppContributions extends StatelessWidget {
+  /// Defining AppContributions constructor.
   const AppContributions({Key? key}) : super(key: key);
 
   @override
@@ -246,17 +238,10 @@ class AppContributions extends StatelessWidget {
     return Card(
       clipBehavior: Clip.antiAlias,
       margin: const EdgeInsets.symmetric(horizontal: 16.0),
-      // elevation: 0,
-      // shape: RoundedRectangleBorder(
-      //   side: BorderSide(
-      //     color: Theme.of(context).colorScheme.outline,
-      //   ),
-      //   borderRadius: const BorderRadius.all(Radius.circular(12)),
-      // ),
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
-          children: [
+          children: <Widget>[
             Text(
               'Contributors',
               style: Theme.of(context).textTheme.titleLarge,
@@ -275,7 +260,7 @@ class AppContributions extends StatelessWidget {
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
+              children: const <Widget>[
                 LinkButton(urlLabel: 'Github', url: 'https://github.com/xyz'),
               ],
             ),
@@ -287,7 +272,9 @@ class AppContributions extends StatelessWidget {
   }
 }
 
+/// Widget for showing app credits info.
 class Credits extends StatelessWidget {
+  /// Defining Credits constructor.
   const Credits({Key? key}) : super(key: key);
 
   @override
@@ -295,17 +282,10 @@ class Credits extends StatelessWidget {
     return Card(
       clipBehavior: Clip.antiAlias,
       margin: const EdgeInsets.symmetric(horizontal: 16.0),
-      // elevation: 0,
-      // shape: RoundedRectangleBorder(
-      //   side: BorderSide(
-      //     color: Theme.of(context).colorScheme.outline,
-      //   ),
-      //   borderRadius: const BorderRadius.all(Radius.circular(12)),
-      // ),
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
-          children: [
+          children: <Widget>[
             Text(
               'Credits',
               style: Theme.of(context).textTheme.titleLarge,
@@ -322,7 +302,9 @@ class Credits extends StatelessWidget {
                     alignment: PlaceholderAlignment.baseline,
                     baseline: TextBaseline.alphabetic,
                     child: LinkButton(
-                        urlLabel: 'Icons8', url: 'https://icons8.com',),
+                      urlLabel: 'Icons8',
+                      url: 'https://icons8.com',
+                    ),
                   ),
                 ],
               ),
@@ -337,8 +319,9 @@ class Credits extends StatelessWidget {
                     alignment: PlaceholderAlignment.baseline,
                     baseline: TextBaseline.alphabetic,
                     child: LinkButton(
-                        urlLabel: 'Rive Community',
-                        url: 'https://rive.app/community/',),
+                      urlLabel: 'Rive Community',
+                      url: 'https://rive.app/community/',
+                    ),
                   ),
                 ],
               ),

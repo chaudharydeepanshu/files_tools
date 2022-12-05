@@ -23,7 +23,8 @@ class CropRotateFlipImagesPage extends StatefulWidget {
 class _CropRotateFlipImagesPageState extends State<CropRotateFlipImagesPage> {
   @override
   void initState() {
-    Utility.clearCache(clearCacheCommandFrom: 'CropRotateFlipImagesPage');
+    Utility.clearTempDirectory(
+        clearCacheCommandFrom: 'CropRotateFlipImagesPage');
     super.initState();
   }
 

@@ -222,7 +222,7 @@ class PdfToolsActions {
       for (PdfPageModel page in selectedPages) {
         Uint8List? pageBytes;
         // Getting bytes of a PDF page.
-        pageBytes = await Utility.getPdfPageBitmap(
+        pageBytes = await Utility.getUint8ListOfPdfPageAsImage(
           index: page.pageIndex,
           pdfPath: pathOfSourceFile,
           scale: imageScaling,

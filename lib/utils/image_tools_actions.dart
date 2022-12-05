@@ -195,7 +195,7 @@ class ImageToolsActions {
         InputFileModel sourceFile = sourceFiles[i];
 
         // Getting source file bytes using its uri.
-        Uint8List imageData = await Utility.getBytesFromFilePathOrUri(
+        Uint8List imageData = await Utility.getByteDataFromFilePathOrUri(
           fileUri: sourceFile.fileUri,
         );
 

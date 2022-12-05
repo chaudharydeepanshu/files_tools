@@ -22,7 +22,7 @@ class SplitPDFPage extends StatefulWidget {
 class _SplitPDFPageState extends State<SplitPDFPage> {
   @override
   void initState() {
-    Utility.clearCache(clearCacheCommandFrom: 'SplitPDFPage');
+    Utility.clearTempDirectory(clearCacheCommandFrom: 'SplitPDFPage');
     super.initState();
   }
 

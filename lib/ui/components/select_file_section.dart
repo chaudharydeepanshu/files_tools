@@ -197,7 +197,7 @@ class FilesSelected extends StatelessWidget {
                                 .updateSelectedFiles(
                               files: [],
                             );
-                            Utility.clearCache(
+                            Utility.clearTempDirectory(
                               clearCacheCommandFrom: 'Clear File Selection',
                             );
                           }

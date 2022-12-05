@@ -35,6 +35,26 @@ class PdfPageModel {
   /// PDF page error status.
   final bool pageErrorStatus;
 
+  /// Creates copy of PdfPageModel object with the given
+  /// values replaced with new values.
+  PdfPageModel copyWith({
+    int? pageIndex,
+    Uint8List? pageBytes,
+    bool? pageSelected,
+    int? pageRotationAngle,
+    bool? pageHidden,
+    bool? pageErrorStatus,
+  }) {
+    return PdfPageModel(
+      pageIndex: pageIndex ?? this.pageIndex,
+      pageBytes: pageBytes ?? this.pageBytes,
+      pageSelected: pageSelected ?? this.pageSelected,
+      pageRotationAngle: pageRotationAngle ?? this.pageRotationAngle,
+      pageHidden: pageHidden ?? this.pageHidden,
+      pageErrorStatus: pageErrorStatus ?? this.pageErrorStatus,
+    );
+  }
+
   /// Overriding PdfPageModel equality operator.
   @override
   bool operator ==(Object other) =>

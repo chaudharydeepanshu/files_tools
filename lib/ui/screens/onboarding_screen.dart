@@ -8,37 +8,38 @@ import 'package:files_tools/ui/components/theme_mode_switcher.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+/// It is on boarding screen widget.
 class OnBoardingScreen extends StatelessWidget {
+  /// Defining OnBoardingScreen constructor.
   const OnBoardingScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        // You can do some work here.
+        // Running on boarding finish method.
         onBoardingFinish(context);
-        // Returning true allows the pop to happen, returning false prevents it.
+        // Returning false to prevent the pop.
+        // As we are just replacing the route.
         return false;
       },
-      child: const OnBoardScreenPageView(),
+      child: const OnBoardScreenTabView(),
     );
   }
 }
 
+/// Called to finish on boarding.
 void onBoardingFinish(BuildContext context) async {
   Navigator.pushReplacementNamed(
     context,
     route.AppRoutes.homePage,
   );
-  Preferences preferences = Preferences();
   Preferences.persistOnBoardingStatus(true);
-  // if (Navigator.canPop(context)) {
-  //   // Popping only if it can be popped.
-  //   Navigator.pop(context);
-  // }
 }
 
+/// Widget for creating on boarding screen interactive holes.
 class HoledScaffold extends StatelessWidget {
+  /// Defining HoledScaffold constructor.
   const HoledScaffold({
     Key? key,
     required this.firstHoleColor,
@@ -51,13 +52,28 @@ class HoledScaffold extends StatelessWidget {
     this.disableSecondHoleBorder = true,
   }) : super(key: key);
 
+  /// Color of top hole.
   final Color firstHoleColor;
+
+  /// Color of bottom hole.
   final Color secondHoleColor;
+
+  /// Border color of top hole.
   final Color firstHoleBorderColor;
+
+  /// Border color of bottom hole.
   final Color secondHoleBorderColor;
+
+  /// Top hole child widget.
   final Widget? firstHoleChild;
+
+  /// Bottom hole child widget.
   final Widget? secondHoleChild;
+
+  /// Disables top hole border.
   final bool disableFirstHoleBorder;
+
+  /// Disables bottom hole border.
   final bool disableSecondHoleBorder;
 
   @override
@@ -67,7 +83,7 @@ class HoledScaffold extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
+          children: <Widget>[
             Expanded(
               child: Container(
                 // height: 300,
@@ -103,16 +119,19 @@ class HoledScaffold extends StatelessWidget {
   }
 }
 
-class OnBoardScreenPageView extends StatefulWidget {
-  const OnBoardScreenPageView({Key? key}) : super(key: key);
+/// Widget for creating on boarding screen TabView.
+class OnBoardScreenTabView extends StatefulWidget {
+  /// Defining OnBoardScreenTabView constructor.
+  const OnBoardScreenTabView({Key? key}) : super(key: key);
 
   @override
-  State<OnBoardScreenPageView> createState() => _OnBoardScreenPageViewState();
+  State<OnBoardScreenTabView> createState() => _OnBoardScreenTabViewState();
 }
 
-class _OnBoardScreenPageViewState extends State<OnBoardScreenPageView>
+class _OnBoardScreenTabViewState extends State<OnBoardScreenTabView>
     with SingleTickerProviderStateMixin {
   int currentIndex = 0;
+
   int totalPages = 2;
 
   late TabController tabController;
@@ -151,26 +170,26 @@ class _OnBoardScreenPageViewState extends State<OnBoardScreenPageView>
     return Scaffold(
       body: Stack(
         alignment: AlignmentDirectional.center,
-        children: [
+        children: <Widget>[
           Container(
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
-                colors: [
+                colors: <Color>[
                   Theme.of(context).colorScheme.surface,
                   Theme.of(context).colorScheme.surface,
                   Colors.transparent,
                 ],
-                stops: const [0, 0.5, 0.5],
+                stops: const <double>[0, 0.5, 0.5],
               ),
             ),
             child: TabBarView(
               physics: const BouncingScrollPhysics(),
               controller: tabController,
               children: const <Widget>[
-                PageViewFirstScreen(),
-                PageViewSecondScreen(),
+                TabViewFirstScreen(),
+                TabViewSecondScreen(),
               ],
             ),
           ),
@@ -182,7 +201,7 @@ class _OnBoardScreenPageViewState extends State<OnBoardScreenPageView>
               ), // This one will create the magic
               child: Stack(
                 fit: StackFit.expand,
-                children: [
+                children: <Widget>[
                   Container(
                     decoration: BoxDecoration(
                       color: Theme.of(context).scaffoldBackgroundColor,
@@ -240,9 +259,9 @@ class _OnBoardScreenPageViewState extends State<OnBoardScreenPageView>
             child: Padding(
               padding:
                   const EdgeInsets.symmetric(horizontal: 8.0, vertical: 15),
-              child: PageViewControlArrows(
+              child: TabViewControlArrows(
                 currentIndex: currentIndex,
-                totalPages: totalPages,
+                totalTabs: totalPages,
                 onBackward: tabController.indexIsChanging ||
                         currentIndex != tabController.index
                     ? null
@@ -271,44 +290,55 @@ class _OnBoardScreenPageViewState extends State<OnBoardScreenPageView>
   }
 }
 
-class PageViewControlArrows extends StatelessWidget {
-  const PageViewControlArrows({
+/// Widget for creating on boarding screen TabView control arrows.
+class TabViewControlArrows extends StatelessWidget {
+  /// Defining TabViewControlArrows constructor.
+  const TabViewControlArrows({
     Key? key,
     required this.currentIndex,
-    required this.totalPages,
+    required this.totalTabs,
     required this.onBackward,
     required this.onForward,
   }) : super(key: key);
 
+  /// Gives the current index of the TabView.
   final int currentIndex;
-  final int totalPages;
+
+  /// Gives the number of tabs in TabView.
+  final int totalTabs;
+
+  /// Backward arrow action.
   final void Function()? onBackward;
+
+  /// forward arrow action.
   final void Function()? onForward;
 
   @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
+      children: <Widget>[
         0 < currentIndex
             ? TextButton(
                 onPressed: onBackward,
                 child: const Icon(Icons.arrow_back),
               )
             : const SizedBox(),
-        totalPages - 1 != currentIndex
+        totalTabs - 1 != currentIndex
             ? TextButton(
                 onPressed: onForward,
                 child: const Icon(Icons.arrow_forward),
               )
-            : const GetStartedButton(),
+            : const DoneButton(),
       ],
     );
   }
 }
 
-class PageViewFirstScreen extends StatelessWidget {
-  const PageViewFirstScreen({Key? key}) : super(key: key);
+/// First screen of on boarding screen TabView.
+class TabViewFirstScreen extends StatelessWidget {
+  /// Defining TabViewFirstScreen constructor.
+  const TabViewFirstScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -322,22 +352,22 @@ class PageViewFirstScreen extends StatelessWidget {
         absorbing: false,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: const [
-            ToolsMovingList1(
+          children: const <Widget>[
+            MovingToolsList(
               noOfElementsToRemoveFromList: 10,
               noOfElementsToAddInIndex: 0,
               delayMilliseconds: 100,
               durationSeconds: 100,
             ),
             VerticalDivider(width: 0),
-            ToolsMovingList1(
+            MovingToolsList(
               noOfElementsToRemoveFromList: 10,
               noOfElementsToAddInIndex: 5,
               delayMilliseconds: 100,
               durationSeconds: 100,
             ),
             VerticalDivider(width: 0),
-            ToolsMovingList1(
+            MovingToolsList(
               noOfElementsToRemoveFromList: 10,
               noOfElementsToAddInIndex: 10,
               delayMilliseconds: 100,
@@ -352,8 +382,10 @@ class PageViewFirstScreen extends StatelessWidget {
   }
 }
 
-class PageViewSecondScreen extends StatelessWidget {
-  const PageViewSecondScreen({Key? key}) : super(key: key);
+/// Second screen of on boarding screen TabView.
+class TabViewSecondScreen extends StatelessWidget {
+  /// Defining TabViewSecondScreen constructor.
+  const TabViewSecondScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -372,7 +404,7 @@ class PageViewSecondScreen extends StatelessWidget {
             child: ListView(
               // mainAxisAlignment: MainAxisAlignment.center,
               // crossAxisAlignment: CrossAxisAlignment.center,
-              children: const [
+              children: const <Widget>[
                 ThemeChooserWidget(),
                 DynamicThemeSwitchTile(),
                 ThemeModeSwitcher(),
@@ -392,8 +424,10 @@ class PageViewSecondScreen extends StatelessWidget {
   }
 }
 
-class GetStartedButton extends StatelessWidget {
-  const GetStartedButton({Key? key}) : super(key: key);
+/// Widget for on boarding screen TabView done button.
+class DoneButton extends StatelessWidget {
+  /// Defining DoneButton constructor.
+  const DoneButton({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -411,10 +445,13 @@ class GetStartedButton extends StatelessWidget {
   }
 }
 
+/// Widget for creating on boarding screen texts.
 class OnBoardingText extends StatelessWidget {
+  /// Defining OnBoardingText constructor.
   const OnBoardingText({Key? key, required this.onBoardingText})
       : super(key: key);
 
+  /// Takes on boarding screen text.
   final String onBoardingText;
 
   @override
@@ -427,8 +464,10 @@ class OnBoardingText extends StatelessWidget {
   }
 }
 
-class ToolsMovingList1 extends StatelessWidget {
-  const ToolsMovingList1({
+/// Used to create moving list of tools for decoration in on boarding screen.
+class MovingToolsList extends StatelessWidget {
+  /// Defining MovingToolsList constructor.
+  const MovingToolsList({
     Key? key,
     required this.noOfElementsToRemoveFromList,
     required this.noOfElementsToAddInIndex,
@@ -436,9 +475,16 @@ class ToolsMovingList1 extends StatelessWidget {
     required this.durationSeconds,
   }) : super(key: key);
 
+  /// Takes no. of elements that should be removed from the [appTools] list.
   final int noOfElementsToRemoveFromList;
+
+  /// Takes no. of elements that should be added in the [appTools] list.
   final int noOfElementsToAddInIndex;
+
+  /// Takes the delay that should be taken before starting the animation.
   final int delayMilliseconds;
+
+  /// Takes the duration in which the animation should be completed.
   final int durationSeconds;
 
   @override
@@ -449,13 +495,13 @@ class ToolsMovingList1 extends StatelessWidget {
           return LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [
+            colors: <Color>[
               Theme.of(context).colorScheme.surface,
               Colors.transparent,
               Colors.transparent,
               Theme.of(context).colorScheme.surface,
             ],
-            stops: const [
+            stops: const <double>[
               0.0,
               0.2,
               0.8,
@@ -482,10 +528,10 @@ class ToolsMovingList1 extends StatelessWidget {
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
+                  children: <Widget>[
                     const Divider(height: 0),
                     Expanded(
-                      child: AppToolDisplayElement(index: first),
+                      child: AppToolDisplayWidget(index: first),
                     ),
                     const Divider(height: 0),
                   ],
@@ -499,10 +545,12 @@ class ToolsMovingList1 extends StatelessWidget {
   }
 }
 
-class AppToolDisplayElement extends StatelessWidget {
-  const AppToolDisplayElement({Key? key, required this.index})
-      : super(key: key);
+/// A widget for displaying a app tool anywhere in on boarding screen.
+class AppToolDisplayWidget extends StatelessWidget {
+  /// Defining AppToolDisplayWidget constructor.
+  const AppToolDisplayWidget({Key? key, required this.index}) : super(key: key);
 
+  /// Index of the app tool from [appTools].
   final int index;
 
   @override
@@ -520,7 +568,7 @@ class AppToolDisplayElement extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
-        children: [
+        children: <Widget>[
           Icon(
             appTools[index].toolIconsData,
             color: Theme.of(context).colorScheme.primary,
@@ -538,13 +586,20 @@ class AppToolDisplayElement extends StatelessWidget {
   }
 }
 
+/// Model class for describing tools provided by app.
 class AppTool {
+  /// Defining AppTool constructor.
   const AppTool({required this.toolName, required this.toolIconsData});
+
+  /// Name of the tool.
   final String toolName;
+
+  /// [IconData] of the tool.
   final IconData toolIconsData;
 }
 
-final List<AppTool> appTools = [
+/// App all tools names and icons.
+final List<AppTool> appTools = <AppTool>[
   const AppTool(toolName: 'Merge PDF', toolIconsData: Icons.merge),
   const AppTool(toolName: 'Split PDF', toolIconsData: Icons.call_split),
   const AppTool(

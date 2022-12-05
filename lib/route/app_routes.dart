@@ -127,7 +127,7 @@ class AppRoutes {
   static const String cropRotateFlipImagesToolsPage =
       'CropRotateFlipImagesTools';
 
-  /// [ResultPage] screen route name.
+  /// [ActionResultPage] screen route name.
   static const String resultPage = 'Result';
 
   /// Controls app page routes flow.
@@ -313,7 +313,7 @@ class AppRoutes {
         );
       case resultPage:
         return MaterialPageRoute<Widget>(
-          builder: (BuildContext context) => const ResultPage(),
+          builder: (BuildContext context) => const ActionResultPage(),
           settings: RouteSettings(name: settings.name),
         );
       default:

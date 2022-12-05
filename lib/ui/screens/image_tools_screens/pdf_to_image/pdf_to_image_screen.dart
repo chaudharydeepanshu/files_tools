@@ -22,7 +22,7 @@ class PdfToImagePage extends StatefulWidget {
 class _PdfToImagePageState extends State<PdfToImagePage> {
   @override
   void initState() {
-    Utility.clearCache(clearCacheCommandFrom: 'PDFToImagePage');
+    Utility.clearTempDirectory(clearCacheCommandFrom: 'PDFToImagePage');
     super.initState();
   }
 

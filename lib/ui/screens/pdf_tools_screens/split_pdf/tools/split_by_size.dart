@@ -1,5 +1,6 @@
 import 'dart:math' as math;
 
+import 'package:files_tools/constants.dart';
 import 'package:files_tools/models/file_model.dart';
 import 'package:files_tools/route/app_routes.dart' as route;
 import 'package:files_tools/state/providers.dart';
