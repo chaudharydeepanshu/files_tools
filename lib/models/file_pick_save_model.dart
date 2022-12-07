@@ -6,7 +6,7 @@ import 'package:pick_or_save/pick_or_save.dart';
 /// It hold all the useful information about a picking action to use for
 /// designing android picker experience and app UI.
 class FilePickModel {
-  /// Defining FilePickingModel constructor.
+  /// Defining [FilePickModel] constructor.
   const FilePickModel({
     this.allowedExtensions,
     this.mimeTypesFilter,

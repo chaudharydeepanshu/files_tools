@@ -1,25 +1,38 @@
 import 'package:flutter/material.dart';
 
+/// Model class for tools buttons in document and media tools.
 class GridCardDetail {
+  /// Defining [GridCardDetail] constructor.
   GridCardDetail({
     required this.cardIcons,
     required this.cardTitle,
     this.cardOnTap,
   });
+
+  /// Tool button icon widget.
   final List<Widget> cardIcons;
 
+  /// Tool button title text.
   final String cardTitle;
-  final Function()? cardOnTap;
 
-  // Implement toString to make it easier to see information
-  // when using the print statement.
+  /// Tool button click action.
+  final void Function()? cardOnTap;
+
+  /// Overriding GridCardDetail toString to make it easier to see information.
+  /// when using the print statement.
   @override
   String toString() {
-    return 'CardDetail{cardIcons: $cardIcons, cardTitle: $cardTitle, cardOnTap: $cardOnTap}';
+    return 'CardDetail{'
+        'cardIcons: $cardIcons, '
+        'cardTitle: $cardTitle, '
+        'cardOnTap: $cardOnTap'
+        '}';
   }
 }
 
+/// Widget for displaying tools for a file(PDF, image, etc).
 class GridViewInCardSection extends StatelessWidget {
+  /// Defining [GridViewInCardSection] constructor.
   const GridViewInCardSection({
     Key? key,
     required this.sectionTitle,
@@ -28,16 +41,23 @@ class GridViewInCardSection extends StatelessWidget {
     this.cardShowAllOnTap,
   }) : super(key: key);
 
+  /// Text to show if no tools are available.
   final String emptySectionText;
+
+  /// Type of file for tools.
   final String sectionTitle;
+
+  /// Models for all the tools for the file.
   final List<GridCardDetail> gridCardsDetails;
-  final Function()? cardShowAllOnTap;
+
+  /// Action for viewing all tools(as this widget only displays 8 tools).
+  final void Function()? cardShowAllOnTap;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
+      children: <Widget>[
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Text(
@@ -59,7 +79,7 @@ class GridViewInCardSection extends StatelessWidget {
           //   borderRadius: const BorderRadius.all(Radius.circular(12)),
           // ),
           child: Column(
-            children: [
+            children: <Widget>[
               Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: gridCardsDetails.isNotEmpty
@@ -83,19 +103,19 @@ class GridViewInCardSection extends StatelessWidget {
                         },
                       )
                     : Row(
-                        children: [
+                        children: <Widget>[
                           Expanded(child: Text(emptySectionText)),
                         ],
                       ),
               ),
               gridCardsDetails.length > 8
                   ? Column(
-                      children: [
+                      children: <Widget>[
                         const Divider(
                           height: 0,
                         ),
                         Row(
-                          children: [
+                          children: <Widget>[
                             Expanded(
                               child: TextButton.icon(
                                 style: TextButton.styleFrom(
@@ -124,27 +144,32 @@ class GridViewInCardSection extends StatelessWidget {
   }
 }
 
+/// Widget for tool button.
 class GridViewCard extends StatelessWidget {
+  /// Defining [GridViewCard] constructor.
   const GridViewCard({Key? key, required this.gridCardDetail})
       : super(key: key);
 
+  /// Models for the tool.
   final GridCardDetail gridCardDetail;
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> iconsList = [];
+    List<Widget> iconsList = <Widget>[];
 
     for (int i = 0; i < gridCardDetail.cardIcons.length; i++) {
-      iconsList.addAll([
-        gridCardDetail.cardIcons[i],
-        if (i != gridCardDetail.cardIcons.length - 1)
-          VerticalDivider(
-            width: 0,
-            color: gridCardDetail.cardOnTap == null
-                ? Theme.of(context).disabledColor
-                : Theme.of(context).colorScheme.onSecondaryContainer,
-          )
-      ]);
+      iconsList.addAll(
+        <Widget>[
+          gridCardDetail.cardIcons[i],
+          if (i != gridCardDetail.cardIcons.length - 1)
+            VerticalDivider(
+              width: 0,
+              color: gridCardDetail.cardOnTap == null
+                  ? Theme.of(context).disabledColor
+                  : Theme.of(context).colorScheme.onSecondaryContainer,
+            )
+        ],
+      );
     }
 
     return FilledButton.tonal(
@@ -152,10 +177,10 @@ class GridViewCard extends StatelessWidget {
       onPressed: gridCardDetail.cardOnTap,
       child: Stack(
         alignment: AlignmentDirectional.topCenter,
-        children: [
+        children: <Widget>[
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [
+            children: <Widget>[
               Expanded(
                 child: Container(
                   decoration: BoxDecoration(
@@ -174,7 +199,7 @@ class GridViewCard extends StatelessWidget {
           ),
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [
+            children: <Widget>[
               IntrinsicHeight(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,

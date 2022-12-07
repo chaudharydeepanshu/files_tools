@@ -8,7 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// App drawer.
 class AppDrawer extends StatelessWidget {
-  /// Defining AppDrawer constructor.
+  /// Defining [AppDrawer] constructor.
   const AppDrawer({Key? key}) : super(key: key);
 
   @override

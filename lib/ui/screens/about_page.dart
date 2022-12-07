@@ -3,9 +3,9 @@ import 'package:files_tools/ui/components/link_button.dart';
 import 'package:files_tools/utils/utility.dart';
 import 'package:flutter/material.dart';
 
-/// It is the about screen widget of our application.
+/// It is the about screen widget.
 class AboutPage extends StatelessWidget {
-  /// Defining AboutPage constructor.
+  /// Defining [AboutPage] constructor.
   const AboutPage({Key? key}) : super(key: key);
 
   @override
@@ -49,7 +49,7 @@ class AboutPage extends StatelessWidget {
 
 /// App description widget of about screen.
 class AppDescription extends StatelessWidget {
-  /// Defining AppDescription constructor.
+  /// Defining [AppDescription] constructor.
   const AppDescription({Key? key}) : super(key: key);
 
   @override
@@ -73,7 +73,7 @@ class AppDescription extends StatelessWidget {
 
 /// Widget for showing badges related to app like open source, ad free, etc.
 class AppBadges extends StatelessWidget {
-  /// Defining AppBadges constructor.
+  /// Defining [AppBadges] constructor.
   const AppBadges({Key? key}) : super(key: key);
 
   @override
@@ -133,7 +133,7 @@ class AppBadges extends StatelessWidget {
 
 /// Widget for showing app creator info.
 class AppCreator extends StatelessWidget {
-  /// Defining AppCreator constructor.
+  /// Defining [AppCreator] constructor.
   const AppCreator({Key? key}) : super(key: key);
 
   @override
@@ -230,7 +230,7 @@ class AppCreator extends StatelessWidget {
 
 /// Widget for showing app contributors info.
 class AppContributions extends StatelessWidget {
-  /// Defining AppContributions constructor.
+  /// Defining [AppContributions] constructor.
   const AppContributions({Key? key}) : super(key: key);
 
   @override
@@ -274,7 +274,7 @@ class AppContributions extends StatelessWidget {
 
 /// Widget for showing app credits info.
 class Credits extends StatelessWidget {
-  /// Defining Credits constructor.
+  /// Defining [Credits] constructor.
   const Credits({Key? key}) : super(key: key);
 
   @override

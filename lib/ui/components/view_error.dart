@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 /// Widget for error icon.
 class ErrorIndicator extends StatelessWidget {
-  /// Defining ErrorIndicator constructor.
+  /// Defining [ErrorIndicator] constructor.
   const ErrorIndicator({Key? key}) : super(key: key);
 
   @override
@@ -20,7 +20,7 @@ class ErrorIndicator extends StatelessWidget {
 
 /// Widget for showing error state.
 class ShowError extends StatelessWidget {
-  /// Defining ShowError constructor.
+  /// Defining [ShowError] constructor.
   const ShowError({
     Key? key,
     required this.errorMessage,

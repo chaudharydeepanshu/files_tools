@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// [SwitchListTile] for switching between non dynamic and dynamic themes.
 class DynamicThemeSwitchTile extends StatelessWidget {
-  /// Defining DynamicThemeSwitchTile constructor.
+  /// Defining [DynamicThemeSwitchTile] constructor.
   const DynamicThemeSwitchTile({Key? key}) : super(key: key);
 
   @override

@@ -63,8 +63,7 @@ class ToolsScreensState extends ChangeNotifier {
       enableMultipleSelection: filePickModel.enableMultipleSelection,
     );
 
-    // TODO(chaudharydeepanshu): Provide user option to report pick
-    //  errors or exceptions.
+    // TODO(chaudharydeepanshu): Provide user option to report pick error.
     try {
       // Picking files and storing result paths in pickResult.
       pickResult = await PickSave.pickFile(
@@ -185,15 +184,18 @@ Future<List<InputFileModel>> getFilteredPickedFiles({
 }
 
 /// Called to show snackBar displaying discarded files.
-void showDiscardedFilesSnackBar(
-    {required List<InputFileModel> discardedFiles}) {
+void showDiscardedFilesSnackBar({
+  required List<InputFileModel> discardedFiles,
+}) {
   BuildContext? context = navigatorKey.currentState?.context;
   if (context != null) {
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
     if (discardedFiles.isNotEmpty) {
       // Only show snackBar if discardedFiles is not empty.
       List<String> discardedFilesNames = List<String>.generate(
-          discardedFiles.length, (int index) => discardedFiles[index].fileName);
+        discardedFiles.length,
+        (int index) => discardedFiles[index].fileName,
+      );
       String? contentText = "Discarded invalid or encrypted pdf files:\n"
           "${discardedFilesNames.join("\n")}";
       //'Oh...No! There is no old data available.';

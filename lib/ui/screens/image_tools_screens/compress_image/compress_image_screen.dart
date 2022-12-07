@@ -7,12 +7,14 @@ import 'package:files_tools/state/tools_actions_state.dart';
 import 'package:files_tools/state/tools_screens_state.dart';
 import 'package:files_tools/ui/components/select_file_section.dart';
 import 'package:files_tools/ui/components/tool_actions_section.dart';
-import 'package:files_tools/ui/screens/image_tools_screens/compress_image/compress_image_tool_screen.dart';
+import 'package:files_tools/ui/screens/image_tools_screens/compress_image/compress_image_tool_action_screen.dart';
 import 'package:files_tools/utils/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+/// Tool screen for compressing image.
 class CompressImagePage extends StatefulWidget {
+  /// Defining [CompressImagePage] constructor.
   const CompressImagePage({Key? key}) : super(key: key);
 
   @override
@@ -55,7 +57,7 @@ class _CompressPDFPageState extends State<CompressImagePage> {
                     .select((ToolsScreensState value) => value.inputFiles),
               );
               return ListView(
-                children: [
+                children: <Widget>[
                   const SizedBox(height: 16),
                   SelectFilesCard(
                     files: watchToolScreenStateProviderValue.inputFiles,
@@ -76,7 +78,7 @@ class _CompressPDFPageState extends State<CompressImagePage> {
                   ),
                   const SizedBox(height: 16),
                   ToolActionsCard(
-                    toolActions: [
+                    toolActions: <ToolActionModel>[
                       ToolActionModel(
                         actionText: 'Compress images',
                         actionOnTap: selectedFiles.isNotEmpty
@@ -100,10 +102,6 @@ class _CompressPDFPageState extends State<CompressImagePage> {
                     ],
                   ),
                   const SizedBox(height: 16),
-                  // const AboutActionCard(
-                  //   aboutText: 'Currently, we only compress JPG, PNG and WebP.',
-                  //   aboutTextBody: "",
-                  // ),
                 ],
               );
             },

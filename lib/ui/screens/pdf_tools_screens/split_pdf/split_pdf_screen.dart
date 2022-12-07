@@ -7,12 +7,14 @@ import 'package:files_tools/state/tools_actions_state.dart';
 import 'package:files_tools/state/tools_screens_state.dart';
 import 'package:files_tools/ui/components/select_file_section.dart';
 import 'package:files_tools/ui/components/tool_actions_section.dart';
-import 'package:files_tools/ui/screens/pdf_tools_screens/split_pdf/split_pdf_tools_screen.dart';
+import 'package:files_tools/ui/screens/pdf_tools_screens/split_pdf/split_pdf_tools_action_screen.dart';
 import 'package:files_tools/utils/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+/// Tool screen for splitting PDF.
 class SplitPDFPage extends StatefulWidget {
+  /// Defining [SplitPDFPage] constructor.
   const SplitPDFPage({Key? key}) : super(key: key);
 
   @override
@@ -55,7 +57,7 @@ class _SplitPDFPageState extends State<SplitPDFPage> {
                     .select((ToolsScreensState value) => value.inputFiles),
               );
               return ListView(
-                children: [
+                children: <Widget>[
                   const SizedBox(height: 16),
                   SelectFilesCard(
                     files: watchToolScreenStateProviderValue.inputFiles,
@@ -72,7 +74,7 @@ class _SplitPDFPageState extends State<SplitPDFPage> {
                   ),
                   const SizedBox(height: 16),
                   ToolActionsCard(
-                    toolActions: [
+                    toolActions: <ToolActionModel>[
                       ToolActionModel(
                         actionText: 'Extract PDF pages by page selection',
                         actionOnTap: selectedFiles.length == 1
@@ -176,20 +178,6 @@ class _SplitPDFPageState extends State<SplitPDFPage> {
                               }
                             : null,
                       ),
-                      // ToolActionsModel(
-                      //   actionText: "Extract PDFs by page ranges",
-                      //   actionOnTap: selectedFiles.length == 1
-                      //       ? () {
-                      //           Navigator.pushNamed(
-                      //             context,
-                      //             route.AppRoutes.splitPDFToolsPage,
-                      //             arguments: SplitPDFToolsPageArguments(
-                      //                 actionType: ToolsActions.splitByPageRanges,
-                      //                 file: selectedFiles[0]),
-                      //           );
-                      //         }
-                      //       : null,
-                      // ),
                     ],
                   ),
                 ],

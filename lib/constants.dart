@@ -48,3 +48,18 @@ enum BytesFormatType {
   /// YB type is used get file size in Yotta Byte format.
   YB,
 }
+
+/// Types of compressions for a file.
+enum CompressionTypes {
+  /// For less compression.
+  less,
+
+  /// For medium compression.
+  medium,
+
+  /// For high compression.
+  extreme,
+
+  /// For custom compression.
+  custom,
+}

@@ -7,7 +7,7 @@ import 'dart:typed_data';
 /// [imageErrorStatus] in model to use that updated status somewhere in the
 /// app for further actions.
 class ImageModel {
-  /// Defining ImageModel constructor.
+  /// Defining [ImageModel] constructor.
   ImageModel({
     required this.imageName,
     required this.imageBytes,

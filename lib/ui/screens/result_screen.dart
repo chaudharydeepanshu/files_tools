@@ -16,7 +16,7 @@ import 'package:rive/rive.dart';
 ///
 /// Shows the processing, error and success screen of an action.
 class ActionResultPage extends StatelessWidget {
-  /// Defining ActionResultPage constructor.
+  /// Defining [ActionResultPage] constructor.
   const ActionResultPage({Key? key}) : super(key: key);
 
   @override
@@ -98,7 +98,7 @@ class ActionResultPage extends StatelessWidget {
 ///
 /// Shows the processing, error and success app bar of an action.
 class ActionResultPageAppBar extends StatelessWidget with PreferredSizeWidget {
-  /// Defining ActionResultPageAppBar constructor.
+  /// Defining [ActionResultPageAppBar] constructor.
   const ActionResultPageAppBar({Key? key}) : super(key: key);
 
   @override
@@ -172,7 +172,7 @@ String getAppBarTitleForActionResultPage({required ToolAction actionType}) {
 
 /// It is the tools actions result success screen widget.
 class ActionResultSuccessBody extends StatelessWidget {
-  /// Defining ActionResultSuccessBody constructor.
+  /// Defining [ActionResultSuccessBody] constructor.
   const ActionResultSuccessBody({Key? key}) : super(key: key);
 
   @override
@@ -194,7 +194,7 @@ class ActionResultSuccessBody extends StatelessWidget {
 
 /// It is the tools actions result processing screen widget.
 class ActionResultProcessingBody extends StatelessWidget {
-  /// Defining ActionResultProcessingBody constructor.
+  /// Defining [ActionResultProcessingBody] constructor.
   const ActionResultProcessingBody({Key? key}) : super(key: key);
 
   @override
@@ -223,7 +223,7 @@ class ActionResultProcessingBody extends StatelessWidget {
 
 /// Widget for saving files in tools actions result success screen.
 class SavingFiles extends StatelessWidget {
-  /// Defining SavingFiles constructor.
+  /// Defining [SavingFiles] constructor.
   const SavingFiles({
     Key? key,
     required this.saveFiles,
@@ -340,7 +340,7 @@ class SavingFiles extends StatelessWidget {
 
 /// Widget for showing an success animation using [RiveAnimation].
 class SuccessAnimation extends StatelessWidget {
-  /// Defining SuccessAnimation constructor.
+  /// Defining [SuccessAnimation] constructor.
   const SuccessAnimation({Key? key}) : super(key: key);
 
   @override
@@ -358,7 +358,7 @@ class SuccessAnimation extends StatelessWidget {
 
 /// A non-reorder able list view used for showing output / save files.
 class NonReorderableFilesListView extends StatelessWidget {
-  /// Defining NonReorderableFilesListView constructor.
+  /// Defining [NonReorderableFilesListView] constructor.
   const NonReorderableFilesListView({
     Key? key,
     required this.saveFiles,

@@ -1,11 +1,9 @@
-import 'dart:developer';
-import 'dart:typed_data';
-
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
-import 'package:image_editor/image_editor.dart';
 
+/// Custom crop layer painter.
 class CustomEditorCropLayerPainter extends EditorCropLayerPainter {
+  /// Defining [CustomEditorCropLayerPainter] constructor.
   const CustomEditorCropLayerPainter();
   @override
   void paintCorners(
@@ -25,7 +23,9 @@ class CustomEditorCropLayerPainter extends EditorCropLayerPainter {
   }
 }
 
+/// Circle crop layer painter.
 class CircleEditorCropLayerPainter extends EditorCropLayerPainter {
+  /// Defining [CircleEditorCropLayerPainter] constructor.
   const CircleEditorCropLayerPainter();
 
   @override
@@ -77,13 +77,21 @@ class CircleEditorCropLayerPainter extends EditorCropLayerPainter {
   }
 }
 
+/// Aspect ratio profiles model class.
 class AspectRatioItem {
+  /// Defining [AspectRatioItem] constructor.
   AspectRatioItem({this.value, this.text});
+
+  /// Aspect ratio profiles text.
   String? text;
+
+  /// Aspect ratio profiles value.
   double? value;
 }
 
+/// Widget for displaying and choosing aspect ration.
 class AspectRatioWidget extends StatefulWidget {
+  /// Defining [AspectRatioWidget] constructor.
   const AspectRatioWidget({
     Key? key,
     this.aspectRatioS,
@@ -92,10 +100,17 @@ class AspectRatioWidget extends StatefulWidget {
     required this.onTap,
   }) : super(key: key);
 
+  /// Aspect ratio text.
   final String? aspectRatioS;
+
+  /// Aspect ratio value.
   final double? aspectRatio;
+
+  /// Is true if a aspect ration selected.
   final bool? isSelected;
-  final ValueChanged onTap;
+
+  /// Aspect ration click action.
+  final ValueChanged<double?> onTap;
 
   @override
   State<AspectRatioWidget> createState() => _AspectRatioWidgetState();
@@ -114,7 +129,10 @@ class _AspectRatioWidgetState extends State<AspectRatioWidget> {
 
         final GlobalKey<FormState> formKey = GlobalKey<FormState>();
         return StatefulBuilder(
-          builder: (BuildContext context, setState) {
+          builder: (
+            BuildContext context,
+            void Function(void Function()) setState,
+          ) {
             return GestureDetector(
               onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
               child: SimpleDialog(
@@ -122,13 +140,13 @@ class _AspectRatioWidgetState extends State<AspectRatioWidget> {
                   'Specify Aspect Ratio Values',
                   textAlign: TextAlign.center,
                 ),
-                children: [
+                children: <Widget>[
                   Form(
                     key: formKey,
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Row(
-                        children: [
+                        children: <Widget>[
                           Expanded(
                             child: TextFormField(
                               controller: xAxisTextEditingController,
@@ -139,8 +157,8 @@ class _AspectRatioWidgetState extends State<AspectRatioWidget> {
                               ),
                               keyboardType: TextInputType.number,
                               onSaved: (String? value) {
-                                // This optional block of code can be used to run
-                                // code when the user saves the form.
+                                // This optional block of code can be used to
+                                // run code when the user saves the form.
                               },
                               // autovalidateMode:
                               //     AutovalidateMode.onUserInteraction,
@@ -169,8 +187,8 @@ class _AspectRatioWidgetState extends State<AspectRatioWidget> {
                               ),
                               keyboardType: TextInputType.number,
                               onSaved: (String? value) {
-                                // This optional block of code can be used to run
-                                // code when the user saves the form.
+                                // This optional block of code can be used to
+                                // run code when the user saves the form.
                               },
                               // autovalidateMode:
                               //     AutovalidateMode.onUserInteraction,
@@ -187,7 +205,7 @@ class _AspectRatioWidgetState extends State<AspectRatioWidget> {
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
+                    children: <Widget>[
                       OutlinedButton(
                         onPressed: () {
                           if (formKey.currentState!.validate()) {
@@ -244,7 +262,7 @@ class _AspectRatioWidgetState extends State<AspectRatioWidget> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: [
+                children: <Widget>[
                   IconTheme(
                     data: IconThemeData(
                       color: widget.isSelected == true
@@ -279,6 +297,7 @@ class _AspectRatioWidgetState extends State<AspectRatioWidget> {
   }
 }
 
+/// Aspect ratio profiles for cropping.
 final List<AspectRatioItem> aspectRatios = <AspectRatioItem>[
   AspectRatioItem(text: 'custom'),
   AspectRatioItem(text: 'original', value: CropAspectRatios.original),
@@ -289,56 +308,3 @@ final List<AspectRatioItem> aspectRatios = <AspectRatioItem>[
   AspectRatioItem(text: '16*9', value: CropAspectRatios.ratio16_9),
   AspectRatioItem(text: '9*16', value: CropAspectRatios.ratio9_16)
 ];
-
-Future<Uint8List?> modifyImage(ExtendedImageEditorState currentState) async {
-  Future<Uint8List?> cropImageDataWithNativeLibrary({
-    required ExtendedImageEditorState state,
-  }) async {
-    log('Native library start cropping');
-
-    final Rect? cropRect = state.getCropRect();
-    final EditActionDetails action = state.editAction!;
-
-    final int rotateAngle = action.rotateAngle.toInt();
-    final bool flipHorizontal = action.flipY;
-    final bool flipVertical = action.flipX;
-    final Uint8List img = state.rawImageData;
-
-    final ImageEditorOption option = ImageEditorOption();
-
-    if (action.needCrop) {
-      option.addOption(ClipOption.fromRect(cropRect!));
-    }
-
-    if (action.needFlip) {
-      option.addOption(
-        FlipOption(horizontal: flipHorizontal, vertical: flipVertical),
-      );
-    }
-
-    if (action.hasRotateAngle) {
-      option.addOption(RotateOption(rotateAngle));
-    }
-
-    // if (extensionOfFileName.toLowerCase() == '.jpg' ||
-    //     extensionOfFileName.toLowerCase() == '.jpeg') {
-    //   option.outputFormat = const OutputFormat.jpeg(100);
-    // } else if (extensionOfFileName.toLowerCase() == '.png') {
-    //   option.outputFormat = const OutputFormat.png(100);
-    // }
-
-    final DateTime start = DateTime.now();
-    final Uint8List? result = await ImageEditor.editImage(
-      image: img,
-      imageEditorOption: option,
-    );
-
-    log('${DateTime.now().difference(start)} ：total time');
-    return result;
-  }
-
-  Uint8List? fileData =
-      await cropImageDataWithNativeLibrary(state: currentState);
-
-  return fileData;
-}

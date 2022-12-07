@@ -10,7 +10,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// It is on boarding screen widget.
 class OnBoardingScreen extends StatelessWidget {
-  /// Defining OnBoardingScreen constructor.
+  /// Defining [OnBoardingScreen] constructor.
   const OnBoardingScreen({Key? key}) : super(key: key);
 
   @override
@@ -39,7 +39,7 @@ void onBoardingFinish(BuildContext context) async {
 
 /// Widget for creating on boarding screen interactive holes.
 class HoledScaffold extends StatelessWidget {
-  /// Defining HoledScaffold constructor.
+  /// Defining [HoledScaffold] constructor.
   const HoledScaffold({
     Key? key,
     required this.firstHoleColor,
@@ -121,7 +121,7 @@ class HoledScaffold extends StatelessWidget {
 
 /// Widget for creating on boarding screen TabView.
 class OnBoardScreenTabView extends StatefulWidget {
-  /// Defining OnBoardScreenTabView constructor.
+  /// Defining [OnBoardScreenTabView] constructor.
   const OnBoardScreenTabView({Key? key}) : super(key: key);
 
   @override
@@ -292,7 +292,7 @@ class _OnBoardScreenTabViewState extends State<OnBoardScreenTabView>
 
 /// Widget for creating on boarding screen TabView control arrows.
 class TabViewControlArrows extends StatelessWidget {
-  /// Defining TabViewControlArrows constructor.
+  /// Defining [TabViewControlArrows] constructor.
   const TabViewControlArrows({
     Key? key,
     required this.currentIndex,
@@ -337,7 +337,7 @@ class TabViewControlArrows extends StatelessWidget {
 
 /// First screen of on boarding screen TabView.
 class TabViewFirstScreen extends StatelessWidget {
-  /// Defining TabViewFirstScreen constructor.
+  /// Defining [TabViewFirstScreen] constructor.
   const TabViewFirstScreen({Key? key}) : super(key: key);
 
   @override
@@ -384,7 +384,7 @@ class TabViewFirstScreen extends StatelessWidget {
 
 /// Second screen of on boarding screen TabView.
 class TabViewSecondScreen extends StatelessWidget {
-  /// Defining TabViewSecondScreen constructor.
+  /// Defining [TabViewSecondScreen] constructor.
   const TabViewSecondScreen({Key? key}) : super(key: key);
 
   @override
@@ -426,7 +426,7 @@ class TabViewSecondScreen extends StatelessWidget {
 
 /// Widget for on boarding screen TabView done button.
 class DoneButton extends StatelessWidget {
-  /// Defining DoneButton constructor.
+  /// Defining [DoneButton] constructor.
   const DoneButton({Key? key}) : super(key: key);
 
   @override
@@ -447,7 +447,7 @@ class DoneButton extends StatelessWidget {
 
 /// Widget for creating on boarding screen texts.
 class OnBoardingText extends StatelessWidget {
-  /// Defining OnBoardingText constructor.
+  /// Defining [OnBoardingText] constructor.
   const OnBoardingText({Key? key, required this.onBoardingText})
       : super(key: key);
 
@@ -466,7 +466,7 @@ class OnBoardingText extends StatelessWidget {
 
 /// Used to create moving list of tools for decoration in on boarding screen.
 class MovingToolsList extends StatelessWidget {
-  /// Defining MovingToolsList constructor.
+  /// Defining [MovingToolsList] constructor.
   const MovingToolsList({
     Key? key,
     required this.noOfElementsToRemoveFromList,
@@ -547,7 +547,7 @@ class MovingToolsList extends StatelessWidget {
 
 /// A widget for displaying a app tool anywhere in on boarding screen.
 class AppToolDisplayWidget extends StatelessWidget {
-  /// Defining AppToolDisplayWidget constructor.
+  /// Defining [AppToolDisplayWidget] constructor.
   const AppToolDisplayWidget({Key? key, required this.index}) : super(key: key);
 
   /// Index of the app tool from [appTools].
@@ -588,7 +588,7 @@ class AppToolDisplayWidget extends StatelessWidget {
 
 /// Model class for describing tools provided by app.
 class AppTool {
-  /// Defining AppTool constructor.
+  /// Defining [AppTool] constructor.
   const AppTool({required this.toolName, required this.toolIconsData});
 
   /// Name of the tool.

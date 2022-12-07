@@ -7,7 +7,7 @@ import 'dart:typed_data';
 /// [pageErrorStatus] in model to use that updated status somewhere in the
 /// app for further actions.
 class PdfPageModel {
-  /// Defining PdfPageModel constructor.
+  /// Defining [PdfPageModel] constructor.
   PdfPageModel({
     required this.pageIndex,
     required this.pageBytes,

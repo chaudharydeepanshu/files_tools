@@ -12,7 +12,7 @@ import 'package:rive/rive.dart';
 
 /// Widget for picking files and displaying input files.
 class SelectFilesCard extends StatelessWidget {
-  /// Defining SelectFilesCard constructor.
+  /// Defining [SelectFilesCard] constructor.
   const SelectFilesCard({
     Key? key,
     required this.files,
@@ -66,7 +66,7 @@ class SelectFilesCard extends StatelessWidget {
 
 /// Widget for displaying files.
 class FilesSelected extends StatelessWidget {
-  /// Defining FilesSelected constructor.
+  /// Defining [FilesSelected] constructor.
   const FilesSelected({
     Key? key,
     required this.files,
@@ -230,7 +230,7 @@ class FilesSelected extends StatelessWidget {
 
 /// Widget for displaying no files.
 class NoFilesSelected extends StatelessWidget {
-  /// Defining NoFilesSelected constructor.
+  /// Defining [NoFilesSelected] constructor.
   const NoFilesSelected({
     Key? key,
     required this.filePickModel,
@@ -296,7 +296,7 @@ class NoFilesSelected extends StatelessWidget {
 
 /// Widget for displaying reorder able files.
 class ReorderableFilesListView extends StatefulWidget {
-  /// Defining ReorderableFilesListView constructor.
+  /// Defining [ReorderableFilesListView] constructor.
   const ReorderableFilesListView({super.key, required this.files});
 
   /// Takes input files.

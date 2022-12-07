@@ -12,10 +12,10 @@ import 'package:pdf_bitmaps/pdf_bitmaps.dart';
 
 /// It is the input / output files PDF viewing screen widget.
 class PdfViewer extends StatefulWidget {
-  /// Defining PdfViewer constructor.
+  /// Defining [PdfViewer] constructor.
   const PdfViewer({Key? key, required this.arguments}) : super(key: key);
 
-  /// PdfViewer arguments passed when PdfViewer was pushed.
+  /// Arguments passed when screen pushed.
   final PdfViewerArguments arguments;
 
   @override
@@ -164,9 +164,9 @@ class _PdfViewerState extends State<PdfViewer> {
   }
 }
 
-/// Takes PdfViewer arguments passed when PdfViewer was pushed.
+/// Takes [PdfViewer] arguments passed when screen pushed.
 class PdfViewerArguments {
-  /// Defining PdfViewerArguments constructor.
+  /// Defining [PdfViewerArguments] constructor.
   PdfViewerArguments({required this.fileName, required this.filePathOrUri});
 
   /// Name of PDF file viewing.
@@ -178,7 +178,7 @@ class PdfViewerArguments {
 
 /// Widget that shows a PDF page image through provided image bytes.
 class PageImageView extends StatefulWidget {
-  /// Defining PageImageView constructor.
+  /// Defining [PageImageView] constructor.
   const PageImageView({Key? key, required this.bytes}) : super(key: key);
 
   /// Byte data of a PDF page image.
@@ -239,7 +239,7 @@ class _PageImageViewState extends State<PageImageView> {
 
 /// Widget that creates the [PDFViewer] individual page.
 class PDFPageView extends StatelessWidget {
-  /// Defining PDFPageView constructor.
+  /// Defining [PDFPageView] constructor.
   const PDFPageView({
     Key? key,
     required this.viewportFraction,
@@ -281,7 +281,7 @@ class PDFPageView extends StatelessWidget {
 
 /// Widget for showing loading indicator for PDF in [PDFViewer].
 class LoadingPdf extends StatelessWidget {
-  /// Defining LoadingPdf constructor.
+  /// Defining [LoadingPdf] constructor.
   const LoadingPdf({Key? key}) : super(key: key);
 
   @override
@@ -301,7 +301,7 @@ class LoadingPdf extends StatelessWidget {
 
 /// Widget for showing page number indicator for PDF pages in [PDFViewer].
 class PageNumber extends StatelessWidget {
-  /// Defining PageNumber constructor.
+  /// Defining [PageNumber] constructor.
   const PageNumber({Key? key, required this.pageIndex}) : super(key: key);
 
   /// Takes the PDF page index for which the page number indicator be created.
@@ -329,7 +329,7 @@ class PageNumber extends StatelessWidget {
 
 /// Widget for showing error indicator for PDF pages in [PDFViewer].
 class PageError extends StatelessWidget {
-  /// Defining PageError constructor.
+  /// Defining [PageError] constructor.
   const PageError({Key? key, required this.pageIndex}) : super(key: key);
 
   /// Takes the PDF page index for which the page error indicator be created.

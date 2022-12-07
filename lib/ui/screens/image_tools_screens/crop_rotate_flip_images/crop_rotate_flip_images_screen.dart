@@ -7,12 +7,14 @@ import 'package:files_tools/state/tools_actions_state.dart';
 import 'package:files_tools/state/tools_screens_state.dart';
 import 'package:files_tools/ui/components/select_file_section.dart';
 import 'package:files_tools/ui/components/tool_actions_section.dart';
-import 'package:files_tools/ui/screens/image_tools_screens/crop_rotate_flip_images/crop_rotate_flip_images_tools_screen.dart';
+import 'package:files_tools/ui/screens/image_tools_screens/crop_rotate_flip_images/crop_rotate_flip_images_tool_action_screen.dart';
 import 'package:files_tools/utils/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+/// Tool screen for cropping, rotating, flipping images.
 class CropRotateFlipImagesPage extends StatefulWidget {
+  /// Defining CropRotateFlipImagesPage constructor.
   const CropRotateFlipImagesPage({Key? key}) : super(key: key);
 
   @override
@@ -24,7 +26,8 @@ class _CropRotateFlipImagesPageState extends State<CropRotateFlipImagesPage> {
   @override
   void initState() {
     Utility.clearTempDirectory(
-        clearCacheCommandFrom: 'CropRotateFlipImagesPage');
+      clearCacheCommandFrom: 'CropRotateFlipImagesPage',
+    );
     super.initState();
   }
 
@@ -60,7 +63,7 @@ class _CropRotateFlipImagesPageState extends State<CropRotateFlipImagesPage> {
                     .select((ToolsScreensState value) => value.inputFiles),
               );
               return ListView(
-                children: [
+                children: <Widget>[
                   const SizedBox(height: 16),
                   SelectFilesCard(
                     files: watchToolScreenStateProviderValue.inputFiles,
@@ -88,7 +91,7 @@ class _CropRotateFlipImagesPageState extends State<CropRotateFlipImagesPage> {
                   ),
                   const SizedBox(height: 16),
                   ToolActionsCard(
-                    toolActions: [
+                    toolActions: <ToolActionModel>[
                       ToolActionModel(
                         actionText: 'Crop, Rotate & Flip Images',
                         actionOnTap: selectedFiles.isNotEmpty
@@ -101,8 +104,7 @@ class _CropRotateFlipImagesPageState extends State<CropRotateFlipImagesPage> {
                                 Navigator.pushNamed(
                                   context,
                                   route.AppRoutes.cropRotateFlipImagesToolsPage,
-                                  arguments:
-                                      CropRotateFlipImagesToolsPageArguments(
+                                  arguments: ModifyImagesToolsPageArguments(
                                     actionType: ToolAction.cropRotateFlipImages,
                                     files: selectedFiles,
                                   ),

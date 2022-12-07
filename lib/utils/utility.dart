@@ -3,12 +3,14 @@ import 'dart:io';
 import 'dart:math' as math;
 import 'dart:ui' as ui;
 
+import 'package:extended_image/extended_image.dart';
 import 'package:files_tools/constants.dart';
 import 'package:files_tools/models/file_model.dart';
 import 'package:files_tools/models/pdf_page_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart' as painting;
 import 'package:flutter/services.dart';
+import 'package:image_editor/image_editor.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf_bitmaps/pdf_bitmaps.dart';
 import 'package:pick_or_save/pick_or_save.dart';
@@ -513,5 +515,54 @@ class Utility {
     if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
       throw 'Could not launch $uri';
     }
+  }
+
+  /// Called to crop, rotate, flip an image based on [ExtendedImageEditorState].
+  static Future<Uint8List?> modifyImage(
+    ExtendedImageEditorState currentState,
+  ) async {
+    Future<Uint8List?> cropImageDataWithNativeLibrary({
+      required ExtendedImageEditorState state,
+    }) async {
+      log('Native library start cropping');
+
+      final Rect? cropRect = state.getCropRect();
+      final EditActionDetails action = state.editAction!;
+
+      final int rotateAngle = action.rotateAngle.toInt();
+      final bool flipHorizontal = action.flipY;
+      final bool flipVertical = action.flipX;
+      final Uint8List img = state.rawImageData;
+
+      final ImageEditorOption option = ImageEditorOption();
+
+      if (action.needCrop) {
+        option.addOption(ClipOption.fromRect(cropRect!));
+      }
+
+      if (action.needFlip) {
+        option.addOption(
+          FlipOption(horizontal: flipHorizontal, vertical: flipVertical),
+        );
+      }
+
+      if (action.hasRotateAngle) {
+        option.addOption(RotateOption(rotateAngle));
+      }
+
+      final DateTime start = DateTime.now();
+      final Uint8List? result = await ImageEditor.editImage(
+        image: img,
+        imageEditorOption: option,
+      );
+
+      log('${DateTime.now().difference(start)} ：total time');
+      return result;
+    }
+
+    Uint8List? fileData =
+        await cropImageDataWithNativeLibrary(state: currentState);
+
+    return fileData;
   }
 }

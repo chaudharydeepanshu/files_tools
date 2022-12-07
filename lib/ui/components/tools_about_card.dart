@@ -1,16 +1,23 @@
 import 'package:flutter/material.dart';
 
+/// Widget for showing about or info card in actions screen.
 class AboutActionCard extends StatelessWidget {
+  /// Defining [AboutActionCard] constructor.
   const AboutActionCard({
     Key? key,
-    required this.aboutText,
-    this.aboutTextBody,
-    this.aboutTextBodyTitle,
+    required this.aboutTitle,
+    this.aboutBody,
+    this.aboutBodyTitle,
   }) : super(key: key);
 
-  final String aboutText;
-  final String? aboutTextBody;
-  final String? aboutTextBodyTitle;
+  /// About card title text.
+  final String aboutTitle;
+
+  /// About card body text.
+  final String? aboutBody;
+
+  /// About card body title text.
+  final String? aboutBodyTitle;
 
   @override
   Widget build(BuildContext context) {
@@ -21,10 +28,10 @@ class AboutActionCard extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           mainAxisSize: MainAxisSize.min,
-          children: [
+          children: <Widget>[
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: [
+              children: <Widget>[
                 const Icon(Icons.info),
                 Text(
                   'Function Info',
@@ -35,11 +42,11 @@ class AboutActionCard extends StatelessWidget {
             ),
             const Divider(),
             Text(
-              aboutText,
+              aboutTitle,
               style: Theme.of(context).textTheme.bodyMedium,
               textAlign: TextAlign.center,
             ),
-            if (aboutTextBody != null && aboutTextBody!.trim().isNotEmpty)
+            if (aboutBody != null && aboutBody!.trim().isNotEmpty)
               Padding(
                 padding: const EdgeInsets.only(top: 10.0),
                 child: Container(
@@ -54,11 +61,11 @@ class AboutActionCard extends StatelessWidget {
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        if (aboutTextBodyTitle != null &&
-                            aboutTextBodyTitle!.trim().isNotEmpty)
+                      children: <Widget>[
+                        if (aboutBodyTitle != null &&
+                            aboutBodyTitle!.trim().isNotEmpty)
                           Text(
-                            '$aboutTextBodyTitle\n',
+                            '$aboutBodyTitle\n',
                             style: Theme.of(context)
                                 .textTheme
                                 .bodyMedium
@@ -68,7 +75,7 @@ class AboutActionCard extends StatelessWidget {
                             textAlign: TextAlign.center,
                           ),
                         Text(
-                          '$aboutTextBody',
+                          '$aboutBody',
                           style: Theme.of(context).textTheme.bodySmall,
                           textAlign: TextAlign.start,
                         ),

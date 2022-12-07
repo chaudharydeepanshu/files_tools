@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 
 /// [ListTile] for displaying input or output files properties in UI.
 class FileTile extends StatelessWidget {
-  /// Defining FileTile constructor.
+  /// Defining [FileTile] constructor.
   const FileTile({
     Key? key,
     required this.fileName,
@@ -122,7 +122,7 @@ class FileTile extends StatelessWidget {
       subtitle: IntrinsicHeight(
         child: Row(
           mainAxisSize: MainAxisSize.min,
-          children: [
+          children: <Widget>[
             Expanded(
               child: Text(
                 fileDate,

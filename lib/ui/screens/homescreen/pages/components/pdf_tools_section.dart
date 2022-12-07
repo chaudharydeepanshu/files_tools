@@ -2,9 +2,12 @@ import 'package:files_tools/route/app_routes.dart' as route;
 import 'package:files_tools/ui/screens/homescreen/pages/components/grid_view_in_card_view.dart';
 import 'package:flutter/material.dart';
 
+/// Screen for displaying all PDF tools.
 class PDFToolsPage extends StatelessWidget {
+  /// Defining [PDFToolsPage] constructor.
   const PDFToolsPage({Key? key, required this.arguments}) : super(key: key);
 
+  /// Arguments passed when screen pushed.
   final PDFToolsPageArguments arguments;
 
   @override
@@ -35,19 +38,25 @@ class PDFToolsPage extends StatelessWidget {
   }
 }
 
+/// Takes [PDFToolsPage] arguments passed when screen pushed.
 class PDFToolsPageArguments {
+  /// Defining [PDFToolsPageArguments] constructor.
   PDFToolsPageArguments({required this.cardsDetails});
+
+  /// Models for all the tools for PDF file.
   final List<GridCardDetail> cardsDetails;
 }
 
+/// Displays PDF tools for document tools tab on home screen.
 class PDFToolsSection extends StatelessWidget {
+  /// Defining [PDFToolsSection] constructor.
   const PDFToolsSection({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final List<GridCardDetail> exploreCardsDetails = [
+    final List<GridCardDetail> exploreCardsDetails = <GridCardDetail>[
       GridCardDetail(
-        cardIcons: const [Icon(Icons.merge)],
+        cardIcons: const <Widget>[Icon(Icons.merge)],
         cardTitle: 'Merge PDF',
         cardOnTap: () {
           Navigator.pushNamed(
@@ -57,7 +66,7 @@ class PDFToolsSection extends StatelessWidget {
         },
       ),
       GridCardDetail(
-        cardIcons: const [Icon(Icons.call_split)],
+        cardIcons: const <Widget>[Icon(Icons.call_split)],
         cardTitle: 'Split PDF',
         cardOnTap: () {
           Navigator.pushNamed(
@@ -67,9 +76,9 @@ class PDFToolsSection extends StatelessWidget {
         },
       ),
       GridCardDetail(
-        cardIcons: [
+        cardIcons: <Widget>[
           Column(
-            children: const [
+            children: const <Widget>[
               Icon(Icons.rotate_right),
               Text(
                 'Rotate',
@@ -78,7 +87,7 @@ class PDFToolsSection extends StatelessWidget {
             ],
           ),
           Column(
-            children: const [
+            children: const <Widget>[
               Icon(Icons.delete),
               Text(
                 'Delete',
@@ -87,7 +96,7 @@ class PDFToolsSection extends StatelessWidget {
             ],
           ),
           Column(
-            children: const [
+            children: const <Widget>[
               Icon(Icons.reorder),
               Text(
                 'Reorder',
@@ -105,7 +114,7 @@ class PDFToolsSection extends StatelessWidget {
         },
       ),
       GridCardDetail(
-        cardIcons: const [Icon(Icons.cached)],
+        cardIcons: const <Widget>[Icon(Icons.cached)],
         cardTitle: 'Convert PDF',
         cardOnTap: () {
           Navigator.pushNamed(
@@ -115,7 +124,7 @@ class PDFToolsSection extends StatelessWidget {
         },
       ),
       GridCardDetail(
-        cardIcons: const [Icon(Icons.compress)],
+        cardIcons: const <Widget>[Icon(Icons.compress)],
         cardTitle: 'Compress PDF',
         cardOnTap: () {
           Navigator.pushNamed(
@@ -125,7 +134,7 @@ class PDFToolsSection extends StatelessWidget {
         },
       ),
       GridCardDetail(
-        cardIcons: const [Icon(Icons.branding_watermark)],
+        cardIcons: const <Widget>[Icon(Icons.branding_watermark)],
         cardTitle: 'Watermark PDF',
         cardOnTap: () {
           Navigator.pushNamed(
@@ -135,10 +144,10 @@ class PDFToolsSection extends StatelessWidget {
         },
       ),
       GridCardDetail(
-        cardIcons: [
+        cardIcons: <Widget>[
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
+            children: const <Widget>[
               Icon(Icons.image),
               Icon(Icons.arrow_forward),
               Icon(Icons.picture_as_pdf),
@@ -154,7 +163,7 @@ class PDFToolsSection extends StatelessWidget {
         },
       ),
       GridCardDetail(
-        cardIcons: const [Icon(Icons.lock)],
+        cardIcons: const <Widget>[Icon(Icons.lock)],
         cardTitle: 'Encrypt PDF',
         cardOnTap: () {
           Navigator.pushNamed(
@@ -164,7 +173,7 @@ class PDFToolsSection extends StatelessWidget {
         },
       ),
       GridCardDetail(
-        cardIcons: const [Icon(Icons.lock_open)],
+        cardIcons: const <Widget>[Icon(Icons.lock_open)],
         cardTitle: 'Decrypt PDF',
         cardOnTap: () {
           Navigator.pushNamed(

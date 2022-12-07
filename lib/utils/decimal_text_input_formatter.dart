@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 /// Text input formatter to help restrict TextField text input to a decimal
 /// input of certain decimal range.
 class DecimalTextInputFormatter extends TextInputFormatter {
-  /// Defining DecimalTextInputFormatter constructor.
+  /// Defining [DecimalTextInputFormatter] constructor.
   DecimalTextInputFormatter({required this.decimalRange})
       : assert(decimalRange > 0);
 

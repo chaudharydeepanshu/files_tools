@@ -7,12 +7,14 @@ import 'package:files_tools/state/tools_actions_state.dart';
 import 'package:files_tools/state/tools_screens_state.dart';
 import 'package:files_tools/ui/components/select_file_section.dart';
 import 'package:files_tools/ui/components/tool_actions_section.dart';
-import 'package:files_tools/ui/screens/pdf_tools_screens/decrypt_pdf/decrypt_pdf_tools_screen.dart';
+import 'package:files_tools/ui/screens/pdf_tools_screens/decrypt_pdf/decrypt_pdf_tools_action_screen.dart';
 import 'package:files_tools/utils/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+/// Tool screen for decrypting PDF.
 class DecryptPDFPage extends StatefulWidget {
+  /// Defining [DecryptPDFPage] constructor.
   const DecryptPDFPage({Key? key}) : super(key: key);
 
   @override
@@ -55,7 +57,7 @@ class _DecryptPDFPageState extends State<DecryptPDFPage> {
                     .select((ToolsScreensState value) => value.inputFiles),
               );
               return ListView(
-                children: [
+                children: <Widget>[
                   const SizedBox(height: 16),
                   SelectFilesCard(
                     files: watchToolScreenStateProviderValue.inputFiles,
@@ -71,7 +73,7 @@ class _DecryptPDFPageState extends State<DecryptPDFPage> {
                   ),
                   const SizedBox(height: 16),
                   ToolActionsCard(
-                    toolActions: [
+                    toolActions: <ToolActionModel>[
                       ToolActionModel(
                         actionText: 'Decrypt PDF',
                         actionOnTap: selectedFiles.length == 1

@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 /// We use it in the app inside a stack with a align widget having alignment
 /// set to bottom center. To show options like rotate, flip, process, etc.
 class LevitatingOptionsBar extends StatelessWidget {
-  /// Defining FileTile constructor.
+  /// Defining [FileTile] constructor.
   const LevitatingOptionsBar({Key? key, required this.optionsList})
       : super(key: key);
 

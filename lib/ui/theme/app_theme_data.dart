@@ -3,7 +3,7 @@ import 'package:files_tools/ui/theme/color_schemes.g.dart';
 import 'package:files_tools/ui/theme/custom_color.g.dart';
 import 'package:flutter/material.dart';
 
-/// For creating app ThemeData by providing any color schemes.
+/// For creating app [ThemeData] by providing any color schemes.
 class AppThemeData {
   static final Color _lightFocusColor = Colors.black.withOpacity(0.12);
   static final Color _darkFocusColor = Colors.white.withOpacity(0.12);

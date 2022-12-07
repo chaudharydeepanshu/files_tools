@@ -3,7 +3,6 @@ import 'dart:ui' as ui;
 
 import 'package:extended_image/extended_image.dart';
 import 'package:files_tools/models/file_model.dart';
-import 'package:files_tools/utils/edit_image.dart';
 import 'package:files_tools/utils/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -32,7 +31,7 @@ class ImageToolsActions {
         InputFileModel sourceFile = sourceFiles[i];
         if (currentState != null) {
           // If image needs to be modified.
-          Uint8List? updatedImageData = await modifyImage(currentState);
+          Uint8List? updatedImageData = await Utility.modifyImage(currentState);
 
           // Getting info of source Image file.
           String nameOfSourceFile = sourceFile.fileName;

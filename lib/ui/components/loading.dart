@@ -3,7 +3,7 @@ import 'package:rive/rive.dart';
 
 /// Widget for showing an loading animation using [RiveAnimation].
 class LoadingIndicator extends StatelessWidget {
-  /// Defining LoadingIndicator constructor.
+  /// Defining [LoadingIndicator] constructor.
   const LoadingIndicator({Key? key}) : super(key: key);
 
   @override
@@ -21,7 +21,7 @@ class LoadingIndicator extends StatelessWidget {
 
 /// Widget for showing loading state.
 class Loading extends StatelessWidget {
-  /// Defining Loading constructor.
+  /// Defining [Loading] constructor.
   const Loading({Key? key, required this.loadingText}) : super(key: key);
 
   /// Loading description text.

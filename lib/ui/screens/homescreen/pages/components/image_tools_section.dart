@@ -1,11 +1,13 @@
 import 'package:files_tools/route/app_routes.dart' as route;
+import 'package:files_tools/ui/screens/homescreen/pages/components/grid_view_in_card_view.dart';
 import 'package:flutter/material.dart';
 
-import 'package:files_tools/ui/screens/homescreen/pages/components/grid_view_in_card_view.dart';
-
+/// Screen for displaying all image tools.
 class ImageToolsPage extends StatelessWidget {
+  /// Defining [ImageToolsPage] constructor.
   const ImageToolsPage({Key? key, required this.arguments}) : super(key: key);
 
+  /// Arguments passed when screen pushed.
   final ImageToolsPageArguments arguments;
 
   @override
@@ -36,19 +38,25 @@ class ImageToolsPage extends StatelessWidget {
   }
 }
 
+/// Takes [ImageToolsPage] arguments passed when screen pushed.
 class ImageToolsPageArguments {
+  /// Defining [ImageToolsPageArguments] constructor.
   ImageToolsPageArguments({required this.cardsDetails});
+
+  /// Models for all the tools for image file.
   final List<GridCardDetail> cardsDetails;
 }
 
+/// Displays image tools for media tools tab on home screen.
 class ImageToolsSection extends StatelessWidget {
+  /// Defining [ImageToolsSection] constructor.
   const ImageToolsSection({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final List<GridCardDetail> exploreCardsDetails = [
+    final List<GridCardDetail> exploreCardsDetails = <GridCardDetail>[
       GridCardDetail(
-        cardIcons: const [Icon(Icons.compress)],
+        cardIcons: const <Widget>[Icon(Icons.compress)],
         cardTitle: 'Compress Image',
         cardOnTap: () {
           Navigator.pushNamed(
@@ -58,9 +66,9 @@ class ImageToolsSection extends StatelessWidget {
         },
       ),
       GridCardDetail(
-        cardIcons: [
+        cardIcons: <Widget>[
           Column(
-            children: const [
+            children: const <Widget>[
               Icon(Icons.crop),
               Text(
                 'Crop',
@@ -69,7 +77,7 @@ class ImageToolsSection extends StatelessWidget {
             ],
           ),
           Column(
-            children: const [
+            children: const <Widget>[
               Icon(Icons.rotate_right),
               Text(
                 'Rotate',
@@ -78,7 +86,7 @@ class ImageToolsSection extends StatelessWidget {
             ],
           ),
           Column(
-            children: const [
+            children: const <Widget>[
               Icon(Icons.flip),
               Text(
                 'Flip',
@@ -96,7 +104,7 @@ class ImageToolsSection extends StatelessWidget {
         },
       ),
       GridCardDetail(
-        cardIcons: const [Icon(Icons.cached)],
+        cardIcons: const <Widget>[Icon(Icons.cached)],
         cardTitle: 'Convert Image',
         //     () {
         //   Navigator.pushNamed(
@@ -106,7 +114,7 @@ class ImageToolsSection extends StatelessWidget {
         // },
       ),
       GridCardDetail(
-        cardIcons: const [Icon(Icons.branding_watermark)],
+        cardIcons: const <Widget>[Icon(Icons.branding_watermark)],
         cardTitle: 'Watermark Image',
         //     () {
         //   Navigator.pushNamed(
@@ -116,10 +124,10 @@ class ImageToolsSection extends StatelessWidget {
         // },
       ),
       GridCardDetail(
-        cardIcons: [
+        cardIcons: <Widget>[
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
+            children: const <Widget>[
               Icon(Icons.picture_as_pdf),
               Icon(Icons.arrow_forward),
               Icon(Icons.image),

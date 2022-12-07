@@ -7,12 +7,14 @@ import 'package:files_tools/state/tools_actions_state.dart';
 import 'package:files_tools/state/tools_screens_state.dart';
 import 'package:files_tools/ui/components/select_file_section.dart';
 import 'package:files_tools/ui/components/tool_actions_section.dart';
-import 'package:files_tools/ui/screens/pdf_tools_screens/watermark_pdf/watermark_pdf_tool_screen.dart';
+import 'package:files_tools/ui/screens/pdf_tools_screens/watermark_pdf/watermark_pdf_tool_action_screen.dart';
 import 'package:files_tools/utils/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+/// Tool screen for watermarking PDF.
 class WatermarkPDFPage extends StatefulWidget {
+  /// Defining [WatermarkPDFPage] constructor.
   const WatermarkPDFPage({Key? key}) : super(key: key);
 
   @override
@@ -55,7 +57,7 @@ class _WatermarkPDFPageState extends State<WatermarkPDFPage> {
                     .select((ToolsScreensState value) => value.inputFiles),
               );
               return ListView(
-                children: [
+                children: <Widget>[
                   const SizedBox(height: 16),
                   SelectFilesCard(
                     files: watchToolScreenStateProviderValue.inputFiles,
@@ -72,7 +74,7 @@ class _WatermarkPDFPageState extends State<WatermarkPDFPage> {
                   ),
                   const SizedBox(height: 16),
                   ToolActionsCard(
-                    toolActions: [
+                    toolActions: <ToolActionModel>[
                       ToolActionModel(
                         actionText: 'Watermark pdf',
                         actionOnTap: selectedFiles.length == 1

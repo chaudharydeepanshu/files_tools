@@ -11,7 +11,9 @@ import 'package:files_tools/utils/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+/// Tool screen for merging PDFs.
 class MergePDFsPage extends StatefulWidget {
+  /// Defining [MergePDFsPage] constructor.
   const MergePDFsPage({Key? key}) : super(key: key);
 
   @override
@@ -56,7 +58,7 @@ class _MergePDFsPageState extends State<MergePDFsPage> {
               final ToolsActionsState watchToolsActionsStateProviderValue =
                   ref.watch(toolsActionsStateProvider);
               return ListView(
-                children: [
+                children: <Widget>[
                   const SizedBox(height: 16),
                   SelectFilesCard(
                     files: watchToolScreenStateProviderValue.inputFiles,
@@ -75,7 +77,7 @@ class _MergePDFsPageState extends State<MergePDFsPage> {
                   ),
                   const SizedBox(height: 16),
                   ToolActionsCard(
-                    toolActions: [
+                    toolActions: <ToolActionModel>[
                       ToolActionModel(
                         actionText: 'Merge into one PDF',
                         actionOnTap: selectedFiles.length >= 2
@@ -87,7 +89,8 @@ class _MergePDFsPageState extends State<MergePDFsPage> {
 
                                 watchToolsActionsStateProviderValue
                                     .mangeMergePdfFileAction(
-                                        sourceFiles: selectedFiles);
+                                  sourceFiles: selectedFiles,
+                                );
 
                                 Navigator.pushNamed(
                                   context,

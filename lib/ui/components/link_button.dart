@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 /// For showing a link button between a continuous long text.
 class LinkButton extends StatelessWidget {
-  /// Defining LinkButton constructor.
+  /// Defining [LinkButton] constructor.
   const LinkButton({
     Key? key,
     required this.urlLabel,

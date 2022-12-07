@@ -7,7 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// Widget for changing app theme color scheme.
 class ThemeChooserWidget extends StatelessWidget {
-  /// Defining ThemeChooserWidget constructor.
+  /// Defining [ThemeChooserWidget] constructor.
   const ThemeChooserWidget({Key? key}) : super(key: key);
 
   @override

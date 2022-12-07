@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 /// Widget for showing all tools actions buttons.
 class ToolActionsCard extends StatelessWidget {
-  /// Defining ToolActionsCard constructor.
+  /// Defining [ToolActionsCard] constructor.
   const ToolActionsCard({Key? key, required this.toolActions})
       : super(key: key);
 
@@ -18,7 +18,7 @@ class ToolActionsCard extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
-          children: [
+          children: <Widget>[
             const Icon(Icons.looks_two),
             const Divider(),
             ConstrainedBox(

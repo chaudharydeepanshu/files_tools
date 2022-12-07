@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// Widget for changing app theme mode to light, dart and system.
 class ThemeModeSwitcher extends StatelessWidget {
-  /// Defining ThemeModeSwitcher constructor.
+  /// Defining [ThemeModeSwitcher] constructor.
   const ThemeModeSwitcher({Key? key}) : super(key: key);
 
   @override

@@ -4,7 +4,9 @@ import 'package:files_tools/ui/screens/homescreen/pages/media_tools_page.dart';
 import 'package:files_tools/utils/utility.dart';
 import 'package:flutter/material.dart';
 
+/// It is the home screen widget.
 class HomePage extends StatefulWidget {
+  /// Defining [HomePage] constructor.
   const HomePage({Key? key}) : super(key: key);
 
   @override
@@ -43,7 +45,7 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
         body: const TabBarView(
-          children: [
+          children: <Widget>[
             DocumentTools(),
             MediaTools(),
           ],

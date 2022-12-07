@@ -4,7 +4,7 @@
 /// For example: A tool 'Split PDF' consists actions such as 'Split by Size',
 /// 'Split by Page Count', etc.
 class ToolActionModel {
-  /// Defining ToolActionsModel constructor.
+  /// Defining [ToolActionModel] constructor.
   ToolActionModel({
     required this.actionText,
     required this.actionOnTap,

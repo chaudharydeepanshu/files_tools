@@ -9,10 +9,10 @@ import 'package:flutter/material.dart';
 
 /// It is the input / output files image viewing screen widget.
 class ImageViewer extends StatefulWidget {
-  /// Defining ImageViewer constructor.
+  /// Defining [ImageViewer] constructor.
   const ImageViewer({Key? key, required this.arguments}) : super(key: key);
 
-  /// ImageViewer arguments passed when ImageViewer was pushed.
+  /// Arguments passed when screen pushed.
   final ImageViewerArguments arguments;
 
   @override
@@ -158,9 +158,9 @@ class _ImageViewerState extends State<ImageViewer> {
   }
 }
 
-/// Takes ImageViewer arguments passed when ImageViewer was pushed.
+/// Takes [ImageViewer] arguments passed when screen pushed.
 class ImageViewerArguments {
-  /// Defining ImageViewerArguments constructor.
+  /// Defining [ImageViewerArguments] constructor.
   ImageViewerArguments({required this.fileName, this.filePath, this.fileUri});
 
   /// Name of image file viewing.
@@ -175,7 +175,7 @@ class ImageViewerArguments {
 
 /// Widget that shows a image through provided image bytes.
 class ImageView extends StatelessWidget {
-  /// Defining ImageView constructor.
+  /// Defining [ImageView] constructor.
   const ImageView({
     Key? key,
     required this.bytes,

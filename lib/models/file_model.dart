@@ -2,7 +2,7 @@
 ///
 /// It hold all the useful information about a user picked file.
 class InputFileModel {
-  /// Defining InputFileModel constructor.
+  /// Defining [InputFileModel] constructor.
   InputFileModel({
     required this.fileName,
     required this.fileDate,

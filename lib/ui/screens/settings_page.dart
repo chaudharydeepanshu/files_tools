@@ -4,9 +4,9 @@ import 'package:files_tools/ui/components/theme_chooser_widget.dart';
 import 'package:files_tools/ui/components/theme_mode_switcher.dart';
 import 'package:flutter/material.dart';
 
-/// It is the settings screen widget of our application.
+/// It is the settings screen widget.
 class SettingsPage extends StatelessWidget {
-  /// Defining SettingsPage constructor.
+  /// Defining [SettingsPage] constructor.
   const SettingsPage({Key? key}) : super(key: key);
 
   @override
@@ -18,12 +18,12 @@ class SettingsPage extends StatelessWidget {
       ),
       body: ListView(
         padding: const EdgeInsets.symmetric(vertical: 16),
-        children: [
+        children: <Widget>[
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
+              children: <Widget>[
                 Text(
                   'App Theming',
                   style: Theme.of(context).textTheme.bodyMedium,
