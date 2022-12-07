@@ -88,7 +88,7 @@ class GridViewInCardSection extends StatelessWidget {
                         physics: const NeverScrollableScrollPhysics(),
                         gridDelegate:
                             const SliverGridDelegateWithMaxCrossAxisExtent(
-                          maxCrossAxisExtent: 200,
+                          maxCrossAxisExtent: 250,
                           mainAxisExtent: 100,
                           mainAxisSpacing: 8,
                           crossAxisSpacing: 8,

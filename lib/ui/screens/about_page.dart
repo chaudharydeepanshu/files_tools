@@ -165,59 +165,69 @@ class AppCreator extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-                Column(
-                  children: <Widget>[
-                    Text(
-                      'Follow',
-                      style: Theme.of(context).textTheme.bodySmall,
-                      textAlign: TextAlign.center,
-                    ),
-                    FilledButton.tonal(
-                      onPressed: () {
-                        Utility.urlLauncher(creatorGithubUrl);
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.all(4.0),
-                        child: Column(
-                          children: <Widget>[
-                            Image.asset(
-                              'assets/github_3d_icon.png',
-                              height: 30,
-                              width: 30,
-                            ),
-                            const Text('Github Profile'),
-                          ],
+                Flexible(
+                  child: Column(
+                    children: <Widget>[
+                      Text(
+                        'Follow',
+                        style: Theme.of(context).textTheme.bodySmall,
+                        textAlign: TextAlign.center,
+                      ),
+                      FilledButton.tonal(
+                        onPressed: () {
+                          Utility.urlLauncher(creatorGithubUrl);
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(4.0),
+                          child: Column(
+                            children: <Widget>[
+                              Image.asset(
+                                'assets/github_3d_icon.png',
+                                height: 30,
+                                width: 30,
+                              ),
+                              const Text(
+                                'Github Profile',
+                                textAlign: TextAlign.center,
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-                Column(
-                  children: <Widget>[
-                    Text(
-                      '⭐ Project',
-                      style: Theme.of(context).textTheme.bodySmall,
-                      textAlign: TextAlign.center,
-                    ),
-                    FilledButton.tonal(
-                      onPressed: () {
-                        Utility.urlLauncher(sourceCodeUrl);
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.all(4.0),
-                        child: Column(
-                          children: <Widget>[
-                            Image.asset(
-                              'assets/github_3d_icon.png',
-                              height: 30,
-                              width: 30,
-                            ),
-                            const Text('Github Project'),
-                          ],
+                Flexible(
+                  child: Column(
+                    children: <Widget>[
+                      Text(
+                        '⭐ Project',
+                        style: Theme.of(context).textTheme.bodySmall,
+                        textAlign: TextAlign.center,
+                      ),
+                      FilledButton.tonal(
+                        onPressed: () {
+                          Utility.urlLauncher(sourceCodeUrl);
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(4.0),
+                          child: Column(
+                            children: <Widget>[
+                              Image.asset(
+                                'assets/github_3d_icon.png',
+                                height: 30,
+                                width: 30,
+                              ),
+                              const Text(
+                                'Github Project',
+                                textAlign: TextAlign.center,
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ],
             ),

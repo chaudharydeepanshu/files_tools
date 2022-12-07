@@ -98,18 +98,22 @@ class AppDrawer extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          LinkButton(
-                            urlLabel: 'Privacy Policy',
-                            urlIcon: Icons.privacy_tip,
-                            url: privacyPolicyUrl,
+                          Flexible(
+                            child: LinkButton(
+                              urlLabel: 'Privacy Policy',
+                              urlIcon: Icons.privacy_tip,
+                              url: privacyPolicyUrl,
+                            ),
                           ),
                           const Text(
                             ' - ',
                           ),
-                          LinkButton(
-                            urlLabel: 'Terms and Conditions',
-                            urlIcon: Icons.gavel,
-                            url: termsAndConditionsUrl,
+                          Flexible(
+                            child: LinkButton(
+                              urlLabel: 'Terms and Conditions',
+                              urlIcon: Icons.gavel,
+                              url: termsAndConditionsUrl,
+                            ),
                           ),
                         ],
                       ),
