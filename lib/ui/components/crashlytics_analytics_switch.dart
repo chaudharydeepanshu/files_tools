@@ -1,3 +1,4 @@
+import 'package:files_tools/main.dart';
 import 'package:files_tools/state/preferences.dart';
 import 'package:flutter/material.dart';
 
@@ -11,7 +12,8 @@ class CrashlyticsSwitchTile extends StatefulWidget {
 }
 
 class _CrashlyticsSwitchTileState extends State<CrashlyticsSwitchTile> {
-  bool isCrashlyticsEnabled = Preferences.crashlyticsCollectionStatus;
+  bool isCrashlyticsEnabled =
+      crashlyticsInstance.isCrashlyticsCollectionEnabled;
 
   @override
   Widget build(BuildContext context) {
@@ -22,10 +24,13 @@ class _CrashlyticsSwitchTileState extends State<CrashlyticsSwitchTile> {
       ),
       secondary: const Icon(Icons.bug_report),
       value: isCrashlyticsEnabled,
-      onChanged: (bool? value) {
-        Preferences.persistCrashlyticsCollectionStatus(!isCrashlyticsEnabled);
+      onChanged: (bool? value) async {
+        await Preferences.persistCrashlyticsCollectionStatus(
+          !isCrashlyticsEnabled,
+        );
         setState(() {
-          isCrashlyticsEnabled = Preferences.crashlyticsCollectionStatus;
+          isCrashlyticsEnabled =
+              crashlyticsInstance.isCrashlyticsCollectionEnabled;
         });
       },
     );
@@ -53,8 +58,8 @@ class _AnalyticsSwitchTileState extends State<AnalyticsSwitchTile> {
       ),
       secondary: const Icon(Icons.analytics),
       value: isAnalyticsEnabled,
-      onChanged: (bool? value) {
-        Preferences.persistAnalyticsCollectionStatus(!isAnalyticsEnabled);
+      onChanged: (bool? value) async {
+        await Preferences.persistAnalyticsCollectionStatus(!isAnalyticsEnabled);
         setState(() {
           isAnalyticsEnabled = Preferences.analyticsCollectionStatus;
         });

@@ -1,3 +1,5 @@
+import 'package:files_tools/main.dart';
+import 'package:files_tools/state/preferences.dart';
 import 'package:files_tools/ui/components/custom_snack_bar.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +21,7 @@ class ErrorIndicator extends StatelessWidget {
 }
 
 /// Widget for showing error state.
-class ShowError extends StatelessWidget {
+class ShowError extends StatefulWidget {
   /// Defining [ShowError] constructor.
   const ShowError({
     Key? key,
@@ -42,6 +44,11 @@ class ShowError extends StatelessWidget {
   final bool allowBack;
 
   @override
+  State<ShowError> createState() => _ShowErrorState();
+}
+
+class _ShowErrorState extends State<ShowError> {
+  @override
   Widget build(BuildContext context) {
     return Center(
       child: Column(
@@ -50,7 +57,7 @@ class ShowError extends StatelessWidget {
           const ErrorIndicator(),
           const SizedBox(height: 16),
           Text(
-            taskMessage,
+            widget.taskMessage,
             style: Theme.of(context)
                 .textTheme
                 .bodySmall
@@ -70,7 +77,7 @@ class ShowError extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
-                    errorMessage,
+                    widget.errorMessage,
                     style: Theme.of(context)
                         .textTheme
                         .bodySmall
@@ -84,7 +91,7 @@ class ShowError extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              if (allowBack)
+              if (widget.allowBack)
                 FilledButton(
                   onPressed: () {
                     Navigator.pop(context);
@@ -93,20 +100,33 @@ class ShowError extends StatelessWidget {
                 ),
               TextButton(
                 onPressed: () async {
+                  if (Preferences.crashlyticsCollectionStatus == false) {
+                    await crashlyticsInstance
+                        .setCrashlyticsCollectionEnabled(true);
+                  }
+
                   FirebaseCrashlytics.instance.recordError(
-                    'User Reported Error: $errorMessage',
-                    errorStackTrace,
-                    reason: 'Task Message: $taskMessage',
+                    'User Reported Error: ${widget.errorMessage}',
+                    widget.errorStackTrace,
+                    reason: 'Task Message: ${widget.taskMessage}',
                   );
 
-                  String? contentText = 'Error reported successfully';
-                  TextStyle? textStyle = Theme.of(context).textTheme.bodySmall;
+                  if (mounted) {
+                    String? contentText = 'Error reported successfully';
+                    TextStyle? textStyle =
+                        Theme.of(context).textTheme.bodySmall;
 
-                  showCustomSnackBar(
-                    context: context,
-                    contentText: contentText,
-                    textStyle: textStyle,
-                  );
+                    showCustomSnackBar(
+                      contentText: contentText,
+                      textStyle: textStyle,
+                      context: context,
+                    );
+                  }
+
+                  if (Preferences.crashlyticsCollectionStatus == false) {
+                    await crashlyticsInstance
+                        .setCrashlyticsCollectionEnabled(false);
+                  }
                 },
                 child: const Text('Report Error'),
               ),

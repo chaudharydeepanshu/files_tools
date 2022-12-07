@@ -19,9 +19,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 ///
 /// Use it in place of [kDebugMode] through out the app to check for debug mode.
 /// Useful in faking production mode in debug mode by setting it to false.
-bool isInDebugMode =
-// false;
-    kDebugMode;
+bool isInDebugMode = kDebugMode;
 
 /// Key used when building the Navigator.
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();

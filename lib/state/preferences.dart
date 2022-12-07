@@ -84,8 +84,8 @@ class Preferences {
   /// For persisting crashlytics collection status in SharedPreferences.
   static Future<bool> persistCrashlyticsCollectionStatus(
     final bool crashlyticsCollectionStatus,
-  ) {
-    crashlyticsInstance.setCrashlyticsCollectionEnabled(
+  ) async {
+    await crashlyticsInstance.setCrashlyticsCollectionEnabled(
       crashlyticsCollectionStatus,
     );
     return sharedPreferencesInstance.setBool(
@@ -102,8 +102,8 @@ class Preferences {
   /// For persisting analytics collection status in SharedPreferences.
   static Future<bool> persistAnalyticsCollectionStatus(
     final bool analyticsCollectionStatus,
-  ) {
-    analyticsInstance.setAnalyticsCollectionEnabled(
+  ) async {
+    await analyticsInstance.setAnalyticsCollectionEnabled(
       analyticsCollectionStatus,
     );
     return sharedPreferencesInstance.setBool(
