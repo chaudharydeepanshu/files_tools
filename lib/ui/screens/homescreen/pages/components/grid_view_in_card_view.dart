@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 class GridCardDetail {
-
   GridCardDetail({
     required this.cardIcons,
     required this.cardTitle,
@@ -140,10 +139,11 @@ class GridViewCard extends StatelessWidget {
         gridCardDetail.cardIcons[i],
         if (i != gridCardDetail.cardIcons.length - 1)
           VerticalDivider(
-              width: 0,
-              color: gridCardDetail.cardOnTap == null
-                  ? Theme.of(context).disabledColor
-                  : Theme.of(context).colorScheme.onSecondaryContainer,)
+            width: 0,
+            color: gridCardDetail.cardOnTap == null
+                ? Theme.of(context).disabledColor
+                : Theme.of(context).colorScheme.onSecondaryContainer,
+          )
       ]);
     }
 

@@ -12,6 +12,7 @@ import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf_bitmaps/pdf_bitmaps.dart';
 import 'package:pick_or_save/pick_or_save.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 /// A general utility class containing many small helpful methods which are
 /// useful through out the app.
@@ -503,5 +504,14 @@ class Utility {
     }
 
     return filedData;
+  }
+
+  /// Called for launching URLs through out the app.
+  static Future<void> urlLauncher(String url) async {
+    final Uri uri = Uri.parse(url);
+
+    if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
+      throw 'Could not launch $uri';
+    }
   }
 }

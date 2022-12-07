@@ -1,10 +1,13 @@
 import 'package:files_tools/models/tool_actions_model.dart';
 import 'package:flutter/material.dart';
 
+/// Widget for showing all tools actions buttons.
 class ToolActionsCard extends StatelessWidget {
+  /// Defining ToolActionsCard constructor.
   const ToolActionsCard({Key? key, required this.toolActions})
       : super(key: key);
 
+  /// Takes tools actions models list.
   final List<ToolActionModel> toolActions;
 
   @override

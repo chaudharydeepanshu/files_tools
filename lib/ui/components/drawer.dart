@@ -6,7 +6,9 @@ import 'package:files_tools/ui/components/theme_mode_switcher.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+/// App drawer.
 class AppDrawer extends StatelessWidget {
+  /// Defining AppDrawer constructor.
   const AppDrawer({Key? key}) : super(key: key);
 
   @override

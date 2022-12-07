@@ -5,15 +5,19 @@ import 'package:flex_color_picker/flex_color_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+/// Widget for changing app theme color scheme.
 class ThemeChooserWidget extends StatelessWidget {
+  /// Defining ThemeChooserWidget constructor.
   const ThemeChooserWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Consumer(
       builder: (BuildContext context, WidgetRef ref, Widget? child) {
-        Color userColorSchemeSeedColor = ref.watch(appThemeStateProvider
-            .select((AppThemeState value) => value.userColorSchemeSeedColor),);
+        Color userColorSchemeSeedColor = ref.watch(
+          appThemeStateProvider
+              .select((AppThemeState value) => value.userColorSchemeSeedColor),
+        );
         return ListTile(
           title: const Text('Theme color'),
           subtitle: Text(
@@ -34,11 +38,12 @@ class ThemeChooserWidget extends StatelessWidget {
             // Wait for the picker to close, if dialog was dismissed,
             // then restore the color we had before it was opened.
             bool dialogStatus = await colorPickerDialog(
-                context: context,
-                dialogPickerColor: userColorSchemeSeedColor,
-                onColorChanged: (Color value) {
-                  ref.read(appThemeStateProvider).updateUserTheme(value);
-                },);
+              context: context,
+              dialogPickerColor: userColorSchemeSeedColor,
+              onColorChanged: (Color value) {
+                ref.read(appThemeStateProvider).updateUserTheme(value);
+              },
+            );
 
             if (!dialogStatus) {
               ref

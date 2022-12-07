@@ -7,7 +7,9 @@ import 'package:files_tools/ui/screens/pdf_viewer.dart';
 import 'package:files_tools/utils/utility.dart';
 import 'package:flutter/material.dart';
 
+/// [ListTile] for displaying input or output files properties in UI.
 class FileTile extends StatelessWidget {
+  /// Defining FileTile constructor.
   const FileTile({
     Key? key,
     required this.fileName,
@@ -19,12 +21,25 @@ class FileTile extends StatelessWidget {
     this.onRemove,
   }) : super(key: key);
 
+  /// Takes the input or output file name.
   final String fileName;
+
+  /// Takes the input or output file time only.
   final String fileTime;
+
+  /// Takes the input or output file date only.
   final String fileDate;
+
+  /// Takes the input or output file path.
   final String? filePath;
+
+  /// Takes the input or output file uri.
   final String? fileUri;
+
+  /// Takes the input or output file formatted size.
   final String fileSize;
+
+  /// Takes the input file remove action.
   final void Function()? onRemove;
 
   @override
@@ -50,7 +65,7 @@ class FileTile extends StatelessWidget {
               ),
             );
           } else {
-            log('File path or file uri both are null for opening file with extension $fileExtension');
+            log('File path or uri both are null for $fileExtension extension');
           }
         } else if (fileExtension.toLowerCase() == '.png' ||
             fileExtension.toLowerCase() == '.jpg' ||
@@ -66,7 +81,7 @@ class FileTile extends StatelessWidget {
             ),
           );
         } else {
-          log('No action found for opening file with extension $fileExtension');
+          log('No action found for $fileExtension extension');
 
           String? contentText =
               "Oh...No! We don't support opening this type of file.";

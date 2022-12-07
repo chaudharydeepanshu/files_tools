@@ -1,27 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:rive/rive.dart';
 
-// class Loading extends StatelessWidget {
-//   const Loading({Key? key, required this.loadingText}) : super(key: key);
-//
-//   final String loadingText;
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Center(
-//       child: Column(
-//         mainAxisAlignment: MainAxisAlignment.center,
-//         children: [
-//           const CircularProgressIndicator(),
-//           const SizedBox(height: 16),
-//           Text(loadingText, style: Theme.of(context).textTheme.bodySmall),
-//         ],
-//       ),
-//     );
-//   }
-// }
-
+/// Widget for showing an loading animation using [RiveAnimation].
 class LoadingIndicator extends StatelessWidget {
+  /// Defining LoadingIndicator constructor.
   const LoadingIndicator({Key? key}) : super(key: key);
 
   @override
@@ -37,9 +19,12 @@ class LoadingIndicator extends StatelessWidget {
   }
 }
 
+/// Widget for showing loading state.
 class Loading extends StatelessWidget {
+  /// Defining Loading constructor.
   const Loading({Key? key, required this.loadingText}) : super(key: key);
 
+  /// Loading description text.
   final String loadingText;
 
   @override
@@ -47,7 +32,7 @@ class Loading extends StatelessWidget {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: [
+        children: <Widget>[
           const LoadingIndicator(),
           Text(loadingText, style: Theme.of(context).textTheme.bodySmall),
         ],

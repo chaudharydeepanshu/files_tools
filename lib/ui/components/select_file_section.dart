@@ -10,16 +10,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rive/rive.dart';
 
-enum SelectFileType { single, multiple, both }
-
+/// Widget for picking files and displaying input files.
 class SelectFilesCard extends StatelessWidget {
+  /// Defining SelectFilesCard constructor.
   const SelectFilesCard({
     Key? key,
     required this.files,
     required this.filePickModel,
   }) : super(key: key);
 
+  /// Takes input files.
   final List<InputFileModel> files;
+
+  /// Takes properties for files picking action.
   final FilePickModel filePickModel;
 
   @override
@@ -40,7 +43,7 @@ class SelectFilesCard extends StatelessWidget {
           padding: const EdgeInsets.all(16.0),
           child: Column(
             mainAxisSize: MainAxisSize.min,
-            children: [
+            children: <Widget>[
               const Icon(Icons.looks_one),
               const Divider(),
               files.isNotEmpty
@@ -61,21 +64,26 @@ class SelectFilesCard extends StatelessWidget {
   }
 }
 
+/// Widget for displaying files.
 class FilesSelected extends StatelessWidget {
+  /// Defining FilesSelected constructor.
   const FilesSelected({
     Key? key,
     required this.files,
     required this.filePickModel,
   }) : super(key: key);
 
+  /// Takes input files.
   final List<InputFileModel> files;
+
+  /// Takes properties for files picking action.
   final FilePickModel filePickModel;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       mainAxisSize: MainAxisSize.min,
-      children: [
+      children: <Widget>[
         Flexible(
           child: files.length > 1
               ? ReorderableFilesListView(files: files)
@@ -109,7 +117,7 @@ class FilesSelected extends StatelessWidget {
                 ref.watch(toolsScreensStateProvider).isFilePickProcessing;
             return isPickingFile
                 ? Column(
-                    children: [
+                    children: <Widget>[
                       const SizedBox(height: 10),
                       Text(
                         'Picking files please wait ...',
@@ -120,7 +128,7 @@ class FilesSelected extends StatelessWidget {
                   )
                 : filePickModel.multipleFilePickRequired && files.length == 1
                     ? Column(
-                        children: [
+                        children: <Widget>[
                           const SizedBox(height: 10),
                           Text(
                             'Please select at least one more file',
@@ -138,7 +146,7 @@ class FilesSelected extends StatelessWidget {
                             filePickModel.enableMultipleSelection &&
                                 files.length > 1
                         ? Column(
-                            children: [
+                            children: <Widget>[
                               const SizedBox(height: 10),
                               Text(
                                 'Long press on files to reorder them',
@@ -158,7 +166,7 @@ class FilesSelected extends StatelessWidget {
                 ref.watch(toolsScreensStateProvider).isFilePickProcessing;
             return Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
+              children: <Widget>[
                 if (filePickModel.multipleFilePickRequired ||
                     filePickModel.enableMultipleSelection)
                   Flexible(
@@ -173,7 +181,8 @@ class FilesSelected extends StatelessWidget {
                               readToolScreenStateProviderValue
                                   .mangePickFileAction(
                                 filePickModel: filePickModel.copyWith(
-                                    continuePicking: true),
+                                  continuePicking: true,
+                                ),
                               );
                             }
                           : null,
@@ -195,7 +204,7 @@ class FilesSelected extends StatelessWidget {
 
                             readToolScreenStateProviderValue
                                 .updateSelectedFiles(
-                              files: [],
+                              files: <InputFileModel>[],
                             );
                             Utility.clearTempDirectory(
                               clearCacheCommandFrom: 'Clear File Selection',
@@ -219,18 +228,21 @@ class FilesSelected extends StatelessWidget {
   }
 }
 
+/// Widget for displaying no files.
 class NoFilesSelected extends StatelessWidget {
+  /// Defining NoFilesSelected constructor.
   const NoFilesSelected({
     Key? key,
     required this.filePickModel,
   }) : super(key: key);
 
+  /// Takes properties for files picking action.
   final FilePickModel filePickModel;
 
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: [
+      children: <Widget>[
         Transform.scale(
           scale: 4.0,
           child: const SizedBox(
@@ -282,9 +294,12 @@ class NoFilesSelected extends StatelessWidget {
   }
 }
 
+/// Widget for displaying reorder able files.
 class ReorderableFilesListView extends StatefulWidget {
+  /// Defining ReorderableFilesListView constructor.
   const ReorderableFilesListView({super.key, required this.files});
 
+  /// Takes input files.
   final List<InputFileModel> files;
 
   @override
@@ -322,7 +337,7 @@ class _ReorderableFilesListViewState extends State<ReorderableFilesListView> {
           return Material(
             color: Colors.transparent,
             child: Stack(
-              children: [
+              children: <Widget>[
                 Positioned(
                   top: 0,
                   left: 0,
@@ -350,7 +365,7 @@ class _ReorderableFilesListViewState extends State<ReorderableFilesListView> {
       itemBuilder: (BuildContext context, int index) {
         return Column(
           key: Key('$index'),
-          children: [
+          children: <Widget>[
             Material(
               color: Colors.transparent,
               child: Consumer(

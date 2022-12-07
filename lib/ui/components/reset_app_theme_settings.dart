@@ -3,7 +3,9 @@ import 'package:files_tools/state/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+/// Widget for showing reset button to reset app theme settings.
 class ResetAppThemeSettings extends StatelessWidget {
+  /// Defining ResetAppThemeSettings constructor.
   const ResetAppThemeSettings({Key? key}) : super(key: key);
 
   @override

@@ -1,13 +1,23 @@
-import 'package:files_tools/ui/components/url_launcher.dart';
+import 'package:files_tools/utils/utility.dart';
 import 'package:flutter/material.dart';
 
+/// For showing a link button between a continuous long text.
 class LinkButton extends StatelessWidget {
-  const LinkButton(
-      {Key? key, required this.urlLabel, required this.url, this.urlIcon,})
-      : super(key: key);
+  /// Defining LinkButton constructor.
+  const LinkButton({
+    Key? key,
+    required this.urlLabel,
+    required this.url,
+    this.urlIcon,
+  }) : super(key: key);
 
+  /// Link button text.
   final String urlLabel;
+
+  /// Link button icon.
   final IconData? urlIcon;
+
+  /// Link url.
   final String url;
 
   @override
@@ -25,7 +35,7 @@ class LinkButton extends StatelessWidget {
               textStyle: Theme.of(context).textTheme.bodySmall,
             ),
             onPressed: () {
-              urlLauncher(url);
+              Utility.urlLauncher(url);
             },
             icon: Icon(
               urlIcon,
@@ -45,7 +55,7 @@ class LinkButton extends StatelessWidget {
               textStyle: Theme.of(context).textTheme.bodySmall,
             ),
             onPressed: () {
-              urlLauncher(url);
+              Utility.urlLauncher(url);
             },
             child: Text(urlLabel),
           );

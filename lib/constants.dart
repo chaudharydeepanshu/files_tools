@@ -10,10 +10,10 @@ String termsAndConditionsUrl =
 /// App source code url.
 String sourceCodeUrl = 'https://github.com/chaudharydeepanshu/files_tools';
 
-/// App author github account url.
+/// App creator github account url.
 String creatorGithubUrl = 'https://github.com/chaudharydeepanshu';
 
-/// App author linkedin account url.
+/// App creator linkedin account url.
 String creatorLinkedInUrl = 'https://www.linkedin.com/in/chaudhary-deepanshu/';
 
 /// Types of formats for a file size.

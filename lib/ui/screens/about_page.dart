@@ -1,6 +1,6 @@
 import 'package:files_tools/constants.dart';
 import 'package:files_tools/ui/components/link_button.dart';
-import 'package:files_tools/ui/components/url_launcher.dart';
+import 'package:files_tools/utils/utility.dart';
 import 'package:flutter/material.dart';
 
 /// It is the about screen widget of our application.
@@ -174,7 +174,7 @@ class AppCreator extends StatelessWidget {
                     ),
                     FilledButton.tonal(
                       onPressed: () {
-                        urlLauncher(creatorGithubUrl);
+                        Utility.urlLauncher(creatorGithubUrl);
                       },
                       child: Padding(
                         padding: const EdgeInsets.all(4.0),
@@ -201,7 +201,7 @@ class AppCreator extends StatelessWidget {
                     ),
                     FilledButton.tonal(
                       onPressed: () {
-                        urlLauncher(sourceCodeUrl);
+                        Utility.urlLauncher(sourceCodeUrl);
                       },
                       child: Padding(
                         padding: const EdgeInsets.all(4.0),

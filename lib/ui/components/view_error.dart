@@ -2,32 +2,43 @@ import 'package:files_tools/ui/components/custom_snack_bar.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 
+/// Widget for error icon.
 class ErrorIndicator extends StatelessWidget {
+  /// Defining ErrorIndicator constructor.
   const ErrorIndicator({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
-      children: [
+      children: <Widget>[
         Icon(Icons.error, color: Theme.of(context).colorScheme.error),
       ],
     );
   }
 }
 
+/// Widget for showing error state.
 class ShowError extends StatelessWidget {
-  const ShowError(
-      {Key? key,
-      required this.errorMessage,
-      required this.taskMessage,
-      this.allowBack = false,
-      required this.errorStackTrace,})
-      : super(key: key);
+  /// Defining ShowError constructor.
+  const ShowError({
+    Key? key,
+    required this.errorMessage,
+    required this.taskMessage,
+    this.allowBack = false,
+    required this.errorStackTrace,
+  }) : super(key: key);
 
+  /// Takes message describing the task for which the error occurred.
   final String taskMessage;
+
+  /// Takes message describing the error.
   final String errorMessage;
+
+  /// Takes error StackTrace.
   final StackTrace? errorStackTrace;
+
+  /// Decides if a back button should be shown or not.
   final bool allowBack;
 
   @override
@@ -35,7 +46,7 @@ class ShowError extends StatelessWidget {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: [
+        children: <Widget>[
           const ErrorIndicator(),
           const SizedBox(height: 16),
           Text(
@@ -72,7 +83,7 @@ class ShowError extends StatelessWidget {
           const SizedBox(height: 16),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [
+            children: <Widget>[
               if (allowBack)
                 FilledButton(
                   onPressed: () {
@@ -83,8 +94,10 @@ class ShowError extends StatelessWidget {
               TextButton(
                 onPressed: () async {
                   FirebaseCrashlytics.instance.recordError(
-                      'User Reported Error: $errorMessage', errorStackTrace,
-                      reason: 'Task Message: $taskMessage',);
+                    'User Reported Error: $errorMessage',
+                    errorStackTrace,
+                    reason: 'Task Message: $taskMessage',
+                  );
 
                   String? contentText = 'Error reported successfully';
                   TextStyle? textStyle = Theme.of(context).textTheme.bodySmall;
@@ -94,45 +107,6 @@ class ShowError extends StatelessWidget {
                     contentText: contentText,
                     textStyle: textStyle,
                   );
-
-                  // DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
-                  //
-                  // AndroidDeviceInfo androidDeviceInfo =
-                  //     await deviceInfo.androidInfo;
-                  //
-                  // String userDeviceInfo =
-                  //     '''version.securityPatch: ${androidDeviceInfo.version.securityPatch}
-                  //         version.sdkInt: ${androidDeviceInfo.version.sdkInt}
-                  //         version.release: ${androidDeviceInfo.version.release}
-                  //         version.previewSdkInt: ${androidDeviceInfo.version.previewSdkInt}
-                  //         version.incrementa: ${androidDeviceInfo.version.incremental}
-                  //         version.codename: ${androidDeviceInfo.version.codename}
-                  //         version.baseOS: ${androidDeviceInfo.version.baseOS}
-                  //         board: ${androidDeviceInfo.board}
-                  //         bootloader: ${androidDeviceInfo.bootloader}
-                  //         brand: ${androidDeviceInfo.brand}
-                  //         device: ${androidDeviceInfo.device}
-                  //         display: ${androidDeviceInfo.display}
-                  //         fingerprint: ${androidDeviceInfo.fingerprint}
-                  //         hardware: ${androidDeviceInfo.hardware}
-                  //         host: ${androidDeviceInfo.host}
-                  //         id: ${androidDeviceInfo.id}
-                  //         manufacturer: ${androidDeviceInfo.manufacturer}
-                  //         model: ${androidDeviceInfo.model}
-                  //         product: ${androidDeviceInfo.product}
-                  //         supported32BitAbis: ${androidDeviceInfo.supported32BitAbis}
-                  //         supported64BitAbis: ${androidDeviceInfo.supported64BitAbis}
-                  //         supportedAbis: ${androidDeviceInfo.supportedAbis}
-                  //         tags: ${androidDeviceInfo.tags}
-                  //         type: ${androidDeviceInfo.type}
-                  //         isPhysicalDevice: ${androidDeviceInfo.isPhysicalDevice}
-                  //         systemFeatures: ${androidDeviceInfo.systemFeatures}
-                  //         ''';
-                  //
-                  // var url =
-                  //     'mailto:pureinfoapps@gmail.com?subject=Files Tools Bug Report&body=Error Message:\n$errorMessage\n\nUser Device Info:\n$userDeviceInfo';
-                  //
-                  // await urlLauncher(url);
                 },
                 child: const Text('Report Error'),
               ),

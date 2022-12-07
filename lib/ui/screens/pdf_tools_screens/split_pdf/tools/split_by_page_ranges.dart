@@ -6,9 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class SplitByPageRanges extends StatelessWidget {
-  const SplitByPageRanges(
-      {Key? key, required this.pdfPageCount, required this.file,})
-      : super(key: key);
+  const SplitByPageRanges({
+    Key? key,
+    required this.pdfPageCount,
+    required this.file,
+  }) : super(key: key);
 
   final int pdfPageCount;
   final InputFileModel file;
@@ -33,9 +35,11 @@ class SplitByPageRanges extends StatelessWidget {
 }
 
 class SplitByPageRangesActionCard extends StatelessWidget {
-  const SplitByPageRangesActionCard(
-      {Key? key, required this.pdfPageCount, required this.file,})
-      : super(key: key);
+  const SplitByPageRangesActionCard({
+    Key? key,
+    required this.pdfPageCount,
+    required this.file,
+  }) : super(key: key);
 
   final int pdfPageCount;
   final InputFileModel file;
@@ -95,41 +99,43 @@ class _PageRangesActionBodyState extends State<PageRangesActionBody> {
       mainAxisSize: MainAxisSize.min,
       children: [
         Flexible(
-            child: pageRangesControllers.length > 1
-                ? ReorderablePageRangesListView(
-                    pageRangesControllers: pageRangesControllers,
-                    pdfPageCount: widget.pdfPageCount,
-                    isRemoveDuplicates: isRemoveDuplicates,
-                    isForceAscending: isForceAscending,
-                    onUpdatePageRangeControllers:
-                        (List<TextEditingController> value) {
-                      setState(() {
-                        pageRangesControllers = value;
-                      });
-                    },
-                  )
-                : PageRangeTile(
-                    pageRangeController: pageRangesControllers[0],
-                    pdfPageCount: widget.pdfPageCount,
-                    isRemoveDuplicates: isRemoveDuplicates,
-                    isForceAscending: isForceAscending,
-                    onRemovePageRangeController: (TextEditingController value) {
-                      setState(() {
-                        pageRangesControllers.remove(value);
-                      });
-                    },
-                  ),),
+          child: pageRangesControllers.length > 1
+              ? ReorderablePageRangesListView(
+                  pageRangesControllers: pageRangesControllers,
+                  pdfPageCount: widget.pdfPageCount,
+                  isRemoveDuplicates: isRemoveDuplicates,
+                  isForceAscending: isForceAscending,
+                  onUpdatePageRangeControllers:
+                      (List<TextEditingController> value) {
+                    setState(() {
+                      pageRangesControllers = value;
+                    });
+                  },
+                )
+              : PageRangeTile(
+                  pageRangeController: pageRangesControllers[0],
+                  pdfPageCount: widget.pdfPageCount,
+                  isRemoveDuplicates: isRemoveDuplicates,
+                  isForceAscending: isForceAscending,
+                  onRemovePageRangeController: (TextEditingController value) {
+                    setState(() {
+                      pageRangesControllers.remove(value);
+                    });
+                  },
+                ),
+        ),
         Column(
           // mainAxisSize: MainAxisSize.min,
           children: [
             OutlinedButton.icon(
-                onPressed: () {
-                  setState(() {
-                    pageRangesControllers.add(TextEditingController());
-                  });
-                },
-                icon: const Icon(Icons.add),
-                label: const Text('Add more'),),
+              onPressed: () {
+                setState(() {
+                  pageRangesControllers.add(TextEditingController());
+                });
+              },
+              icon: const Icon(Icons.add),
+              label: const Text('Add more'),
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
@@ -159,43 +165,49 @@ class _PageRangesActionBodyState extends State<PageRangesActionBody> {
             Column(
               children: [
                 CheckboxListTile(
-                    tileColor: Theme.of(context).colorScheme.surfaceVariant,
-                    // contentPadding: EdgeInsets.zero,
-                    visualDensity: VisualDensity.compact,
-                    title: Text('Remove repeats in range',
-                        style: Theme.of(context).textTheme.bodyMedium,),
-                    value: isRemoveDuplicates,
-                    onChanged: (bool? value) {
-                      // isRemoveDuplicates =
-                      //     value ?? !isRemoveDuplicates;
-                      // pageRangeStringList = getPageRangeStringList(
-                      //     value: pageNumbersController.value.text,
-                      //     pdfPageCount: widget.pdfPageCount,
-                      //     isRemoveDuplicates: isRemoveDuplicates,
-                      //     isForceAscending: isForceAscending);
-                      // setState(() {
-                      //   sanitizedData = pageRangeStringList;
-                      // });
-                    },),
+                  tileColor: Theme.of(context).colorScheme.surfaceVariant,
+                  // contentPadding: EdgeInsets.zero,
+                  visualDensity: VisualDensity.compact,
+                  title: Text(
+                    'Remove repeats in range',
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                  value: isRemoveDuplicates,
+                  onChanged: (bool? value) {
+                    // isRemoveDuplicates =
+                    //     value ?? !isRemoveDuplicates;
+                    // pageRangeStringList = getPageRangeStringList(
+                    //     value: pageNumbersController.value.text,
+                    //     pdfPageCount: widget.pdfPageCount,
+                    //     isRemoveDuplicates: isRemoveDuplicates,
+                    //     isForceAscending: isForceAscending);
+                    // setState(() {
+                    //   sanitizedData = pageRangeStringList;
+                    // });
+                  },
+                ),
                 const SizedBox(height: 10),
                 CheckboxListTile(
-                    tileColor: Theme.of(context).colorScheme.surfaceVariant,
-                    // contentPadding: EdgeInsets.zero,
-                    visualDensity: VisualDensity.compact,
-                    title: Text('Force Ascending',
-                        style: Theme.of(context).textTheme.bodyMedium,),
-                    value: isForceAscending,
-                    onChanged: (bool? value) {
-                      // isForceAscending = value ?? !isForceAscending;
-                      // pageRangeStringList = getPageRangeStringList(
-                      //     value: pageNumbersController.value.text,
-                      //     pdfPageCount: widget.pdfPageCount,
-                      //     isRemoveDuplicates: isRemoveDuplicates,
-                      //     isForceAscending: isForceAscending);
-                      // setState(() {
-                      //   sanitizedData = pageRangeStringList;
-                      // });
-                    },),
+                  tileColor: Theme.of(context).colorScheme.surfaceVariant,
+                  // contentPadding: EdgeInsets.zero,
+                  visualDensity: VisualDensity.compact,
+                  title: Text(
+                    'Force Ascending',
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                  value: isForceAscending,
+                  onChanged: (bool? value) {
+                    // isForceAscending = value ?? !isForceAscending;
+                    // pageRangeStringList = getPageRangeStringList(
+                    //     value: pageNumbersController.value.text,
+                    //     pdfPageCount: widget.pdfPageCount,
+                    //     isRemoveDuplicates: isRemoveDuplicates,
+                    //     isForceAscending: isForceAscending);
+                    // setState(() {
+                    //   sanitizedData = pageRangeStringList;
+                    // });
+                  },
+                ),
                 const SizedBox(height: 10),
                 Row(
                   children: [
@@ -514,14 +526,14 @@ class _PageRangesActionBodyState extends State<PageRangesActionBody> {
 // }
 
 class PageRangeTile extends StatefulWidget {
-  const PageRangeTile(
-      {Key? key,
-      required this.pageRangeController,
-      required this.pdfPageCount,
-      required this.isRemoveDuplicates,
-      required this.isForceAscending,
-      required this.onRemovePageRangeController,})
-      : super(key: key);
+  const PageRangeTile({
+    Key? key,
+    required this.pageRangeController,
+    required this.pdfPageCount,
+    required this.isRemoveDuplicates,
+    required this.isForceAscending,
+    required this.onRemovePageRangeController,
+  }) : super(key: key);
 
   final TextEditingController pageRangeController;
   final int pdfPageCount;
@@ -574,10 +586,11 @@ class _PageRangeTileState extends State<PageRangeTile> {
         ],
         onChanged: (String value) {
           pageRangeStringList = getPageRangeStringList(
-              value: value,
-              pdfPageCount: widget.pdfPageCount,
-              isRemoveDuplicates: widget.isRemoveDuplicates,
-              isForceAscending: widget.isForceAscending,);
+            value: value,
+            pdfPageCount: widget.pdfPageCount,
+            isRemoveDuplicates: widget.isRemoveDuplicates,
+            isForceAscending: widget.isForceAscending,
+          );
           setState(() {
             sanitizedData = pageRangeStringList;
           });
@@ -614,13 +627,14 @@ class _PageRangeTileState extends State<PageRangeTile> {
 }
 
 class ReorderablePageRangesListView extends StatefulWidget {
-  const ReorderablePageRangesListView(
-      {super.key,
-      required this.pageRangesControllers,
-      required this.pdfPageCount,
-      required this.isRemoveDuplicates,
-      required this.isForceAscending,
-      required this.onUpdatePageRangeControllers,});
+  const ReorderablePageRangesListView({
+    super.key,
+    required this.pageRangesControllers,
+    required this.pdfPageCount,
+    required this.isRemoveDuplicates,
+    required this.isForceAscending,
+    required this.onUpdatePageRangeControllers,
+  });
 
   final List<TextEditingController> pageRangesControllers;
   final int pdfPageCount;
@@ -653,7 +667,10 @@ class _ReorderablePageRangesListViewState
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
 
     Widget proxyDecorator(
-        Widget child, int index, Animation<double> animation,) {
+      Widget child,
+      int index,
+      Animation<double> animation,
+    ) {
       return AnimatedBuilder(
         animation: animation,
         builder: (BuildContext context, Widget? child) {
@@ -727,11 +744,12 @@ class _ReorderablePageRangesListViewState
   }
 }
 
-List<String> getPageRangeStringList(
-    {required String? value,
-    required int pdfPageCount,
-    required bool isRemoveDuplicates,
-    required bool isForceAscending,}) {
+List<String> getPageRangeStringList({
+  required String? value,
+  required int pdfPageCount,
+  required bool isRemoveDuplicates,
+  required bool isForceAscending,
+}) {
   List<String> pageRangeStringList = [];
   pageRangeStringList =
       pageRangeSanitized(value: value, pdfPageCount: pdfPageCount);
@@ -766,8 +784,9 @@ String strip(String str, String charactersToRemove) {
   return newStr;
 }
 
-List<String> enableReverseRangeForSanitizedRange(
-    {required List<String> sanitizedPageRange,}) {
+List<String> enableReverseRangeForSanitizedRange({
+  required List<String> sanitizedPageRange,
+}) {
   List<String> tempPageRangeStringList = [];
   for (int i = 0; i < sanitizedPageRange.length; i++) {
     String pageRangeString = sanitizedPageRange[i];
@@ -790,8 +809,10 @@ List<String> enableReverseRangeForSanitizedRange(
   return tempPageRangeStringList;
 }
 
-List<String> pageRangeSanitized(
-    {required String? value, required int pdfPageCount,}) {
+List<String> pageRangeSanitized({
+  required String? value,
+  required int pdfPageCount,
+}) {
   List<String> pageRangeStringList = [];
   if (value != null) {
     String newStrippedValue = strip(value, r'-,');
@@ -838,16 +859,19 @@ List<String> pageRangeSanitized(
   return pageRangeStringList;
 }
 
-String? pageRangeGeneralValidator(
-    {required List<String> pageRangeStringList, required int pdfPageCount,}) {
+String? pageRangeGeneralValidator({
+  required List<String> pageRangeStringList,
+  required int pdfPageCount,
+}) {
   if (pageRangeStringList.isEmpty) {
     return 'Enter valid number & range from 1 to $pdfPageCount';
   }
   return null;
 }
 
-List<String> pageRangeGeneralSanitized(
-    {required List<String> sanitizedPageRange,}) {
+List<String> pageRangeGeneralSanitized({
+  required List<String> sanitizedPageRange,
+}) {
   List<String> tempPageRangeStringList = [];
   for (int i = 0; i < sanitizedPageRange.length; i++) {
     String pageRangeString = sanitizedPageRange[i];
@@ -871,15 +895,17 @@ List<String> pageRangeGeneralSanitized(
 
   tempPageRangeStringList = tempPageRangeStringList.toList();
 
-  List<int> numList = tempPageRangeStringList.map((String e) => int.parse(e)).toList();
+  List<int> numList =
+      tempPageRangeStringList.map((String e) => int.parse(e)).toList();
 
   tempPageRangeStringList = createListOfRangesFromNumbers(numList: numList);
 
   return tempPageRangeStringList;
 }
 
-List<String> pageRangeDuplicatesSanitized(
-    {required List<String> sanitizedPageRange,}) {
+List<String> pageRangeDuplicatesSanitized({
+  required List<String> sanitizedPageRange,
+}) {
   List<String> tempPageRangeStringList = [];
   for (int i = 0; i < sanitizedPageRange.length; i++) {
     String pageRangeString = sanitizedPageRange[i];
@@ -903,15 +929,17 @@ List<String> pageRangeDuplicatesSanitized(
 
   tempPageRangeStringList = tempPageRangeStringList.toSet().toList();
 
-  List<int> numList = tempPageRangeStringList.map((String e) => int.parse(e)).toList();
+  List<int> numList =
+      tempPageRangeStringList.map((String e) => int.parse(e)).toList();
 
   tempPageRangeStringList = createListOfRangesFromNumbers(numList: numList);
 
   return tempPageRangeStringList;
 }
 
-List<String> pageRangeAscendingSanitized(
-    {required List<String> sanitizedPageRange,}) {
+List<String> pageRangeAscendingSanitized({
+  required List<String> sanitizedPageRange,
+}) {
   List<String> tempPageRangeStringList = [];
   for (int i = 0; i < sanitizedPageRange.length; i++) {
     String pageRangeString = sanitizedPageRange[i];
@@ -935,7 +963,8 @@ List<String> pageRangeAscendingSanitized(
 
   tempPageRangeStringList = tempPageRangeStringList.toList();
 
-  List<int> numList = tempPageRangeStringList.map((String e) => int.parse(e)).toList();
+  List<int> numList =
+      tempPageRangeStringList.map((String e) => int.parse(e)).toList();
   numList.sort();
 
   tempPageRangeStringList = createListOfRangesFromNumbers(numList: numList);

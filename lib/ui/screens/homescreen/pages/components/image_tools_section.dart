@@ -37,7 +37,6 @@ class ImageToolsPage extends StatelessWidget {
 }
 
 class ImageToolsPageArguments {
-
   ImageToolsPageArguments({required this.cardsDetails});
   final List<GridCardDetail> cardsDetails;
 }

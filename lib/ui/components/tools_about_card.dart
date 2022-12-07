@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
 class AboutActionCard extends StatelessWidget {
-  const AboutActionCard(
-      {Key? key,
-      required this.aboutText,
-      this.aboutTextBody,
-      this.aboutTextBodyTitle,})
-      : super(key: key);
+  const AboutActionCard({
+    Key? key,
+    required this.aboutText,
+    this.aboutTextBody,
+    this.aboutTextBodyTitle,
+  }) : super(key: key);
 
   final String aboutText;
   final String? aboutTextBody;
@@ -49,7 +49,9 @@ class AboutActionCard extends StatelessWidget {
                   ),
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 16.0, vertical: 10.0,),
+                      horizontal: 16.0,
+                      vertical: 10.0,
+                    ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
@@ -61,7 +63,8 @@ class AboutActionCard extends StatelessWidget {
                                 .textTheme
                                 .bodyMedium
                                 ?.copyWith(
-                                    decoration: TextDecoration.underline,),
+                                  decoration: TextDecoration.underline,
+                                ),
                             textAlign: TextAlign.center,
                           ),
                         Text(

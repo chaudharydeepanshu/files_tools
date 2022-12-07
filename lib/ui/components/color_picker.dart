@@ -1,17 +1,31 @@
-// Define custom colors. The 'guide' color values are from
-// https://material.io/design/color/the-color-system.html#color-theme-creation
 import 'package:flex_color_picker/flex_color_picker.dart';
 import 'package:flutter/material.dart';
 
+/// Define custom colors. The 'guide' color values are from
+/// https://material.io/design/color/the-color-system.html#color-theme-creation
+
+/// Guide primary color.
 const Color guidePrimary = Color(0xFF6200EE);
+
+/// Guide primary variant color.
 const Color guidePrimaryVariant = Color(0xFF3700B3);
+
+/// Guide secondary color.
 const Color guideSecondary = Color(0xFF03DAC6);
+
+/// Guide secondary variant color.
 const Color guideSecondaryVariant = Color(0xFF018786);
+
+/// Guide error color.
 const Color guideError = Color(0xFFB00020);
+
+/// Guide dark error color.
 const Color guideErrorDark = Color(0xFFCF6679);
+
+/// Blue blues color.
 const Color blueBlues = Color(0xFF174378);
 
-// Make a custom ColorSwatch to name map from the above custom colors.
+/// Make a custom ColorSwatch to name map from the above custom colors.
 final Map<ColorSwatch<Object>, String> colorsNameMap =
     <ColorSwatch<Object>, String>{
   ColorTools.createPrimarySwatch(guidePrimary): 'Guide Purple',
@@ -23,10 +37,12 @@ final Map<ColorSwatch<Object>, String> colorsNameMap =
   ColorTools.createPrimarySwatch(blueBlues): 'Blue blues',
 };
 
-Future<bool> colorPickerDialog(
-    {required BuildContext context,
-    required Color dialogPickerColor,
-    required ValueChanged<Color> onColorChanged,}) async {
+/// Dialog for color picking in app.
+Future<bool> colorPickerDialog({
+  required BuildContext context,
+  required Color dialogPickerColor,
+  required ValueChanged<Color> onColorChanged,
+}) async {
   return ColorPicker(
     // Use the dialogPickerColor as start color.
     color: dialogPickerColor,
