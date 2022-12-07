@@ -19,7 +19,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 ///
 /// Use it in place of [kDebugMode] through out the app to check for debug mode.
 /// Useful in faking production mode in debug mode by setting it to false.
-bool isInDebugMode = kDebugMode;
+bool isInDebugMode =
+// false;
+    kDebugMode;
 
 /// Key used when building the Navigator.
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
@@ -60,11 +62,15 @@ void main() async {
       if (kDebugMode) {
         // Disable Crashlytics collection while doing every day development.
         await crashlyticsInstance.setCrashlyticsCollectionEnabled(false);
+        await analyticsInstance.setAnalyticsCollectionEnabled(false);
         await analyticsInstance.setUserId(id: 'debugModeId');
       } else {
         // Enable Crashlytics collection based on user preference in production.
         await crashlyticsInstance.setCrashlyticsCollectionEnabled(
           Preferences.crashlyticsCollectionStatus,
+        );
+        await analyticsInstance.setAnalyticsCollectionEnabled(
+          Preferences.analyticsCollectionStatus,
         );
         await analyticsInstance.setUserId(id: 'prodModeId');
       }
@@ -130,6 +136,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // throw Exception("This is a test crash!");
     return Consumer(
       builder: (BuildContext context, WidgetRef ref, Widget? child) {
         // Getting ThemeData and ThemeMode from [AppThemeState] ChangeNotifier

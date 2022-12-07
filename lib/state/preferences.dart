@@ -1,3 +1,4 @@
+import 'package:files_tools/main.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -21,6 +22,9 @@ class Preferences {
   /// Crashlytics Collection enable status SharedPref key.
   static String crashlyticsCollectionStatusPerfKey =
       'crashlyticsCollectionStatus';
+
+  /// Analytics Collection enable status SharedPref key.
+  static String analyticsCollectionStatusPerfKey = 'analyticsCollectionStatus';
 
   /// SharedPreferences Instance initializer.
   static Future<void> initSharedPreferences() async {
@@ -80,14 +84,36 @@ class Preferences {
   /// For persisting crashlytics collection status in SharedPreferences.
   static Future<bool> persistCrashlyticsCollectionStatus(
     final bool crashlyticsCollectionStatus,
-  ) =>
-      sharedPreferencesInstance.setBool(
-        crashlyticsCollectionStatusPerfKey,
-        crashlyticsCollectionStatus,
-      );
+  ) {
+    crashlyticsInstance.setCrashlyticsCollectionEnabled(
+      crashlyticsCollectionStatus,
+    );
+    return sharedPreferencesInstance.setBool(
+      crashlyticsCollectionStatusPerfKey,
+      crashlyticsCollectionStatus,
+    );
+  }
 
   /// For getting crashlytics collection status from SharedPreferences.
   static bool get crashlyticsCollectionStatus =>
       sharedPreferencesInstance.getBool(crashlyticsCollectionStatusPerfKey) ??
+      true;
+
+  /// For persisting analytics collection status in SharedPreferences.
+  static Future<bool> persistAnalyticsCollectionStatus(
+    final bool analyticsCollectionStatus,
+  ) {
+    analyticsInstance.setAnalyticsCollectionEnabled(
+      analyticsCollectionStatus,
+    );
+    return sharedPreferencesInstance.setBool(
+      analyticsCollectionStatusPerfKey,
+      analyticsCollectionStatus,
+    );
+  }
+
+  /// For getting analytics collection status from SharedPreferences.
+  static bool get analyticsCollectionStatus =>
+      sharedPreferencesInstance.getBool(analyticsCollectionStatusPerfKey) ??
       true;
 }

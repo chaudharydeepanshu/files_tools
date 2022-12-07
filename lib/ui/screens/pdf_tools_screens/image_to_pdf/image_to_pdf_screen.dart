@@ -60,8 +60,8 @@ class _ImageToPDFPageState extends State<ImageToPDFPage> {
                     .select((ToolsScreensState value) => value.inputFiles),
               );
               return ListView(
+                padding: const EdgeInsets.symmetric(vertical: 16),
                 children: <Widget>[
-                  const SizedBox(height: 16),
                   SelectFilesCard(
                     files: watchToolScreenStateProviderValue.inputFiles,
                     filePickModel: const FilePickModel(
