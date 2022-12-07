@@ -39,9 +39,12 @@ class LinkButton extends StatelessWidget {
             },
             icon: Icon(
               urlIcon,
-              size: 12,
+              size: Theme.of(context).textTheme.bodySmall?.fontSize,
             ),
-            label: Text(urlLabel),
+            label: Text(
+              urlLabel,
+              textAlign: TextAlign.center,
+            ),
           )
         : TextButton(
             style: TextButton.styleFrom(

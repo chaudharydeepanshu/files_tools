@@ -86,6 +86,7 @@ class HoledScaffold extends StatelessWidget {
           children: <Widget>[
             Expanded(
               child: Container(
+                clipBehavior: Clip.antiAlias,
                 // height: 300,
                 width: 300,
                 decoration: BoxDecoration(
@@ -100,6 +101,7 @@ class HoledScaffold extends StatelessWidget {
             ),
             Expanded(
               child: Container(
+                clipBehavior: Clip.antiAlias,
                 // height: 300,
                 width: 300,
                 decoration: BoxDecoration(
@@ -512,7 +514,8 @@ class MovingToolsList extends StatelessWidget {
         blendMode: BlendMode.dstOut,
         child: LayoutBuilder(
           builder: (BuildContext buildContext, BoxConstraints boxConstraints) {
-            double viewportFraction = 1 / (boxConstraints.maxHeight / 100);
+            double viewportFraction = 1 /
+                (boxConstraints.maxHeight / (boxConstraints.maxHeight / 2.5));
             return CarouselSlider.builder(
               options: CarouselOptions(
                 pageSnapping: false,

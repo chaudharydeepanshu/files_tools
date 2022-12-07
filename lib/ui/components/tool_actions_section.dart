@@ -29,7 +29,10 @@ class ToolActionsCard extends StatelessWidget {
                 itemBuilder: (BuildContext context, int index) {
                   return FilledButton(
                     onPressed: toolActions[index].actionOnTap,
-                    child: Text(toolActions[index].actionText),
+                    child: Text(
+                      toolActions[index].actionText,
+                      textAlign: TextAlign.center,
+                    ),
                   );
                 },
                 separatorBuilder: (BuildContext context, int index) {

@@ -122,6 +122,7 @@ class FilesSelected extends StatelessWidget {
                       Text(
                         'Picking files please wait ...',
                         style: Theme.of(context).textTheme.bodySmall,
+                        textAlign: TextAlign.center,
                       ),
                       const Divider()
                     ],
@@ -138,6 +139,7 @@ class FilesSelected extends StatelessWidget {
                                 ?.copyWith(
                                   color: Theme.of(context).colorScheme.error,
                                 ),
+                            textAlign: TextAlign.center,
                           ),
                           const Divider()
                         ],
@@ -151,6 +153,7 @@ class FilesSelected extends StatelessWidget {
                               Text(
                                 'Long press on files to reorder them',
                                 style: Theme.of(context).textTheme.bodySmall,
+                                textAlign: TextAlign.center,
                               ),
                               const Divider()
                             ],
@@ -260,6 +263,7 @@ class NoFilesSelected extends StatelessWidget {
               ? 'Please select some files'
               : 'Please select a file',
           style: Theme.of(context).textTheme.bodySmall,
+          textAlign: TextAlign.center,
         ),
         Consumer(
           builder: (BuildContext context, WidgetRef ref, Widget? child) {
@@ -284,6 +288,7 @@ class NoFilesSelected extends StatelessWidget {
                         filePickModel.enableMultipleSelection
                     ? 'Select files'
                     : 'Select file',
+                textAlign: TextAlign.center,
               ),
               icon: const Icon(Icons.upload_file),
             );

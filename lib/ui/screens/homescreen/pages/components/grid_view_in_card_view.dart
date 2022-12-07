@@ -83,22 +83,29 @@ class GridViewInCardSection extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: gridCardsDetails.isNotEmpty
-                    ? GridView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        gridDelegate:
-                            const SliverGridDelegateWithMaxCrossAxisExtent(
-                          maxCrossAxisExtent: 250,
-                          mainAxisExtent: 100,
-                          mainAxisSpacing: 8,
-                          crossAxisSpacing: 8,
-                        ),
-                        itemCount: gridCardsDetails.length <= 8
-                            ? gridCardsDetails.length
-                            : 8,
-                        itemBuilder: (BuildContext context, int index) {
-                          return GridViewCard(
-                            gridCardDetail: gridCardsDetails[index],
+                    ? LayoutBuilder(
+                        builder:
+                            (BuildContext context, BoxConstraints constraints) {
+                          double maxCrossAxisExtent = constraints.maxWidth /
+                              (constraints.maxWidth / 280);
+                          return GridView.builder(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            gridDelegate:
+                                SliverGridDelegateWithMaxCrossAxisExtent(
+                              maxCrossAxisExtent: maxCrossAxisExtent,
+                              mainAxisExtent: 100,
+                              mainAxisSpacing: 8,
+                              crossAxisSpacing: 8,
+                            ),
+                            itemCount: gridCardsDetails.length <= 8
+                                ? gridCardsDetails.length
+                                : 8,
+                            itemBuilder: (BuildContext context, int index) {
+                              return GridViewCard(
+                                gridCardDetail: gridCardsDetails[index],
+                              );
+                            },
                           );
                         },
                       )
@@ -185,6 +192,10 @@ class GridViewCard extends StatelessWidget {
                 child: Container(
                   decoration: BoxDecoration(
                     color: Theme.of(context).colorScheme.surfaceVariant,
+                    borderRadius: const BorderRadius.only(
+                      bottomLeft: Radius.circular(12),
+                      bottomRight: Radius.circular(12),
+                    ),
                   ),
                   child: gridCardDetail.cardOnTap == null
                       ? Text(

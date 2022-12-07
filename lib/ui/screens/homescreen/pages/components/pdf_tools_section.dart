@@ -19,18 +19,24 @@ class PDFToolsPage extends StatelessWidget {
         title: const Text('PDF Tools'),
         centerTitle: true,
       ),
-      body: GridView.builder(
-        gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-          maxCrossAxisExtent: 200,
-          mainAxisExtent: 100,
-          mainAxisSpacing: 8,
-          crossAxisSpacing: 8,
-        ),
-        padding: const EdgeInsets.all(16.0),
-        itemCount: cardsDetails.length,
-        itemBuilder: (BuildContext context, int index) {
-          return GridViewCard(
-            gridCardDetail: cardsDetails[index],
+      body: LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints constraints) {
+          double maxCrossAxisExtent =
+              constraints.maxWidth / (constraints.maxWidth / 280);
+          return GridView.builder(
+            gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+              maxCrossAxisExtent: maxCrossAxisExtent,
+              mainAxisExtent: 100,
+              mainAxisSpacing: 8,
+              crossAxisSpacing: 8,
+            ),
+            padding: const EdgeInsets.all(16.0),
+            itemCount: cardsDetails.length,
+            itemBuilder: (BuildContext context, int index) {
+              return GridViewCard(
+                gridCardDetail: cardsDetails[index],
+              );
+            },
           );
         },
       ),

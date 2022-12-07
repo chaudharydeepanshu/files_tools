@@ -35,7 +35,7 @@ class AppDrawer extends StatelessWidget {
                             children: <Widget>[
                               Flexible(
                                 child: Image.asset(
-                                  'assets/app_icon.png',
+                                  'assets/app_icon_compressed.png',
                                 ),
                               ),
                               Text(
@@ -94,9 +94,12 @@ class AppDrawer extends StatelessWidget {
                   children: <Widget>[
                     const Divider(height: 0),
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 8.0,
+                        horizontal: 5,
+                      ),
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: <Widget>[
                           Flexible(
                             child: LinkButton(
@@ -110,7 +113,7 @@ class AppDrawer extends StatelessWidget {
                           ),
                           Flexible(
                             child: LinkButton(
-                              urlLabel: 'Terms and Conditions',
+                              urlLabel: 'Terms & Conditions',
                               urlIcon: Icons.gavel,
                               url: termsAndConditionsUrl,
                             ),
