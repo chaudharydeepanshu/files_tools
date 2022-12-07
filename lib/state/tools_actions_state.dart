@@ -122,7 +122,7 @@ class ToolsActionsState extends ChangeNotifier {
 
   /// [ToolAction.mergePdfs] action for merging multiple PDFs.
   Future<void> mangeMergePdfFileAction({
-    required List<InputFileModel> sourceFiles,
+    required final List<InputFileModel> sourceFiles,
   }) async {
     // Clearing any leftover output files.
     _outputFiles.clear();
@@ -163,13 +163,13 @@ class ToolsActionsState extends ChangeNotifier {
   /// [ToolAction.splitPdfByPageCount], [ToolAction.splitPdfByPageNumbers],
   /// [ToolAction.extractPdfByPageRange], [ToolAction.splitPdfByPageRanges]
   Future<void> mangeSplitPdfFileAction({
-    required ToolAction toolAction,
-    required InputFileModel sourceFile,
-    int? pageCount,
-    int? byteSize,
-    List<int>? pageNumbers,
-    List<String>? pageRanges,
-    String? pageRange,
+    required final ToolAction toolAction,
+    required final InputFileModel sourceFile,
+    final int? pageCount,
+    final int? byteSize,
+    final List<int>? pageNumbers,
+    final List<String>? pageRanges,
+    final String? pageRange,
   }) async {
     // Clearing any leftover output files.
     _outputFiles.clear();
@@ -261,11 +261,11 @@ class ToolsActionsState extends ChangeNotifier {
   /// [ToolAction.modifyPdf] for rotating, deleting & reordering PDF pages.
   /// [ToolAction.extractPdfByPageSelection] for extracting chosen PDF pages.
   Future<void> mangeModifyPdfFileAction({
-    required ToolAction toolAction,
-    required InputFileModel sourceFile,
-    List<PageRotationInfo>? pagesRotationInfo,
-    List<int>? pageNumbersForReorder,
-    List<int>? pageNumbersForDeleter,
+    required final ToolAction toolAction,
+    required final InputFileModel sourceFile,
+    final List<PageRotationInfo>? pagesRotationInfo,
+    final List<int>? pageNumbersForReorder,
+    final List<int>? pageNumbersForDeleter,
   }) async {
     // Clearing any leftover output files.
     _outputFiles.clear();
@@ -310,10 +310,10 @@ class ToolsActionsState extends ChangeNotifier {
   /// For tools actions:
   /// [ToolAction.convertPdfToImage] for converting PDF pages to images.
   Future<void> mangeConvertPdfFileAction({
-    required ToolAction toolAction,
-    required InputFileModel sourceFile,
-    required List<PdfPageModel> selectedPages,
-    double? imageScaling,
+    required final ToolAction toolAction,
+    required final InputFileModel sourceFile,
+    required final List<PdfPageModel> selectedPages,
+    final double? imageScaling,
   }) async {
     // Clearing any leftover output files.
     _outputFiles.clear();
@@ -362,10 +362,10 @@ class ToolsActionsState extends ChangeNotifier {
 
   /// [ToolAction.compressPdf] action for compressing PDF.
   Future<void> mangeCompressPdfFileAction({
-    required InputFileModel sourceFile,
-    double? imageScale,
-    int? imageQuality,
-    bool? unEmbedFonts,
+    required final InputFileModel sourceFile,
+    final double? imageScale,
+    final int? imageQuality,
+    final bool? unEmbedFonts,
   }) async {
     // Clearing any leftover output files.
     _outputFiles.clear();
@@ -407,14 +407,14 @@ class ToolsActionsState extends ChangeNotifier {
 
   /// [ToolAction.watermarkPdf] action for watermarking PDF.
   Future<void> mangeWatermarkPdfFileAction({
-    required InputFileModel sourceFile,
-    required String text,
-    double? fontSize,
-    WatermarkLayer? watermarkLayer,
-    double? opacity,
-    double? rotationAngle,
-    Color? watermarkColor,
-    PositionType? positionType,
+    required final InputFileModel sourceFile,
+    required final String text,
+    final double? fontSize,
+    final WatermarkLayer? watermarkLayer,
+    final double? opacity,
+    final double? rotationAngle,
+    final Color? watermarkColor,
+    final PositionType? positionType,
   }) async {
     // Clearing any leftover output files.
     _outputFiles.clear();
@@ -460,23 +460,23 @@ class ToolsActionsState extends ChangeNotifier {
 
   /// [ToolAction.encryptPdf] action for encrypting PDF.
   Future<void> mangeEncryptPdfFileAction({
-    required InputFileModel sourceFile,
-    String? ownerPassword,
-    String? userPassword,
-    bool? allowPrinting,
-    bool? allowModifyContents,
-    bool? allowCopy,
-    bool? allowModifyAnnotations,
-    bool? allowFillIn,
-    bool? allowScreenReaders,
-    bool? allowAssembly,
-    bool? allowDegradedPrinting,
-    bool? standardEncryptionAES40,
-    bool? standardEncryptionAES128,
-    bool? encryptionAES128,
-    bool? encryptionAES256,
-    bool? encryptEmbeddedFilesOnly,
-    bool? doNotEncryptMetadata,
+    required final InputFileModel sourceFile,
+    final String? ownerPassword,
+    final String? userPassword,
+    final bool? allowPrinting,
+    final bool? allowModifyContents,
+    final bool? allowCopy,
+    final bool? allowModifyAnnotations,
+    final bool? allowFillIn,
+    final bool? allowScreenReaders,
+    final bool? allowAssembly,
+    final bool? allowDegradedPrinting,
+    final bool? standardEncryptionAES40,
+    final bool? standardEncryptionAES128,
+    final bool? encryptionAES128,
+    final bool? encryptionAES256,
+    final bool? encryptEmbeddedFilesOnly,
+    final bool? doNotEncryptMetadata,
   }) async {
     // Clearing any leftover output files.
     _outputFiles.clear();
@@ -531,8 +531,8 @@ class ToolsActionsState extends ChangeNotifier {
 
   /// [ToolAction.decryptPdf] action for decrypting PDF.
   Future<void> mangeDecryptPdfFileAction({
-    required InputFileModel sourceFile,
-    String? password,
+    required final InputFileModel sourceFile,
+    final String? password,
   }) async {
     // Clearing any leftover output files.
     _outputFiles.clear();
@@ -575,10 +575,10 @@ class ToolsActionsState extends ChangeNotifier {
   /// For tools actions:
   /// [ToolAction.imageToPdf] for converting images to PDFs.
   Future<void> mangeConvertImageFileAction({
-    required ToolAction toolAction,
-    required List<InputFileModel> sourceFiles,
-    required bool createSinglePdf,
-    required List<GlobalKey<ExtendedImageEditorState>> editorKeys,
+    required final ToolAction toolAction,
+    required final List<InputFileModel> sourceFiles,
+    required final bool createSinglePdf,
+    required final List<GlobalKey<ExtendedImageEditorState>> editorKeys,
   }) async {
     // Clearing any leftover output files.
     _outputFiles.clear();
@@ -602,7 +602,7 @@ class ToolsActionsState extends ChangeNotifier {
       // original source files names and then storing in updatedSourceImages.
       List<InputFileModel> updatedSourceFiles = modifiedOutputFiles
           .mapIndexed(
-            (int index, OutputFileModel element) => InputFileModel(
+            (final int index, final OutputFileModel element) => InputFileModel(
               fileName: sourceFiles[index].fileName,
               fileDate: element.fileDate,
               fileTime: element.fileTime,
@@ -644,10 +644,10 @@ class ToolsActionsState extends ChangeNotifier {
 
   /// [ToolAction.compressImages] action for compressing images.
   Future<void> mangeCompressImageFileAction({
-    required List<InputFileModel> sourceFiles,
-    double? imageScale,
-    int? imageQuality,
-    bool? removeExifData,
+    required final List<InputFileModel> sourceFiles,
+    final double? imageScale,
+    final int? imageQuality,
+    final bool? removeExifData,
   }) async {
     // Clearing any leftover output files.
     _outputFiles.clear();
@@ -688,8 +688,8 @@ class ToolsActionsState extends ChangeNotifier {
   /// [ToolAction.cropRotateFlipImages] action for rotating, cropping and
   /// flipping images.
   Future<void> mangeModifyImageFileAction({
-    required List<InputFileModel> sourceFiles,
-    required List<GlobalKey<ExtendedImageEditorState>> editorKeys,
+    required final List<InputFileModel> sourceFiles,
+    required final List<GlobalKey<ExtendedImageEditorState>> editorKeys,
   }) async {
     // Clearing any leftover output files.
     _outputFiles.clear();
@@ -755,7 +755,7 @@ class ToolsActionsState extends ChangeNotifier {
 
   /// Called to save output files.
   Future<void> mangeSaveFileAction({
-    required FileSaveModel fileSaveModel,
+    required final FileSaveModel fileSaveModel,
   }) async {
     // Updating save error status to false.
     updateFileSaveErrorStatus(false);
@@ -767,7 +767,7 @@ class ToolsActionsState extends ChangeNotifier {
     // Preparing save files.
     List<SaveFileInfo> saveFiles = List<SaveFileInfo>.generate(
       fileSaveModel.saveFiles.length,
-      (int index) => SaveFileInfo(
+      (final int index) => SaveFileInfo(
         filePath: fileSaveModel.saveFiles[index].filePath,
         fileName: fileSaveModel.saveFiles[index].fileName,
       ),
@@ -824,31 +824,31 @@ class ToolsActionsState extends ChangeNotifier {
   }
 
   /// Called to update an action error status.
-  void updateActionErrorStatus(bool status) {
+  void updateActionErrorStatus(final bool status) {
     _actionErrorStatus = status;
     customNotifyListener();
   }
 
   /// Called to update an action processing status.
-  void updateActionProcessingStatus(bool status) {
+  void updateActionProcessingStatus(final bool status) {
     _isActionProcessing = status;
     customNotifyListener();
   }
 
   /// Called to update an saving error status.
-  void updateFileSaveErrorStatus(bool status) {
+  void updateFileSaveErrorStatus(final bool status) {
     _fileSaveErrorStatus = status;
     customNotifyListener();
   }
 
   /// Called to update saving of output files processing status.
-  void updateFileSaveProcessingStatus(bool status) {
+  void updateFileSaveProcessingStatus(final bool status) {
     _isSaveProcessing = status;
     customNotifyListener();
   }
 
   /// Called to update current action type.
-  void updateActionType(ToolAction actionType) {
+  void updateActionType(final ToolAction actionType) {
     _currentActionType = actionType;
     customNotifyListener();
   }

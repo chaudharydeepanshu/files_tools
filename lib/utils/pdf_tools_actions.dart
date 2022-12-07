@@ -12,7 +12,7 @@ import 'package:pdf_manipulator/pdf_manipulator.dart';
 class PdfToolsActions {
   /// For merging multiple PDF files.
   static Future<OutputFileModel> mergePdfFiles({
-    required List<InputFileModel> sourceFiles,
+    required final List<InputFileModel> sourceFiles,
   }) async {
     // Holds result output file.
     OutputFileModel outputFile;
@@ -20,7 +20,7 @@ class PdfToolsActions {
     // Paths of source PDF files to merge.
     List<String> pathsOfSourceFiles = List<String>.generate(
       sourceFiles.length,
-      (int index) => sourceFiles[index].fileUri,
+      (final int index) => sourceFiles[index].fileUri,
     );
 
     // Holds merge result file path.
@@ -59,12 +59,12 @@ class PdfToolsActions {
 
   /// For splitting PDF.
   static Future<List<OutputFileModel>> splitPdfFile({
-    required InputFileModel sourceFile,
-    int? pageCount,
-    int? byteSize,
-    List<int>? pageNumbers,
-    List<String>? pageRanges,
-    String? pageRange,
+    required final InputFileModel sourceFile,
+    final int? pageCount,
+    final int? byteSize,
+    final List<int>? pageNumbers,
+    final List<String>? pageRanges,
+    final String? pageRange,
   }) async {
     // Holds result output files.
     List<OutputFileModel> outputFiles;
@@ -139,10 +139,10 @@ class PdfToolsActions {
 
   /// For rotating, reordering and deleting PDF pages.
   static Future<OutputFileModel> modifyPdfFile({
-    required InputFileModel sourceFile,
-    List<PageRotationInfo>? pagesRotationInfo,
-    List<int>? pageNumbersForReorder,
-    List<int>? pageNumbersForDeleter,
+    required final InputFileModel sourceFile,
+    final List<PageRotationInfo>? pagesRotationInfo,
+    final List<int>? pageNumbersForReorder,
+    final List<int>? pageNumbersForDeleter,
   }) async {
     // Holds result output file.
     OutputFileModel outputFile;
@@ -194,9 +194,9 @@ class PdfToolsActions {
 
   /// For converting PDF pages to images.
   static Future<List<OutputFileModel>> convertPdfFilePagesToImages({
-    required InputFileModel sourceFile,
-    required List<PdfPageModel> selectedPages,
-    required double imageScaling,
+    required final InputFileModel sourceFile,
+    required final List<PdfPageModel> selectedPages,
+    required final double imageScaling,
   }) async {
     // Holds result output files.
     List<OutputFileModel> outputFiles;
@@ -282,10 +282,10 @@ class PdfToolsActions {
 
   /// For compressing PDF.
   static Future<OutputFileModel> compressPdfFile({
-    required InputFileModel sourceFile,
-    double? imageScale,
-    int? imageQuality,
-    bool? unEmbedFonts,
+    required final InputFileModel sourceFile,
+    final double? imageScale,
+    final int? imageQuality,
+    final bool? unEmbedFonts,
   }) async {
     // Holds result output file.
     OutputFileModel outputFile;
@@ -339,14 +339,14 @@ class PdfToolsActions {
 
   /// For watermarking PDF.
   static Future<OutputFileModel> watermarkPdfFile({
-    required InputFileModel sourceFile,
-    required String text,
-    double? fontSize,
-    WatermarkLayer? watermarkLayer,
-    double? opacity,
-    double? rotationAngle,
-    Color? watermarkColor,
-    PositionType? positionType,
+    required final InputFileModel sourceFile,
+    required final String text,
+    final double? fontSize,
+    final WatermarkLayer? watermarkLayer,
+    final double? opacity,
+    final double? rotationAngle,
+    final Color? watermarkColor,
+    final PositionType? positionType,
   }) async {
     // Holds result output file.
     OutputFileModel outputFile;
@@ -404,23 +404,23 @@ class PdfToolsActions {
 
   /// For encrypting PDF.
   static Future<OutputFileModel> encryptPdfFile({
-    required InputFileModel sourceFile,
-    String? ownerPassword,
-    String? userPassword,
-    bool? allowPrinting,
-    bool? allowModifyContents,
-    bool? allowCopy,
-    bool? allowModifyAnnotations,
-    bool? allowFillIn,
-    bool? allowScreenReaders,
-    bool? allowAssembly,
-    bool? allowDegradedPrinting,
-    bool? standardEncryptionAES40,
-    bool? standardEncryptionAES128,
-    bool? encryptionAES128,
-    bool? encryptionAES256,
-    bool? encryptEmbeddedFilesOnly,
-    bool? doNotEncryptMetadata,
+    required final InputFileModel sourceFile,
+    final String? ownerPassword,
+    final String? userPassword,
+    final bool? allowPrinting,
+    final bool? allowModifyContents,
+    final bool? allowCopy,
+    final bool? allowModifyAnnotations,
+    final bool? allowFillIn,
+    final bool? allowScreenReaders,
+    final bool? allowAssembly,
+    final bool? allowDegradedPrinting,
+    final bool? standardEncryptionAES40,
+    final bool? standardEncryptionAES128,
+    final bool? encryptionAES128,
+    final bool? encryptionAES256,
+    final bool? encryptEmbeddedFilesOnly,
+    final bool? doNotEncryptMetadata,
   }) async {
     // Holds result output file.
     OutputFileModel outputFile;
@@ -487,8 +487,8 @@ class PdfToolsActions {
 
   /// For decrypting PDF.
   static Future<OutputFileModel> decryptPdfFile({
-    required InputFileModel sourceFile,
-    String? password,
+    required final InputFileModel sourceFile,
+    final String? password,
   }) async {
     // Holds result output file.
     OutputFileModel outputFile;
@@ -540,7 +540,7 @@ class PdfToolsActions {
 
   /// For various info about a PDF.
   static Future<bitmaps.PdfValidityAndProtection?> pdfInfo({
-    required InputFileModel sourceFile,
+    required final InputFileModel sourceFile,
   }) async {
     String pathOfSourceFile = sourceFile.fileUri;
 

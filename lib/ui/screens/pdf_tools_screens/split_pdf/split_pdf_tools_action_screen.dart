@@ -158,7 +158,7 @@ class SplitPDFToolsBody extends StatelessWidget {
 }
 
 /// For getting [SplitPDFToolsPage] screen scaffold app bar text.
-String getAppBarTitleForActionType({required ToolAction actionType}) {
+String getAppBarTitleForActionType({required final ToolAction actionType}) {
   String title = 'Action Successful';
   if (actionType == ToolAction.extractPdfByPageSelection) {
     title = 'Select Pages To Extract';

@@ -282,9 +282,9 @@ class _CropRotateFlipImagesState extends State<CropRotateFlipImages> {
                                 flex: 2,
                                 child: Consumer(
                                   builder: (
-                                    BuildContext context,
-                                    WidgetRef ref,
-                                    Widget? child,
+                                    final BuildContext context,
+                                    final WidgetRef ref,
+                                    final Widget? child,
                                   ) {
                                     final ToolsActionsState
                                         watchToolsActionsStateProviderValue =

@@ -85,7 +85,7 @@ class ImageToPDFToolsBody extends StatelessWidget {
 }
 
 /// For getting [ImageToPDFToolsPage] screen scaffold app bar text.
-String getAppBarTitleForActionType({required ToolAction actionType}) {
+String getAppBarTitleForActionType({required final ToolAction actionType}) {
   String title = 'Action Successful';
   if (actionType == ToolAction.imageToPdf) {
     title = 'Prepare Images For PDF';

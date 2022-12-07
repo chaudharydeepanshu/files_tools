@@ -5,7 +5,7 @@ import 'package:pick_or_save/pick_or_save.dart';
 class PickSave {
   /// For saving files.
   static Future<List<String>?> saveFiles({
-    required FileSaverParams params,
+    required final FileSaverParams params,
   }) async {
     // Holds save result.
     List<String>? saveResult;
@@ -26,7 +26,7 @@ class PickSave {
 
   /// For file picking.
   static Future<List<String>?> pickFile({
-    required FilePickerParams params,
+    required final FilePickerParams params,
   }) async {
     // Holds picking result.
     List<String>? pickResult;

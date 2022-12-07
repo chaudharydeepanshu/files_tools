@@ -85,7 +85,7 @@ class EncryptPDFToolsBody extends StatelessWidget {
 }
 
 /// For getting [EncryptPDFToolsPage] screen scaffold app bar text.
-String getAppBarTitleForActionType({required ToolAction actionType}) {
+String getAppBarTitleForActionType({required final ToolAction actionType}) {
   String title = 'Action Successful';
   if (actionType == ToolAction.encryptPdf) {
     title = 'Select Encryption Config';

@@ -146,7 +146,7 @@ class ConvertPDFToolsBody extends StatelessWidget {
 }
 
 /// For getting [ConvertPDFToolsPage] screen scaffold app bar text.
-String getAppBarTitleForActionType({required ToolAction actionType}) {
+String getAppBarTitleForActionType({required final ToolAction actionType}) {
   String title = 'Action Successful';
   if (actionType == ToolAction.convertPdfToImage) {
     title = 'Select Pages To Convert';

@@ -146,7 +146,7 @@ class ModifyPDFToolsBody extends StatelessWidget {
 }
 
 /// For getting [ModifyPDFToolsPage] screen scaffold app bar text.
-String getAppBarTitleForActionType({required ToolAction actionType}) {
+String getAppBarTitleForActionType({required final ToolAction actionType}) {
   String title = 'Action Successful';
   if (actionType == ToolAction.modifyPdf) {
     title = 'Rotate, Delete & Reorder';

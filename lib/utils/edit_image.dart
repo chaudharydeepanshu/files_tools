@@ -7,9 +7,9 @@ class CustomEditorCropLayerPainter extends EditorCropLayerPainter {
   const CustomEditorCropLayerPainter();
   @override
   void paintCorners(
-    Canvas canvas,
-    Size size,
-    ExtendedImageCropLayerPainter painter,
+    final Canvas canvas,
+    final Size size,
+    final ExtendedImageCropLayerPainter painter,
   ) {
     final Paint paint = Paint()
       ..color = painter.cornerColor
@@ -30,18 +30,18 @@ class CircleEditorCropLayerPainter extends EditorCropLayerPainter {
 
   @override
   void paintCorners(
-    Canvas canvas,
-    Size size,
-    ExtendedImageCropLayerPainter painter,
+    final Canvas canvas,
+    final Size size,
+    final ExtendedImageCropLayerPainter painter,
   ) {
     // do nothing
   }
 
   @override
   void paintMask(
-    Canvas canvas,
-    Size size,
-    ExtendedImageCropLayerPainter painter,
+    final Canvas canvas,
+    final Size size,
+    final ExtendedImageCropLayerPainter painter,
   ) {
     final Rect rect = Offset.zero & size;
     final Rect cropRect = painter.cropRect;
@@ -63,9 +63,9 @@ class CircleEditorCropLayerPainter extends EditorCropLayerPainter {
 
   @override
   void paintLines(
-    Canvas canvas,
-    Size size,
-    ExtendedImageCropLayerPainter painter,
+    final Canvas canvas,
+    final Size size,
+    final ExtendedImageCropLayerPainter painter,
   ) {
     final Rect cropRect = painter.cropRect;
     if (painter.pointerDown) {

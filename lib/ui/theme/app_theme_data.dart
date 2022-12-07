@@ -9,7 +9,7 @@ class AppThemeData {
   static final Color _darkFocusColor = Colors.white.withOpacity(0.12);
 
   /// For creating app light ThemeData by providing any light color scheme.
-  static ThemeData lightThemeData(ColorScheme? customLightColorScheme) =>
+  static ThemeData lightThemeData(final ColorScheme? customLightColorScheme) =>
       themeData(
         customLightColorScheme,
         defaultLightColorScheme,
@@ -18,7 +18,7 @@ class AppThemeData {
       );
 
   /// For creating app dark ThemeData by providing any dark color scheme.
-  static ThemeData darkThemeData(ColorScheme? customDarkColorScheme) =>
+  static ThemeData darkThemeData(final ColorScheme? customDarkColorScheme) =>
       themeData(
         customDarkColorScheme,
         defaultDarkColorScheme,
@@ -28,19 +28,21 @@ class AppThemeData {
 
   /// For creating ThemeData properties of [lightThemeData] and [darkThemeData].
   static ThemeData themeData(
-    ColorScheme? customColorScheme,
-    ColorScheme colorScheme,
-    Color focusColor,
+    final ColorScheme? customColorScheme,
+    final ColorScheme colorScheme,
+    final Color focusColor,
     CustomColors customColors,
   ) {
+    ColorScheme newColorScheme = colorScheme;
+
     if (customColorScheme != null) {
-      colorScheme = customColorScheme.harmonized();
-      customColors = customColors.harmonized(colorScheme);
+      newColorScheme = customColorScheme.harmonized();
+      customColors = customColors.harmonized(newColorScheme);
     }
 
     return ThemeData(
       useMaterial3: true,
-      colorScheme: colorScheme,
+      colorScheme: newColorScheme,
       extensions: <ThemeExtension<dynamic>>[
         customColors,
       ],

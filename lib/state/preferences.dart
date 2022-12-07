@@ -28,19 +28,19 @@ class Preferences {
   }
 
   /// For persisting theme mode status in SharedPreferences.
-  static Future<bool> persistThemeMode(ThemeMode mode) =>
+  static Future<bool> persistThemeMode(final ThemeMode mode) =>
       sharedPreferencesInstance.setString(themeModePerfKey, mode.toString());
 
   /// For getting theme mode status persisted from SharedPreferences.
   static ThemeMode get themeMode => ThemeMode.values.firstWhere(
-        (ThemeMode element) =>
+        (final ThemeMode element) =>
             element.toString() ==
             sharedPreferencesInstance.getString(themeModePerfKey),
         orElse: () => ThemeMode.light,
       );
 
   /// For persisting on boarding status in SharedPreferences.
-  static Future<bool> persistOnBoardingStatus(bool isUserOnBoarded) =>
+  static Future<bool> persistOnBoardingStatus(final bool isUserOnBoarded) =>
       sharedPreferencesInstance.setBool(
         onBoardingStatusPerfKey,
         isUserOnBoarded,
@@ -52,7 +52,7 @@ class Preferences {
 
   /// For persisting user theme seed color in SharedPreferences.
   static Future<bool> persistUserThemeSeedColorValue(
-    int userThemeSeedColorValue,
+    final int userThemeSeedColorValue,
   ) =>
       sharedPreferencesInstance.setInt(
         userThemeSeedColorValuePerfKey,
@@ -65,7 +65,9 @@ class Preferences {
       const Color(0xFFA93054).value;
 
   /// For persisting dynamic theme status in SharedPreferences.
-  static Future<bool> persistDynamicThemeStatus(bool dynamicThemeStatus) =>
+  static Future<bool> persistDynamicThemeStatus(
+    final bool dynamicThemeStatus,
+  ) =>
       sharedPreferencesInstance.setBool(
         dynamicThemeStatusPerfKey,
         dynamicThemeStatus,
@@ -77,7 +79,7 @@ class Preferences {
 
   /// For persisting crashlytics collection status in SharedPreferences.
   static Future<bool> persistCrashlyticsCollectionStatus(
-    bool crashlyticsCollectionStatus,
+    final bool crashlyticsCollectionStatus,
   ) =>
       sharedPreferencesInstance.setBool(
         crashlyticsCollectionStatusPerfKey,

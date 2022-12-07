@@ -40,7 +40,7 @@ class ToolsScreensState extends ChangeNotifier {
 
   /// Called to pick input files.
   Future<void> mangePickFileAction({
-    required FilePickModel filePickModel,
+    required final FilePickModel filePickModel,
   }) async {
     if (!filePickModel.continuePicking) {
       // Clearing any leftover input files.
@@ -95,7 +95,7 @@ class ToolsScreensState extends ChangeNotifier {
           pickedInputFiles: inputFiles,
         );
         _inputFiles = _inputFiles
-            .where((InputFileModel e) => !discardedFiles.contains(e))
+            .where((final InputFileModel e) => !discardedFiles.contains(e))
             .toList();
 
         showDiscardedFilesSnackBar(discardedFiles: discardedFiles);
@@ -110,19 +110,19 @@ class ToolsScreensState extends ChangeNotifier {
   }
 
   /// Called for updating selected files.
-  void updateSelectedFiles({required List<InputFileModel> files}) {
+  void updateSelectedFiles({required final List<InputFileModel> files}) {
     _inputFiles = files;
     customNotifyListener();
   }
 
   /// Called to update an file pick error status.
-  void updateFilePickErrorStatus(bool status) {
+  void updateFilePickErrorStatus(final bool status) {
     _filePickErrorStatus = status;
     customNotifyListener();
   }
 
   /// Called for initiating file picking.
-  void updateFilePickProcessingStatus(bool status) {
+  void updateFilePickProcessingStatus(final bool status) {
     _isFilePickProcessing = status;
     notifyListeners();
   }
@@ -142,8 +142,8 @@ class ToolsScreensState extends ChangeNotifier {
 
 /// For filtering picked files based on various parameters.
 Future<List<InputFileModel>> getFilteredPickedFiles({
-  required FilePickModel filePickModel,
-  required List<InputFileModel> pickedInputFiles,
+  required final FilePickModel filePickModel,
+  required final List<InputFileModel> pickedInputFiles,
 }) async {
   // Holds input files to be discarded.
   List<InputFileModel> discardedInputFiles = <InputFileModel>[];
@@ -185,7 +185,7 @@ Future<List<InputFileModel>> getFilteredPickedFiles({
 
 /// Called to show snackBar displaying discarded files.
 void showDiscardedFilesSnackBar({
-  required List<InputFileModel> discardedFiles,
+  required final List<InputFileModel> discardedFiles,
 }) {
   BuildContext? context = navigatorKey.currentState?.context;
   if (context != null) {
@@ -194,7 +194,7 @@ void showDiscardedFilesSnackBar({
       // Only show snackBar if discardedFiles is not empty.
       List<String> discardedFilesNames = List<String>.generate(
         discardedFiles.length,
-        (int index) => discardedFiles[index].fileName,
+        (final int index) => discardedFiles[index].fileName,
       );
       String? contentText = "Discarded invalid or encrypted pdf files:\n"
           "${discardedFilesNames.join("\n")}";

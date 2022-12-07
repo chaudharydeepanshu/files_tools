@@ -60,7 +60,10 @@ class AppThemeState extends ChangeNotifier {
   bool get isDynamicThemeEnabled => _isDynamicThemeEnabled;
 
   /// Initializes AppThemeState class members.
-  void initTheme({ColorScheme? lightDynamic, ColorScheme? darkDynamic}) {
+  void initTheme({
+    final ColorScheme? lightDynamic,
+    final ColorScheme? darkDynamic,
+  }) {
     // Setting dynamic light / dark theme color scheme received to initializer.
     _lightDynamicColorScheme = lightDynamic;
     _darkDynamicColorScheme = darkDynamic;
@@ -148,7 +151,7 @@ class AppThemeState extends ChangeNotifier {
   }
 
   /// Updates user theme color scheme.
-  void updateUserTheme(Color newUserThemeColor) {
+  void updateUserTheme(final Color newUserThemeColor) {
     // Persisting user theme new seed color value in SharedPreferences.
     Preferences.persistUserThemeSeedColorValue(newUserThemeColor.value);
 

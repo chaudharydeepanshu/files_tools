@@ -110,10 +110,10 @@ class _ImageViewerState extends State<ImageViewer> {
                             ImageView(
                               bytes: imageInfo.imageBytes!,
                               frameBuilder: ((
-                                BuildContext context,
-                                Widget child,
-                                int? frame,
-                                bool wasSynchronouslyLoaded,
+                                final BuildContext context,
+                                final Widget child,
+                                final int? frame,
+                                final bool wasSynchronouslyLoaded,
                               ) {
                                 if (wasSynchronouslyLoaded) {
                                   return child;

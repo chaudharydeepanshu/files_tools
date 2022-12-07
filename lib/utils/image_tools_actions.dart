@@ -13,8 +13,8 @@ import 'package:pdf_manipulator/pdf_manipulator.dart';
 class ImageToolsActions {
   /// For cropping, rotating, flipping image files.
   static Future<List<OutputFileModel>> modifyImageFiles({
-    required List<InputFileModel> sourceFiles,
-    required List<GlobalKey<ExtendedImageEditorState>> editorKeys,
+    required final List<InputFileModel> sourceFiles,
+    required final List<GlobalKey<ExtendedImageEditorState>> editorKeys,
   }) async {
     // Holds result output files.
     List<OutputFileModel> outputFiles;
@@ -108,8 +108,8 @@ class ImageToolsActions {
 
   /// For converting images to PDFs.
   static Future<List<OutputFileModel>> convertImageFilesToPdfs({
-    required List<InputFileModel> sourceFiles,
-    required bool createSinglePdf,
+    required final List<InputFileModel> sourceFiles,
+    required final bool createSinglePdf,
   }) async {
     // Holds result output files.
     List<OutputFileModel> outputFiles;
@@ -117,7 +117,7 @@ class ImageToolsActions {
     // Paths of source PDF files to merge.
     List<String> pathsOfSourceFiles = List<String>.generate(
       sourceFiles.length,
-      (int index) => sourceFiles[index].fileUri,
+      (final int index) => sourceFiles[index].fileUri,
     );
 
     // Holds decrypted result files paths.
@@ -175,10 +175,10 @@ class ImageToolsActions {
 
   /// For compressing image files.
   static Future<List<OutputFileModel>> compressImageFiles({
-    required List<InputFileModel> sourceFiles,
-    double? imageScale,
-    int? imageQuality,
-    bool? removeExifData,
+    required final List<InputFileModel> sourceFiles,
+    final double? imageScale,
+    final int? imageQuality,
+    final bool? removeExifData,
   }) async {
     // Holds result output files.
     List<OutputFileModel> outputFiles;

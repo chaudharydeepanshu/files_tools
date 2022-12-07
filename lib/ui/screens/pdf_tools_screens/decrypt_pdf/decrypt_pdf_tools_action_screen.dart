@@ -85,7 +85,7 @@ class DecryptPDFToolsBody extends StatelessWidget {
 }
 
 /// For getting [DecryptPDFToolsPage] screen scaffold app bar text.
-String getAppBarTitleForActionType({required ToolAction actionType}) {
+String getAppBarTitleForActionType({required final ToolAction actionType}) {
   String title = 'Action Successful';
   if (actionType == ToolAction.decryptPdf) {
     title = 'Decryption Config';

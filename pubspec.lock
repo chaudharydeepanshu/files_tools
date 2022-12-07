@@ -150,18 +150,18 @@ packages:
     description:
       path: "."
       ref: main
-      resolved-ref: c1ea39aff3f4b24ecd118c52340d6305e66d1273
+      resolved-ref: "87c155ae054fc8683c10bb2c8678f022bcec8179"
       url: "https://github.com/chaudharydeepanshu/material-dynamic-color-flutter.git"
     source: git
-    version: "1.5.4"
+    version: "1.5.5"
   extended_image:
     dependency: "direct main"
     description:
       name: extended_image
-      sha256: bace1a269edf8d1fe634461ae751824842f95b3cd683c152defabb70487e6a31
+      sha256: d7e32f19a5c5ee3bfbcb3ff68492d3857bae00acd56e38048a8d53218871998b
       url: "https://pub.dev"
     source: hosted
-    version: "6.3.2"
+    version: "6.3.4"
   extended_image_library:
     dependency: transitive
     description:
@@ -904,4 +904,4 @@ packages:
     version: "3.1.1"
 sdks:
   dart: ">=2.18.1 <4.0.0"
-  flutter: ">=3.3.0"
+  flutter: ">=3.4.0-17.0.pre"

@@ -88,7 +88,7 @@ class ModifyImageToolsBody extends StatelessWidget {
 }
 
 /// For getting [ModifyImagesToolsPage] screen scaffold app bar text.
-String getAppBarTitleForActionType({required ToolAction actionType}) {
+String getAppBarTitleForActionType({required final ToolAction actionType}) {
   String title = 'Action Successful';
   if (actionType == ToolAction.cropRotateFlipImages) {
     title = 'Edit Images';

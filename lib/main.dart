@@ -91,7 +91,10 @@ class DynamicColorApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DynamicColorBuilder(
-      builder: (ColorScheme? lightDynamic, ColorScheme? darkDynamic) {
+      builder: (
+        final ColorScheme? lightDynamic,
+        final ColorScheme? darkDynamic,
+      ) {
         return Consumer(
           builder: (BuildContext context, WidgetRef ref, Widget? child) {
             // Initializing dynamic color schemes in [AppThemeState]

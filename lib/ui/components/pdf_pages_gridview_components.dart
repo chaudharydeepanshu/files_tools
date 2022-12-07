@@ -82,10 +82,10 @@ class PageImageView extends StatelessWidget {
                   child: Image.memory(
                     pdfPage.pageBytes!,
                     frameBuilder: ((
-                      BuildContext context,
-                      Widget child,
-                      int? frame,
-                      bool wasSynchronouslyLoaded,
+                      final BuildContext context,
+                      final Widget child,
+                      final int? frame,
+                      final bool wasSynchronouslyLoaded,
                     ) {
                       if (wasSynchronouslyLoaded) {
                         return FittedBox(

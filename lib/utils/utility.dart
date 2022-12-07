@@ -21,14 +21,14 @@ import 'package:url_launcher/url_launcher.dart';
 class Utility {
   /// For getting [ui.Image] object from provided [Uint8List].
   static Future<ui.Image> imageFromUint8List({
-    required Uint8List uint8list,
+    required final Uint8List uint8list,
   }) async {
     return await painting.decodeImageFromList(uint8list);
   }
 
   /// For getting cached file path from provided file uri.
   static Future<String> getCachedFilePathFromFileUri({
-    required String fileUri,
+    required final String fileUri,
   }) async {
     // Holds cached file path from uri path.
     String? cachedFilePath;
@@ -51,12 +51,12 @@ class Utility {
   }
 
   /// For cleaning up a file name to make it suitable for saving in Android.
-  static String getCleanedUpFileName(String fileName) {
+  static String getCleanedUpFileName(final String fileName) {
     return fileName.replaceAll(RegExp('[\\\\/:*?"<>|\\[\\]]'), '_');
   }
 
   /// For getting a file extension from provided file name.
-  static String getFileNameExtension({required String fileName}) {
+  static String getFileNameExtension({required final String fileName}) {
     int indexOfLastDot = fileName.lastIndexOf('.');
     if (indexOfLastDot == -1) {
       return '';
@@ -67,7 +67,7 @@ class Utility {
   }
 
   /// For getting a file name without extension from provided file name.
-  static String getFileNameWithoutExtension({required String fileName}) {
+  static String getFileNameWithoutExtension({required final String fileName}) {
     String fileExt = getFileNameExtension(fileName: fileName);
     String fileNameWithoutExtension =
         fileName.substring(0, fileName.length - fileExt.length);
@@ -91,7 +91,7 @@ class Utility {
 
   /// For clearing platform temporary directory.
   static Future<void> clearTempDirectory({
-    required String clearCacheCommandFrom,
+    required final String clearCacheCommandFrom,
   }) async {
     Directory directory = await getTempDirectory();
 
@@ -107,8 +107,8 @@ class Utility {
 
   /// For deleting selective files from platform through provided files paths.
   static Future<void> deleteSelectiveFiles({
-    required List<String> filesPaths,
-    required String deleteCommandFrom,
+    required final List<String> filesPaths,
+    required final String deleteCommandFrom,
   }) async {
     for (String filePath in filesPaths) {
       File tempFile = File(filePath);
@@ -131,9 +131,9 @@ class Utility {
   /// sizes in Mebibyte (MiB = 1024 KB), Gib, etc but it report results as
   /// Megabyte (MB = 1000 KB), GB, etc.
   static String formatBytes({
-    required int bytes,
-    required int decimals,
-    BytesFormatType? formatType,
+    required final int bytes,
+    required final int decimals,
+    final BytesFormatType? formatType,
   }) {
     if (BytesFormatType.B == formatType) {
       if (bytes <= 0) {
@@ -216,7 +216,7 @@ class Utility {
   /// size in bytes, formatted size, file name used for displaying
   /// user, its picked files info in UI picking screen.
   static Future<InputFileModel> getInputFileModelFromUri({
-    required String filePathOrUri,
+    required final String filePathOrUri,
   }) async {
     FileMetadata fileMetadata;
     fileMetadata = await PickOrSave()
@@ -269,7 +269,7 @@ class Utility {
   /// size in bytes, formatted size, file name used for displaying
   /// user, the processed result files info in UI result screen.
   static Future<OutputFileModel> getOutputFileModelFromPath({
-    required String filePathOrUri,
+    required final String filePathOrUri,
   }) async {
     FileMetadata fileMetadata;
     fileMetadata = await PickOrSave()
@@ -321,12 +321,12 @@ class Utility {
   /// We can provide it further parameters to manipulate the image of that
   /// pdf page like image rotation, background color, scaling, etc.
   static Future<Uint8List?> getUint8ListOfPdfPageAsImage({
-    required int index,
-    required String pdfPath,
-    double? scale,
-    int? rotationAngle,
-    Color? backgroundColor,
-    PdfRendererType? pdfRendererType,
+    required final int index,
+    required final String pdfPath,
+    final double? scale,
+    final int? rotationAngle,
+    final Color? backgroundColor,
+    final PdfRendererType? pdfRendererType,
   }) async {
     String? imageCachedPath;
     Uint8List? bytes;
@@ -370,13 +370,13 @@ class Utility {
   /// working with large number of PDF pages and we don't want to create a
   /// complete model for each PDF page as that would be very slow and expensive.
   static Future<PdfPageModel> getUpdatedPdfPageModel({
-    required int index,
-    required String pdfPath,
-    required PdfPageModel pdfPageModel,
-    double? scale,
-    int? rotationAngle,
-    Color? backgroundColor,
-    PdfRendererType? pdfRendererType,
+    required final int index,
+    required final String pdfPath,
+    required final PdfPageModel pdfPageModel,
+    final double? scale,
+    final int? rotationAngle,
+    final Color? backgroundColor,
+    final PdfRendererType? pdfRendererType,
   }) async {
     Uint8List? bytes;
 
@@ -404,7 +404,7 @@ class Utility {
   }
 
   /// For getting page count of a PDF file through the provided PDF file path.
-  static Future<int> getPdfPageCount({required String pdfPath}) async {
+  static Future<int> getPdfPageCount({required final String pdfPath}) async {
     int? pdfPageCount;
     try {
       pdfPageCount = await PdfBitmaps()
@@ -431,8 +431,8 @@ class Utility {
   /// we don't want to create a complete model for each PDF page as that would
   /// be very slow and expensive so instead we create list of dummy models.
   static Future<List<PdfPageModel>> generatePdfPagesList({
-    required String pdfPath,
-    int? pageCount,
+    required final String pdfPath,
+    final int? pageCount,
   }) async {
     List<PdfPageModel> pdfPages = <PdfPageModel>[];
     int? pdfPageCount;
@@ -449,7 +449,7 @@ class Utility {
 
     pdfPages = List<PdfPageModel>.generate(
       pdfPageCount,
-      (int index) => PdfPageModel(
+      (final int index) => PdfPageModel(
         pageIndex: index,
         pageBytes: null,
         pageErrorStatus: false,
@@ -465,8 +465,8 @@ class Utility {
   /// For getting byte data as [Uint8List] of a file through the provided
   /// file path or file uri.
   static Future<Uint8List> getByteDataFromFilePathOrUri({
-    String? filePath,
-    String? fileUri,
+    final String? filePath,
+    final String? fileUri,
   }) async {
     Uint8List filedData;
 
@@ -509,7 +509,7 @@ class Utility {
   }
 
   /// Called for launching URLs through out the app.
-  static Future<void> urlLauncher(String url) async {
+  static Future<void> urlLauncher(final String url) async {
     final Uri uri = Uri.parse(url);
 
     if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
@@ -519,10 +519,10 @@ class Utility {
 
   /// Called to crop, rotate, flip an image based on [ExtendedImageEditorState].
   static Future<Uint8List?> modifyImage(
-    ExtendedImageEditorState currentState,
+    final ExtendedImageEditorState currentState,
   ) async {
     Future<Uint8List?> cropImageDataWithNativeLibrary({
-      required ExtendedImageEditorState state,
+      required final ExtendedImageEditorState state,
     }) async {
       log('Native library start cropping');
 
