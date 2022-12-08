@@ -5,10 +5,10 @@ packages:
     dependency: transitive
     description:
       name: _flutterfire_internals
-      sha256: e1d4810cd162d842ab1578239a4279a2402d3c1731c1345286df027c830890f8
+      sha256: "935316be721961664cc0dc11b4cbc7bb5e91e4d08ed8963daf84ef8322a20672"
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.9"
+    version: "1.0.10"
   archive:
     dependency: transitive
     description:
@@ -69,18 +69,18 @@ packages:
     dependency: transitive
     description:
       name: cloud_firestore_platform_interface
-      sha256: ea3d1d12d72ecaa58909d93e50aca53263d3bf06b904a7f0f1dcd5798941c09b
+      sha256: "5173fce24ad23e39944b3c9dd2e86cc4d8755fda0e21e7d98bb00ee84c3ae464"
       url: "https://pub.dev"
     source: hosted
-    version: "5.9.0"
+    version: "5.9.1"
   cloud_firestore_web:
     dependency: transitive
     description:
       name: cloud_firestore_web
-      sha256: "3c9a77380e6a053129c2cb6dbe8ef1b708f4350ce0dad220d2c05cd68a2d467f"
+      sha256: b6a5712dc5d74473249b0777b93e6adf0ae68aeabae2699238d4647f3d5e1624
       url: "https://pub.dev"
     source: hosted
-    version: "3.1.0"
+    version: "3.1.1"
   collection:
     dependency: "direct main"
     description:
@@ -198,34 +198,34 @@ packages:
     dependency: "direct main"
     description:
       name: firebase_analytics
-      sha256: "32e4090850ceb516dd6e2ec2a067f6468137d80238e4c175214f995b0e6563cb"
+      sha256: "8e83227fc21defec65f298e266d5d68cc0102e0e9ae69f2954d37cf204adf89e"
       url: "https://pub.dev"
     source: hosted
-    version: "10.0.6"
+    version: "10.0.7"
   firebase_analytics_platform_interface:
     dependency: transitive
     description:
       name: firebase_analytics_platform_interface
-      sha256: "1a6cdee97a1de2d4d583217aad4b4861ea6c57f7826abc34cef1664a7bb8677d"
+      sha256: "95009d4bdbccd827565f741b657270fa5e7f848fd542d015732a81cd75062108"
       url: "https://pub.dev"
     source: hosted
-    version: "3.3.14"
+    version: "3.3.15"
   firebase_analytics_web:
     dependency: transitive
     description:
       name: firebase_analytics_web
-      sha256: "2546aad330770046da97fd5f98ae6029fda048f6ef3c25e3ad9cace250c38153"
+      sha256: "676eea01b5e4a3067106096423f6776f0b4bef1246b5390ec96ee2a57774e91b"
       url: "https://pub.dev"
     source: hosted
-    version: "0.5.1+5"
+    version: "0.5.1+6"
   firebase_core:
     dependency: "direct main"
     description:
       name: firebase_core
-      sha256: "904bd270364cf4dfaf3c58dc6939c4c7ad26e2877d820dc295ade2cd589d70f3"
+      sha256: "01962872df08437d9be593caeab8c700624c93b629f3d3d60f061612d6263666"
       url: "https://pub.dev"
     source: hosted
-    version: "2.3.0"
+    version: "2.4.0"
   firebase_core_platform_interface:
     dependency: transitive
     description:
@@ -238,26 +238,26 @@ packages:
     dependency: transitive
     description:
       name: firebase_core_web
-      sha256: a2acf43001a7fcd2997ce6b487b17666077be507d885c9941dd870a16aef3040
+      sha256: b2917618cbe75196261621d676a992e05215ce6a70daca5f655794d5a008d369
       url: "https://pub.dev"
     source: hosted
-    version: "2.0.1"
+    version: "2.0.2"
   firebase_crashlytics:
     dependency: "direct main"
     description:
       name: firebase_crashlytics
-      sha256: "5cef9f58c38d11040f275daefc853a8be241270b3e94b3c0ee4c5451d871f39b"
+      sha256: afaff0d67da21a0c2a916c438218188060e9eeeef22619e0a3e31994e9e366fb
       url: "https://pub.dev"
     source: hosted
-    version: "3.0.6"
+    version: "3.0.7"
   firebase_crashlytics_platform_interface:
     dependency: transitive
     description:
       name: firebase_crashlytics_platform_interface
-      sha256: "533861182fc4e3d209726fc6583395ea1a48f6a2fcd8cb091101846afd73134d"
+      sha256: "3bbd82065006a133119b23d0123bf26f2f33fec3ad37f9561a01e35788c69106"
       url: "https://pub.dev"
     source: hosted
-    version: "3.3.7"
+    version: "3.3.8"
   flex_color_picker:
     dependency: "direct main"
     description:
@@ -573,10 +573,10 @@ packages:
     dependency: "direct main"
     description:
       name: pdf_bitmaps
-      sha256: bf95f4bf512ced467ecefacaa9ddb001f5040db1d6453e6d6ffcfbd0fba41f7b
+      sha256: bbbaca1931875d7791a1b20b900279c32805fda04a78ee072c5a49d706333d48
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.0"
+    version: "1.0.1"
   pdf_manipulator:
     dependency: "direct main"
     description:

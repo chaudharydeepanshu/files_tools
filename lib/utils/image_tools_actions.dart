@@ -40,8 +40,11 @@ class ImageToolsActions {
 
           // Creating temp file name.
           DateTime currentDateTime = DateTime.now();
+
+          int millisecondsSinceEpoch = currentDateTime.millisecondsSinceEpoch;
+
           String tempFileName = Utility.getCleanedUpFileName(
-            '$currentDateTime$extensionOfSourceFile',
+            '$millisecondsSinceEpoch$extensionOfSourceFile',
           );
 
           // Creating temp file and writing data to it.
@@ -88,10 +91,13 @@ class ImageToolsActions {
             Utility.getFileNameWithoutExtension(fileName: nameOfSourceFile);
 
         DateTime currentDateTime = DateTime.now();
+
+        int millisecondsSinceEpoch = currentDateTime.millisecondsSinceEpoch;
+
         String outputFileName = Utility.getCleanedUpFileName(
-          '$nameOfSourceFileWithoutExtension'
+          '${nameOfSourceFileWithoutExtension.characters.take(150).toString()}'
           ' Modified '
-          '$currentDateTime$extensionOfSourceFile',
+          '$millisecondsSinceEpoch$extensionOfSourceFile',
         );
 
         OutputFileModel outputFile = file.copyWith(fileName: outputFileName);
@@ -153,12 +159,15 @@ class ImageToolsActions {
             Utility.getFileNameExtension(fileName: nameOfOutputFile);
 
         DateTime currentDateTime = DateTime.now();
+
+        int millisecondsSinceEpoch = currentDateTime.millisecondsSinceEpoch;
+
         String outputFileName = Utility.getCleanedUpFileName(
           'Image PDF'
           ' - '
           '${i + 1}'
           ' - '
-          '$currentDateTime$extensionOfOutputFile',
+          '$millisecondsSinceEpoch$extensionOfOutputFile',
         );
 
         OutputFileModel outputFile = file.copyWith(fileName: outputFileName);
@@ -226,8 +235,11 @@ class ImageToolsActions {
 
         // Creating temp file name.
         DateTime currentDateTime = DateTime.now();
+
+        int millisecondsSinceEpoch = currentDateTime.millisecondsSinceEpoch;
+
         String tempFileName = Utility.getCleanedUpFileName(
-          '$currentDateTime$extensionOfSourceFile',
+          '$millisecondsSinceEpoch$extensionOfSourceFile',
         );
 
         // Creating temp file and writing data to it.
@@ -271,10 +283,13 @@ class ImageToolsActions {
             Utility.getFileNameWithoutExtension(fileName: nameOfSourceFile);
 
         DateTime currentDateTime = DateTime.now();
+
+        int millisecondsSinceEpoch = currentDateTime.millisecondsSinceEpoch;
+
         String outputFileName = Utility.getCleanedUpFileName(
-          '$nameOfSourceFileWithoutExtension'
+          '${nameOfSourceFileWithoutExtension.characters.take(150).toString()}'
           ' Compressed '
-          '$currentDateTime$extensionOfSourceFile',
+          '$millisecondsSinceEpoch$extensionOfSourceFile',
         );
 
         OutputFileModel outputFile = file.copyWith(fileName: outputFileName);

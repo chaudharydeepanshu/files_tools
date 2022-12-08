@@ -172,6 +172,8 @@ class MyApp extends StatelessWidget {
 
 // General TODOs
 // TODO(chaudharydeepanshu): Improve appbar texts to be informative and smaller.
+// TODO(chaudharydeepanshu): Handle low storage scenarios when viewing large
+//  high quality PDFs.(Tip: Clear cache for some and then reload if low storage)
 // TODO(chaudharydeepanshu): Use flutter_intro to guide users step-by-step.
 // TODO(chaudharydeepanshu): Add localization.
 // TODO(chaudharydeepanshu): Page splitting on the basis of page ranges. It

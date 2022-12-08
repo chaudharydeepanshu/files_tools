@@ -46,8 +46,12 @@ class PdfToolsActions {
         filePathOrUri: resultFilePath,
       );
       DateTime currentDateTime = DateTime.now();
-      String outputFileName =
-          Utility.getCleanedUpFileName('Merged File $currentDateTime.pdf');
+
+      int millisecondsSinceEpoch = currentDateTime.millisecondsSinceEpoch;
+
+      String outputFileName = Utility.getCleanedUpFileName(
+        'Merged File - $millisecondsSinceEpoch.pdf',
+      );
       outputFile = file.copyWith(fileName: outputFileName);
     } else {
       // If resultFilesPaths is null then throw.
@@ -118,12 +122,15 @@ class PdfToolsActions {
         );
 
         DateTime currentDateTime = DateTime.now();
+
+        int millisecondsSinceEpoch = currentDateTime.millisecondsSinceEpoch;
+
         String outputFileName = Utility.getCleanedUpFileName(
-          '$nameOfSourceFileWithoutExtension'
+          '${nameOfSourceFileWithoutExtension.characters.take(150).toString()}'
           ' - '
           '${i + 1}'
           ' - '
-          '$currentDateTime$extensionOfSourceFile',
+          '$millisecondsSinceEpoch$extensionOfSourceFile',
         );
 
         OutputFileModel outputFile = file.copyWith(fileName: outputFileName);
@@ -180,10 +187,13 @@ class PdfToolsActions {
         filePathOrUri: resultFilePath,
       );
       DateTime currentDateTime = DateTime.now();
-      String outputFileName =
-          Utility.getCleanedUpFileName('$nameOfSourceFileWithoutExtension'
-              ' - '
-              '$currentDateTime$extensionOfSourceFile');
+
+      int millisecondsSinceEpoch = currentDateTime.millisecondsSinceEpoch;
+
+      String outputFileName = Utility.getCleanedUpFileName(
+          '${nameOfSourceFileWithoutExtension.characters.take(150).toString()}'
+          ' - '
+          '$millisecondsSinceEpoch$extensionOfSourceFile');
       outputFile = file.copyWith(fileName: outputFileName);
     } else {
       // If resultFilePath is null or empty then throw.
@@ -228,9 +238,13 @@ class PdfToolsActions {
           scale: imageScaling,
           rotationAngle: page.pageRotationAngle,
         );
+
         DateTime currentDateTime = DateTime.now();
+
+        int millisecondsSinceEpoch = currentDateTime.millisecondsSinceEpoch;
+
         String tempFileName = Utility.getCleanedUpFileName(
-          '$currentDateTime$imageTypeExtension',
+          '$millisecondsSinceEpoch$imageTypeExtension',
         );
         File file = File('$tempDirPath/$tempFileName');
         if (pageBytes != null) {
@@ -261,12 +275,15 @@ class PdfToolsActions {
         );
 
         DateTime currentDateTime = DateTime.now();
+
+        int millisecondsSinceEpoch = currentDateTime.millisecondsSinceEpoch;
+
         String outputFileName = Utility.getCleanedUpFileName(
-          '$nameOfSourceFileWithoutExtension'
+          '${nameOfSourceFileWithoutExtension.characters.take(150).toString()}'
           ' - '
           '${i + 1}'
           ' - '
-          '$currentDateTime$extensionOfSourceFile',
+          '$millisecondsSinceEpoch$extensionOfSourceFile',
         );
 
         OutputFileModel outputFile = file.copyWith(fileName: outputFileName);
@@ -324,10 +341,13 @@ class PdfToolsActions {
         filePathOrUri: resultFilePath,
       );
       DateTime currentDateTime = DateTime.now();
-      String outputFileName =
-          Utility.getCleanedUpFileName('$nameOfSourceFileWithoutExtension'
-              ' Compressed '
-              '$currentDateTime$extensionOfSourceFile');
+
+      int millisecondsSinceEpoch = currentDateTime.millisecondsSinceEpoch;
+
+      String outputFileName = Utility.getCleanedUpFileName(
+          '${nameOfSourceFileWithoutExtension.characters.take(150).toString()}'
+          ' Compressed '
+          '$millisecondsSinceEpoch$extensionOfSourceFile');
       outputFile = file.copyWith(fileName: outputFileName);
     } else {
       // If resultFilesPaths is null then throw.
@@ -389,10 +409,13 @@ class PdfToolsActions {
         filePathOrUri: resultFilePath,
       );
       DateTime currentDateTime = DateTime.now();
-      String outputFileName =
-          Utility.getCleanedUpFileName('$nameOfSourceFileWithoutExtension'
-              ' Watermarked '
-              '$currentDateTime$extensionOfSourceFile');
+
+      int millisecondsSinceEpoch = currentDateTime.millisecondsSinceEpoch;
+
+      String outputFileName = Utility.getCleanedUpFileName(
+          '${nameOfSourceFileWithoutExtension.characters.take(150).toString()}'
+          ' Watermarked '
+          '$millisecondsSinceEpoch$extensionOfSourceFile');
       outputFile = file.copyWith(fileName: outputFileName);
     } else {
       // If resultFilePath is null then throw.
@@ -472,10 +495,13 @@ class PdfToolsActions {
         filePathOrUri: resultFilePath,
       );
       DateTime currentDateTime = DateTime.now();
-      String outputFileName =
-          Utility.getCleanedUpFileName('$nameOfSourceFileWithoutExtension'
-              ' Encrypted '
-              '$currentDateTime$extensionOfSourceFile');
+
+      int millisecondsSinceEpoch = currentDateTime.millisecondsSinceEpoch;
+
+      String outputFileName = Utility.getCleanedUpFileName(
+          '${nameOfSourceFileWithoutExtension.characters.take(150).toString()}'
+          ' Encrypted '
+          '$millisecondsSinceEpoch$extensionOfSourceFile');
       outputFile = file.copyWith(fileName: outputFileName);
     } else {
       // If resultFilesPaths is null then throw.
@@ -525,10 +551,13 @@ class PdfToolsActions {
         filePathOrUri: resultFilePath,
       );
       DateTime currentDateTime = DateTime.now();
-      String outputFileName =
-          Utility.getCleanedUpFileName('$nameOfSourceFileWithoutExtension'
-              ' Decrypted '
-              '$currentDateTime$extensionOfSourceFile');
+
+      int millisecondsSinceEpoch = currentDateTime.millisecondsSinceEpoch;
+
+      String outputFileName = Utility.getCleanedUpFileName(
+          '${nameOfSourceFileWithoutExtension.characters.take(150).toString()}'
+          ' Decrypted '
+          '$millisecondsSinceEpoch$extensionOfSourceFile');
       outputFile = file.copyWith(fileName: outputFileName);
     } else {
       // If resultFilesPaths is null then throw.

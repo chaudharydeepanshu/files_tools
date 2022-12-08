@@ -128,9 +128,9 @@ class Utility {
 
     final List<FileSystemEntity> entities = await directory.list().toList();
 
-    log(entities.toList().toString());
     for (FileSystemEntity entity in entities) {
-      if (await entity.exists()) {
+      // Always check existence synchronously before deleting synchronously.
+      if (entity.existsSync()) {
         entity.deleteSync(recursive: true);
       }
     }
@@ -145,7 +145,8 @@ class Utility {
   }) async {
     for (String filePath in filesPaths) {
       File tempFile = File(filePath);
-      if (await tempFile.exists()) {
+      // Always check existence synchronously before deleting synchronously.
+      if (tempFile.existsSync()) {
         tempFile.delete();
       }
     }
