@@ -89,6 +89,37 @@ class Utility {
     return directory;
   }
 
+  /// For getting platform application directory.
+  ///
+  /// If a application directory doesn't exists in the device then it creates
+  /// the directory and returns the created directory.
+  static Future<Directory> getAppDirectory() async {
+    Directory directory = await getApplicationDocumentsDirectory();
+
+    if (!(await directory.exists())) {
+      directory.create(recursive: true);
+      log("Application directory didn't exist so created");
+    }
+
+    return directory;
+  }
+
+  /// For clearing platform application directory.
+  static Future<void> clearAppDirectory({
+    required final String clearCacheCommandFrom,
+  }) async {
+    Directory directory = await getAppDirectory();
+
+    final List<FileSystemEntity> entities = await directory.list().toList();
+    for (FileSystemEntity entity in entities) {
+      if (await entity.exists()) {
+        entity.deleteSync(recursive: true);
+      }
+    }
+
+    log('Application directory emptied by $clearCacheCommandFrom');
+  }
+
   /// For clearing platform temporary directory.
   static Future<void> clearTempDirectory({
     required final String clearCacheCommandFrom,
@@ -96,8 +127,10 @@ class Utility {
     Directory directory = await getTempDirectory();
 
     final List<FileSystemEntity> entities = await directory.list().toList();
+
+    log(entities.toList().toString());
     for (FileSystemEntity entity in entities) {
-      if (!(await entity.exists())) {
+      if (await entity.exists()) {
         entity.deleteSync(recursive: true);
       }
     }
@@ -112,7 +145,7 @@ class Utility {
   }) async {
     for (String filePath in filesPaths) {
       File tempFile = File(filePath);
-      if (!(await tempFile.exists())) {
+      if (await tempFile.exists()) {
         tempFile.delete();
       }
     }
