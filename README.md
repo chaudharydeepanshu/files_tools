@@ -10,7 +10,7 @@
 > - [1. Introduction](#introduction)
 > - [2. Files Tools functionalities](#files-tools-provides-functionality-for-the-following-tasks-)
 >   * [📄 PDF Tools](#-for-pdf-)
->   * [🖼️ Image Tools](#-for-image-)
+>   * [🖼️ Image Tools](#%EF%B8%8F-for-image-)
 >   * [🔜 Tools Coming Soon](#-coming-soon-)
 > - [3. Screenshots](#screenshots-)
 > - [4. 🤔Why I spent time recreating this app?](#why-i-spent-time-recreating-this-app)
