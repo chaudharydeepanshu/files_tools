@@ -10,7 +10,7 @@
 > - [1. Introduction](#introduction)
 > - [2. Files Tools functionalities](#files-tools-provides-functionality-for-the-following-tasks-)
 >   * [📄 PDF Tools](#-for-pdf-)
->   * [🖼️ Image Tools](#-for-image-)
+>   * [🖼️ Image Tools](#%EF%B8%8F-for-image-)
 >   * [🔜 Tools Coming Soon](#-coming-soon-)
 > - [3. Screenshots](#screenshots-)
 > - [4. 🤔Why I spent time recreating this app?](#why-i-spent-time-recreating-this-app)
@@ -47,9 +47,9 @@ Please give the project a star if you liked the app or idea behind it.
 
 |  |  |
 | -------------- | -------------- |
-| <img src="https://user-images.githubusercontent.com/85361211/201923566-3f77f7f3-cea7-4d73-af5a-ec364df73559.png"> | </img> <img src="https://user-images.githubusercontent.com/85361211/201923675-0e4dd753-2491-49f3-ae07-fc57a5e4fb95.png"></img> |
-| <img src="https://user-images.githubusercontent.com/85361211/201923699-6d7f7e77-c25e-486b-8809-56a440475aee.png"> | </img> <img src="https://user-images.githubusercontent.com/85361211/201923720-4ea88067-442d-4573-9229-9e7ca29c7cb8.png"></img> |
-| <img src="https://user-images.githubusercontent.com/85361211/201923745-c66447aa-ce69-4427-9d27-55b87af9e918.png"> | </img> <img src="https://user-images.githubusercontent.com/85361211/201923766-22024bef-21a2-40c0-bb57-bd0aa370fc6e.png"></img> |
+| <img src="https://user-images.githubusercontent.com/85361211/206643965-2b99e59c-d731-48eb-9434-2f12c25e56cd.png"> | </img> <img src="https://user-images.githubusercontent.com/85361211/206643971-b0159d8c-deaa-42ae-944c-264cf38cd70a.png"></img> |
+| <img src="https://user-images.githubusercontent.com/85361211/206643975-81eee488-c817-4e90-b95d-b92b389497a4.png"> | </img> <img src="https://user-images.githubusercontent.com/85361211/206643978-5b6025f4-eba7-4e26-871f-2308a536d033.png"></img> |
+| <img src="https://user-images.githubusercontent.com/85361211/206643979-c5dd0a1b-ce00-4d0d-a530-b9d611e9d1a6.png"> | </img> <img src="https://user-images.githubusercontent.com/85361211/206643982-a58dc930-f9da-41e2-93d4-7aac6b92b8b4.png"></img> |
 
 ## 🤔Why I spent time recreating this app?
 
