@@ -84,8 +84,8 @@ class _CompressImageActionCardState extends State<CompressImageActionCard> {
               tileColor: Theme.of(context).colorScheme.surfaceVariant,
               // contentPadding: EdgeInsets.zero,
               visualDensity: VisualDensity.compact,
-              title: const Text('Less Compression'),
-              subtitle: const Text('High Quality'),
+              title: const Text('Low Compression'),
+              subtitle: const Text('Good Quality'),
               value: CompressionTypes.less,
               groupValue: compressionType,
               onChanged: (CompressionTypes? value) {
@@ -100,7 +100,7 @@ class _CompressImageActionCardState extends State<CompressImageActionCard> {
               // contentPadding: EdgeInsets.zero,
               visualDensity: VisualDensity.compact,
               title: const Text('Medium Compression'),
-              subtitle: const Text('Good Quality'),
+              subtitle: const Text('Ok Quality'),
               value: CompressionTypes.medium,
               groupValue: compressionType,
               onChanged: (CompressionTypes? value) {
@@ -114,7 +114,7 @@ class _CompressImageActionCardState extends State<CompressImageActionCard> {
               tileColor: Theme.of(context).colorScheme.surfaceVariant,
               // contentPadding: EdgeInsets.zero,
               visualDensity: VisualDensity.compact,
-              title: const Text('Extreme Compression'),
+              title: const Text('High Compression'),
               subtitle: const Text('Low Quality'),
               value: CompressionTypes.extreme,
               groupValue: compressionType,
@@ -219,7 +219,7 @@ class _CompressImageActionCardState extends State<CompressImageActionCard> {
               tileColor: Theme.of(context).colorScheme.surfaceVariant,
               // contentPadding: EdgeInsets.zero,
               visualDensity: VisualDensity.compact,
-              title: const Text('Remove exif data'),
+              title: const Text('Remove EXIF Data'),
               subtitle: const Text('Only works for jpg format'),
               value: removeExifData,
               onChanged: (bool? value) {

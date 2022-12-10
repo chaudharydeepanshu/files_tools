@@ -64,8 +64,13 @@ class ImageToolsActions {
             throw 'ImageData is null for modifyImageFiles()';
           }
         } else {
-          // If image doesn't need to be updated.
-          resultFilesPaths.add(sourceFile.fileUri);
+          // If image doesn't need to be updated we still need to convert
+          // that uri to a file path.
+          String cachedFilePathFromFileUri =
+              await Utility.getCachedFilePathFromFileUri(
+            fileUri: sourceFile.fileUri,
+          );
+          resultFilesPaths.add(cachedFilePathFromFileUri);
         }
       }
     } on PlatformException {

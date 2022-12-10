@@ -69,7 +69,7 @@ class AppDrawer extends StatelessWidget {
                     ),
                     ListTile(
                       leading: const Icon(Icons.help),
-                      title: const Text('About'),
+                      title: const Text('About Us'),
                       onTap: () {
                         Navigator.pushNamed(
                           context,

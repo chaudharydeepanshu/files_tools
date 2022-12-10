@@ -101,7 +101,7 @@ class ImageToolsSection extends StatelessWidget {
             ],
           ),
         ],
-        cardTitle: 'Image',
+        cardTitle: 'Modify Image',
         cardOnTap: () {
           Navigator.pushNamed(
             context,
@@ -111,7 +111,7 @@ class ImageToolsSection extends StatelessWidget {
       ),
       GridCardDetail(
         cardIcons: const <Widget>[Icon(Icons.cached)],
-        cardTitle: 'Convert Image',
+        cardTitle: 'Convert Image Format',
         //     () {
         //   Navigator.pushNamed(
         //     context,

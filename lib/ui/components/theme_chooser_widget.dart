@@ -19,7 +19,7 @@ class ThemeChooserWidget extends StatelessWidget {
               .select((AppThemeState value) => value.userColorSchemeSeedColor),
         );
         return ListTile(
-          title: const Text('Theme Color'),
+          title: const Text('Choose Theme Color'),
           subtitle: Text(
             '${ColorTools.materialNameAndCode(userColorSchemeSeedColor)} '
             'aka '

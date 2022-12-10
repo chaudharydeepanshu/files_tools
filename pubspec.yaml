@@ -17,7 +17,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 # In Windows, build-name is used as the major, minor, and patch parts
 # of the product and file versions while build-number is used as the build suffix.
-version: 2.6.3+69
+version: 2.6.4+70
 
 environment:
   sdk: '>=2.18.1 <3.0.0'
@@ -51,13 +51,13 @@ dependencies:
   # For firebase packages`npm install -g firebase-tools`,`dart pub global activate flutterfire_cli`,`flutterfire configure --account firebaseAccount@email.com`.
   # After installing new firebase package run `flutterfire configure --account firebaseAccount@email.com`.
   # https://stackoverflow.com/questions/71803062/flutterfire-cli-how-to-switch-between-separate-firebase-consoles
-  firebase_core: ^2.3.0
+  firebase_core: ^2.4.0
 
   # For logging errors.
-  firebase_crashlytics: ^3.0.6
+  firebase_crashlytics: ^3.0.7
 
   # For logging usage and behavior data.
-  firebase_analytics: ^10.0.6
+  firebase_analytics: ^10.0.7
 
   # For splash screen.
   flutter_native_splash: ^2.2.16
@@ -110,7 +110,7 @@ dependencies:
   package_info_plus: ^3.0.2
 
   # Autoplaying carousel.
-  carousel_slider: ^4.1.1
+  carousel_slider: ^4.2.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

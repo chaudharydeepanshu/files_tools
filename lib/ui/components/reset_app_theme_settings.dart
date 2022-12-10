@@ -27,7 +27,7 @@ class ResetAppThemeSettings extends StatelessWidget {
             //     .remove(Preferences.onBoardingStatusPerfKey);
             ref.read(appThemeStateProvider).updateTheme();
           },
-          child: const Text('Reset'),
+          child: const Text('Reset Theme'),
         );
       },
     );

@@ -45,10 +45,10 @@ packages:
     dependency: "direct main"
     description:
       name: carousel_slider
-      sha256: "869a3f4f2ad0e8d029d9cefd20d2cafd0a50847b74e7aab3a8eec662b0c7d2ee"
+      sha256: d7256dca1ca9a4c9389126d57d70ce5d5e8fe25e7c81075b364f8a09dcba86ad
       url: "https://pub.dev"
     source: hosted
-    version: "4.1.1"
+    version: "4.2.0"
   characters:
     dependency: transitive
     description:

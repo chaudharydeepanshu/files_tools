@@ -49,9 +49,8 @@ class FileTile extends StatelessWidget {
       contentPadding: EdgeInsets.zero,
       horizontalTitleGap: 0,
       minLeadingWidth: 0,
-      minVerticalPadding: 8,
-      visualDensity: VisualDensity.comfortable,
-      dense: true,
+      minVerticalPadding: 0,
+      visualDensity: VisualDensity.standard,
       onTap: () {
         String fileExtension = Utility.getFileNameExtension(fileName: fileName);
         if (fileExtension.toLowerCase() == '.pdf') {
@@ -118,43 +117,47 @@ class FileTile extends StatelessWidget {
         fileName,
         overflow: TextOverflow.ellipsis,
         maxLines: 2,
+        style: Theme.of(context).textTheme.bodyMedium,
       ),
       subtitle: IntrinsicHeight(
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Expanded(
-              child: Text(
-                fileDate,
-                style: Theme.of(context).textTheme.bodySmall,
-                overflow: TextOverflow.ellipsis,
+        child: Padding(
+          padding: const EdgeInsets.only(top: 5.0),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Expanded(
+                child: Text(
+                  fileDate,
+                  style: Theme.of(context).textTheme.bodySmall,
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
-            ),
-            VerticalDivider(
-              color: Theme.of(context).colorScheme.onSecondaryContainer,
-              width: 0,
-            ),
-            Expanded(
-              child: Text(
-                fileTime,
-                style: Theme.of(context).textTheme.bodySmall,
-                // overflow: TextOverflow.ellipsis,
-                textAlign: TextAlign.center,
+              VerticalDivider(
+                color: Theme.of(context).colorScheme.onSecondaryContainer,
+                width: 0,
               ),
-            ),
-            VerticalDivider(
-              color: Theme.of(context).colorScheme.onSecondaryContainer,
-              width: 0,
-            ),
-            Expanded(
-              child: Text(
-                fileSize,
-                style: Theme.of(context).textTheme.bodySmall,
-                overflow: TextOverflow.ellipsis,
-                textAlign: TextAlign.center,
+              Expanded(
+                child: Text(
+                  fileTime,
+                  style: Theme.of(context).textTheme.bodySmall,
+                  // overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.center,
+                ),
               ),
-            ),
-          ],
+              VerticalDivider(
+                color: Theme.of(context).colorScheme.onSecondaryContainer,
+                width: 0,
+              ),
+              Expanded(
+                child: Text(
+                  fileSize,
+                  style: Theme.of(context).textTheme.bodySmall,
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
       trailing: onRemove != null

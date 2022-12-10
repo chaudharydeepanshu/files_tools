@@ -18,7 +18,7 @@ class _CrashlyticsSwitchTileState extends State<CrashlyticsSwitchTile> {
   @override
   Widget build(BuildContext context) {
     return SwitchListTile(
-      title: const Text('Enable Crashlytics'),
+      title: const Text('Crashlytics'),
       subtitle: const Text(
         'Share crash-reports for bugs fixing.',
       ),
@@ -52,9 +52,9 @@ class _AnalyticsSwitchTileState extends State<AnalyticsSwitchTile> {
   @override
   Widget build(BuildContext context) {
     return SwitchListTile(
-      title: const Text('Enable Analytics'),
+      title: const Text('Analytics'),
       subtitle: const Text(
-        'Share app activity for app improvement.',
+        'Share app usage for app improvement',
       ),
       secondary: const Icon(Icons.analytics),
       value: isAnalyticsEnabled,
