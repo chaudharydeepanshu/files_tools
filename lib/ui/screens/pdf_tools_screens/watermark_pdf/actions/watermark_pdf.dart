@@ -1,3 +1,4 @@
+import 'package:files_tools/l10n/generated/app_locale.dart';
 import 'package:files_tools/models/file_model.dart';
 import 'package:files_tools/route/app_routes.dart' as route;
 import 'package:files_tools/state/providers.dart';
@@ -25,10 +26,9 @@ class WatermarkPDF extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView(
+      padding: const EdgeInsets.symmetric(vertical: 16),
       children: <Widget>[
-        const SizedBox(height: 16),
         WatermarkPdfActionCard(pdfPageCount: pdfPageCount, file: file),
-        const SizedBox(height: 16),
       ],
     );
   }
@@ -80,6 +80,51 @@ class _WatermarkPdfActionCardState extends State<WatermarkPdfActionCard> {
 
   @override
   Widget build(BuildContext context) {
+    AppLocale appLocale = AppLocale.of(context);
+
+    String enterWatermarkText =
+        appLocale.textField_LabelText_EnterWatermarkText;
+    String example = appLocale.example;
+    String fieldMustBeFilled = appLocale.textField_ErrorText_FldMustBeFilled;
+    String enterWatermarkFontSize =
+        appLocale.textField_LabelText_EnterWatermarkFontSize;
+    String enterNumberGreaterThan0 =
+        appLocale.textField_ErrorText_EnterNumberGreaterThanXNumber(0);
+    String enterWatermarkOpacity =
+        appLocale.textField_LabelText_EnterWatermarkOpacity;
+    String enterNumberFrom0To1Excluding0 =
+        appLocale.textField_ErrorText_EnterNumberInRangeExcludingBegin(
+      0,
+      1,
+    );
+    String enterWatermarkRotationAngle =
+        appLocale.textField_LabelText_EnterWatermarkRotationAngle;
+    String chooseWatermarkColor = appLocale.tool_Watermark_SelectWatermarkColor;
+    String chooseWatermarkLayer = appLocale.tool_Watermark_SelectWatermarkLayer;
+    String layerTypeOverContent =
+        appLocale.tool_Watermark_LayerType_OverContent;
+    String layerTypeUnderContent =
+        appLocale.tool_Watermark_LayerType_UnderContent;
+    String chooseWatermarkPosition =
+        appLocale.tool_Watermark_SelectWatermarkPosition;
+    String positionTypeTopLeft = appLocale.tool_Watermark_PositionType_TopLeft;
+    String positionTypeTopCenter =
+        appLocale.tool_Watermark_PositionType_TopCenter;
+    String positionTypeTopRight =
+        appLocale.tool_Watermark_PositionType_TopRight;
+    String positionTypeCenterLeft =
+        appLocale.tool_Watermark_PositionType_CenterLeft;
+    String positionTypeCenter = appLocale.tool_Watermark_PositionType_Center;
+    String positionTypeCenterRight =
+        appLocale.tool_Watermark_PositionType_CenterRight;
+    String positionTypeBottomLeft =
+        appLocale.tool_Watermark_PositionType_BottomLeft;
+    String positionTypeBottomCenter =
+        appLocale.tool_Watermark_PositionType_BottomCenter;
+    String positionTypeBottomRight =
+        appLocale.tool_Watermark_PositionType_BottomRight;
+    String process = appLocale.button_Process;
+
     return Card(
       clipBehavior: Clip.antiAlias,
       margin: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -97,11 +142,11 @@ class _WatermarkPdfActionCardState extends State<WatermarkPdfActionCard> {
                 children: <Widget>[
                   TextFormField(
                     controller: textController,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       filled: true,
-                      labelText: 'Enter Watermark Text',
+                      labelText: enterWatermarkText,
                       isDense: true,
-                      helperText: 'Example- Confidential',
+                      helperText: '$example- Confidential',
                       // enabledBorder: const UnderlineInputBorder(),
                     ),
                     autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -109,7 +154,7 @@ class _WatermarkPdfActionCardState extends State<WatermarkPdfActionCard> {
                     // has entered.
                     validator: (String? value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please enter watermark text';
+                        return fieldMustBeFilled;
                       }
                       return null;
                     },
@@ -117,11 +162,11 @@ class _WatermarkPdfActionCardState extends State<WatermarkPdfActionCard> {
                   const SizedBox(height: 10),
                   TextFormField(
                     controller: fontSizeController,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       filled: true,
-                      labelText: 'Enter Font Size',
+                      labelText: enterWatermarkFontSize,
                       isDense: true,
-                      helperText: 'Example- 55',
+                      helperText: '$example- 55',
                       // enabledBorder: const UnderlineInputBorder(),
                     ),
                     keyboardType:
@@ -134,10 +179,10 @@ class _WatermarkPdfActionCardState extends State<WatermarkPdfActionCard> {
                     // The validator receives the text that the user
                     // has entered.
                     validator: (String? value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter number greater than 0';
-                      } else if (double.parse(value) <= 0) {
-                        return 'Please enter number greater than 0';
+                      if (value == null ||
+                          value.isEmpty ||
+                          double.parse(value) <= 0) {
+                        return enterNumberGreaterThan0;
                       }
                       return null;
                     },
@@ -145,11 +190,11 @@ class _WatermarkPdfActionCardState extends State<WatermarkPdfActionCard> {
                   const SizedBox(height: 10),
                   TextFormField(
                     controller: textOpacityController,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       filled: true,
-                      labelText: 'Enter Text Opacity',
+                      labelText: enterWatermarkOpacity,
                       isDense: true,
-                      helperText: 'Example- 0.5',
+                      helperText: '${appLocale.example}- 0.5',
                       // enabledBorder: const UnderlineInputBorder(),
                     ),
                     keyboardType:
@@ -162,12 +207,11 @@ class _WatermarkPdfActionCardState extends State<WatermarkPdfActionCard> {
                     // The validator receives the text that the user
                     // has entered.
                     validator: (String? value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter number from 0 to 1';
-                      } else if (double.parse(value) <= 0) {
-                        return 'Please enter number from 0 to 1';
-                      } else if (double.parse(value) > 1) {
-                        return 'Please enter number from 0 to 1';
+                      if (value == null ||
+                          value.isEmpty ||
+                          double.parse(value) <= 0 ||
+                          double.parse(value) > 1) {
+                        return enterNumberFrom0To1Excluding0;
                       }
                       return null;
                     },
@@ -175,11 +219,11 @@ class _WatermarkPdfActionCardState extends State<WatermarkPdfActionCard> {
                   const SizedBox(height: 10),
                   TextFormField(
                     controller: textRotationAngleController,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       filled: true,
-                      labelText: 'Enter Rotation Angle',
+                      labelText: enterWatermarkRotationAngle,
                       isDense: true,
-                      helperText: 'Example- 135',
+                      helperText: '${appLocale.example}- 135',
                       // enabledBorder: const UnderlineInputBorder(),
                     ),
                     keyboardType:
@@ -195,20 +239,12 @@ class _WatermarkPdfActionCardState extends State<WatermarkPdfActionCard> {
                     // The validator receives the text that the user
                     // has entered.
                     validator: (String? value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter watermark rotation angle';
-                      } else {
-                        try {
-                          double.parse(value);
-                          // Here double parsing succeeds so returning
-                          // that new value.
-                          return null;
-                        } catch (e) {
-                          // Here double parsing failed so returning that
-                          // old value.
-                          return 'Please enter watermark rotation angle';
-                        }
+                      if (value == null ||
+                          value.isEmpty ||
+                          double.tryParse(value) == null) {
+                        return fieldMustBeFilled;
                       }
+                      return null;
                     },
                   ),
                 ],
@@ -216,9 +252,8 @@ class _WatermarkPdfActionCardState extends State<WatermarkPdfActionCard> {
             ),
             const SizedBox(height: 10),
             ListTile(
-              tileColor: Theme.of(context).colorScheme.surfaceVariant,
               title: Text(
-                'Choose watermark color',
+                chooseWatermarkColor,
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
               visualDensity: VisualDensity.compact,
@@ -249,16 +284,16 @@ class _WatermarkPdfActionCardState extends State<WatermarkPdfActionCard> {
               },
             ),
             const SizedBox(height: 10),
-            const Text('Choose watermark layer:'),
+            Text('$chooseWatermarkLayer :-'),
             SegmentedButton<WatermarkLayer>(
-              segments: const <ButtonSegment<WatermarkLayer>>[
+              segments: <ButtonSegment<WatermarkLayer>>[
                 ButtonSegment<WatermarkLayer>(
                   value: WatermarkLayer.overContent,
-                  label: Text('Over Content'),
+                  label: Text(layerTypeOverContent),
                 ),
                 ButtonSegment<WatermarkLayer>(
                   value: WatermarkLayer.underContent,
-                  label: Text('Under Content'),
+                  label: Text(layerTypeUnderContent),
                 ),
               ],
               selected: <WatermarkLayer>{watermarkLayer},
@@ -269,7 +304,7 @@ class _WatermarkPdfActionCardState extends State<WatermarkPdfActionCard> {
               },
             ),
             const SizedBox(height: 10),
-            const Text('Choose watermark position:'),
+            Text('$chooseWatermarkPosition :-'),
             Flexible(
               child: SizedBox(
                 // width: 200,
@@ -284,7 +319,7 @@ class _WatermarkPdfActionCardState extends State<WatermarkPdfActionCard> {
                   itemBuilder: (BuildContext context, int index) {
                     if (index == 0) {
                       return WatermarkPositionButton(
-                        positionText: 'Top\nLeft',
+                        positionText: positionTypeTopLeft,
                         isPositionSelected:
                             positionType == PositionType.topLeft,
                         onPositionChange: () {
@@ -298,7 +333,7 @@ class _WatermarkPdfActionCardState extends State<WatermarkPdfActionCard> {
                       );
                     } else if (index == 1) {
                       return WatermarkPositionButton(
-                        positionText: 'Top\nCenter',
+                        positionText: positionTypeTopCenter,
                         isPositionSelected:
                             positionType == PositionType.topCenter,
                         onPositionChange: () {
@@ -310,7 +345,7 @@ class _WatermarkPdfActionCardState extends State<WatermarkPdfActionCard> {
                       );
                     } else if (index == 2) {
                       return WatermarkPositionButton(
-                        positionText: 'Top\nRight',
+                        positionText: positionTypeTopRight,
                         isPositionSelected:
                             positionType == PositionType.topRight,
                         onPositionChange: () {
@@ -324,7 +359,7 @@ class _WatermarkPdfActionCardState extends State<WatermarkPdfActionCard> {
                       );
                     } else if (index == 3) {
                       return WatermarkPositionButton(
-                        positionText: 'Center\nLeft',
+                        positionText: positionTypeCenterLeft,
                         isPositionSelected:
                             positionType == PositionType.centerLeft,
                         onPositionChange: () {
@@ -336,7 +371,7 @@ class _WatermarkPdfActionCardState extends State<WatermarkPdfActionCard> {
                       );
                     } else if (index == 4) {
                       return WatermarkPositionButton(
-                        positionText: 'Center',
+                        positionText: positionTypeCenter,
                         isPositionSelected: positionType == PositionType.center,
                         onPositionChange: () {
                           setState(() {
@@ -347,7 +382,7 @@ class _WatermarkPdfActionCardState extends State<WatermarkPdfActionCard> {
                       );
                     } else if (index == 5) {
                       return WatermarkPositionButton(
-                        positionText: 'Center\nRight',
+                        positionText: positionTypeCenterRight,
                         isPositionSelected:
                             positionType == PositionType.centerRight,
                         onPositionChange: () {
@@ -359,7 +394,7 @@ class _WatermarkPdfActionCardState extends State<WatermarkPdfActionCard> {
                       );
                     } else if (index == 6) {
                       return WatermarkPositionButton(
-                        positionText: 'Bottom\nLeft',
+                        positionText: positionTypeBottomLeft,
                         isPositionSelected:
                             positionType == PositionType.bottomLeft,
                         onPositionChange: () {
@@ -373,7 +408,7 @@ class _WatermarkPdfActionCardState extends State<WatermarkPdfActionCard> {
                       );
                     } else if (index == 7) {
                       return WatermarkPositionButton(
-                        positionText: 'Bottom\nCenter',
+                        positionText: positionTypeBottomCenter,
                         isPositionSelected:
                             positionType == PositionType.bottomCenter,
                         onPositionChange: () {
@@ -385,7 +420,7 @@ class _WatermarkPdfActionCardState extends State<WatermarkPdfActionCard> {
                       );
                     } else {
                       return WatermarkPositionButton(
-                        positionText: 'Bottom\nRight',
+                        positionText: positionTypeBottomRight,
                         isPositionSelected:
                             positionType == PositionType.bottomRight,
                         onPositionChange: () {
@@ -437,7 +472,7 @@ class _WatermarkPdfActionCardState extends State<WatermarkPdfActionCard> {
                         }
                       },
                       icon: const Icon(Icons.check),
-                      label: const Text('Watermark PDF'),
+                      label: Text(process),
                     );
                   },
                 ),

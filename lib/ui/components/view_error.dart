@@ -1,3 +1,4 @@
+import 'package:files_tools/l10n/generated/app_locale.dart';
 import 'package:files_tools/main.dart';
 import 'package:files_tools/state/preferences.dart';
 import 'package:files_tools/ui/components/custom_snack_bar.dart';
@@ -50,6 +51,10 @@ class ShowError extends StatefulWidget {
 class _ShowErrorState extends State<ShowError> {
   @override
   Widget build(BuildContext context) {
+    AppLocale appLocale = AppLocale.of(context);
+    String goBack = appLocale.button_GoBack;
+    String reportError = appLocale.button_ReportError;
+
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -96,7 +101,7 @@ class _ShowErrorState extends State<ShowError> {
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  child: const Text('Go back'),
+                  child: Text(goBack),
                 ),
               TextButton(
                 onPressed: () async {
@@ -128,7 +133,7 @@ class _ShowErrorState extends State<ShowError> {
                         .setCrashlyticsCollectionEnabled(false);
                   }
                 },
-                child: const Text('Report Error'),
+                child: Text(reportError),
               ),
             ],
           ),

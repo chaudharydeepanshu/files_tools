@@ -1,3 +1,4 @@
+import 'package:files_tools/l10n/generated/app_locale.dart';
 import 'package:files_tools/models/file_model.dart';
 import 'package:files_tools/route/app_routes.dart' as route;
 import 'package:files_tools/state/providers.dart';
@@ -17,27 +18,22 @@ class DecryptPDF extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AppLocale appLocale = AppLocale.of(context);
+
+    String pdfSingular = appLocale.pdf(1);
+    String aboutDecryptTitle = appLocale.tool_Decrypt_InfoTitle(pdfSingular);
+    String aboutDecryptPDFBody =
+        appLocale.tool_DecryptPDF_InfoBody(pdfSingular);
+
     return ListView(
+      padding: const EdgeInsets.symmetric(vertical: 16),
       children: <Widget>[
-        const SizedBox(height: 16),
         DecryptPDFActionCard(file: file),
         const SizedBox(height: 16),
-        const AboutActionCard(
-          aboutTitle: 'This function removes encryption from a pdf.',
-          aboutBody: 'If a have PDF has owner/permission password set but not '
-              'user/open password set then you leave the input blank '
-              'and proceed as it can remove the owner/permission password '
-              'without password.'
-              '\n\nBut if the PDF has a user password set then you must '
-              'provide the user password to decrypt it.'
-              '\n\nA owner/permission password is generally used to '
-              'restrict printing, editing, and copying content in the PDF. '
-              'And it requires a user to type a password to change those '
-              'permission settings.'
-              '\n\nA user/open password requires a user to type a password '
-              'to open the PDF.',
+        AboutActionCard(
+          aboutTitle: aboutDecryptTitle,
+          aboutBody: aboutDecryptPDFBody,
         ),
-        const SizedBox(height: 16),
       ],
     );
   }
@@ -62,6 +58,14 @@ class _DecryptPDFActionCardState extends State<DecryptPDFActionCard> {
 
   @override
   Widget build(BuildContext context) {
+    AppLocale appLocale = AppLocale.of(context);
+
+    String enterOwnerOrUserPw =
+        appLocale.textField_LabelText_EnterOwnerOrUserPw;
+    String enterOwnerOrUserPwHlpText =
+        appLocale.textField_HelperText_LeaveFldEmptyIfNoOwnerPwSet;
+    String process = appLocale.button_Process;
+
     return Card(
       clipBehavior: Clip.antiAlias,
       margin: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -79,11 +83,11 @@ class _DecryptPDFActionCardState extends State<DecryptPDFActionCard> {
                 children: <Widget>[
                   TextFormField(
                     controller: passwordController,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       filled: true,
-                      labelText: 'Enter Owner/User Password',
+                      labelText: enterOwnerOrUserPw,
                       isDense: true,
-                      helperText: 'Leave blank if only owner password is set',
+                      helperText: enterOwnerOrUserPwHlpText,
                       // enabledBorder: const UnderlineInputBorder(),
                     ),
                     inputFormatters: <TextInputFormatter>[
@@ -124,7 +128,7 @@ class _DecryptPDFActionCardState extends State<DecryptPDFActionCard> {
                         }
                       },
                       icon: const Icon(Icons.check),
-                      label: const Text('Decrypt PDF'),
+                      label: Text(process),
                     );
                   },
                 ),

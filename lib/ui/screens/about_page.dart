@@ -1,4 +1,5 @@
 import 'package:files_tools/constants.dart';
+import 'package:files_tools/l10n/generated/app_locale.dart';
 import 'package:files_tools/ui/components/link_button.dart';
 import 'package:files_tools/utils/utility.dart';
 import 'package:flutter/material.dart';
@@ -10,9 +11,13 @@ class AboutPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AppLocale appLocale = AppLocale.of(context);
+
+    String aboutUs = appLocale.aboutUs_ScreenTitle;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('About Us'),
+        title: Text(aboutUs),
         centerTitle: true,
       ),
       body: ListView(
@@ -54,15 +59,17 @@ class AppDescription extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AppLocale appLocale = AppLocale.of(context);
+
+    String appDescription = appLocale.appDescription;
+
     return Card(
       clipBehavior: Clip.antiAlias,
       margin: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Text(
-          'Files Tools is an application on which I worked during my spare '
-          'time. It provides tools to perform various operations on files '
-          '(documents and media), which helps everyone in their everyday life.',
+          appDescription,
           style: Theme.of(context).textTheme.bodyMedium,
           textAlign: TextAlign.center,
         ),
@@ -78,6 +85,12 @@ class AppBadges extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AppLocale appLocale = AppLocale.of(context);
+
+    String openSource = appLocale.openSource;
+    String noAds = appLocale.noAds;
+    String showSourceCode = appLocale.button_ShowSourceCode;
+
     return Card(
       clipBehavior: Clip.antiAlias,
       margin: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -92,12 +105,12 @@ class AppBadges extends StatelessWidget {
                 Column(
                   children: <Widget>[
                     Image.asset(
-                      'assets/open_source.png',
+                      openSourceAssetName,
                       height: 100,
                       width: 100,
                     ),
                     Text(
-                      'Open Source',
+                      openSource,
                       style: Theme.of(context).textTheme.bodySmall,
                       textAlign: TextAlign.center,
                     ),
@@ -106,12 +119,12 @@ class AppBadges extends StatelessWidget {
                 Column(
                   children: <Widget>[
                     Image.asset(
-                      'assets/no_ads.png',
+                      noAdsAssetName,
                       height: 100,
                       width: 100,
                     ),
                     Text(
-                      'No ads',
+                      noAds,
                       style: Theme.of(context).textTheme.bodySmall,
                       textAlign: TextAlign.center,
                     ),
@@ -121,8 +134,7 @@ class AppBadges extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child:
-                  LinkButton(urlLabel: 'Show Source Code', url: sourceCodeUrl),
+              child: LinkButton(urlLabel: showSourceCode, url: sourceCodeUrl),
             ),
           ],
         ),
@@ -138,6 +150,10 @@ class AppCreator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AppLocale appLocale = AppLocale.of(context);
+
+    String creator = appLocale.creator;
+
     return Card(
       clipBehavior: Clip.antiAlias,
       margin: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -146,7 +162,7 @@ class AppCreator extends StatelessWidget {
         child: Column(
           children: <Widget>[
             Text(
-              'Creator',
+              creator,
               style: Theme.of(context).textTheme.titleLarge,
               textAlign: TextAlign.center,
             ),
@@ -182,7 +198,7 @@ class AppCreator extends StatelessWidget {
                           child: Column(
                             children: <Widget>[
                               Image.asset(
-                                'assets/github_3d_icon.png',
+                                githubAssetName,
                                 height: 30,
                                 width: 30,
                               ),
@@ -214,7 +230,7 @@ class AppCreator extends StatelessWidget {
                           child: Column(
                             children: <Widget>[
                               Image.asset(
-                                'assets/github_3d_icon.png',
+                                githubAssetName,
                                 height: 30,
                                 width: 30,
                               ),
@@ -245,6 +261,10 @@ class AppContributions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AppLocale appLocale = AppLocale.of(context);
+
+    String contributors = appLocale.contributors;
+
     return Card(
       clipBehavior: Clip.antiAlias,
       margin: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -253,7 +273,7 @@ class AppContributions extends StatelessWidget {
         child: Column(
           children: <Widget>[
             Text(
-              'Contributors',
+              contributors,
               style: Theme.of(context).textTheme.titleLarge,
               textAlign: TextAlign.center,
             ),
@@ -289,6 +309,10 @@ class Credits extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AppLocale appLocale = AppLocale.of(context);
+
+    String credits = appLocale.credits;
+
     return Card(
       clipBehavior: Clip.antiAlias,
       margin: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -297,7 +321,7 @@ class Credits extends StatelessWidget {
         child: Column(
           children: <Widget>[
             Text(
-              'Credits',
+              credits,
               style: Theme.of(context).textTheme.titleLarge,
               textAlign: TextAlign.center,
             ),
@@ -307,13 +331,13 @@ class Credits extends StatelessWidget {
               text: TextSpan(
                 text: 'Icons by ',
                 style: Theme.of(context).textTheme.bodySmall,
-                children: const <InlineSpan>[
+                children: <InlineSpan>[
                   WidgetSpan(
                     alignment: PlaceholderAlignment.baseline,
                     baseline: TextBaseline.alphabetic,
                     child: LinkButton(
                       urlLabel: 'Icons8',
-                      url: 'https://icons8.com',
+                      url: icons8Url,
                     ),
                   ),
                 ],
@@ -324,13 +348,13 @@ class Credits extends StatelessWidget {
               text: TextSpan(
                 text: 'Animations by ',
                 style: Theme.of(context).textTheme.bodySmall,
-                children: const <InlineSpan>[
+                children: <InlineSpan>[
                   WidgetSpan(
                     alignment: PlaceholderAlignment.baseline,
                     baseline: TextBaseline.alphabetic,
                     child: LinkButton(
                       urlLabel: 'Rive Community',
-                      url: 'https://rive.app/community/',
+                      url: riveCommunityUrl,
                     ),
                   ),
                 ],

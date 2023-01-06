@@ -1,3 +1,4 @@
+import 'package:files_tools/l10n/generated/app_locale.dart';
 import 'package:files_tools/models/file_model.dart';
 import 'package:files_tools/models/file_pick_save_model.dart';
 import 'package:files_tools/models/tool_actions_model.dart';
@@ -30,6 +31,20 @@ class _ImageToPDFPageState extends State<ImageToPDFPage> {
 
   @override
   Widget build(BuildContext context) {
+    AppLocale appLocale = AppLocale.of(context);
+
+    String pdfSingular = appLocale.pdf(1);
+    String imageSingular = appLocale.image(1);
+    String imagePlural = appLocale.image(2);
+    String imageToPdf = appLocale.tool_FileOrFiles1ToFileOrFiles2(
+      imageSingular,
+      pdfSingular,
+    );
+    String convertImageToPdf = appLocale.tool_ConvertFileOrFiles1ToFileOrFiles2(
+      imageSingular,
+      pdfSingular,
+    );
+
     return WillPopScope(
       onWillPop: () async {
         // Removing any snack bar or keyboard
@@ -45,7 +60,7 @@ class _ImageToPDFPageState extends State<ImageToPDFPage> {
         },
         child: Scaffold(
           appBar: AppBar(
-            title: const Text('Image To PDF'),
+            title: Text(imageToPdf),
             centerTitle: true,
           ),
           body: Consumer(
@@ -63,6 +78,8 @@ class _ImageToPDFPageState extends State<ImageToPDFPage> {
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 children: <Widget>[
                   SelectFilesCard(
+                    fileTypeSingular: imageSingular,
+                    fileTypePlural: imagePlural,
                     files: watchToolScreenStateProviderValue.inputFiles,
                     filePickModel: const FilePickModel(
                       allowedExtensions: <String>[
@@ -90,7 +107,7 @@ class _ImageToPDFPageState extends State<ImageToPDFPage> {
                   ToolActionsCard(
                     toolActions: <ToolActionModel>[
                       ToolActionModel(
-                        actionText: 'Image To PDF',
+                        actionText: convertImageToPdf,
                         actionOnTap: selectedFiles.isNotEmpty
                             ? () {
                                 // Removing any snack bar or keyboard

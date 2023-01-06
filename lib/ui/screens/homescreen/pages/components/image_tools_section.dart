@@ -1,3 +1,4 @@
+import 'package:files_tools/l10n/generated/app_locale.dart';
 import 'package:files_tools/route/app_routes.dart' as route;
 import 'package:files_tools/ui/screens/homescreen/pages/components/grid_view_in_card_view.dart';
 import 'package:flutter/material.dart';
@@ -12,11 +13,13 @@ class ImageToolsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AppLocale appLocale = AppLocale.of(context);
+
     final List<GridCardDetail> cardsDetails = arguments.cardsDetails;
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Image Tools'),
+        title: Text(appLocale.imageTools),
         centerTitle: true,
       ),
       body: LayoutBuilder(
@@ -60,10 +63,28 @@ class ImageToolsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AppLocale appLocale = AppLocale.of(context);
+    String compressImage =
+        appLocale.tool_CompressFileOrFiles(appLocale.image(1));
+    String crop = appLocale.crop;
+    String rotate = appLocale.rotate;
+    String flip = appLocale.flip;
+    String modifyImage = appLocale.tool_ModifyFileOrFiles(appLocale.image(1));
+    String convertImageFormat =
+        appLocale.tool_ConvertFileOrFilesFormat(appLocale.image(1));
+    String watermarkImage =
+        appLocale.tool_WatermarkFileOrFiles(appLocale.image(1));
+    String pdfToImage = appLocale.tool_FileOrFiles1ToFileOrFiles2(
+      appLocale.pdf(1),
+      appLocale.image(1),
+    );
+    String imageTools = appLocale.imageTools;
+    String noToolsAvailable = appLocale.noToolsAvailable;
+
     final List<GridCardDetail> exploreCardsDetails = <GridCardDetail>[
       GridCardDetail(
         cardIcons: const <Widget>[Icon(Icons.compress)],
-        cardTitle: 'Compress Image',
+        cardTitle: compressImage,
         cardOnTap: () {
           Navigator.pushNamed(
             context,
@@ -74,34 +95,34 @@ class ImageToolsSection extends StatelessWidget {
       GridCardDetail(
         cardIcons: <Widget>[
           Column(
-            children: const <Widget>[
-              Icon(Icons.crop),
+            children: <Widget>[
+              const Icon(Icons.crop),
               Text(
-                'Crop',
-                style: TextStyle(fontSize: 8),
+                crop,
+                style: const TextStyle(fontSize: 8),
               ),
             ],
           ),
           Column(
-            children: const <Widget>[
-              Icon(Icons.rotate_right),
+            children: <Widget>[
+              const Icon(Icons.rotate_right),
               Text(
-                'Rotate',
-                style: TextStyle(fontSize: 8),
+                rotate,
+                style: const TextStyle(fontSize: 8),
               ),
             ],
           ),
           Column(
-            children: const <Widget>[
-              Icon(Icons.flip),
+            children: <Widget>[
+              const Icon(Icons.flip),
               Text(
-                'Flip',
-                style: TextStyle(fontSize: 8),
+                flip,
+                style: const TextStyle(fontSize: 8),
               ),
             ],
           ),
         ],
-        cardTitle: 'Modify Image',
+        cardTitle: modifyImage,
         cardOnTap: () {
           Navigator.pushNamed(
             context,
@@ -111,7 +132,7 @@ class ImageToolsSection extends StatelessWidget {
       ),
       GridCardDetail(
         cardIcons: const <Widget>[Icon(Icons.cached)],
-        cardTitle: 'Convert Image Format',
+        cardTitle: convertImageFormat,
         //     () {
         //   Navigator.pushNamed(
         //     context,
@@ -121,7 +142,7 @@ class ImageToolsSection extends StatelessWidget {
       ),
       GridCardDetail(
         cardIcons: const <Widget>[Icon(Icons.branding_watermark)],
-        cardTitle: 'Watermark Image',
+        cardTitle: watermarkImage,
         //     () {
         //   Navigator.pushNamed(
         //     context,
@@ -140,7 +161,7 @@ class ImageToolsSection extends StatelessWidget {
             ],
           )
         ],
-        cardTitle: 'PDF To Image',
+        cardTitle: pdfToImage,
         cardOnTap: () {
           Navigator.pushNamed(
             context,
@@ -151,8 +172,8 @@ class ImageToolsSection extends StatelessWidget {
     ];
 
     return GridViewInCardSection(
-      sectionTitle: 'Image Tools',
-      emptySectionText: 'No tools found',
+      sectionTitle: imageTools,
+      emptySectionText: noToolsAvailable,
       gridCardsDetails: exploreCardsDetails,
       cardShowAllOnTap: () {
         Navigator.pushNamed(

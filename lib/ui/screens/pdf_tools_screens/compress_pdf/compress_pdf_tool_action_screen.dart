@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:files_tools/l10n/generated/app_locale.dart';
 import 'package:files_tools/models/file_model.dart';
 import 'package:files_tools/state/tools_actions_state.dart';
 import 'package:files_tools/ui/components/loading.dart';
@@ -39,6 +40,11 @@ class _CompressPDFToolsPageState extends State<CompressPDFToolsPage> {
 
   @override
   Widget build(BuildContext context) {
+    AppLocale appLocale = AppLocale.of(context);
+
+    String pdfSingular = appLocale.pdf(1);
+    String loadingText = appLocale.tool_Action_LoadingFileOrFiles(pdfSingular);
+
     return GestureDetector(
       onTap: () {
         FocusManager.instance.primaryFocus?.unfocus();
@@ -49,6 +55,7 @@ class _CompressPDFToolsPageState extends State<CompressPDFToolsPage> {
           title: Text(
             getAppBarTitleForActionType(
               actionType: widget.arguments.actionType,
+              context: context,
             ),
           ),
           centerTitle: true,
@@ -58,16 +65,16 @@ class _CompressPDFToolsPageState extends State<CompressPDFToolsPage> {
           builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
             switch (snapshot.connectionState) {
               case ConnectionState.waiting:
-                return const Loading(
-                  loadingText: 'Getting pdf info please wait ...',
+                return Loading(
+                  loadingText: loadingText,
                 );
               case ConnectionState.none:
-                return const Loading(
-                  loadingText: 'Getting pdf info please wait ...',
+                return Loading(
+                  loadingText: loadingText,
                 );
               case ConnectionState.active:
-                return const Loading(
-                  loadingText: 'Getting pdf info please wait ...',
+                return Loading(
+                  loadingText: loadingText,
                 );
               case ConnectionState.done:
                 if (snapshot.hasError) {
@@ -135,10 +142,16 @@ class CompressPDFToolsBody extends StatelessWidget {
 }
 
 /// For getting [CompressPDFToolsPage] screen scaffold app bar text.
-String getAppBarTitleForActionType({required final ToolAction actionType}) {
-  String title = 'Action Successful';
+String getAppBarTitleForActionType({
+  required final ToolAction actionType,
+  required final BuildContext context,
+}) {
+  AppLocale appLocale = AppLocale.of(context);
+  String actionSuccessful = appLocale.tool_Action_ProcessingScreen_Successful;
+  String configureCompression = appLocale.tool_Compress_ConfigureCompression;
+  String title = actionSuccessful;
   if (actionType == ToolAction.compressPdf) {
-    title = 'Select Compress Config';
+    title = configureCompression;
   }
   return title;
 }

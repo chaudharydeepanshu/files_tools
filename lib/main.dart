@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:files_tools/firebase_options.dart';
+import 'package:files_tools/l10n/generated/app_locale.dart';
 import 'package:files_tools/route/app_routes.dart' as route;
 import 'package:files_tools/state/app_theme_state.dart';
 import 'package:files_tools/state/package_info_state.dart';
@@ -164,6 +165,8 @@ class MyApp extends StatelessWidget {
           navigatorKey: navigatorKey,
           navigatorObservers: <NavigatorObserver>[analyticsObserver],
           scaffoldMessengerKey: rootScaffoldMessengerKey,
+          localizationsDelegates: AppLocale.localizationsDelegates,
+          supportedLocales: AppLocale.supportedLocales,
         );
       },
     );

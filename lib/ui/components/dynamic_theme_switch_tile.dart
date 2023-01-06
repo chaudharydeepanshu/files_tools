@@ -1,3 +1,4 @@
+import 'package:files_tools/l10n/generated/app_locale.dart';
 import 'package:files_tools/state/app_theme_state.dart';
 import 'package:files_tools/state/providers.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +11,12 @@ class DynamicThemeSwitchTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AppLocale appLocale = AppLocale.of(context);
+    String dynamicThemeListTileTitle =
+        appLocale.settings_Theming_DynamicTheme_ListTileTitle;
+    String dynamicThemeListTileSubtitle =
+        appLocale.settings_Theming_DynamicTheme_ListTileSubtitle;
+
     return Consumer(
       builder: (BuildContext context, WidgetRef ref, Widget? child) {
         bool isDynamicThemeEnabled = ref.watch(
@@ -23,8 +30,8 @@ class DynamicThemeSwitchTile extends StatelessWidget {
 
         return lightDynamicColorScheme != null
             ? SwitchListTile(
-                title: const Text('Dynamic Theme'),
-                subtitle: const Text('Use wallpaper for theme colors'),
+                title: Text(dynamicThemeListTileTitle),
+                subtitle: Text(dynamicThemeListTileSubtitle),
                 secondary: const Icon(Icons.wallpaper),
                 value: isDynamicThemeEnabled,
                 onChanged: (bool? value) {

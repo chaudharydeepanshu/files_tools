@@ -1,4 +1,5 @@
 import 'package:collection/collection.dart';
+import 'package:files_tools/l10n/generated/app_locale.dart';
 import 'package:files_tools/models/file_model.dart';
 import 'package:files_tools/models/pdf_page_model.dart';
 import 'package:files_tools/route/app_routes.dart' as route;
@@ -67,6 +68,11 @@ class _RotateDeleteReorderPagesState extends State<RotateDeleteReorderPages> {
 
   @override
   Widget build(BuildContext context) {
+    AppLocale appLocale = AppLocale.of(context);
+
+    String selectAllPages = appLocale.tool_Action_selectAllPages_ListTileTitle;
+    String process = appLocale.button_Process;
+
     return Column(
       children: <Widget>[
         Padding(
@@ -78,13 +84,8 @@ class _RotateDeleteReorderPagesState extends State<RotateDeleteReorderPages> {
           ),
           child: CheckboxListTile(
             tristate: true,
-            tileColor: Theme.of(context).colorScheme.surfaceVariant,
-            // contentPadding: EdgeInsets.zero,
             visualDensity: VisualDensity.compact,
-            title: Text(
-              'Select All Pages',
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
+            title: Text(selectAllPages),
             value: isSelectAllEnabled,
             onChanged: (bool? value) {
               setState(() {
@@ -108,7 +109,7 @@ class _RotateDeleteReorderPagesState extends State<RotateDeleteReorderPages> {
             },
           ),
         ),
-        const Divider(indent: 16.0, endIndent: 16.0),
+        const Divider(indent: 16.0, endIndent: 16.0, height: 0),
         Expanded(
           child: Stack(
             children: <Widget>[
@@ -404,10 +405,10 @@ class _RotateDeleteReorderPagesState extends State<RotateDeleteReorderPages> {
                               child: Center(
                                 child: Column(
                                   mainAxisSize: MainAxisSize.min,
-                                  children: const <Widget>[
-                                    Icon(Icons.check),
-                                    SizedBox(width: 10),
-                                    Text('Process'),
+                                  children: <Widget>[
+                                    const Icon(Icons.check),
+                                    const SizedBox(width: 10),
+                                    Text(process),
                                   ],
                                 ),
                               ),

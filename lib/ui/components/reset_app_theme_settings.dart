@@ -1,3 +1,4 @@
+import 'package:files_tools/l10n/generated/app_locale.dart';
 import 'package:files_tools/state/preferences.dart';
 import 'package:files_tools/state/providers.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +11,9 @@ class ResetAppThemeSettings extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AppLocale appLocale = AppLocale.of(context);
+    String resetTheme = appLocale.button_ResetTheme;
+
     return Consumer(
       builder: (BuildContext context, WidgetRef ref, Widget? child) {
         return TextButton(
@@ -27,7 +31,7 @@ class ResetAppThemeSettings extends StatelessWidget {
             //     .remove(Preferences.onBoardingStatusPerfKey);
             ref.read(appThemeStateProvider).updateTheme();
           },
-          child: const Text('Reset Theme'),
+          child: Text(resetTheme),
         );
       },
     );

@@ -51,6 +51,7 @@ class FileTile extends StatelessWidget {
       minLeadingWidth: 0,
       minVerticalPadding: 0,
       visualDensity: VisualDensity.standard,
+      // dense: true,
       onTap: () {
         String fileExtension = Utility.getFileNameExtension(fileName: fileName);
         if (fileExtension.toLowerCase() == '.pdf') {

@@ -1,4 +1,5 @@
 import 'package:collection/collection.dart';
+import 'package:files_tools/l10n/generated/app_locale.dart';
 import 'package:files_tools/models/file_model.dart';
 import 'package:files_tools/models/pdf_page_model.dart';
 import 'package:files_tools/route/app_routes.dart' as route;
@@ -66,6 +67,14 @@ class _ExtractByPageSelectionState extends State<ExtractByPageSelection> {
 
   @override
   Widget build(BuildContext context) {
+    AppLocale appLocale = AppLocale.of(context);
+
+    String pdfSingular = appLocale.pdf(1);
+    String selectAllPages = appLocale.tool_Action_selectAllPages_ListTileTitle;
+    String extractSinglePageFileError =
+        appLocale.tool_Split_ExtractSinglePageFileError(pdfSingular);
+    String process = appLocale.button_Process;
+
     return Column(
       children: <Widget>[
         Padding(
@@ -77,13 +86,8 @@ class _ExtractByPageSelectionState extends State<ExtractByPageSelection> {
           ),
           child: CheckboxListTile(
             tristate: true,
-            tileColor: Theme.of(context).colorScheme.surfaceVariant,
-            // contentPadding: EdgeInsets.zero,
             visualDensity: VisualDensity.compact,
-            title: Text(
-              'Select All Pages',
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
+            title: Text(selectAllPages),
             value: isSelectAllEnabled,
             onChanged: (bool? value) {
               setState(() {
@@ -107,7 +111,7 @@ class _ExtractByPageSelectionState extends State<ExtractByPageSelection> {
             },
           ),
         ),
-        const Divider(indent: 16.0, endIndent: 16.0),
+        const Divider(indent: 16.0, endIndent: 16.0, height: 0),
         const SizedBox(height: 10),
         widget.pdfPages.length > 1
             ? Expanded(
@@ -375,10 +379,10 @@ class _ExtractByPageSelectionState extends State<ExtractByPageSelection> {
                                     child: Center(
                                       child: Column(
                                         mainAxisSize: MainAxisSize.min,
-                                        children: const <Widget>[
-                                          Icon(Icons.check),
-                                          SizedBox(width: 10),
-                                          Text('Process'),
+                                        children: <Widget>[
+                                          const Icon(Icons.check),
+                                          const SizedBox(width: 10),
+                                          Text(process),
                                         ],
                                       ),
                                     ),
@@ -394,7 +398,7 @@ class _ExtractByPageSelectionState extends State<ExtractByPageSelection> {
                 ),
               )
             : Text(
-                'Sorry, pdf with less than 2 pages cant be further extracted.',
+                extractSinglePageFileError,
                 style: Theme.of(context)
                     .textTheme
                     .bodySmall

@@ -1,3 +1,4 @@
+import 'package:files_tools/l10n/generated/app_locale.dart';
 import 'package:files_tools/models/file_model.dart';
 import 'package:files_tools/route/app_routes.dart' as route;
 import 'package:files_tools/state/providers.dart';
@@ -17,21 +18,22 @@ class EncryptPDF extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AppLocale appLocale = AppLocale.of(context);
+
+    String pdfSingular = appLocale.pdf(1);
+    String aboutEncryptTitle = appLocale.tool_Encrypt_InfoTitle(pdfSingular);
+    String aboutEncryptPDFBody =
+        appLocale.tool_EncryptPDF_InfoBody(pdfSingular);
+
     return ListView(
+      padding: const EdgeInsets.symmetric(vertical: 16),
       children: <Widget>[
-        const SizedBox(height: 16),
         EncryptPDFActionCard(file: file),
         const SizedBox(height: 16),
-        const AboutActionCard(
-          aboutTitle: 'This function adds encryption from a pdf.',
-          aboutBody:
-              'A owner/permission password is generally used to restrict '
-              'printing, editing, and copying content in the PDF. '
-              'And it requires a user to type a password to change '
-              'those permission settings.\n\nA user/open password requires '
-              'a user to type a password to open the PDF.',
+        AboutActionCard(
+          aboutTitle: aboutEncryptTitle,
+          aboutBody: aboutEncryptPDFBody,
         ),
-        const SizedBox(height: 16),
       ],
     );
   }
@@ -58,16 +60,16 @@ class _EncryptPDFActionCardState extends State<EncryptPDFActionCard> {
   TextEditingController userPasswordController =
       TextEditingController(text: '');
 
-  bool allowPrinting = false;
-  bool allowModifyContents = false;
-  bool allowCopy = false;
-  bool allowModifyAnnotations = false;
-  bool allowFillIn = false;
-  bool allowScreenReaders = false;
-  bool allowAssembly = false;
-  bool allowDegradedPrinting = false;
-  bool encryptEmbeddedFilesOnly = false;
-  bool doNotEncryptMetadata = false;
+  bool allowPrintingStatus = false;
+  bool allowModifyContentsStatus = false;
+  bool allowCopyStatus = false;
+  bool allowModifyAnnotationsStatus = false;
+  bool allowFillInStatus = false;
+  bool allowScreenReadersStatus = false;
+  bool allowAssemblyStatus = false;
+  bool allowDegradedPrintingStatus = false;
+  bool encryptEmbeddedFilesOnlyStatus = false;
+  bool doNotEncryptMetadataStatus = false;
 
   final List<bool> isSelectedForEncryptionTypes = <bool>[
     false,
@@ -76,27 +78,74 @@ class _EncryptPDFActionCardState extends State<EncryptPDFActionCard> {
     true
   ];
 
-  List<Widget> encryptionTypes = const <Widget>[
-    Padding(
-      padding: EdgeInsets.symmetric(horizontal: 10),
-      child: Text('Standard\nAES\n40', textAlign: TextAlign.center),
-    ),
-    Padding(
-      padding: EdgeInsets.symmetric(horizontal: 10),
-      child: Text('Standard\nAES\n128', textAlign: TextAlign.center),
-    ),
-    Padding(
-      padding: EdgeInsets.symmetric(horizontal: 10),
-      child: Text('AES\n128', textAlign: TextAlign.center),
-    ),
-    Padding(
-      padding: EdgeInsets.symmetric(horizontal: 10),
-      child: Text('AES\n256', textAlign: TextAlign.center),
-    )
-  ];
-
   @override
   Widget build(BuildContext context) {
+    AppLocale appLocale = AppLocale.of(context);
+
+    String enterOwnerPw = appLocale.textField_LabelText_EnterOwnerPw;
+    String enterOwnerPwErrText =
+        appLocale.textField_ErrorText_EnterOwnerPwIfUserPwEmpty;
+    String enterUserPw = appLocale.textField_LabelText_EnterUserPw;
+    String enterUserPwErrText =
+        appLocale.textField_ErrorText_EnterOwnerPwIfUserPwEmpty;
+    String encryptTypeStandardAES40 =
+        appLocale.tool_Encrypt_encryptionType_StandardAES40;
+    String encryptTypeStandardAES128 =
+        appLocale.tool_Encrypt_encryptionType_StandardAES128;
+    String encryptTypeAES128 = appLocale.tool_Encrypt_encryptionType_AES128;
+    String encryptTypeAES256 = appLocale.tool_Encrypt_encryptionType_AES256;
+    String setEncryptionPermissions =
+        appLocale.tool_Encrypt_SetEncryptionPermissions;
+    String allowPrinting = appLocale.tool_Encrypt_Permission_AllowPrinting;
+    String allowModifyingContents =
+        appLocale.tool_Encrypt_Permission_AllowModifyingContents;
+    String allowCopy = appLocale.tool_Encrypt_Permission_AllowCopy;
+    String allowModifyingAnnotations =
+        appLocale.tool_Encrypt_Permission_AllowModifyingAnnotations;
+    String allowFillIn = appLocale.tool_Encrypt_Permission_AllowFillIn;
+    String allowScreenReaders =
+        appLocale.tool_Encrypt_Permission_AllowScreenReaders;
+    String allowAssembly = appLocale.tool_Encrypt_Permission_AllowAssembly;
+    String allowDegradedPrinting =
+        appLocale.tool_Encrypt_Permission_AllowDegradedPrinting;
+    String setEncryptionType = appLocale.tool_Encrypt_SetEncryptionType;
+    String encryptEmbeddedFilesOnly =
+        appLocale.tool_Encrypt_Setting_EncryptEmbeddedFilesOnly;
+    String doNotEncryptMetadata =
+        appLocale.tool_Encrypt_Setting_DoNotEncryptMetadata;
+    String process = appLocale.button_Process;
+
+    List<Widget> encryptionTypes = <Widget>[
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        child: Text(
+          encryptTypeStandardAES40,
+          textAlign: TextAlign.center,
+        ),
+      ),
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        child: Text(
+          encryptTypeStandardAES128,
+          textAlign: TextAlign.center,
+        ),
+      ),
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        child: Text(
+          encryptTypeAES128,
+          textAlign: TextAlign.center,
+        ),
+      ),
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        child: Text(
+          encryptTypeAES256,
+          textAlign: TextAlign.center,
+        ),
+      ),
+    ];
+
     return Card(
       clipBehavior: Clip.antiAlias,
       margin: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -114,9 +163,9 @@ class _EncryptPDFActionCardState extends State<EncryptPDFActionCard> {
                 children: <Widget>[
                   TextFormField(
                     controller: ownerPasswordController,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       filled: true,
-                      labelText: 'Enter Owner Password',
+                      labelText: enterOwnerPw,
                       isDense: true,
                       helperText: '',
                       // enabledBorder: const UnderlineInputBorder(),
@@ -129,15 +178,15 @@ class _EncryptPDFActionCardState extends State<EncryptPDFActionCard> {
                     // has entered.
                     validator: (String? value) {
                       if ((value == null || value.isEmpty) &&
-                          (allowPrinting == true ||
-                              allowModifyContents == true ||
-                              allowCopy == true ||
-                              allowModifyAnnotations == true ||
-                              allowFillIn == true ||
-                              allowScreenReaders == true ||
-                              allowAssembly == true ||
-                              allowDegradedPrinting == true)) {
-                        return 'Please enter owner Password for permissions.';
+                          (allowPrintingStatus == true ||
+                              allowModifyContentsStatus == true ||
+                              allowCopyStatus == true ||
+                              allowModifyAnnotationsStatus == true ||
+                              allowFillInStatus == true ||
+                              allowScreenReadersStatus == true ||
+                              allowAssemblyStatus == true ||
+                              allowDegradedPrintingStatus == true)) {
+                        return enterOwnerPwErrText;
                       }
                       return null;
                     },
@@ -145,9 +194,9 @@ class _EncryptPDFActionCardState extends State<EncryptPDFActionCard> {
                   const SizedBox(height: 10),
                   TextFormField(
                     controller: userPasswordController,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       filled: true,
-                      labelText: 'Enter User Password',
+                      labelText: enterUserPw,
                       isDense: true,
                       helperText: '',
                       // enabledBorder: const UnderlineInputBorder(),
@@ -161,8 +210,7 @@ class _EncryptPDFActionCardState extends State<EncryptPDFActionCard> {
                     validator: (String? value) {
                       if ((value == null || value.isEmpty) &&
                           (ownerPasswordController.value.text.isEmpty)) {
-                        return 'Please provide at least user or '
-                            'owner Password';
+                        return enterUserPwErrText;
                       }
                       return null;
                     },
@@ -174,136 +222,123 @@ class _EncryptPDFActionCardState extends State<EncryptPDFActionCard> {
             Row(
               children: <Widget>[
                 Text(
-                  'Set Permissions :-',
+                  '$setEncryptionPermissions :-',
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
               ],
             ),
             const SizedBox(height: 5),
             CheckboxListTile(
-              tileColor: Theme.of(context).colorScheme.surfaceVariant,
-              // contentPadding: EdgeInsets.zero,
               visualDensity: VisualDensity.compact,
               title: Text(
-                'Allow Printing',
+                allowPrinting,
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
-              value: allowPrinting,
+              value: allowPrintingStatus,
               onChanged: (bool? value) {
                 setState(() {
-                  allowPrinting = value ?? !allowPrinting;
+                  allowPrintingStatus = value ?? !allowPrintingStatus;
                 });
               },
             ),
             const SizedBox(height: 5),
             CheckboxListTile(
-              tileColor: Theme.of(context).colorScheme.surfaceVariant,
-              // contentPadding: EdgeInsets.zero,
               visualDensity: VisualDensity.compact,
               title: Text(
-                'Allow Modifying Contents',
+                allowModifyingContents,
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
-              value: allowModifyContents,
+              value: allowModifyContentsStatus,
               onChanged: (bool? value) {
                 setState(() {
-                  allowModifyContents = value ?? !allowModifyContents;
+                  allowModifyContentsStatus =
+                      value ?? !allowModifyContentsStatus;
                 });
               },
             ),
             const SizedBox(height: 5),
             CheckboxListTile(
-              tileColor: Theme.of(context).colorScheme.surfaceVariant,
-              // contentPadding: EdgeInsets.zero,
               visualDensity: VisualDensity.compact,
               title: Text(
-                'Allow Copy',
+                allowCopy,
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
-              value: allowCopy,
+              value: allowCopyStatus,
               onChanged: (bool? value) {
                 setState(() {
-                  allowCopy = value ?? !allowCopy;
+                  allowCopyStatus = value ?? !allowCopyStatus;
                 });
               },
             ),
             const SizedBox(height: 5),
             CheckboxListTile(
-              tileColor: Theme.of(context).colorScheme.surfaceVariant,
-              // contentPadding: EdgeInsets.zero,
               visualDensity: VisualDensity.compact,
               title: Text(
-                'Allow Modifying Annotations',
+                allowModifyingAnnotations,
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
-              value: allowModifyAnnotations,
+              value: allowModifyAnnotationsStatus,
               onChanged: (bool? value) {
                 setState(() {
-                  allowModifyAnnotations = value ?? !allowModifyAnnotations;
+                  allowModifyAnnotationsStatus =
+                      value ?? !allowModifyAnnotationsStatus;
                 });
               },
             ),
             const SizedBox(height: 5),
             CheckboxListTile(
-              tileColor: Theme.of(context).colorScheme.surfaceVariant,
-              // contentPadding: EdgeInsets.zero,
               visualDensity: VisualDensity.compact,
               title: Text(
-                'Allow Fill In',
+                allowFillIn,
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
-              value: allowFillIn,
+              value: allowFillInStatus,
               onChanged: (bool? value) {
                 setState(() {
-                  allowFillIn = value ?? !allowFillIn;
+                  allowFillInStatus = value ?? !allowFillInStatus;
                 });
               },
             ),
             const SizedBox(height: 5),
             CheckboxListTile(
-              tileColor: Theme.of(context).colorScheme.surfaceVariant,
-              // contentPadding: EdgeInsets.zero,
               visualDensity: VisualDensity.compact,
               title: Text(
-                'Allow Screen Readers',
+                allowScreenReaders,
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
-              value: allowScreenReaders,
+              value: allowScreenReadersStatus,
               onChanged: (bool? value) {
                 setState(() {
-                  allowScreenReaders = value ?? !allowScreenReaders;
+                  allowScreenReadersStatus = value ?? !allowScreenReadersStatus;
                 });
               },
             ),
             const SizedBox(height: 5),
             CheckboxListTile(
-              tileColor: Theme.of(context).colorScheme.surfaceVariant,
-              // contentPadding: EdgeInsets.zero,
               visualDensity: VisualDensity.compact,
               title: Text(
-                'Allow Assembly',
+                allowAssembly,
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
-              value: allowAssembly,
+              value: allowAssemblyStatus,
               onChanged: (bool? value) {
                 setState(() {
-                  allowAssembly = value ?? !allowAssembly;
+                  allowAssemblyStatus = value ?? !allowAssemblyStatus;
                 });
               },
             ),
             const SizedBox(height: 5),
             CheckboxListTile(
-              tileColor: Theme.of(context).colorScheme.surfaceVariant,
-              // contentPadding: EdgeInsets.zero,
               visualDensity: VisualDensity.compact,
               title: Text(
-                'Allow Degraded Printing',
+                allowDegradedPrinting,
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
-              value: allowDegradedPrinting,
+              value: allowDegradedPrintingStatus,
               onChanged: (bool? value) {
                 setState(() {
-                  allowDegradedPrinting = value ?? !allowDegradedPrinting;
+                  allowDegradedPrintingStatus =
+                      value ?? !allowDegradedPrintingStatus;
                 });
               },
             ),
@@ -311,7 +346,7 @@ class _EncryptPDFActionCardState extends State<EncryptPDFActionCard> {
             Row(
               children: <Widget>[
                 Text(
-                  'Set Encryption :-',
+                  '$setEncryptionType :-',
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
               ],
@@ -336,33 +371,31 @@ class _EncryptPDFActionCardState extends State<EncryptPDFActionCard> {
             ),
             const SizedBox(height: 5),
             CheckboxListTile(
-              tileColor: Theme.of(context).colorScheme.surfaceVariant,
-              // contentPadding: EdgeInsets.zero,
               visualDensity: VisualDensity.compact,
               title: Text(
-                'Encrypt Embedded Files Only',
+                encryptEmbeddedFilesOnly,
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
-              value: encryptEmbeddedFilesOnly,
+              value: encryptEmbeddedFilesOnlyStatus,
               onChanged: (bool? value) {
                 setState(() {
-                  encryptEmbeddedFilesOnly = value ?? !encryptEmbeddedFilesOnly;
+                  encryptEmbeddedFilesOnlyStatus =
+                      value ?? !encryptEmbeddedFilesOnlyStatus;
                 });
               },
             ),
             const SizedBox(height: 5),
             CheckboxListTile(
-              tileColor: Theme.of(context).colorScheme.surfaceVariant,
-              // contentPadding: EdgeInsets.zero,
               visualDensity: VisualDensity.compact,
               title: Text(
-                'Do Not Encrypt Metadata',
+                doNotEncryptMetadata,
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
-              value: doNotEncryptMetadata,
+              value: doNotEncryptMetadataStatus,
               onChanged: (bool? value) {
                 setState(() {
-                  doNotEncryptMetadata = value ?? !doNotEncryptMetadata;
+                  doNotEncryptMetadataStatus =
+                      value ?? !doNotEncryptMetadataStatus;
                 });
               },
             ),
@@ -384,22 +417,24 @@ class _EncryptPDFActionCardState extends State<EncryptPDFActionCard> {
                             sourceFile: widget.file,
                             ownerPassword: ownerPasswordController.value.text,
                             userPassword: userPasswordController.value.text,
-                            allowPrinting: allowPrinting,
-                            allowModifyContents: allowModifyContents,
-                            allowCopy: allowCopy,
-                            allowModifyAnnotations: allowModifyAnnotations,
-                            allowFillIn: allowFillIn,
-                            allowScreenReaders: allowScreenReaders,
-                            allowAssembly: allowAssembly,
-                            allowDegradedPrinting: allowDegradedPrinting,
+                            allowPrinting: allowPrintingStatus,
+                            allowModifyContents: allowModifyContentsStatus,
+                            allowCopy: allowCopyStatus,
+                            allowModifyAnnotations:
+                                allowModifyAnnotationsStatus,
+                            allowFillIn: allowFillInStatus,
+                            allowScreenReaders: allowScreenReadersStatus,
+                            allowAssembly: allowAssemblyStatus,
+                            allowDegradedPrinting: allowDegradedPrintingStatus,
                             standardEncryptionAES40:
                                 isSelectedForEncryptionTypes[0],
                             standardEncryptionAES128:
                                 isSelectedForEncryptionTypes[1],
                             encryptionAES128: isSelectedForEncryptionTypes[2],
                             encryptionAES256: isSelectedForEncryptionTypes[3],
-                            encryptEmbeddedFilesOnly: encryptEmbeddedFilesOnly,
-                            doNotEncryptMetadata: doNotEncryptMetadata,
+                            encryptEmbeddedFilesOnly:
+                                encryptEmbeddedFilesOnlyStatus,
+                            doNotEncryptMetadata: doNotEncryptMetadataStatus,
                           );
                           Navigator.pushNamed(
                             context,
@@ -408,7 +443,7 @@ class _EncryptPDFActionCardState extends State<EncryptPDFActionCard> {
                         }
                       },
                       icon: const Icon(Icons.check),
-                      label: const Text('Encrypt PDF'),
+                      label: Text(process),
                     );
                   },
                 ),

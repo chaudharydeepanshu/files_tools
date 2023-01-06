@@ -16,6 +16,10 @@ analyzer:
     - "bin/cache/**"
     - "lib/generated_plugin_registrant.dart"
     - "lib/firebase_options.dart"
+    - "lib/l10n/**"
+    - "test/widget_test.dart"
+  plugins:
+    - string_literal_finder
 
   # For more information see:
   # https://dart.dev/guides/language/analysis-options#enabling-additional-type-checks

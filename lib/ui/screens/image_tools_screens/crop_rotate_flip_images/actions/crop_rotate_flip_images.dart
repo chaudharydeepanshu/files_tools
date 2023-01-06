@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:collection/collection.dart';
 import 'package:extended_image/extended_image.dart';
+import 'package:files_tools/l10n/generated/app_locale.dart';
 import 'package:files_tools/models/file_model.dart';
 import 'package:files_tools/models/image_model.dart';
 import 'package:files_tools/route/app_routes.dart' as route;
@@ -86,6 +87,15 @@ class _CropRotateFlipImagesState extends State<CropRotateFlipImages> {
 
   @override
   Widget build(BuildContext context) {
+    AppLocale appLocale = AppLocale.of(context);
+
+    String imageSingular = appLocale.image(1);
+    String imagePlural = appLocale.image(2);
+    String loadingText = appLocale.tool_Action_LoadingFileOrFiles(
+      widget.files.length > 1 ? imagePlural : imageSingular,
+    );
+    String process = appLocale.button_Process;
+
     return Column(
       children: <Widget>[
         FutureBuilder<bool>(
@@ -93,16 +103,22 @@ class _CropRotateFlipImagesState extends State<CropRotateFlipImages> {
           builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
             switch (snapshot.connectionState) {
               case ConnectionState.waiting:
-                return const Expanded(
-                  child: Loading(loadingText: 'Loading images...'),
+                return Expanded(
+                  child: Loading(
+                    loadingText: loadingText,
+                  ),
                 );
               case ConnectionState.none:
-                return const Expanded(
-                  child: Loading(loadingText: 'Loading images...'),
+                return Expanded(
+                  child: Loading(
+                    loadingText: loadingText,
+                  ),
                 );
               case ConnectionState.active:
-                return const Expanded(
-                  child: Loading(loadingText: 'Loading images...'),
+                return Expanded(
+                  child: Loading(
+                    loadingText: loadingText,
+                  ),
                 );
               case ConnectionState.done:
                 if (snapshot.hasError) {
@@ -141,9 +157,8 @@ class _CropRotateFlipImagesState extends State<CropRotateFlipImages> {
                                             switch (
                                                 state.extendedImageLoadState) {
                                               case LoadState.loading:
-                                                return const Loading(
-                                                  loadingText:
-                                                      'Loading image...',
+                                                return Loading(
+                                                  loadingText: loadingText,
                                                 );
                                               case LoadState.failed:
                                                 return ShowError(
@@ -333,10 +348,10 @@ class _CropRotateFlipImagesState extends State<CropRotateFlipImages> {
                                         child: Center(
                                           child: Column(
                                             mainAxisSize: MainAxisSize.min,
-                                            children: const <Widget>[
-                                              Icon(Icons.check),
-                                              SizedBox(width: 10),
-                                              Text('Process'),
+                                            children: <Widget>[
+                                              const Icon(Icons.check),
+                                              const SizedBox(width: 10),
+                                              Text(process),
                                             ],
                                           ),
                                         ),

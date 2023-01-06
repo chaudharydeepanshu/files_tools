@@ -1,3 +1,4 @@
+import 'package:files_tools/l10n/generated/app_locale.dart';
 import 'package:files_tools/models/file_model.dart';
 import 'package:files_tools/models/file_pick_save_model.dart';
 import 'package:files_tools/models/tool_actions_model.dart';
@@ -30,6 +31,13 @@ class _CompressPDFPageState extends State<CompressImagePage> {
 
   @override
   Widget build(BuildContext context) {
+    AppLocale appLocale = AppLocale.of(context);
+
+    String imageSingular = appLocale.image(1);
+    String imagePlural = appLocale.image(2);
+    String compressImage = appLocale.tool_CompressFileOrFiles(imageSingular);
+    String compressImages = appLocale.tool_CompressFileOrFiles(imagePlural);
+
     return WillPopScope(
       onWillPop: () async {
         // Removing any snack bar or keyboard
@@ -45,7 +53,7 @@ class _CompressPDFPageState extends State<CompressImagePage> {
         },
         child: Scaffold(
           appBar: AppBar(
-            title: const Text('Compress Image'),
+            title: Text(compressImage),
             centerTitle: true,
           ),
           body: Consumer(
@@ -60,6 +68,8 @@ class _CompressPDFPageState extends State<CompressImagePage> {
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 children: <Widget>[
                   SelectFilesCard(
+                    fileTypeSingular: imageSingular,
+                    fileTypePlural: imagePlural,
                     files: watchToolScreenStateProviderValue.inputFiles,
                     filePickModel: const FilePickModel(
                       allowedExtensions: <String>[
@@ -80,7 +90,9 @@ class _CompressPDFPageState extends State<CompressImagePage> {
                   ToolActionsCard(
                     toolActions: <ToolActionModel>[
                       ToolActionModel(
-                        actionText: 'Compress images',
+                        actionText: selectedFiles.length > 1
+                            ? compressImages
+                            : compressImage,
                         actionOnTap: selectedFiles.isNotEmpty
                             ? () {
                                 // Removing any snack bar or keyboard

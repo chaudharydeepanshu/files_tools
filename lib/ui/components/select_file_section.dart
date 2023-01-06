@@ -1,5 +1,7 @@
 import 'dart:ui';
 
+import 'package:files_tools/constants.dart';
+import 'package:files_tools/l10n/generated/app_locale.dart';
 import 'package:files_tools/models/file_model.dart';
 import 'package:files_tools/models/file_pick_save_model.dart';
 import 'package:files_tools/state/providers.dart';
@@ -15,9 +17,17 @@ class SelectFilesCard extends StatelessWidget {
   /// Defining [SelectFilesCard] constructor.
   const SelectFilesCard({
     Key? key,
+    this.fileTypeSingular,
+    this.fileTypePlural,
     required this.files,
     required this.filePickModel,
   }) : super(key: key);
+
+  /// Takes singular of file type such as PDF, Image, etc.
+  final String? fileTypeSingular;
+
+  /// Takes plural of file type such as PDFs, Images, etc.
+  final String? fileTypePlural;
 
   /// Takes input files.
   final List<InputFileModel> files;
@@ -27,6 +37,11 @@ class SelectFilesCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AppLocale appLocale = AppLocale.of(context);
+
+    String fileTypeSingular = this.fileTypeSingular ?? appLocale.file(1);
+    String fileTypePlural = this.fileTypePlural ?? appLocale.file(2);
+
     double heightWithoutAppBarNavBar = MediaQuery.of(context).size.height -
         (MediaQuery.of(context).padding.top +
             kToolbarHeight +
@@ -49,11 +64,15 @@ class SelectFilesCard extends StatelessWidget {
               files.isNotEmpty
                   ? Flexible(
                       child: FilesSelected(
+                        fileTypeSingular: fileTypeSingular,
+                        fileTypePlural: fileTypePlural,
                         files: files,
                         filePickModel: filePickModel,
                       ),
                     )
                   : NoFilesSelected(
+                      fileTypeSingular: fileTypeSingular,
+                      fileTypePlural: fileTypePlural,
                       filePickModel: filePickModel,
                     ),
             ],
@@ -69,9 +88,17 @@ class FilesSelected extends StatelessWidget {
   /// Defining [FilesSelected] constructor.
   const FilesSelected({
     Key? key,
+    required this.fileTypeSingular,
+    required this.fileTypePlural,
     required this.files,
     required this.filePickModel,
   }) : super(key: key);
+
+  /// Takes singular of file type such as PDF, Image, etc.
+  final String fileTypeSingular;
+
+  /// Takes plural of file type such as PDFs, Images, etc.
+  final String fileTypePlural;
 
   /// Takes input files.
   final List<InputFileModel> files;
@@ -81,6 +108,14 @@ class FilesSelected extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AppLocale appLocale = AppLocale.of(context);
+    String fetchingPickedFiles = appLocale.pickedFiles_Fetching;
+    String pickOneMoreFile = appLocale.pickOneMoreFile;
+    String rearrangePickedFiles =
+        appLocale.pickedFiles_Rearrange(fileTypePlural);
+    String pickMore = appLocale.button_PickMore;
+    String clearAll = appLocale.button_ClearAll;
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
@@ -120,7 +155,7 @@ class FilesSelected extends StatelessWidget {
                     children: <Widget>[
                       const SizedBox(height: 10),
                       Text(
-                        'Picking files please wait ...',
+                        fetchingPickedFiles,
                         style: Theme.of(context).textTheme.bodySmall,
                         textAlign: TextAlign.center,
                       ),
@@ -132,7 +167,7 @@ class FilesSelected extends StatelessWidget {
                         children: <Widget>[
                           const SizedBox(height: 10),
                           Text(
-                            'Please select at least one more file',
+                            pickOneMoreFile,
                             style: Theme.of(context)
                                 .textTheme
                                 .bodySmall
@@ -151,7 +186,7 @@ class FilesSelected extends StatelessWidget {
                             children: <Widget>[
                               const SizedBox(height: 10),
                               Text(
-                                'Long press on files to reorder them',
+                                rearrangePickedFiles,
                                 style: Theme.of(context).textTheme.bodySmall,
                                 textAlign: TextAlign.center,
                               ),
@@ -189,8 +224,8 @@ class FilesSelected extends StatelessWidget {
                               );
                             }
                           : null,
-                      label: const Text(
-                        'Select More',
+                      label: Text(
+                        pickMore,
                         textAlign: TextAlign.center,
                         overflow: TextOverflow.visible,
                       ),
@@ -214,8 +249,8 @@ class FilesSelected extends StatelessWidget {
                             );
                           }
                         : null,
-                    label: const Text(
-                      'Clear All',
+                    label: Text(
+                      clearAll,
                       textAlign: TextAlign.center,
                       overflow: TextOverflow.visible,
                     ),
@@ -236,23 +271,37 @@ class NoFilesSelected extends StatelessWidget {
   /// Defining [NoFilesSelected] constructor.
   const NoFilesSelected({
     Key? key,
+    required this.fileTypeSingular,
+    required this.fileTypePlural,
     required this.filePickModel,
   }) : super(key: key);
+
+  /// Takes singular of file type such as PDF, Image, etc.
+  final String fileTypeSingular;
+
+  /// Takes plural of file type such as PDFs, Images, etc.
+  final String fileTypePlural;
 
   /// Takes properties for files picking action.
   final FilePickModel filePickModel;
 
   @override
   Widget build(BuildContext context) {
+    AppLocale appLocale = AppLocale.of(context);
+    String pickSomeFiles = appLocale.pickSomeFiles(fileTypePlural);
+    String pickOneFile = appLocale.pickOneFile(fileTypeSingular);
+    String pickFile = appLocale.button_PickFileOrFiles(fileTypeSingular);
+    String pickFiles = appLocale.button_PickFileOrFiles(fileTypePlural);
+
     return Column(
       children: <Widget>[
         Transform.scale(
           scale: 4.0,
-          child: const SizedBox(
+          child: SizedBox(
             width: 100,
             height: 100,
             child: RiveAnimation.asset(
-              'assets/rive/impatient_placeholder.riv',
+              noFilesPickedAnimationAssetName,
               fit: BoxFit.contain,
             ),
           ),
@@ -260,8 +309,8 @@ class NoFilesSelected extends StatelessWidget {
         Text(
           filePickModel.multipleFilePickRequired ||
                   filePickModel.enableMultipleSelection
-              ? 'Please select some files'
-              : 'Please select a file',
+              ? pickSomeFiles
+              : pickOneFile,
           style: Theme.of(context).textTheme.bodySmall,
           textAlign: TextAlign.center,
         ),
@@ -286,8 +335,8 @@ class NoFilesSelected extends StatelessWidget {
               label: Text(
                 filePickModel.multipleFilePickRequired ||
                         filePickModel.enableMultipleSelection
-                    ? 'Select files'
-                    : 'Select file',
+                    ? pickFiles
+                    : pickFile,
                 textAlign: TextAlign.center,
               ),
               icon: const Icon(Icons.upload_file),

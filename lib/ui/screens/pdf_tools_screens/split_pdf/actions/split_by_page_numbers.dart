@@ -1,3 +1,4 @@
+import 'package:files_tools/l10n/generated/app_locale.dart';
 import 'package:files_tools/models/file_model.dart';
 import 'package:files_tools/route/app_routes.dart' as route;
 import 'package:files_tools/state/providers.dart';
@@ -24,26 +25,26 @@ class SplitByPageNumbers extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AppLocale appLocale = AppLocale.of(context);
+
+    String pdfSingular = appLocale.pdf(1);
+    String pdfPlural = appLocale.pdf(2);
+    String example = appLocale.example;
+    String splitWithPageNumbersInfoTitle =
+        appLocale.tool_Split_WithPageNumbers_InfoTitle(pdfSingular, pdfPlural);
+    String splitWithPageNumbersInfoBody =
+        appLocale.tool_Split_WithPageNumbers_InfoBody(pdfSingular, pdfPlural);
+
     return ListView(
+      padding: const EdgeInsets.symmetric(vertical: 16),
       children: <Widget>[
-        const SizedBox(height: 16),
         SplitByPageNumbersActionCard(pdfPageCount: pdfPageCount, file: file),
         const SizedBox(height: 16),
-        const AboutActionCard(
-          aboutTitle:
-              'This method splits the pdf into multiple pdfs by providing '
-              'page numbers.',
-          aboutBodyTitle: 'Example :-',
-          aboutBody: 'If pages in selected PDF = 10'
-              '\n\nAnd, your input = 3,7'
-              '\n(Tip: 1 is default in input)'
-              '\n\nThen, it will split the PDF from 1, 3 and 7'
-              '\n\nSo, we will get 3 PDFs :-'
-              '\n\nPDF 1 containing pages - 1,2'
-              '\nPDF 2 containing pages - 3,4,5,6'
-              '\nPDF 3 containing pages - 7,8,9,10',
+        AboutActionCard(
+          aboutTitle: splitWithPageNumbersInfoTitle,
+          aboutBodyTitle: '$example:-',
+          aboutBody: splitWithPageNumbersInfoBody,
         ),
-        const SizedBox(height: 16),
       ],
     );
   }
@@ -101,6 +102,22 @@ class _SplitByPageNumbersActionCardState
 
   @override
   Widget build(BuildContext context) {
+    AppLocale appLocale = AppLocale.of(context);
+
+    String pdfSingular = appLocale.pdf(1);
+    String resultFilesPagesSets =
+        appLocale.tool_Action_ResultFilesPagesSets(pdfSingular);
+    String extractSinglePageFileError =
+        appLocale.tool_Split_ExtractSinglePageFileError(pdfSingular);
+    String enterPageNumbers = appLocale.textField_LabelText_EnterPageNumbers;
+    String enterNumberFrom1ToPageCountSepByComma =
+        appLocale.textField_ErrorText_EnterNumbersInRangeSeparatedByComma(
+      1,
+      widget.pdfPageCount,
+    );
+    String sanitizeUserInput = appLocale.tool_Action_SanitizeUserInput;
+    String process = appLocale.button_Process;
+
     return Card(
       clipBehavior: Clip.antiAlias,
       margin: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -112,7 +129,7 @@ class _SplitByPageNumbersActionCardState
             const Icon(Icons.looks_3),
             const Divider(),
             Text(
-              'Pages in selected pdf = ${widget.pdfPageCount}',
+              appLocale.noOfPagesInFile(appLocale.pdf(1), widget.pdfPageCount),
               style: Theme.of(context).textTheme.bodyMedium,
             ),
             const SizedBox(height: 10),
@@ -124,14 +141,14 @@ class _SplitByPageNumbersActionCardState
                         key: _formKey,
                         child: TextFormField(
                           controller: pageNumbersController,
-                          decoration: const InputDecoration(
+                          decoration: InputDecoration(
                             filled: true,
-                            labelText: 'Enter Page Numbers',
+                            labelText: enterPageNumbers,
+
                             hintMaxLines: 2,
                             errorMaxLines: 2,
                             // isDense: true,
-                            helperText:
-                                'Separate numbers by "," to set split point',
+                            helperText: enterNumberFrom1ToPageCountSepByComma,
                             // enabledBorder: const UnderlineInputBorder(),
                           ),
                           keyboardType: TextInputType.number,
@@ -193,8 +210,7 @@ class _SplitByPageNumbersActionCardState
                           // has entered.
                           validator: (String? value) {
                             if (pageNumbers.isEmpty) {
-                              return 'Enter numbers separated by "," from 1 to '
-                                  '${widget.pdfPageCount} ';
+                              return enterNumberFrom1ToPageCountSepByComma;
                             }
                             return null;
                           },
@@ -226,7 +242,7 @@ class _SplitByPageNumbersActionCardState
                                 offset: pageNumbersController.text.length,
                               );
                             },
-                            child: const Text('Sanitize Entered Data'),
+                            child: Text(sanitizeUserInput),
                           ),
                         ],
                       ),
@@ -236,7 +252,7 @@ class _SplitByPageNumbersActionCardState
                           Row(
                             children: <Widget>[
                               Text(
-                                'Input will generate PDF sets:-',
+                                '$resultFilesPagesSets:-',
                                 style: Theme.of(context).textTheme.bodyMedium,
                                 textAlign: TextAlign.start,
                               ),
@@ -281,14 +297,14 @@ class _SplitByPageNumbersActionCardState
                               }
                             },
                             icon: const Icon(Icons.check),
-                            label: const Text('Split PDF'),
+                            label: Text(process),
                           );
                         },
                       ),
                     ],
                   )
                 : Text(
-                    'Sorry, can\'t split a pdf with less than 2 pages.',
+                    extractSinglePageFileError,
                     style: Theme.of(context)
                         .textTheme
                         .bodySmall

@@ -1,3 +1,4 @@
+import 'package:files_tools/l10n/generated/app_locale.dart';
 import 'package:files_tools/models/file_model.dart';
 import 'package:files_tools/state/tools_actions_state.dart';
 import 'package:files_tools/ui/screens/pdf_tools_screens/image_to_pdf/actions/image_to_pdf.dart';
@@ -34,6 +35,7 @@ class _ImageToPDFToolsPageState extends State<ImageToPDFToolsPage> {
           title: Text(
             getAppBarTitleForActionType(
               actionType: widget.arguments.actionType,
+              context: context,
             ),
           ),
           centerTitle: true,
@@ -85,10 +87,19 @@ class ImageToPDFToolsBody extends StatelessWidget {
 }
 
 /// For getting [ImageToPDFToolsPage] screen scaffold app bar text.
-String getAppBarTitleForActionType({required final ToolAction actionType}) {
-  String title = 'Action Successful';
+String getAppBarTitleForActionType({
+  required final ToolAction actionType,
+  required final BuildContext context,
+}) {
+  AppLocale appLocale = AppLocale.of(context);
+  String pdfSingular = appLocale.pdf(1);
+  String imagePlural = appLocale.image(2);
+  String actionSuccessful = appLocale.tool_Action_ProcessingScreen_Successful;
+  String prepareImagesForPdf = appLocale
+      .tool_Action_PrepareFileOrFiles1ForFileOrFiles2(imagePlural, pdfSingular);
+  String title = actionSuccessful;
   if (actionType == ToolAction.imageToPdf) {
-    title = 'Prepare Images For PDF';
+    title = prepareImagesForPdf;
   }
   return title;
 }

@@ -1,3 +1,4 @@
+import 'package:files_tools/l10n/generated/app_locale.dart';
 import 'package:files_tools/models/file_model.dart';
 import 'package:files_tools/models/pdf_page_model.dart';
 import 'package:files_tools/route/app_routes.dart' as route;
@@ -85,6 +86,19 @@ class _ConvertToImageState extends State<ConvertToImage> {
 
   @override
   Widget build(BuildContext context) {
+    AppLocale appLocale = AppLocale.of(context);
+
+    String selectAllPages = appLocale.tool_Action_selectAllPages_ListTileTitle;
+    String enterImageScaling = appLocale.textField_LabelText_EnterImageScaling;
+    String enterImageScalingHlpText =
+        appLocale.textField_HelperText_HigherScalingHigherQuality;
+    String enterNumberFrom0To5Excluding0 =
+        appLocale.textField_ErrorText_EnterNumberInRangeExcludingBegin(
+      0,
+      5,
+    );
+    String process = appLocale.button_Process;
+
     return Column(
       children: <Widget>[
         Padding(
@@ -96,13 +110,9 @@ class _ConvertToImageState extends State<ConvertToImage> {
           ),
           child: CheckboxListTile(
             tristate: true,
-            tileColor: Theme.of(context).colorScheme.surfaceVariant,
-            // contentPadding: EdgeInsets.zero,
             visualDensity: VisualDensity.compact,
-            title: Text(
-              'Select All Pages',
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
+            title: Text(selectAllPages),
+            // subtitle: Text(appLocale.selectAllPagesTileSubTitle),
             value: isSelectAllEnabled,
             onChanged: (bool? value) {
               setState(() {
@@ -127,16 +137,16 @@ class _ConvertToImageState extends State<ConvertToImage> {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.only(top: 10.0, left: 16.0, right: 16.0),
+          padding: const EdgeInsets.only(top: 8.0, left: 16.0, right: 16.0),
           child: Form(
             key: _formKey,
             child: TextFormField(
               controller: pdfPagesQualityController,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 filled: true,
-                labelText: 'Enter Image Scaling',
+                labelText: enterImageScaling,
                 // isDense: true,
-                helperText: 'Higher scaling = Higher quality + More time',
+                helperText: enterImageScalingHlpText,
                 // enabledBorder: const UnderlineInputBorder(),
               ),
               keyboardType:
@@ -148,11 +158,11 @@ class _ConvertToImageState extends State<ConvertToImage> {
               autovalidateMode: AutovalidateMode.onUserInteraction,
               // The validator receives the text that the user has entered.
               validator: (String? value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter number from 0 to 5';
-                } else if (double.parse(value) <= 0 ||
+                if (value == null ||
+                    value.isEmpty ||
+                    double.parse(value) <= 0 ||
                     double.parse(value) > 5) {
-                  return 'Please enter number from 0 to 5';
+                  return enterNumberFrom0To5Excluding0;
                 }
                 return null;
               },
@@ -401,10 +411,10 @@ class _ConvertToImageState extends State<ConvertToImage> {
                               child: Center(
                                 child: Row(
                                   mainAxisSize: MainAxisSize.min,
-                                  children: const <Widget>[
-                                    Icon(Icons.check),
-                                    SizedBox(width: 10),
-                                    Text('Process'),
+                                  children: <Widget>[
+                                    const Icon(Icons.check),
+                                    const SizedBox(width: 10),
+                                    Text(process),
                                   ],
                                 ),
                               ),

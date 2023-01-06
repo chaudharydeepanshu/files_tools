@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'dart:typed_data';
 
+import 'package:files_tools/l10n/generated/app_locale.dart';
 import 'package:files_tools/models/image_model.dart';
 import 'package:files_tools/ui/components/loading.dart';
 import 'package:files_tools/ui/components/view_error.dart';
@@ -66,6 +67,12 @@ class _ImageViewerState extends State<ImageViewer> {
 
   @override
   Widget build(BuildContext context) {
+    AppLocale appLocale = AppLocale.of(context);
+
+    String imageSingular = appLocale.image(1);
+    String loadingText =
+        appLocale.tool_Action_LoadingFileOrFiles(imageSingular);
+
     return GestureDetector(
       onTap: () {
         FocusManager.instance.primaryFocus?.unfocus();
@@ -86,11 +93,17 @@ class _ImageViewerState extends State<ImageViewer> {
           builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
             switch (snapshot.connectionState) {
               case ConnectionState.waiting:
-                return const Loading(loadingText: 'Loading image...');
+                return Loading(
+                  loadingText: loadingText,
+                );
               case ConnectionState.none:
-                return const Loading(loadingText: 'Loading image...');
+                return Loading(
+                  loadingText: loadingText,
+                );
               case ConnectionState.active:
-                return const Loading(loadingText: 'Loading image...');
+                return Loading(
+                  loadingText: loadingText,
+                );
               case ConnectionState.done:
                 if (snapshot.hasError) {
                   log(snapshot.error.toString());
@@ -122,8 +135,8 @@ class _ImageViewerState extends State<ImageViewer> {
                                     duration: const Duration(milliseconds: 200),
                                     child: frame != null
                                         ? child
-                                        : const Loading(
-                                            loadingText: 'Loading image...',
+                                        : Loading(
+                                            loadingText: loadingText,
                                           ),
                                   );
                                 }

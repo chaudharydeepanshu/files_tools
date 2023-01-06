@@ -1,3 +1,4 @@
+import 'package:files_tools/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:rive/rive.dart';
 
@@ -8,11 +9,11 @@ class LoadingIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const SizedBox(
+    return SizedBox(
       width: 150,
       height: 100,
       child: RiveAnimation.asset(
-        'assets/rive/finger_tapping.riv',
+        loadingAnimationAssetName,
         fit: BoxFit.contain,
       ),
     );

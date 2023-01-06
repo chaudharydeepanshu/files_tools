@@ -1,3 +1,5 @@
+import 'package:files_tools/constants.dart';
+import 'package:files_tools/l10n/generated/app_locale.dart';
 import 'package:files_tools/models/file_model.dart';
 import 'package:files_tools/models/file_pick_save_model.dart';
 import 'package:files_tools/route/app_routes.dart' as route;
@@ -106,6 +108,11 @@ class ActionResultPageAppBar extends StatelessWidget with PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+    AppLocale appLocale = AppLocale.of(context);
+
+    String processingTitle = appLocale.tool_Action_ProcessingScreen_Title;
+    String failedAction = appLocale.tool_Action_ProcessingScreen_Failed;
+
     return Consumer(
       builder: (BuildContext context, WidgetRef ref, Widget? child) {
         // Watches action processing status.
@@ -124,14 +131,16 @@ class ActionResultPageAppBar extends StatelessWidget with PreferredSizeWidget {
               .select((ToolsActionsState value) => value.currentActionType),
         );
         // Getting current action app bar title.
-        String actionAppbarTitle =
-            getAppBarTitleForActionResultPage(actionType: currentActionType);
+        String actionAppbarTitle = getAppBarTitleForActionResultPage(
+          actionType: currentActionType,
+          context: context,
+        );
         return AppBar(
           title: Text(
             isActionProcessing
-                ? 'Processing Task'
+                ? processingTitle
                 : actionErrorStatus
-                    ? 'Error Occurred'
+                    ? failedAction
                     : actionAppbarTitle,
           ),
           centerTitle: true,
@@ -159,8 +168,12 @@ class ActionResultPageAppBar extends StatelessWidget with PreferredSizeWidget {
 }
 
 /// Gives appropriate app bar title based on type of action performed.
-String getAppBarTitleForActionResultPage({required ToolAction actionType}) {
-  String title = 'Task Successful';
+String getAppBarTitleForActionResultPage({
+  required ToolAction actionType,
+  required final BuildContext context,
+}) {
+  AppLocale appLocale = AppLocale.of(context);
+  String title = appLocale.tool_Action_ProcessingScreen_Successful;
   // if (actionType == ToolsActions.mergePdfs) {
   //   title = "Successfully Merged Files";
   // } else if (actionType == ToolsActions.splitPdfByPageCount ||
@@ -185,7 +198,7 @@ class ActionResultSuccessBody extends StatelessWidget {
               .select((ToolsActionsState value) => value.outputFiles),
         );
         return SavingFiles(
-          saveFiles: outputFiles,
+          listOfSaveFilesModel: outputFiles,
         );
       },
     );
@@ -199,11 +212,17 @@ class ActionResultProcessingBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AppLocale appLocale = AppLocale.of(context);
+
+    String processingPleaseWait =
+        appLocale.tool_Action_ProcessingScreen_PleaseWait;
+    String cancel = appLocale.button_Cancel;
+
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          const Loading(loadingText: 'Processing please wait ...'),
+          Loading(loadingText: processingPleaseWait),
           Consumer(
             builder: (BuildContext context, WidgetRef ref, Widget? child) {
               return TextButton(
@@ -211,7 +230,7 @@ class ActionResultProcessingBody extends StatelessWidget {
                   ref.read(toolsActionsStateProvider).cancelAction();
                   Navigator.pop(context);
                 },
-                child: const Text('Cancel'),
+                child: Text(cancel),
               );
             },
           ),
@@ -226,14 +245,27 @@ class SavingFiles extends StatelessWidget {
   /// Defining [SavingFiles] constructor.
   const SavingFiles({
     Key? key,
-    required this.saveFiles,
+    required this.listOfSaveFilesModel,
   }) : super(key: key);
 
   /// List of files to save.
-  final List<OutputFileModel> saveFiles;
+  final List<OutputFileModel> listOfSaveFilesModel;
 
   @override
   Widget build(BuildContext context) {
+    AppLocale appLocale = AppLocale.of(context);
+
+    String fileSingular = appLocale.file(1);
+    String filePlural = appLocale.file(2);
+    String viewFile = appLocale.viewFileOrFiles(fileSingular);
+    String viewFiles = appLocale.viewFileOrFiles(filePlural);
+    String savingFilePleaseWait =
+        appLocale.savingFileOrFilesPleaseWait(fileSingular);
+    String savingFilesPleaseWait =
+        appLocale.savingFileOrFilesPleaseWait(filePlural);
+    String saveFile = appLocale.button_SaveFileOrFiles(fileSingular);
+    String saveFiles = appLocale.button_SaveFileOrFiles(filePlural);
+
     double scaffoldBodySpace = MediaQuery.of(context).size.height -
         (MediaQuery.of(context).padding.top +
             kToolbarHeight +
@@ -254,15 +286,13 @@ class SavingFiles extends StatelessWidget {
               const Divider(),
               Flexible(
                 child: NonReorderableFilesListView(
-                  saveFiles: saveFiles,
+                  saveFiles: listOfSaveFilesModel,
                 ),
               ),
               const SizedBox(height: 10),
               const SizedBox(height: 10),
               Text(
-                saveFiles.length == 1
-                    ? 'To view file click over them.'
-                    : 'To view files click over them.',
+                listOfSaveFilesModel.length == 1 ? viewFile : viewFiles,
                 style: Theme.of(context).textTheme.bodySmall,
               ),
               const Divider(),
@@ -273,9 +303,9 @@ class SavingFiles extends StatelessWidget {
                         (ToolsActionsState value) => value.isSaveProcessing,
                       ), (bool? previous, bool next) {
                     if (previous != next && next == true) {
-                      String? contentText = saveFiles.length == 1
-                          ? 'Saving file! Please wait...'
-                          : 'Saving files! Please wait...';
+                      String? contentText = listOfSaveFilesModel.length == 1
+                          ? savingFilePleaseWait
+                          : savingFilesPleaseWait;
                       Color? backgroundColor;
                       Duration? duration = const Duration(days: 365);
                       IconData? iconData = Icons.save;
@@ -313,18 +343,20 @@ class SavingFiles extends StatelessWidget {
                                 .read(toolsActionsStateProvider)
                                 .mangeSaveFileAction(
                                   fileSaveModel: FileSaveModel(
-                                    saveFiles: saveFiles,
+                                    saveFiles: listOfSaveFilesModel,
                                   ),
                                 );
                           },
                     label: isSaveProcessing
                         ? Text(
-                            saveFiles.length == 1
-                                ? 'Saving file. Please wait'
-                                : 'Saving Files. Please wait',
+                            listOfSaveFilesModel.length == 1
+                                ? savingFilePleaseWait
+                                : savingFilesPleaseWait,
                           )
                         : Text(
-                            saveFiles.length == 1 ? 'Save file' : 'Save Files',
+                            listOfSaveFilesModel.length == 1
+                                ? saveFile
+                                : saveFiles,
                           ),
                     icon: const Icon(Icons.save),
                   );
@@ -345,11 +377,11 @@ class SuccessAnimation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const SizedBox(
+    return SizedBox(
       width: 150,
       height: 150,
       child: RiveAnimation.asset(
-        'assets/rive/rive_emoji_pack.riv',
+        successAnimationAssetName,
         fit: BoxFit.contain,
       ),
     );

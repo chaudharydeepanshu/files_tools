@@ -1,3 +1,4 @@
+import 'package:files_tools/l10n/generated/app_locale.dart';
 import 'package:files_tools/models/file_model.dart';
 import 'package:files_tools/models/file_pick_save_model.dart';
 import 'package:files_tools/models/tool_actions_model.dart';
@@ -30,6 +31,12 @@ class _EncryptPDFPageState extends State<EncryptPDFPage> {
 
   @override
   Widget build(BuildContext context) {
+    AppLocale appLocale = AppLocale.of(context);
+
+    String pdfSingular = appLocale.pdf(1);
+    String pdfPlural = appLocale.pdf(2);
+    String encryptPdf = appLocale.tool_EncryptFileOrFiles(pdfSingular);
+
     return WillPopScope(
       onWillPop: () async {
         // Removing any snack bar or keyboard
@@ -45,7 +52,7 @@ class _EncryptPDFPageState extends State<EncryptPDFPage> {
         },
         child: Scaffold(
           appBar: AppBar(
-            title: const Text('Encrypt PDF'),
+            title: Text(encryptPdf),
             centerTitle: true,
           ),
           body: Consumer(
@@ -60,6 +67,8 @@ class _EncryptPDFPageState extends State<EncryptPDFPage> {
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 children: <Widget>[
                   SelectFilesCard(
+                    fileTypeSingular: pdfSingular,
+                    fileTypePlural: pdfPlural,
                     files: watchToolScreenStateProviderValue.inputFiles,
                     filePickModel: const FilePickModel(
                       allowedExtensions: <String>[
@@ -76,7 +85,7 @@ class _EncryptPDFPageState extends State<EncryptPDFPage> {
                   ToolActionsCard(
                     toolActions: <ToolActionModel>[
                       ToolActionModel(
-                        actionText: 'Encrypt PDF',
+                        actionText: encryptPdf,
                         actionOnTap: selectedFiles.length == 1
                             ? () {
                                 // Removing any snack bar or keyboard

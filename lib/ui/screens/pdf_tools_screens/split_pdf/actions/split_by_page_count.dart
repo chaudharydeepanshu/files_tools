@@ -1,3 +1,4 @@
+import 'package:files_tools/l10n/generated/app_locale.dart';
 import 'package:files_tools/models/file_model.dart';
 import 'package:files_tools/route/app_routes.dart' as route;
 import 'package:files_tools/state/providers.dart';
@@ -24,26 +25,26 @@ class SplitByPageCount extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AppLocale appLocale = AppLocale.of(context);
+
+    String pdfSingular = appLocale.pdf(1);
+    String pdfPlural = appLocale.pdf(2);
+    String example = appLocale.example;
+    String splitWithPageIntervalInfoTitle =
+        appLocale.tool_Split_WithPageInterval_InfoTitle(pdfSingular, pdfPlural);
+    String splitWithPageIntervalInfoBody =
+        appLocale.tool_Split_WithPageInterval_InfoBody(pdfSingular, pdfPlural);
+
     return ListView(
+      padding: const EdgeInsets.symmetric(vertical: 16),
       children: <Widget>[
-        const SizedBox(height: 16),
         SplitByPageCountActionCard(pdfPageCount: pdfPageCount, file: file),
         const SizedBox(height: 16),
-        const AboutActionCard(
-          aboutTitle:
-              'This splits pdf into multiple pdfs each containing no. of pages '
-              'equals to provided page count.',
-          aboutBodyTitle: 'Example :-',
-          aboutBody: 'If pages in selected PDF = 10'
-              '\n\nAnd, your input = 3'
-              '\n\nThen, it will split the PDF at every next 3rd page'
-              '\n\nSo, we will get (10 / 3) = 4 PDFs'
-              '\n\nPDF 1 containing pages - 1,2,3'
-              '\nPDF 2 containing pages - 4,5,6'
-              '\nPDF 3 containing pages - 7,8,9'
-              '\nPDF 4 containing page - 10',
+        AboutActionCard(
+          aboutTitle: splitWithPageIntervalInfoTitle,
+          aboutBodyTitle: '$example:-',
+          aboutBody: splitWithPageIntervalInfoBody,
         ),
-        const SizedBox(height: 16),
       ],
     );
   }
@@ -77,6 +78,19 @@ class _SplitByPageCountActionCardState
 
   @override
   Widget build(BuildContext context) {
+    AppLocale appLocale = AppLocale.of(context);
+
+    String pdfSingular = appLocale.pdf(1);
+    String enterPageInterval = appLocale.textField_LabelText_EnterPageInterval;
+    String enterNumberFrom0ToPageCountExcludingEnd =
+        appLocale.textField_ErrorText_EnterNumberInRangeExcludingBegin(
+      0,
+      widget.pdfPageCount,
+    );
+    String extractSinglePageFileError =
+        appLocale.tool_Split_ExtractSinglePageFileError(pdfSingular);
+    String process = appLocale.button_Process;
+
     return Card(
       clipBehavior: Clip.antiAlias,
       margin: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -88,7 +102,7 @@ class _SplitByPageCountActionCardState
             const Icon(Icons.looks_3),
             const Divider(),
             Text(
-              'Pages in selected pdf = ${widget.pdfPageCount}',
+              appLocale.noOfPagesInFile(appLocale.pdf(1), widget.pdfPageCount),
               style: Theme.of(context).textTheme.bodyMedium,
             ),
             const SizedBox(height: 10),
@@ -101,9 +115,10 @@ class _SplitByPageCountActionCardState
                           controller: pageCountController,
                           decoration: InputDecoration(
                             filled: true,
-                            labelText: 'Enter Page Count',
+                            labelText: enterPageInterval,
                             // isDense: true,
-                            helperText: 'Example- ${widget.pdfPageCount ~/ 2}',
+                            helperText: '${appLocale.example}- '
+                                '${widget.pdfPageCount ~/ 2}',
                             // enabledBorder: const UnderlineInputBorder(),
                           ),
                           keyboardType: TextInputType.number,
@@ -114,14 +129,11 @@ class _SplitByPageCountActionCardState
                           // The validator receives the text that the user
                           // has entered.
                           validator: (String? value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter number between 0 to '
-                                  '${widget.pdfPageCount}';
-                            } else if (int.parse(value) <= 0) {
-                              return 'Please enter number bigger than 0';
-                            } else if (int.parse(value) > widget.pdfPageCount) {
-                              return 'Please enter number lower than '
-                                  '${widget.pdfPageCount}';
+                            if (value == null ||
+                                value.isEmpty ||
+                                int.parse(value) > widget.pdfPageCount ||
+                                int.parse(value) <= 0) {
+                              return enterNumberFrom0ToPageCountExcludingEnd;
                             }
                             return null;
                           },
@@ -155,14 +167,14 @@ class _SplitByPageCountActionCardState
                               }
                             },
                             icon: const Icon(Icons.check),
-                            label: const Text('Split PDF'),
+                            label: Text(process),
                           );
                         },
                       ),
                     ],
                   )
                 : Text(
-                    'Sorry, can\'t split a pdf with less than 2 pages.',
+                    extractSinglePageFileError,
                     style: Theme.of(context)
                         .textTheme
                         .bodySmall

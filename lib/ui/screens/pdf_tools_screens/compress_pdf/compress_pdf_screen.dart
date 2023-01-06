@@ -1,3 +1,4 @@
+import 'package:files_tools/l10n/generated/app_locale.dart';
 import 'package:files_tools/models/file_model.dart';
 import 'package:files_tools/models/file_pick_save_model.dart';
 import 'package:files_tools/models/tool_actions_model.dart';
@@ -30,6 +31,13 @@ class _CompressPDFPageState extends State<CompressPDFPage> {
 
   @override
   Widget build(BuildContext context) {
+    AppLocale appLocale = AppLocale.of(context);
+
+    String pdfSingular = appLocale.pdf(1);
+    String pdfPlural = appLocale.pdf(2);
+    String compressPdf = appLocale.tool_CompressFileOrFiles(pdfSingular);
+    String compressPdfs = appLocale.tool_CompressFileOrFiles(pdfPlural);
+
     return WillPopScope(
       onWillPop: () async {
         // Removing any snack bar or keyboard
@@ -45,7 +53,7 @@ class _CompressPDFPageState extends State<CompressPDFPage> {
         },
         child: Scaffold(
           appBar: AppBar(
-            title: const Text('Compress PDF'),
+            title: Text(compressPdf),
             centerTitle: true,
           ),
           body: Consumer(
@@ -60,6 +68,8 @@ class _CompressPDFPageState extends State<CompressPDFPage> {
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 children: <Widget>[
                   SelectFilesCard(
+                    fileTypeSingular: pdfSingular,
+                    fileTypePlural: pdfPlural,
                     files: watchToolScreenStateProviderValue.inputFiles,
                     filePickModel: const FilePickModel(
                       allowedExtensions: <String>[
@@ -76,7 +86,9 @@ class _CompressPDFPageState extends State<CompressPDFPage> {
                   ToolActionsCard(
                     toolActions: <ToolActionModel>[
                       ToolActionModel(
-                        actionText: 'Compress pdf',
+                        actionText: selectedFiles.length > 1
+                            ? compressPdfs
+                            : compressPdf,
                         actionOnTap: selectedFiles.length == 1
                             ? () {
                                 // Removing any snack bar or keyboard

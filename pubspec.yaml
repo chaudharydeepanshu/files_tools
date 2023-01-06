@@ -32,38 +32,43 @@ dependencies:
   flutter:
     sdk: flutter
 
+  # For internationalization and localization. Code generation command `flutter gen-l10n`.
+  flutter_localizations:
+    sdk: flutter
+  intl: ^0.17.0
+
   # For state management.
-  flutter_riverpod: ^2.1.1
+  flutter_riverpod: ^2.1.3
 
   # For material you.
-#  dynamic_color: ^1.5.4
+  # dynamic_color: ^1.5.4
   dynamic_color:
     git:
       url: https://github.com/chaudharydeepanshu/material-dynamic-color-flutter.git
       ref: main
 
   # For colorscheme generation.
-#  flex_seed_scheme: ^1.1.0
+  # flex_seed_scheme: ^1.1.0
 
   # For storing user preferences, app themeMode.
   shared_preferences: ^2.0.15
 
-  # For firebase packages`npm install -g firebase-tools`,`dart pub global activate flutterfire_cli`,`flutterfire configure --account firebaseAccount@email.com`.
+  # For firebase packages`npm install -g firebase-tools`,`dart pub global activate flutterfire_cli`.
   # After installing new firebase package run `flutterfire configure --account firebaseAccount@email.com`.
   # https://stackoverflow.com/questions/71803062/flutterfire-cli-how-to-switch-between-separate-firebase-consoles
-  firebase_core: ^2.4.0
+  firebase_core: ^2.4.1
 
   # For logging errors.
-  firebase_crashlytics: ^3.0.7
+  firebase_crashlytics: ^3.0.9
 
   # For logging usage and behavior data.
-  firebase_analytics: ^10.0.7
+  firebase_analytics: ^10.1.0
 
   # For splash screen.
   flutter_native_splash: ^2.2.16
 
   # For custom animations.
-  rive: ^0.9.1
+  rive: ^0.10.0
 
   # For loading animations.
   flutter_spinkit: ^5.1.0
@@ -76,7 +81,7 @@ dependencies:
   # flutter_pdfview: ^1.2.5 it accepts URI so look into it in future
 
   # For pdf manipulations.
-  pdf_manipulator: ^0.5.7
+  pdf_manipulator: ^0.5.9
 
   # For draggable gridview.
   reorderable_grid_view: ^2.2.5
@@ -94,7 +99,11 @@ dependencies:
   image_picker: ^0.8.6
 
   # For image editing.
-  extended_image: ^6.3.4
+#  extended_image: ^6.3.4
+  extended_image:
+    git:
+      url: https://github.com/chaudharydeepanshu/extended_image.git
+      ref: master
   image_editor: ^1.3.0
 
   # For image compression.
@@ -110,7 +119,7 @@ dependencies:
   package_info_plus: ^3.0.2
 
   # Autoplaying carousel.
-  carousel_slider: ^4.2.0
+  carousel_slider: ^4.2.1
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -119,6 +128,14 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+#  string_literal_finder: ^1.3.0+1
+  # To activate run `dart pub global activate arb_utils`.
+  # Then for generating metadata use `arb_utils generate-meta lib/l10n/arb/intl_en.arb`.
+  # Then for sorting use `arb_utils sort lib/l10n/arb/intl_en.arb`.
+  arb_utils: ^0.4.1
+  # To activate run `dart pub add --dev translations_cleaner`.
+  # Then for cleaning use `dart run translations_cleaner`.
+  translations_cleaner: ^0.0.5
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is

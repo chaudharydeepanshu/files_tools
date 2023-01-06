@@ -1,3 +1,4 @@
+import 'package:files_tools/l10n/generated/app_locale.dart';
 import 'package:files_tools/route/app_routes.dart' as route;
 import 'package:files_tools/ui/screens/homescreen/pages/components/grid_view_in_card_view.dart';
 import 'package:flutter/material.dart';
@@ -12,11 +13,13 @@ class PDFToolsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AppLocale appLocale = AppLocale.of(context);
+
     final List<GridCardDetail> cardsDetails = arguments.cardsDetails;
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('PDF Tools'),
+        title: Text(appLocale.pdfTools),
         centerTitle: true,
       ),
       body: LayoutBuilder(
@@ -60,10 +63,30 @@ class PDFToolsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AppLocale appLocale = AppLocale.of(context);
+    String mergePdf = appLocale.tool_MergeFileOrFiles(appLocale.pdf(1));
+    String splitPdf = appLocale.tool_SplitFileOrFiles(appLocale.pdf(1));
+    String rotate = appLocale.rotate;
+    String delete = appLocale.delete;
+    String reorder = appLocale.reorder;
+    String modifyPdf = appLocale.tool_ModifyFileOrFiles(appLocale.pdf(1));
+    String convertPdfFormat =
+        appLocale.tool_ConvertFileOrFilesFormat(appLocale.pdf(1));
+    String compressPdf = appLocale.tool_CompressFileOrFiles(appLocale.pdf(1));
+    String watermarkPdf = appLocale.tool_WatermarkFileOrFiles(appLocale.pdf(1));
+    String imageToPdf = appLocale.tool_FileOrFiles1ToFileOrFiles2(
+      appLocale.image(1),
+      appLocale.pdf(1),
+    );
+    String encryptPdf = appLocale.tool_EncryptFileOrFiles(appLocale.pdf(1));
+    String decryptPdf = appLocale.tool_DecryptFileOrFiles(appLocale.pdf(1));
+    String pdfTools = appLocale.pdfTools;
+    String noToolsAvailable = appLocale.noToolsAvailable;
+
     final List<GridCardDetail> exploreCardsDetails = <GridCardDetail>[
       GridCardDetail(
-        cardIcons: const <Widget>[Icon(Icons.merge)],
-        cardTitle: 'Merge PDF',
+        cardIcons: <Widget>[const Icon(Icons.merge)],
+        cardTitle: mergePdf,
         cardOnTap: () {
           Navigator.pushNamed(
             context,
@@ -72,8 +95,8 @@ class PDFToolsSection extends StatelessWidget {
         },
       ),
       GridCardDetail(
-        cardIcons: const <Widget>[Icon(Icons.call_split)],
-        cardTitle: 'Split PDF',
+        cardIcons: <Widget>[const Icon(Icons.call_split)],
+        cardTitle: splitPdf,
         cardOnTap: () {
           Navigator.pushNamed(
             context,
@@ -84,34 +107,34 @@ class PDFToolsSection extends StatelessWidget {
       GridCardDetail(
         cardIcons: <Widget>[
           Column(
-            children: const <Widget>[
-              Icon(Icons.rotate_right),
+            children: <Widget>[
+              const Icon(Icons.rotate_right),
               Text(
-                'Rotate',
-                style: TextStyle(fontSize: 8),
+                rotate,
+                style: const TextStyle(fontSize: 8),
               ),
             ],
           ),
           Column(
-            children: const <Widget>[
-              Icon(Icons.delete),
+            children: <Widget>[
+              const Icon(Icons.delete),
               Text(
-                'Delete',
-                style: TextStyle(fontSize: 8),
+                delete,
+                style: const TextStyle(fontSize: 8),
               ),
             ],
           ),
           Column(
-            children: const <Widget>[
-              Icon(Icons.reorder),
+            children: <Widget>[
+              const Icon(Icons.reorder),
               Text(
-                'Reorder',
-                style: TextStyle(fontSize: 8),
+                reorder,
+                style: const TextStyle(fontSize: 8),
               ),
             ],
           ),
         ],
-        cardTitle: 'Modify PDF',
+        cardTitle: modifyPdf,
         cardOnTap: () {
           Navigator.pushNamed(
             context,
@@ -121,7 +144,7 @@ class PDFToolsSection extends StatelessWidget {
       ),
       GridCardDetail(
         cardIcons: const <Widget>[Icon(Icons.cached)],
-        cardTitle: 'Convert PDF Format',
+        cardTitle: convertPdfFormat,
         cardOnTap: () {
           Navigator.pushNamed(
             context,
@@ -131,7 +154,7 @@ class PDFToolsSection extends StatelessWidget {
       ),
       GridCardDetail(
         cardIcons: const <Widget>[Icon(Icons.compress)],
-        cardTitle: 'Compress PDF',
+        cardTitle: compressPdf,
         cardOnTap: () {
           Navigator.pushNamed(
             context,
@@ -141,7 +164,7 @@ class PDFToolsSection extends StatelessWidget {
       ),
       GridCardDetail(
         cardIcons: const <Widget>[Icon(Icons.branding_watermark)],
-        cardTitle: 'Watermark PDF',
+        cardTitle: watermarkPdf,
         cardOnTap: () {
           Navigator.pushNamed(
             context,
@@ -160,7 +183,7 @@ class PDFToolsSection extends StatelessWidget {
             ],
           )
         ],
-        cardTitle: 'Image To PDF',
+        cardTitle: imageToPdf,
         cardOnTap: () {
           Navigator.pushNamed(
             context,
@@ -170,7 +193,7 @@ class PDFToolsSection extends StatelessWidget {
       ),
       GridCardDetail(
         cardIcons: const <Widget>[Icon(Icons.lock)],
-        cardTitle: 'Encrypt PDF',
+        cardTitle: encryptPdf,
         cardOnTap: () {
           Navigator.pushNamed(
             context,
@@ -180,7 +203,7 @@ class PDFToolsSection extends StatelessWidget {
       ),
       GridCardDetail(
         cardIcons: const <Widget>[Icon(Icons.lock_open)],
-        cardTitle: 'Decrypt PDF',
+        cardTitle: decryptPdf,
         cardOnTap: () {
           Navigator.pushNamed(
             context,
@@ -191,8 +214,8 @@ class PDFToolsSection extends StatelessWidget {
     ];
 
     return GridViewInCardSection(
-      sectionTitle: 'PDF Tools',
-      emptySectionText: 'No tools found',
+      sectionTitle: pdfTools,
+      emptySectionText: noToolsAvailable,
       gridCardsDetails: exploreCardsDetails,
       cardShowAllOnTap: () {
         Navigator.pushNamed(

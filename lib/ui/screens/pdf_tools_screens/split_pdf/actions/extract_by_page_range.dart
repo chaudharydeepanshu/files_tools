@@ -1,3 +1,4 @@
+import 'package:files_tools/l10n/generated/app_locale.dart';
 import 'package:files_tools/models/file_model.dart';
 import 'package:files_tools/route/app_routes.dart' as route;
 import 'package:files_tools/state/providers.dart';
@@ -24,21 +25,24 @@ class ExtractByPageRange extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AppLocale appLocale = AppLocale.of(context);
+
+    String pdfSingular = appLocale.pdf(1);
+    String splitWithPageIntervalInfoTitle =
+        appLocale.tool_Split_WithPageRange_InfoTitle(pdfSingular);
+    String splitWithPageIntervalInfoBody =
+        appLocale.tool_Split_WithPageRange_InfoBody(pdfSingular);
+
     return ListView(
+      padding: const EdgeInsets.symmetric(vertical: 16),
       children: <Widget>[
-        const SizedBox(height: 16),
         ExtractByPageRangeActionCard(pdfPageCount: pdfPageCount, file: file),
         const SizedBox(height: 16),
-        const AboutActionCard(
-          aboutTitle:
-              'This function extracts a range of pages from the provided pdf '
-              'into a single pdf.',
-          aboutBodyTitle: 'Example :-',
-          aboutBody: 'If pages in selected PDF = 10'
-              '\n\nAnd, your input = 2-4,6'
-              '\n\nThen, result pdf will contain pages - 2,3,4,6',
+        AboutActionCard(
+          aboutTitle: splitWithPageIntervalInfoTitle,
+          aboutBodyTitle: '${appLocale.example}:-',
+          aboutBody: splitWithPageIntervalInfoBody,
         ),
-        const SizedBox(height: 16),
       ],
     );
   }
@@ -78,6 +82,30 @@ class _ExtractByPageRangeActionCardState
 
   @override
   Widget build(BuildContext context) {
+    AppLocale appLocale = AppLocale.of(context);
+
+    String pdfSingular = appLocale.pdf(1);
+    String resultFilePagesOrder =
+        appLocale.tool_Action_ResultFilePagesOrder(pdfSingular);
+    String enterPageRange = appLocale.textField_LabelText_EnterPageRange;
+    String enterNumberFrom1ToPageCount =
+        appLocale.textField_ErrorText_EnterNumbersAndRangeInRange(
+      1,
+      widget.pdfPageCount,
+    );
+    String sanitizeUserInput = appLocale.tool_Action_SanitizeUserInput;
+    String discardRangeRepeatsListTileTitle =
+        appLocale.tool_Split_DiscardRangeRepeats_ListTileTitle;
+    String discardRangeRepeatsListTileSubTitle =
+        appLocale.tool_Split_DiscardRangeRepeats_ListTileSubtitle;
+    String forceRangeAscendingListTileTitle =
+        appLocale.tool_Split_ForceRangeAscending_ListTileTitle;
+    String forceRangeAscendingListTileSubTitle =
+        appLocale.tool_Split_ForceRangeAscending_ListTileSubtitle;
+    String extractSinglePageFileError =
+        appLocale.tool_Split_ExtractSinglePageFileError(pdfSingular);
+    String process = appLocale.button_Process;
+
     return Card(
       clipBehavior: Clip.antiAlias,
       margin: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -89,7 +117,7 @@ class _ExtractByPageRangeActionCardState
             const Icon(Icons.looks_3),
             const Divider(),
             Text(
-              'Pages in selected pdf = ${widget.pdfPageCount}',
+              appLocale.noOfPagesInFile(appLocale.pdf(1), widget.pdfPageCount),
               style: Theme.of(context).textTheme.bodyMedium,
             ),
             const SizedBox(height: 10),
@@ -100,11 +128,11 @@ class _ExtractByPageRangeActionCardState
                         key: _formKey,
                         child: TextFormField(
                           controller: pageNumbersController,
-                          decoration: const InputDecoration(
+                          decoration: InputDecoration(
                             filled: true,
-                            labelText: 'Enter Page Range',
+                            labelText: enterPageRange,
                             // isDense: true,
-                            helperText: 'Example- 3,5-7',
+                            helperText: '${appLocale.example}- 3,5-7',
                             // enabledBorder: const UnderlineInputBorder(),
                           ),
                           keyboardType: TextInputType.number,
@@ -130,8 +158,7 @@ class _ExtractByPageRangeActionCardState
                           // has entered.
                           validator: (String? value) {
                             if (pageRangeStringList.isEmpty) {
-                              return 'Enter valid number & range from 1 to '
-                                  '$widget.pdfPageCount';
+                              return enterNumberFrom1ToPageCount;
                             }
                             return null;
                           },
@@ -158,7 +185,7 @@ class _ExtractByPageRangeActionCardState
                                 offset: pageNumbersController.text.length,
                               );
                             },
-                            child: const Text('Sanitize Input'),
+                            child: Text(sanitizeUserInput),
                           ),
                         ],
                       ),
@@ -166,14 +193,9 @@ class _ExtractByPageRangeActionCardState
                       Column(
                         children: <Widget>[
                           CheckboxListTile(
-                            tileColor:
-                                Theme.of(context).colorScheme.surfaceVariant,
-                            // contentPadding: EdgeInsets.zero,
                             visualDensity: VisualDensity.compact,
-                            title: Text(
-                              'Remove repeats in range',
-                              style: Theme.of(context).textTheme.bodyMedium,
-                            ),
+                            title: Text(discardRangeRepeatsListTileTitle),
+                            subtitle: Text(discardRangeRepeatsListTileSubTitle),
                             value: isRemoveDuplicates,
                             onChanged: (bool? value) {
                               isRemoveDuplicates = value ?? !isRemoveDuplicates;
@@ -190,14 +212,9 @@ class _ExtractByPageRangeActionCardState
                           ),
                           const SizedBox(height: 10),
                           CheckboxListTile(
-                            tileColor:
-                                Theme.of(context).colorScheme.surfaceVariant,
-                            // contentPadding: EdgeInsets.zero,
                             visualDensity: VisualDensity.compact,
-                            title: Text(
-                              'Force Ascending',
-                              style: Theme.of(context).textTheme.bodyMedium,
-                            ),
+                            title: Text(forceRangeAscendingListTileTitle),
+                            subtitle: Text(forceRangeAscendingListTileSubTitle),
                             value: isForceAscending,
                             onChanged: (bool? value) {
                               isForceAscending = value ?? !isForceAscending;
@@ -216,7 +233,7 @@ class _ExtractByPageRangeActionCardState
                           Row(
                             children: <Widget>[
                               Text(
-                                'Result PDF will Pages in order:-',
+                                '$resultFilePagesOrder:-',
                                 style: Theme.of(context).textTheme.bodyMedium,
                                 textAlign: TextAlign.start,
                               ),
@@ -265,14 +282,14 @@ class _ExtractByPageRangeActionCardState
                               }
                             },
                             icon: const Icon(Icons.check),
-                            label: const Text('Split PDF'),
+                            label: Text(process),
                           );
                         },
                       ),
                     ],
                   )
                 : Text(
-                    'Sorry, can\'t split a pdf with less than 2 pages.',
+                    extractSinglePageFileError,
                     style: Theme.of(context)
                         .textTheme
                         .bodySmall

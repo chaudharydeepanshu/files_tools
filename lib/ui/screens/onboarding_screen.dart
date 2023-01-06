@@ -1,4 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:files_tools/l10n/generated/app_locale.dart';
 import 'package:files_tools/route/app_routes.dart' as route;
 import 'package:files_tools/state/preferences.dart';
 import 'package:files_tools/ui/components/dynamic_theme_switch_tile.dart';
@@ -169,6 +170,10 @@ class _OnBoardScreenTabViewState extends State<OnBoardScreenTabView>
 
   @override
   Widget build(BuildContext context) {
+    AppLocale appLocale = AppLocale.of(context);
+
+    String skip = appLocale.button_Skip;
+
     return Scaffold(
       body: Stack(
         alignment: AlignmentDirectional.center,
@@ -249,7 +254,7 @@ class _OnBoardScreenTabViewState extends State<OnBoardScreenTabView>
                           onPressed: () {
                             onBoardingFinish(context);
                           },
-                          child: const Text('Skip'),
+                          child: Text(skip),
                         );
                       },
                     )
@@ -344,6 +349,10 @@ class TabViewFirstScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AppLocale appLocale = AppLocale.of(context);
+
+    String welcome = appLocale.welcome;
+
     return HoledScaffold(
       firstHoleColor: Colors.transparent,
       secondHoleColor: Colors.transparent,
@@ -378,8 +387,7 @@ class TabViewFirstScreen extends StatelessWidget {
           ],
         ),
       ),
-      secondHoleChild:
-          const Center(child: OnBoardingText(onBoardingText: 'Welcome!')),
+      secondHoleChild: Center(child: OnBoardingText(onBoardingText: welcome)),
     );
   }
 }
@@ -391,6 +399,10 @@ class TabViewSecondScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AppLocale appLocale = AppLocale.of(context);
+
+    String customizeAppTheme = appLocale.onBoarding_CustomizeAppTheme;
+
     return HoledScaffold(
       firstHoleColor: Colors.transparent,
       secondHoleColor: Colors.transparent,
@@ -419,8 +431,8 @@ class TabViewSecondScreen extends StatelessWidget {
           ),
         ),
       ),
-      secondHoleChild: const Center(
-        child: OnBoardingText(onBoardingText: 'Customize App Theme!'),
+      secondHoleChild: Center(
+        child: OnBoardingText(onBoardingText: customizeAppTheme),
       ),
     );
   }
@@ -433,6 +445,10 @@ class DoneButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AppLocale appLocale = AppLocale.of(context);
+
+    String done = appLocale.button_Done;
+
     return Consumer(
       builder: (BuildContext context, WidgetRef ref, Widget? child) {
         return FilledButton.icon(
@@ -440,7 +456,7 @@ class DoneButton extends StatelessWidget {
             onBoardingFinish(context);
           },
           icon: const Icon(Icons.arrow_forward),
-          label: const Text('Done'),
+          label: Text(done),
         );
       },
     );
@@ -491,6 +507,91 @@ class MovingToolsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AppLocale appLocale = AppLocale.of(context);
+
+    String pdfSingular = appLocale.pdf(1);
+    String imageSingular = appLocale.image(1);
+    String pagePlural = appLocale.page(2);
+    String rotate = appLocale.rotate;
+    String delete = appLocale.delete;
+    String reorder = appLocale.reorder;
+    String mergePdf = appLocale.tool_MergeFileOrFiles(pdfSingular);
+    String splitPdf = appLocale.tool_SplitFileOrFiles(pdfSingular);
+    String pdfToImage = appLocale.tool_FileOrFiles1ToFileOrFiles2(
+      pdfSingular,
+      imageSingular,
+    );
+    String compressPdf = appLocale.tool_CompressFileOrFiles(pdfSingular);
+    String watermarkPdf = appLocale.tool_WatermarkFileOrFiles(pdfSingular);
+    String imageToPdf = appLocale.tool_FileOrFiles1ToFileOrFiles2(
+      imageSingular,
+      pdfSingular,
+    );
+    String encryptPdf = appLocale.tool_EncryptFileOrFiles(pdfSingular);
+    String decryptPdf = appLocale.tool_DecryptFileOrFiles(pdfSingular);
+    String compressImage = appLocale.tool_CompressFileOrFiles(imageSingular);
+
+    /// App all tools names and icons.
+    final List<AppTool> appTools = <AppTool>[
+      AppTool(
+        toolName: mergePdf,
+        toolIconsData: Icons.merge,
+      ),
+      AppTool(
+        toolName: splitPdf,
+        toolIconsData: Icons.call_split,
+      ),
+      AppTool(
+        toolName: '$rotate $pdfSingular $pagePlural',
+        toolIconsData: Icons.rotate_right,
+      ),
+      AppTool(
+        toolName: '$delete $pdfSingular $pagePlural',
+        toolIconsData: Icons.delete,
+      ),
+      AppTool(
+        toolName: '$reorder $pdfSingular $pagePlural',
+        toolIconsData: Icons.reorder,
+      ),
+      AppTool(
+        toolName: pdfToImage,
+        toolIconsData: Icons.image,
+      ),
+      AppTool(
+        toolName: compressPdf,
+        toolIconsData: Icons.compress,
+      ),
+      AppTool(
+        toolName: watermarkPdf,
+        toolIconsData: Icons.branding_watermark,
+      ),
+      AppTool(toolName: imageToPdf, toolIconsData: Icons.picture_as_pdf),
+      AppTool(
+        toolName: encryptPdf,
+        toolIconsData: Icons.lock,
+      ),
+      AppTool(
+        toolName: decryptPdf,
+        toolIconsData: Icons.lock_open,
+      ),
+      AppTool(
+        toolName: compressImage,
+        toolIconsData: Icons.compress,
+      ),
+      AppTool(
+        toolName: '${appLocale.crop} ${appLocale.image(1)}',
+        toolIconsData: Icons.crop,
+      ),
+      AppTool(
+        toolName: '${appLocale.rotate} ${appLocale.image(1)}',
+        toolIconsData: Icons.rotate_right,
+      ),
+      AppTool(
+        toolName: '${appLocale.flip} ${appLocale.image(1)}',
+        toolIconsData: Icons.flip,
+      ),
+    ];
+
     return Expanded(
       child: ShaderMask(
         shaderCallback: (Rect rect) {
@@ -534,7 +635,10 @@ class MovingToolsList extends StatelessWidget {
                   children: <Widget>[
                     const Divider(height: 0),
                     Expanded(
-                      child: AppToolDisplayWidget(index: first),
+                      child: AppToolDisplayWidget(
+                        index: first,
+                        appTools: appTools,
+                      ),
                     ),
                     const Divider(height: 0),
                   ],
@@ -551,10 +655,17 @@ class MovingToolsList extends StatelessWidget {
 /// A widget for displaying a app tool anywhere in on boarding screen.
 class AppToolDisplayWidget extends StatelessWidget {
   /// Defining [AppToolDisplayWidget] constructor.
-  const AppToolDisplayWidget({Key? key, required this.index}) : super(key: key);
+  const AppToolDisplayWidget({
+    Key? key,
+    required this.index,
+    required this.appTools,
+  }) : super(key: key);
 
   /// Index of the app tool from [appTools].
   final int index;
+
+  /// App all tools names and icons.
+  final List<AppTool> appTools;
 
   @override
   Widget build(BuildContext context) {
@@ -600,28 +711,3 @@ class AppTool {
   /// [IconData] of the tool.
   final IconData toolIconsData;
 }
-
-/// App all tools names and icons.
-final List<AppTool> appTools = <AppTool>[
-  const AppTool(toolName: 'Merge PDF', toolIconsData: Icons.merge),
-  const AppTool(toolName: 'Split PDF', toolIconsData: Icons.call_split),
-  const AppTool(
-    toolName: 'Rotate PDF Pages',
-    toolIconsData: Icons.rotate_right,
-  ),
-  const AppTool(toolName: 'Delete PDF Pages', toolIconsData: Icons.delete),
-  const AppTool(toolName: 'Reorder PDF Pages', toolIconsData: Icons.reorder),
-  const AppTool(toolName: 'PDF To Image', toolIconsData: Icons.image),
-  const AppTool(toolName: 'Compress PDF', toolIconsData: Icons.compress),
-  const AppTool(
-    toolName: 'Watermark PDF',
-    toolIconsData: Icons.branding_watermark,
-  ),
-  const AppTool(toolName: 'Image To PDF', toolIconsData: Icons.picture_as_pdf),
-  const AppTool(toolName: 'Encrypt PDF', toolIconsData: Icons.lock),
-  const AppTool(toolName: 'Decrypt PDF', toolIconsData: Icons.lock_open),
-  const AppTool(toolName: 'Compress Image', toolIconsData: Icons.compress),
-  const AppTool(toolName: 'Crop Image', toolIconsData: Icons.crop),
-  const AppTool(toolName: 'Rotate Image', toolIconsData: Icons.rotate_right),
-  const AppTool(toolName: 'Flip Image', toolIconsData: Icons.flip),
-];

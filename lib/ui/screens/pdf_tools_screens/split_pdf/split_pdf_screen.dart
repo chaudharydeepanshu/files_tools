@@ -1,3 +1,4 @@
+import 'package:files_tools/l10n/generated/app_locale.dart';
 import 'package:files_tools/models/file_model.dart';
 import 'package:files_tools/models/file_pick_save_model.dart';
 import 'package:files_tools/models/tool_actions_model.dart';
@@ -30,6 +31,21 @@ class _SplitPDFPageState extends State<SplitPDFPage> {
 
   @override
   Widget build(BuildContext context) {
+    AppLocale appLocale = AppLocale.of(context);
+
+    String pdfSingular = appLocale.pdf(1);
+    String pdfPlural = appLocale.pdf(2);
+    String splitPdf = appLocale.tool_SplitFileOrFiles(pdfSingular);
+    String extractPdfWithSelection =
+        appLocale.button_ExtractFileWithSelection(pdfSingular);
+    String extractPdfWithPageRange =
+        appLocale.button_ExtractFileWithPageRange(pdfSingular);
+    String splitPdfWithPageNumbers =
+        appLocale.button_SplitFileWithPageNumbers(pdfSingular);
+    String splitPdfWithPageInterval =
+        appLocale.button_SplitFileWithPageInterval(pdfSingular);
+    String splitPdfWithSize = appLocale.button_SplitFileWithSize(pdfSingular);
+
     return WillPopScope(
       onWillPop: () async {
         // Removing any snack bar or keyboard
@@ -45,7 +61,7 @@ class _SplitPDFPageState extends State<SplitPDFPage> {
         },
         child: Scaffold(
           appBar: AppBar(
-            title: const Text('Split PDF'),
+            title: Text(splitPdf),
             centerTitle: true,
           ),
           body: Consumer(
@@ -60,6 +76,8 @@ class _SplitPDFPageState extends State<SplitPDFPage> {
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 children: <Widget>[
                   SelectFilesCard(
+                    fileTypeSingular: pdfSingular,
+                    fileTypePlural: pdfPlural,
                     files: watchToolScreenStateProviderValue.inputFiles,
                     filePickModel: const FilePickModel(
                       allowedExtensions: <String>[
@@ -76,7 +94,7 @@ class _SplitPDFPageState extends State<SplitPDFPage> {
                   ToolActionsCard(
                     toolActions: <ToolActionModel>[
                       ToolActionModel(
-                        actionText: 'Extract PDF pages by page selection',
+                        actionText: extractPdfWithSelection,
                         actionOnTap: selectedFiles.length == 1
                             ? () {
                                 // Removing any snack bar or keyboard
@@ -97,7 +115,7 @@ class _SplitPDFPageState extends State<SplitPDFPage> {
                             : null,
                       ),
                       ToolActionModel(
-                        actionText: 'Split PDF by page count',
+                        actionText: extractPdfWithPageRange,
                         actionOnTap: selectedFiles.length == 1
                             ? () {
                                 // Removing any snack bar or keyboard
@@ -109,7 +127,8 @@ class _SplitPDFPageState extends State<SplitPDFPage> {
                                   context,
                                   route.AppRoutes.splitPDFToolsPage,
                                   arguments: SplitPDFToolsPageArguments(
-                                    actionType: ToolAction.splitPdfByPageCount,
+                                    actionType:
+                                        ToolAction.extractPdfByPageRange,
                                     file: selectedFiles[0],
                                   ),
                                 );
@@ -117,27 +136,7 @@ class _SplitPDFPageState extends State<SplitPDFPage> {
                             : null,
                       ),
                       ToolActionModel(
-                        actionText: 'Split PDF by size',
-                        actionOnTap: selectedFiles.length == 1
-                            ? () {
-                                // Removing any snack bar or keyboard
-                                FocusManager.instance.primaryFocus?.unfocus();
-                                ScaffoldMessenger.of(context)
-                                    .hideCurrentSnackBar();
-
-                                Navigator.pushNamed(
-                                  context,
-                                  route.AppRoutes.splitPDFToolsPage,
-                                  arguments: SplitPDFToolsPageArguments(
-                                    actionType: ToolAction.splitPdfByByteSize,
-                                    file: selectedFiles[0],
-                                  ),
-                                );
-                              }
-                            : null,
-                      ),
-                      ToolActionModel(
-                        actionText: 'Split PDF by page numbers',
+                        actionText: splitPdfWithPageNumbers,
                         actionOnTap: selectedFiles.length == 1
                             ? () {
                                 // Removing any snack bar or keyboard
@@ -158,7 +157,7 @@ class _SplitPDFPageState extends State<SplitPDFPage> {
                             : null,
                       ),
                       ToolActionModel(
-                        actionText: 'Extract PDF pages by page range',
+                        actionText: splitPdfWithPageInterval,
                         actionOnTap: selectedFiles.length == 1
                             ? () {
                                 // Removing any snack bar or keyboard
@@ -170,8 +169,27 @@ class _SplitPDFPageState extends State<SplitPDFPage> {
                                   context,
                                   route.AppRoutes.splitPDFToolsPage,
                                   arguments: SplitPDFToolsPageArguments(
-                                    actionType:
-                                        ToolAction.extractPdfByPageRange,
+                                    actionType: ToolAction.splitPdfByPageCount,
+                                    file: selectedFiles[0],
+                                  ),
+                                );
+                              }
+                            : null,
+                      ),
+                      ToolActionModel(
+                        actionText: splitPdfWithSize,
+                        actionOnTap: selectedFiles.length == 1
+                            ? () {
+                                // Removing any snack bar or keyboard
+                                FocusManager.instance.primaryFocus?.unfocus();
+                                ScaffoldMessenger.of(context)
+                                    .hideCurrentSnackBar();
+
+                                Navigator.pushNamed(
+                                  context,
+                                  route.AppRoutes.splitPDFToolsPage,
+                                  arguments: SplitPDFToolsPageArguments(
+                                    actionType: ToolAction.splitPdfByByteSize,
                                     file: selectedFiles[0],
                                   ),
                                 );

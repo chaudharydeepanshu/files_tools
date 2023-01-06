@@ -1,3 +1,4 @@
+import 'package:files_tools/l10n/generated/app_locale.dart';
 import 'package:files_tools/models/file_model.dart';
 import 'package:files_tools/models/file_pick_save_model.dart';
 import 'package:files_tools/models/tool_actions_model.dart';
@@ -30,6 +31,14 @@ class _ModifyPDFPageState extends State<ModifyPDFPage> {
 
   @override
   Widget build(BuildContext context) {
+    AppLocale appLocale = AppLocale.of(context);
+
+    String pdfSingular = appLocale.pdf(1);
+    String pdfPlural = appLocale.pdf(2);
+    String modifyPdf = appLocale.tool_ModifyFileOrFiles(pdfSingular);
+    String rotateDeleteReorderPdf =
+        appLocale.tool_Modify_RotateDeleteReorderFileOrFilesPages(pdfSingular);
+
     return WillPopScope(
       onWillPop: () async {
         // Removing any snack bar or keyboard
@@ -45,7 +54,7 @@ class _ModifyPDFPageState extends State<ModifyPDFPage> {
         },
         child: Scaffold(
           appBar: AppBar(
-            title: const Text('Modify PDF'),
+            title: Text(modifyPdf),
             centerTitle: true,
           ),
           body: Consumer(
@@ -60,6 +69,8 @@ class _ModifyPDFPageState extends State<ModifyPDFPage> {
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 children: <Widget>[
                   SelectFilesCard(
+                    fileTypeSingular: pdfSingular,
+                    fileTypePlural: pdfPlural,
                     files: watchToolScreenStateProviderValue.inputFiles,
                     filePickModel: const FilePickModel(
                       allowedExtensions: <String>[
@@ -76,7 +87,7 @@ class _ModifyPDFPageState extends State<ModifyPDFPage> {
                   ToolActionsCard(
                     toolActions: <ToolActionModel>[
                       ToolActionModel(
-                        actionText: 'Rotate, Delete & Reorder PDF Pages',
+                        actionText: rotateDeleteReorderPdf,
                         actionOnTap: selectedFiles.length == 1
                             ? () {
                                 // Removing any snack bar or keyboard

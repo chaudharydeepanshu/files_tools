@@ -1,3 +1,4 @@
+import 'package:files_tools/l10n/generated/app_locale.dart';
 import 'package:files_tools/models/file_model.dart';
 import 'package:files_tools/models/file_pick_save_model.dart';
 import 'package:files_tools/models/tool_actions_model.dart';
@@ -33,6 +34,15 @@ class _CropRotateFlipImagesPageState extends State<CropRotateFlipImagesPage> {
 
   @override
   Widget build(BuildContext context) {
+    AppLocale appLocale = AppLocale.of(context);
+
+    String imageSingular = appLocale.image(1);
+    String imagePlural = appLocale.image(2);
+    String cropRotateFlipImage =
+        appLocale.tool_Modify_CropRotateFlipFileOrFiles(imageSingular);
+    String cropRotateFlipImages =
+        appLocale.tool_Modify_CropRotateFlipFileOrFiles(imagePlural);
+
     return WillPopScope(
       onWillPop: () async {
         // Removing any snack bar or keyboard
@@ -48,7 +58,7 @@ class _CropRotateFlipImagesPageState extends State<CropRotateFlipImagesPage> {
         },
         child: Scaffold(
           appBar: AppBar(
-            title: const Text('Crop, rotate & flip Images'),
+            title: Text(cropRotateFlipImage),
             centerTitle: true,
           ),
           body: Consumer(
@@ -66,6 +76,8 @@ class _CropRotateFlipImagesPageState extends State<CropRotateFlipImagesPage> {
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 children: <Widget>[
                   SelectFilesCard(
+                    fileTypeSingular: imageSingular,
+                    fileTypePlural: imagePlural,
                     files: watchToolScreenStateProviderValue.inputFiles,
                     filePickModel: const FilePickModel(
                       allowedExtensions: <String>[
@@ -93,7 +105,9 @@ class _CropRotateFlipImagesPageState extends State<CropRotateFlipImagesPage> {
                   ToolActionsCard(
                     toolActions: <ToolActionModel>[
                       ToolActionModel(
-                        actionText: 'Crop, Rotate & Flip Images',
+                        actionText: selectedFiles.length > 1
+                            ? cropRotateFlipImages
+                            : cropRotateFlipImage,
                         actionOnTap: selectedFiles.isNotEmpty
                             ? () {
                                 // Removing any snack bar or keyboard

@@ -1,3 +1,4 @@
+import 'package:files_tools/l10n/generated/app_locale.dart';
 import 'package:files_tools/models/file_model.dart';
 import 'package:files_tools/state/tools_actions_state.dart';
 import 'package:files_tools/ui/screens/pdf_tools_screens/decrypt_pdf/actions/decrypt_pdf.dart';
@@ -34,6 +35,7 @@ class _DecryptPDFToolsPageState extends State<DecryptPDFToolsPage> {
           title: Text(
             getAppBarTitleForActionType(
               actionType: widget.arguments.actionType,
+              context: context,
             ),
           ),
           centerTitle: true,
@@ -85,10 +87,16 @@ class DecryptPDFToolsBody extends StatelessWidget {
 }
 
 /// For getting [DecryptPDFToolsPage] screen scaffold app bar text.
-String getAppBarTitleForActionType({required final ToolAction actionType}) {
-  String title = 'Action Successful';
+String getAppBarTitleForActionType({
+  required final ToolAction actionType,
+  required final BuildContext context,
+}) {
+  AppLocale appLocale = AppLocale.of(context);
+  String actionSuccessful = appLocale.tool_Action_ProcessingScreen_Successful;
+  String configureDecryption = appLocale.tool_Decrypt_ConfigureDecryption;
+  String title = actionSuccessful;
   if (actionType == ToolAction.decryptPdf) {
-    title = 'Decryption Config';
+    title = configureDecryption;
   }
   return title;
 }

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:files_tools/l10n/generated/app_locale.dart';
 import 'package:files_tools/models/pdf_page_model.dart';
 import 'package:files_tools/ui/components/loading.dart';
 import 'package:files_tools/ui/components/view_error.dart';
@@ -93,7 +94,8 @@ class _PdfViewerState extends State<PdfViewer> {
 
   @override
   Widget build(BuildContext context) {
-    setState(() {});
+    AppLocale appLocale = AppLocale.of(context);
+
     return GestureDetector(
       onTap: () {
         FocusManager.instance.primaryFocus?.unfocus();
@@ -147,8 +149,9 @@ class _PdfViewerState extends State<PdfViewer> {
                       } else {
                         return PDFPageView(
                           viewportFraction: pageController.viewportFraction,
-                          imageView:
-                              const Loading(loadingText: 'Loading page...'),
+                          imageView: Loading(
+                            loadingText: appLocale.loadingPage,
+                          ),
                           pageIndex: index,
                         );
                       }
@@ -194,6 +197,8 @@ class _PageImageViewState extends State<PageImageView> {
 
   @override
   Widget build(BuildContext context) {
+    AppLocale appLocale = AppLocale.of(context);
+
     return Stack(
       fit: StackFit.passthrough,
       children: <Widget>[
@@ -213,7 +218,9 @@ class _PageImageViewState extends State<PageImageView> {
                   duration: const Duration(milliseconds: 200),
                   child: frame != null
                       ? child
-                      : const Loading(loadingText: 'Loading page...'),
+                      : Loading(
+                          loadingText: appLocale.loadingPage,
+                        ),
                 );
               }
             }),
@@ -286,13 +293,18 @@ class LoadingPdf extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AppLocale appLocale = AppLocale.of(context);
+
+    String pdfSingular = appLocale.pdf(1);
+    String loadingText = appLocale.tool_Action_LoadingFileOrFiles(pdfSingular);
+
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          const Loading(loadingText: 'Loading page...'),
-          const SizedBox(height: 16),
-          Text('Loading pdf...', style: Theme.of(context).textTheme.bodySmall),
+          Loading(
+            loadingText: loadingText,
+          ),
         ],
       ),
     );

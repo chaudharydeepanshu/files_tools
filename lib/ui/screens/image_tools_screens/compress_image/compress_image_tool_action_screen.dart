@@ -1,3 +1,4 @@
+import 'package:files_tools/l10n/generated/app_locale.dart';
 import 'package:files_tools/models/file_model.dart';
 import 'package:files_tools/state/tools_actions_state.dart';
 import 'package:files_tools/ui/screens/image_tools_screens/compress_image/actions/compress_image.dart';
@@ -34,6 +35,7 @@ class _CompressPDFToolsPageState extends State<CompressImageToolsPage> {
           title: Text(
             getAppBarTitleForActionType(
               actionType: widget.arguments.actionType,
+              context: context,
             ),
           ),
           centerTitle: true,
@@ -88,10 +90,16 @@ class CompressImageToolsBody extends StatelessWidget {
 }
 
 /// For getting [CompressImageToolsPage] screen scaffold app bar text.
-String getAppBarTitleForActionType({required final ToolAction actionType}) {
-  String title = 'Action Successful';
+String getAppBarTitleForActionType({
+  required final ToolAction actionType,
+  required final BuildContext context,
+}) {
+  AppLocale appLocale = AppLocale.of(context);
+  String actionSuccessful = appLocale.tool_Action_ProcessingScreen_Successful;
+  String configureCompression = appLocale.tool_Compress_ConfigureCompression;
+  String title = actionSuccessful;
   if (actionType == ToolAction.compressImages) {
-    title = 'Select Compress Config';
+    title = configureCompression;
   }
   return title;
 }

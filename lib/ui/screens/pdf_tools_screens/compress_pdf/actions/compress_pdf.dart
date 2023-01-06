@@ -1,4 +1,5 @@
 import 'package:files_tools/constants.dart';
+import 'package:files_tools/l10n/generated/app_locale.dart';
 import 'package:files_tools/models/file_model.dart';
 import 'package:files_tools/route/app_routes.dart' as route;
 import 'package:files_tools/state/providers.dart';
@@ -23,26 +24,21 @@ class CompressPDF extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AppLocale appLocale = AppLocale.of(context);
+
+    String pdfSingular = appLocale.pdf(1);
+    String aboutCompressTitle = appLocale.tool_Compress_InfoTitle(pdfSingular);
+    String aboutCompressBody = appLocale.tool_Compress_InfoBody(pdfSingular);
+
     return ListView(
+      padding: const EdgeInsets.symmetric(vertical: 16),
       children: <Widget>[
-        const SizedBox(height: 16),
         CompressPDFActionCard(pdfPageCount: pdfPageCount, file: file),
         const SizedBox(height: 16),
-        const AboutActionCard(
-          aboutTitle: 'This function helps decrease a PDF size.',
-          aboutBody:
-              'The higher the compression the lower the size and quality of '
-              'PDF.'
-              '\n\nLess compression:'
-              '\nImage scaling = 0.9, Image quality = 80'
-              '\n\nMedium compression:'
-              '\nImage scaling = 0.7, Image quality = 70'
-              '\n\nExtreme compression:'
-              '\nImage scaling = 0.7, Image quality = 60'
-              '\n\nNote: All compression methods remove duplicate or'
-              ' unused assets from the PDF.',
+        AboutActionCard(
+          aboutTitle: aboutCompressTitle,
+          aboutBody: aboutCompressBody,
         ),
-        const SizedBox(height: 16),
       ],
     );
   }
@@ -81,6 +77,38 @@ class _CompressPDFActionCardState extends State<CompressPDFActionCard> {
 
   @override
   Widget build(BuildContext context) {
+    AppLocale appLocale = AppLocale.of(context);
+
+    String pdfSingular = appLocale.pdf(1);
+    String lowCompression = appLocale.tool_Compress_CompressionType_Low;
+    String mediumCompression = appLocale.tool_Compress_CompressionType_Medium;
+    String highCompression = appLocale.tool_Compress_CompressionType_High;
+    String customCompression = appLocale.tool_Compress_CompressionType_Custom;
+    String lowQuality = appLocale.tool_Compress_QualityType_Low;
+    String okQuality = appLocale.tool_Compress_QualityType_Ok;
+    String goodQuality = appLocale.tool_Compress_QualityType_Good;
+    String customQuality = appLocale.tool_Compress_QualityType_Custom;
+    String enterImageScaling = appLocale.textField_LabelText_EnterImageScaling;
+    String enterImageQuality = appLocale.textField_LabelText_EnterImageQuality;
+    String example = appLocale.example;
+    String removeFontsFromPdfListTileTitle = appLocale
+        .tool_CompressPDF_RemoveFontsFromFileOrFiles_ListTileTitle(pdfSingular);
+    String removeFontsFromPdfListTileSubtitle =
+        appLocale.tool_CompressPDF_RemoveFontsFromFileOrFiles_ListTileSubtitle(
+      pdfSingular,
+    );
+    String enterNumberFrom0To1Excluding0 =
+        appLocale.textField_ErrorText_EnterNumberInRangeExcludingBegin(
+      0,
+      1,
+    );
+    String enterNumberFrom0To100Excluding0 =
+        appLocale.textField_ErrorText_EnterNumberInRangeExcludingBegin(
+      0,
+      100,
+    );
+    String process = appLocale.button_Process;
+
     return Card(
       clipBehavior: Clip.antiAlias,
       margin: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -95,8 +123,8 @@ class _CompressPDFActionCardState extends State<CompressPDFActionCard> {
               tileColor: Theme.of(context).colorScheme.surfaceVariant,
               // contentPadding: EdgeInsets.zero,
               visualDensity: VisualDensity.compact,
-              title: const Text('Less Compression'),
-              subtitle: const Text('High Quality'),
+              title: Text(lowCompression),
+              subtitle: Text(goodQuality),
               value: CompressionTypes.less,
               groupValue: compressionType,
               onChanged: (CompressionTypes? value) {
@@ -110,8 +138,8 @@ class _CompressPDFActionCardState extends State<CompressPDFActionCard> {
               tileColor: Theme.of(context).colorScheme.surfaceVariant,
               // contentPadding: EdgeInsets.zero,
               visualDensity: VisualDensity.compact,
-              title: const Text('Medium Compression'),
-              subtitle: const Text('Good Quality'),
+              title: Text(mediumCompression),
+              subtitle: Text(okQuality),
               value: CompressionTypes.medium,
               groupValue: compressionType,
               onChanged: (CompressionTypes? value) {
@@ -125,8 +153,8 @@ class _CompressPDFActionCardState extends State<CompressPDFActionCard> {
               tileColor: Theme.of(context).colorScheme.surfaceVariant,
               // contentPadding: EdgeInsets.zero,
               visualDensity: VisualDensity.compact,
-              title: const Text('Extreme Compression'),
-              subtitle: const Text('Low Quality'),
+              title: Text(highCompression),
+              subtitle: Text(lowQuality),
               value: CompressionTypes.extreme,
               groupValue: compressionType,
               onChanged: (CompressionTypes? value) {
@@ -140,9 +168,9 @@ class _CompressPDFActionCardState extends State<CompressPDFActionCard> {
               tileColor: Theme.of(context).colorScheme.surfaceVariant,
               // contentPadding: EdgeInsets.zero,
               visualDensity: VisualDensity.compact,
-              title: const Text('Custom Compression'),
+              title: Text(customCompression),
               subtitle: compressionType != CompressionTypes.custom
-                  ? const Text('Custom Quality')
+                  ? Text(customQuality)
                   : Padding(
                       padding: const EdgeInsets.symmetric(vertical: 8.0),
                       child: Form(
@@ -152,11 +180,11 @@ class _CompressPDFActionCardState extends State<CompressPDFActionCard> {
                           children: <Widget>[
                             TextFormField(
                               controller: imageScalingController,
-                              decoration: const InputDecoration(
+                              decoration: InputDecoration(
                                 filled: true,
-                                labelText: 'Enter Images Scaling',
+                                labelText: enterImageScaling,
                                 isDense: true,
-                                helperText: 'Example- 0.6',
+                                helperText: '$example- 0.6',
                                 // enabledBorder: const UnderlineInputBorder(),
                               ),
                               keyboardType:
@@ -174,12 +202,11 @@ class _CompressPDFActionCardState extends State<CompressPDFActionCard> {
                               // The validator receives the text that the user
                               // has entered.
                               validator: (String? value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter number from 0 to 1';
-                                } else if (double.parse(value) <= 0) {
-                                  return 'Please enter number from 0 to 1';
-                                } else if (double.parse(value) > 1) {
-                                  return 'Please enter number from 0 to 1';
+                                if (value == null ||
+                                    value.isEmpty ||
+                                    double.parse(value) <= 0 ||
+                                    double.parse(value) > 1) {
+                                  return enterNumberFrom0To1Excluding0;
                                 }
                                 return null;
                               },
@@ -187,11 +214,11 @@ class _CompressPDFActionCardState extends State<CompressPDFActionCard> {
                             const SizedBox(height: 10),
                             TextFormField(
                               controller: imageQualityController,
-                              decoration: const InputDecoration(
+                              decoration: InputDecoration(
                                 filled: true,
-                                labelText: 'Enter Images Quality',
+                                labelText: enterImageQuality,
                                 isDense: true,
-                                helperText: 'Example- 70',
+                                helperText: '$example- 70',
                                 // enabledBorder: const UnderlineInputBorder(),
                               ),
                               keyboardType: TextInputType.number,
@@ -203,12 +230,11 @@ class _CompressPDFActionCardState extends State<CompressPDFActionCard> {
                               // The validator receives the text that the user
                               // has entered.
                               validator: (String? value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter number from 1 to 100';
-                                } else if (int.parse(value) <= 0) {
-                                  return 'Please enter number from 1 to 100';
-                                } else if (int.parse(value) > 100) {
-                                  return 'Please enter number from 1 to 100';
+                                if (value == null ||
+                                    value.isEmpty ||
+                                    int.parse(value) <= 0 ||
+                                    int.parse(value) > 100) {
+                                  return enterNumberFrom0To100Excluding0;
                                 }
                                 return null;
                               },
@@ -230,8 +256,10 @@ class _CompressPDFActionCardState extends State<CompressPDFActionCard> {
               tileColor: Theme.of(context).colorScheme.surfaceVariant,
               // contentPadding: EdgeInsets.zero,
               visualDensity: VisualDensity.compact,
-              title: const Text('Remove fonts from pdf'),
-              subtitle: const Text('Could make PDF text unreadable.'),
+              title: Text(
+                removeFontsFromPdfListTileTitle,
+              ),
+              subtitle: Text(removeFontsFromPdfListTileSubtitle),
               value: isUnEmbedFonts,
               onChanged: (bool? value) {
                 setState(() {
@@ -306,7 +334,7 @@ class _CompressPDFActionCardState extends State<CompressPDFActionCard> {
                         }
                       },
                       icon: const Icon(Icons.check),
-                      label: const Text('Compress PDF'),
+                      label: Text(process),
                     );
                   },
                 ),

@@ -1,4 +1,5 @@
 import 'package:files_tools/constants.dart';
+import 'package:files_tools/l10n/generated/app_locale.dart';
 import 'package:files_tools/route/app_routes.dart' as route;
 import 'package:files_tools/state/package_info_state.dart';
 import 'package:files_tools/ui/components/link_button.dart';
@@ -13,6 +14,12 @@ class AppDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AppLocale appLocale = AppLocale.of(context);
+    String settings = appLocale.settings_ScreenTitle;
+    String aboutUs = appLocale.aboutUs_ScreenTitle;
+    String privacyPolicy = appLocale.button_PrivacyPolicy;
+    String termsAndConditions = appLocale.button_TermsAndConditions;
+
     return Drawer(
       child: Stack(
         children: <Widget>[
@@ -35,7 +42,7 @@ class AppDrawer extends StatelessWidget {
                             children: <Widget>[
                               Flexible(
                                 child: Image.asset(
-                                  'assets/app_icon_compressed.png',
+                                  appIconAssetName,
                                 ),
                               ),
                               Text(
@@ -59,7 +66,7 @@ class AppDrawer extends StatelessWidget {
                     const Divider(indent: 16, endIndent: 16),
                     ListTile(
                       leading: const Icon(Icons.settings),
-                      title: const Text('Settings'),
+                      title: Text(settings),
                       onTap: () {
                         Navigator.pushNamed(
                           context,
@@ -69,7 +76,7 @@ class AppDrawer extends StatelessWidget {
                     ),
                     ListTile(
                       leading: const Icon(Icons.help),
-                      title: const Text('About Us'),
+                      title: Text(aboutUs),
                       onTap: () {
                         Navigator.pushNamed(
                           context,
@@ -103,7 +110,7 @@ class AppDrawer extends StatelessWidget {
                         children: <Widget>[
                           Flexible(
                             child: LinkButton(
-                              urlLabel: 'Privacy Policy',
+                              urlLabel: privacyPolicy,
                               urlIcon: Icons.privacy_tip,
                               url: privacyPolicyUrl,
                             ),
@@ -113,7 +120,7 @@ class AppDrawer extends StatelessWidget {
                           ),
                           Flexible(
                             child: LinkButton(
-                              urlLabel: 'Terms & Conditions',
+                              urlLabel: termsAndConditions,
                               urlIcon: Icons.gavel,
                               url: termsAndConditionsUrl,
                             ),

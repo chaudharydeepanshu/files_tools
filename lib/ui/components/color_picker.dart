@@ -1,3 +1,4 @@
+import 'package:files_tools/l10n/generated/app_locale.dart';
 import 'package:flex_color_picker/flex_color_picker.dart';
 import 'package:flutter/material.dart';
 
@@ -43,6 +44,11 @@ Future<bool> colorPickerDialog({
   required final Color dialogPickerColor,
   required final ValueChanged<Color> onColorChanged,
 }) async {
+  AppLocale appLocale = AppLocale.of(context);
+  String heading = appLocale.colorPicker_Heading;
+  String subheading = appLocale.colorPicker_Subheading;
+  String wheelSubheading = appLocale.colorPicker_WheelSubheading;
+
   return ColorPicker(
     // Use the dialogPickerColor as start color.
     color: dialogPickerColor,
@@ -53,15 +59,15 @@ Future<bool> colorPickerDialog({
     runSpacing: 5,
     wheelDiameter: 155,
     heading: Text(
-      'Select color',
+      heading,
       style: Theme.of(context).textTheme.titleMedium,
     ),
     subheading: Text(
-      'Select color shade',
+      subheading,
       style: Theme.of(context).textTheme.titleMedium,
     ),
     wheelSubheading: Text(
-      'Selected color and its shades',
+      wheelSubheading,
       style: Theme.of(context).textTheme.titleMedium,
     ),
     showMaterialName: true,

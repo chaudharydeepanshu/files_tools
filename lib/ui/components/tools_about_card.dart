@@ -1,3 +1,4 @@
+import 'package:files_tools/l10n/generated/app_locale.dart';
 import 'package:flutter/material.dart';
 
 /// Widget for showing about or info card in actions screen.
@@ -21,6 +22,9 @@ class AboutActionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AppLocale appLocale = AppLocale.of(context);
+    String toolInfo = appLocale.tool_InfoCardTitle;
+
     return Card(
       clipBehavior: Clip.antiAlias,
       margin: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -34,7 +38,7 @@ class AboutActionCard extends StatelessWidget {
               children: <Widget>[
                 const Icon(Icons.info),
                 Text(
-                  'Function Info',
+                  toolInfo,
                   style: Theme.of(context).textTheme.bodyLarge,
                   textAlign: TextAlign.center,
                 )

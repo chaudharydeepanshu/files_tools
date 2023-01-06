@@ -1,3 +1,4 @@
+import 'package:files_tools/l10n/generated/app_locale.dart';
 import 'package:files_tools/state/app_theme_state.dart';
 import 'package:files_tools/state/providers.dart';
 import 'package:files_tools/ui/components/color_picker.dart';
@@ -12,6 +13,10 @@ class ThemeChooserWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AppLocale appLocale = AppLocale.of(context);
+    String chooseThemeColorListTileTitle =
+        appLocale.settings_Theming_ChooseThemeColor_ListTileTitle;
+
     return Consumer(
       builder: (BuildContext context, WidgetRef ref, Widget? child) {
         Color userColorSchemeSeedColor = ref.watch(
@@ -19,7 +24,7 @@ class ThemeChooserWidget extends StatelessWidget {
               .select((AppThemeState value) => value.userColorSchemeSeedColor),
         );
         return ListTile(
-          title: const Text('Choose Theme Color'),
+          title: Text(chooseThemeColorListTileTitle),
           subtitle: Text(
             '${ColorTools.materialNameAndCode(userColorSchemeSeedColor)} '
             'aka '

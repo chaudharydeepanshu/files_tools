@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 
 import 'package:files_tools/constants.dart';
+import 'package:files_tools/l10n/generated/app_locale.dart';
 import 'package:files_tools/models/file_model.dart';
 import 'package:files_tools/route/app_routes.dart' as route;
 import 'package:files_tools/state/providers.dart';
@@ -26,22 +27,26 @@ class SplitBySize extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AppLocale appLocale = AppLocale.of(context);
+
+    String pdfSingular = appLocale.pdf(1);
+    String pdfPlural = appLocale.pdf(2);
+    String aboutSplitWithSizeTitle =
+        appLocale.tool_Split_WithSize_InfoTitle(pdfSingular, pdfPlural);
+    String aboutSplitWithSizeBody =
+        appLocale.tool_Split_WithSize_InfoBody(pdfSingular, pdfPlural);
+    String example = appLocale.example;
+
     return ListView(
+      padding: const EdgeInsets.symmetric(vertical: 16),
       children: <Widget>[
-        const SizedBox(height: 16),
         SplitBySizeActionCard(pdfPageCount: pdfPageCount, file: file),
         const SizedBox(height: 16),
-        const AboutActionCard(
-          aboutTitle: 'This function splits a pdf into multiple pdfs of '
-              'specified size.',
-          aboutBodyTitle: 'Example :-',
-          aboutBody: 'If a PDF size = 100 MB'
-              '\n\nAnd, your input(in MB) = 25'
-              '\n\nThen, all result pdfs size will be under 25 MB'
-              '\n\nNote: If a provided size is not possible then it'
-              ' creates PDFs of minimum possible size.',
+        AboutActionCard(
+          aboutTitle: aboutSplitWithSizeTitle,
+          aboutBodyTitle: '$example :-',
+          aboutBody: aboutSplitWithSizeBody,
         ),
-        const SizedBox(height: 16),
       ],
     );
   }
@@ -105,6 +110,37 @@ class _SplitBySizeActionCardState extends State<SplitBySizeActionCard> {
 
   @override
   Widget build(BuildContext context) {
+    AppLocale appLocale = AppLocale.of(context);
+
+    String enterSize = appLocale.textField_LabelText_EnterSize;
+    String pdfSingular = appLocale.pdf(1);
+    String sizeOfPdf = appLocale.tool_Action_SizeOfFile(
+      pdfSingular,
+      widget.file.fileSizeFormatBytes,
+    );
+    String smallFileSizeButBigUnitSelectedError =
+        appLocale.tool_Action_SmallFileSizeButBigUnitSelectedError(
+      pdfSingular,
+    );
+    String example = appLocale.example;
+    String pdfSizeTextFieldHlpTxt = selected == BytesFormatType.KB
+        ? '$example- ${fileSizeInKB / 2}'
+        : selected == BytesFormatType.MB
+            ? '$example- ${fileSizeInMB / 2}'
+            : '$example- ${fileSizeInGB / 2}';
+    String extractSinglePageFileError =
+        appLocale.tool_Split_ExtractSinglePageFileError(pdfSingular);
+    String enterNumberFrom0ToSizeExcludingEnd =
+        appLocale.textField_ErrorText_EnterNumberInRangeExcludingBegin(
+      0,
+      selected == BytesFormatType.KB
+          ? fileSizeInKB / 2
+          : selected == BytesFormatType.MB
+              ? fileSizeInMB / 2
+              : fileSizeInGB / 2,
+    );
+    String process = appLocale.button_Process;
+
     return Card(
       clipBehavior: Clip.antiAlias,
       margin: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -116,7 +152,7 @@ class _SplitBySizeActionCardState extends State<SplitBySizeActionCard> {
             const Icon(Icons.looks_3),
             const Divider(),
             Text(
-              'Size of selected pdf = ${widget.file.fileSizeFormatBytes}',
+              sizeOfPdf,
               style: Theme.of(context).textTheme.bodyMedium,
             ),
             const SizedBox(height: 10),
@@ -158,13 +194,9 @@ class _SplitBySizeActionCardState extends State<SplitBySizeActionCard> {
                                 controller: sizeController,
                                 decoration: InputDecoration(
                                   filled: true,
-                                  labelText: 'Enter Size',
+                                  labelText: enterSize,
                                   // isDense: true,
-                                  helperText: selected == BytesFormatType.KB
-                                      ? 'Example- ${fileSizeInKB / 2}'
-                                      : selected == BytesFormatType.MB
-                                          ? 'Example- ${fileSizeInMB / 2}'
-                                          : 'Example- ${fileSizeInGB / 2}',
+                                  helperText: pdfSizeTextFieldHlpTxt,
                                 ),
                                 keyboardType:
                                     const TextInputType.numberWithOptions(
@@ -182,70 +214,57 @@ class _SplitBySizeActionCardState extends State<SplitBySizeActionCard> {
                                 // user has entered.
                                 validator: (String? value) {
                                   if (selected == BytesFormatType.KB) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'Please enter number between 0 to '
-                                          '$fileSizeInKB';
-                                    } else if (double.parse(value) <= 0) {
-                                      return 'Please enter number bigger '
-                                          'than 0';
-                                    } else if (double.parse(value) >
-                                        double.parse(
-                                          Utility.formatBytes(
-                                            bytes: widget.file.fileSizeBytes,
-                                            decimals: 2,
-                                            formatType: BytesFormatType.KB,
-                                          ),
-                                        )) {
-                                      return 'Please enter number lower than '
-                                          '$fileSizeInKB';
+                                    if (value == null ||
+                                        value.isEmpty ||
+                                        double.parse(value) <= 0 ||
+                                        double.parse(value) >
+                                            double.parse(
+                                              Utility.formatBytes(
+                                                bytes:
+                                                    widget.file.fileSizeBytes,
+                                                decimals: 2,
+                                                formatType: BytesFormatType.KB,
+                                              ),
+                                            )) {
+                                      return enterNumberFrom0ToSizeExcludingEnd;
                                     }
                                     return null;
                                   } else if (selected == BytesFormatType.MB) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'Please enter number between '
-                                          '0 to '
-                                          '$fileSizeInMB';
-                                    } else if (double.parse(value) <= 0) {
-                                      return 'Please enter number bigger '
-                                          'than 0';
-                                    } else if (double.parse(value) >
-                                        double.parse(
-                                          Utility.formatBytes(
-                                            bytes: widget.file.fileSizeBytes,
-                                            decimals: 2,
-                                            formatType: BytesFormatType.MB,
-                                          ),
-                                        )) {
-                                      return 'Please enter number lower than '
-                                          '$fileSizeInMB';
+                                    if ((value == null || value.isEmpty) ||
+                                        double.parse(value) <= 0 ||
+                                        double.parse(value) >
+                                            double.parse(
+                                              Utility.formatBytes(
+                                                bytes:
+                                                    widget.file.fileSizeBytes,
+                                                decimals: 2,
+                                                formatType: BytesFormatType.MB,
+                                              ),
+                                            )) {
+                                      return enterNumberFrom0ToSizeExcludingEnd;
                                     }
                                     return null;
                                   } else {
-                                    if (value == null || value.isEmpty) {
-                                      return 'Please enter number between 0 to '
-                                          '$fileSizeInGB';
-                                    } else if (double.parse(value) <= 0) {
-                                      return 'Please enter number bigger '
-                                          'than 0';
-                                    } else if (double.parse(value) >
-                                        double.parse(
-                                          Utility.formatBytes(
-                                            bytes: widget.file.fileSizeBytes,
-                                            decimals: 2,
-                                            formatType: BytesFormatType.GB,
-                                          ),
-                                        )) {
-                                      return 'Please enter number lower than '
-                                          '$fileSizeInGB';
+                                    if (value == null ||
+                                        value.isEmpty ||
+                                        double.parse(value) <= 0 ||
+                                        double.parse(value) >
+                                            double.parse(
+                                              Utility.formatBytes(
+                                                bytes:
+                                                    widget.file.fileSizeBytes,
+                                                decimals: 2,
+                                                formatType: BytesFormatType.GB,
+                                              ),
+                                            )) {
+                                      return enterNumberFrom0ToSizeExcludingEnd;
                                     }
                                     return null;
                                   }
                                 },
                               )
                             : Text(
-                                'Sorry, pdf size is too small for taking '
-                                'input in this unit. Please choose a '
-                                'smaller unit.',
+                                smallFileSizeButBigUnitSelectedError,
                                 style: Theme.of(context)
                                     .textTheme
                                     .bodySmall
@@ -298,14 +317,14 @@ class _SplitBySizeActionCardState extends State<SplitBySizeActionCard> {
                               }
                             },
                             icon: const Icon(Icons.check),
-                            label: const Text('Split PDF'),
+                            label: Text(process),
                           );
                         },
                       ),
                     ],
                   )
                 : Text(
-                    'Sorry, can\'t split a pdf with less than 2 pages.',
+                    extractSinglePageFileError,
                     style: Theme.of(context)
                         .textTheme
                         .bodySmall

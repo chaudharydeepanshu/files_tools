@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:files_tools/l10n/generated/app_locale.dart';
 import 'package:files_tools/models/file_model.dart';
 import 'package:files_tools/models/pdf_page_model.dart';
 import 'package:files_tools/state/tools_actions_state.dart';
@@ -47,6 +48,11 @@ class _SplitPDFToolsPageState extends State<SplitPDFToolsPage> {
 
   @override
   Widget build(BuildContext context) {
+    AppLocale appLocale = AppLocale.of(context);
+
+    String pdfSingular = appLocale.pdf(1);
+    String loadingText = appLocale.tool_Action_LoadingFileOrFiles(pdfSingular);
+
     return GestureDetector(
       onTap: () {
         FocusManager.instance.primaryFocus?.unfocus();
@@ -57,6 +63,7 @@ class _SplitPDFToolsPageState extends State<SplitPDFToolsPage> {
           title: Text(
             getAppBarTitleForActionType(
               actionType: widget.arguments.actionType,
+              context: context,
             ),
           ),
           centerTitle: true,
@@ -66,16 +73,16 @@ class _SplitPDFToolsPageState extends State<SplitPDFToolsPage> {
           builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
             switch (snapshot.connectionState) {
               case ConnectionState.waiting:
-                return const Loading(
-                  loadingText: 'Getting pdf info please wait ...',
+                return Loading(
+                  loadingText: loadingText,
                 );
               case ConnectionState.none:
-                return const Loading(
-                  loadingText: 'Getting pdf info please wait ...',
+                return Loading(
+                  loadingText: loadingText,
                 );
               case ConnectionState.active:
-                return const Loading(
-                  loadingText: 'Getting pdf info please wait ...',
+                return Loading(
+                  loadingText: loadingText,
                 );
               case ConnectionState.done:
                 if (snapshot.hasError) {
@@ -158,20 +165,33 @@ class SplitPDFToolsBody extends StatelessWidget {
 }
 
 /// For getting [SplitPDFToolsPage] screen scaffold app bar text.
-String getAppBarTitleForActionType({required final ToolAction actionType}) {
-  String title = 'Action Successful';
+String getAppBarTitleForActionType({
+  required final ToolAction actionType,
+  required final BuildContext context,
+}) {
+  AppLocale appLocale = AppLocale.of(context);
+  String actionSuccessful = appLocale.tool_Action_ProcessingScreen_Successful;
+  String selectPagesToExtract =
+      appLocale.tool_Split_WithSelectPages_ScreenTitle;
+  String providePageInterval =
+      appLocale.tool_Split_WithPageInterval_ScreenTitle;
+  String provideSize = appLocale.tool_Split_WithSize_ScreenTitle;
+  String providePageNumbers = appLocale.tool_Split_WithPageNumbers_ScreenTitle;
+  String providePageRanges = appLocale.tool_Split_WithPageRanges_ScreenTitle;
+  String providePageRange = appLocale.tool_Split_WithPageRange_ScreenTitle;
+  String title = actionSuccessful;
   if (actionType == ToolAction.extractPdfByPageSelection) {
-    title = 'Select Pages To Extract';
+    title = selectPagesToExtract;
   } else if (actionType == ToolAction.splitPdfByPageCount) {
-    title = 'Provide Page Count';
+    title = providePageInterval;
   } else if (actionType == ToolAction.splitPdfByByteSize) {
-    title = 'Provide Size';
+    title = provideSize;
   } else if (actionType == ToolAction.splitPdfByPageNumbers) {
-    title = 'Provide Page Numbers';
+    title = providePageNumbers;
   } else if (actionType == ToolAction.splitPdfByPageRanges) {
-    title = 'Provide Page Ranges';
+    title = providePageRanges;
   } else if (actionType == ToolAction.extractPdfByPageRange) {
-    title = 'Provide Page Range';
+    title = providePageRange;
   }
   return title;
 }

@@ -1,3 +1,4 @@
+import 'package:files_tools/l10n/generated/app_locale.dart';
 import 'package:flutter/material.dart';
 
 /// Model class for tools buttons in document and media tools.
@@ -55,6 +56,9 @@ class GridViewInCardSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AppLocale appLocale = AppLocale.of(context);
+    String showAll = appLocale.button_ShowAll;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -135,7 +139,7 @@ class GridViewInCardSection extends StatelessWidget {
                                 ),
                                 onPressed: cardShowAllOnTap,
                                 icon: const Icon(Icons.arrow_forward),
-                                label: const Text('Show All'),
+                                label: Text(showAll),
                               ),
                             ),
                           ],
@@ -162,6 +166,9 @@ class GridViewCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AppLocale appLocale = AppLocale.of(context);
+    String comingSoon = appLocale.comingSoon;
+
     List<Widget> iconsList = <Widget>[];
 
     for (int i = 0; i < gridCardDetail.cardIcons.length; i++) {
@@ -199,7 +206,7 @@ class GridViewCard extends StatelessWidget {
                   ),
                   child: gridCardDetail.cardOnTap == null
                       ? Text(
-                          'Coming Soon',
+                          comingSoon,
                           textAlign: TextAlign.center,
                           style: Theme.of(context).textTheme.labelSmall,
                         )

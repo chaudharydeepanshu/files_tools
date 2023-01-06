@@ -1,3 +1,4 @@
+import 'package:files_tools/l10n/generated/app_locale.dart';
 import 'package:files_tools/main.dart';
 import 'package:files_tools/state/preferences.dart';
 import 'package:flutter/material.dart';
@@ -17,10 +18,16 @@ class _CrashlyticsSwitchTileState extends State<CrashlyticsSwitchTile> {
 
   @override
   Widget build(BuildContext context) {
+    AppLocale appLocale = AppLocale.of(context);
+    String crashlyticsListTileTitle =
+        appLocale.settings_UsageAndDiagnostics_Crashlytics_ListTileTitle;
+    String crashlyticsListTileSubtitle =
+        appLocale.settings_UsageAndDiagnostics_Crashlytics_ListTileSubtitle;
+
     return SwitchListTile(
-      title: const Text('Crashlytics'),
-      subtitle: const Text(
-        'Share crash-reports for bugs fixing.',
+      title: Text(crashlyticsListTileTitle),
+      subtitle: Text(
+        crashlyticsListTileSubtitle,
       ),
       secondary: const Icon(Icons.bug_report),
       value: isCrashlyticsEnabled,
@@ -51,10 +58,16 @@ class _AnalyticsSwitchTileState extends State<AnalyticsSwitchTile> {
 
   @override
   Widget build(BuildContext context) {
+    AppLocale appLocale = AppLocale.of(context);
+    String analyticsListTileTitle =
+        appLocale.settings_UsageAndDiagnostics_Analytics_ListTileTitle;
+    String analyticsListTileSubtitle =
+        appLocale.settings_UsageAndDiagnostics_Analytics_ListTileSubtitle;
+
     return SwitchListTile(
-      title: const Text('Analytics'),
-      subtitle: const Text(
-        'Share app usage for app improvement',
+      title: Text(analyticsListTileTitle),
+      subtitle: Text(
+        analyticsListTileSubtitle,
       ),
       secondary: const Icon(Icons.analytics),
       value: isAnalyticsEnabled,

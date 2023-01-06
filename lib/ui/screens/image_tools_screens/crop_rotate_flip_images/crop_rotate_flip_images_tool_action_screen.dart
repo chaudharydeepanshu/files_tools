@@ -1,3 +1,4 @@
+import 'package:files_tools/l10n/generated/app_locale.dart';
 import 'package:files_tools/models/file_model.dart';
 import 'package:files_tools/state/tools_actions_state.dart';
 import 'package:files_tools/ui/screens/image_tools_screens/crop_rotate_flip_images/actions/crop_rotate_flip_images.dart';
@@ -34,6 +35,7 @@ class _ModifyImagesToolsPageState extends State<ModifyImagesToolsPage> {
           title: Text(
             getAppBarTitleForActionType(
               actionType: widget.arguments.actionType,
+              context: context,
             ),
           ),
           centerTitle: true,
@@ -88,10 +90,18 @@ class ModifyImageToolsBody extends StatelessWidget {
 }
 
 /// For getting [ModifyImagesToolsPage] screen scaffold app bar text.
-String getAppBarTitleForActionType({required final ToolAction actionType}) {
-  String title = 'Action Successful';
+String getAppBarTitleForActionType({
+  required final ToolAction actionType,
+  required final BuildContext context,
+}) {
+  AppLocale appLocale = AppLocale.of(context);
+  String imageSingular = appLocale.image(1);
+  String actionSuccessful = appLocale.tool_Action_ProcessingScreen_Successful;
+  String cropRotateFlipImage =
+      appLocale.tool_Modify_CropRotateFlipFileOrFiles(imageSingular);
+  String title = actionSuccessful;
   if (actionType == ToolAction.cropRotateFlipImages) {
-    title = 'Edit Images';
+    title = cropRotateFlipImage;
   }
   return title;
 }
